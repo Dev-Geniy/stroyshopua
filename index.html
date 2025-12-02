@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Stroy Shop — Інтернет-магазин будматеріалів</title>
+
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide (іконки, глобальна змінна lucide) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#0a0b10;
+      --card:#11131c;
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --danger:#ff4e6d;
+      --text:#f5f5f7;
+      --muted:#9da3b5;
+      --radius:14px;
+      --border:rgba(255,255,255,0.08);
+      --shadow:0 8px 30px rgba(0,0,0,0.65);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(255,122,26,0.18),transparent 55%),
+        linear-gradient(180deg,#050509,#050509 40%,#0b0d14 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{color:var(--accent);text-decoration:none}
+
+    .hidden{display:none !important;}
+
+    /* ===== HEADER ===== */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:
+        radial-gradient(circle at top left,rgba(255,122,26,0.16),transparent 60%),
+        rgba(5,5,9,0.96);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+      padding:12px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .header-left{display:flex;flex-direction:column}
+    .logo{
+      font-size:22px;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      letter-spacing:0.04em;
+    }
+    .logo-sub{font-size:12px;color:var(--muted)}
+
+    .header-center{
+      flex:1;
+      display:flex;
+      justify-content:center;
+    }
+    .search-bar{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      max-width:360px;
+      width:100%;
+      box-shadow:0 0 0 1px rgba(0,0,0,0.3);
+    }
+    .search-bar input{
+      border:0;background:transparent;outline:none;
+      color:var(--text);font-size:14px;width:100%;
+    }
+
+    .header-right{
+      display:flex;gap:8px;align-items:center;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:var(--radius);
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background-position .35s ease,
+        opacity .2s ease;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      background-size:200% 200%;
+      color:#000;
+      box-shadow:var(--shadow);
+    }
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 32px rgba(0,0,0,0.8);
+      background-position:100% 0;
+    }
+    .btn-outline{
+      background:transparent;
+      border:1px solid rgba(255,122,26,0.8);
+      color:var(--accent);
+    }
+    .btn-outline:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 28px rgba(0,0,0,0.7);
+      background:rgba(255,122,26,0.06);
+    }
+    .cart-btn{
+      background:radial-gradient(circle at top left,var(--accent2),var(--accent));
+      color:#000;
+      display:flex;align-items:center;gap:6px;
+    }
+    .cart-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 32px rgba(0,0,0,0.9);
+    }
+    .cart-count{
+      background:#000;color:var(--accent2);
+      padding:2px 7px;border-radius:999px;font-weight:800;font-size:12px;
+    }
+
+    /* ===== HERO / SLIDER ===== */
+    .hero{
+      padding:24px 20px 10px;
+      display:flex;gap:24px;flex-wrap:wrap;
+      align-items:flex-start;
+    }
+    .hero-left{flex:1;min-width:260px;position:relative;}
+    .hero-slide{
+      background:
+        radial-gradient(circle at top right,rgba(255,122,26,0.15),transparent 55%),
+        var(--bg2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow);
+      position:absolute;inset:0;
+      opacity:0;transform:translateY(10px);
+      transition:.35s;
+    }
+    .hero-slide.active{
+      opacity:1;transform:translateY(0);position:relative;
+    }
+    .hero-slide h1{font-size:26px;margin-bottom:8px}
+    .hero-slide p{font-size:14px;color:var(--muted);max-width:420px}
+    .hero-cta{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+
+    .hero-dots{display:flex;gap:8px;margin-top:10px;}
+    .hero-dot{
+      width:10px;height:10px;border-radius:50%;
+      border:0;cursor:pointer;
+      background:var(--border);
+      transition:.2s;
+    }
+    .hero-dot.active{
+      background:var(--accent);
+      box-shadow:0 0 0 4px rgba(255,122,26,0.25);
+    }
+
+    .hero-right{
+      width:280px;min-width:260px;
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:16px;
+      box-shadow:var(--shadow);
+    }
+    .hero-info-row{
+      display:flex;gap:10px;margin-bottom:10px;
+    }
+    .hero-info-row i{
+      padding:8px;
+      border-radius:12px;
+      background:rgba(255,122,26,0.1);
+    }
+    .hero-info-title{font-weight:700;font-size:14px}
+    .hero-info-text{font-size:13px;color:var(--muted)}
+
+    /* ===== FILTERS ===== */
+    .filters{
+      padding:10px 20px 20px;
+      display:flex;justify-content:space-between;
+      gap:16px;flex-wrap:wrap;
+      border-bottom:1px solid var(--border);
+    }
+    .filters-left{display:flex;flex-direction:column;gap:8px}
+    .filters-right{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+
+    .categories{display:flex;gap:8px;flex-wrap:wrap;}
+    .category-chip{
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.02);
+      cursor:pointer;
+      font-size:13px;font-weight:600;
+      transition:.2s;
+    }
+    .category-chip:hover{
+      border-color:rgba(255,122,26,0.7);
+    }
+    .category-chip.active{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#000;border-color:transparent;
+      box-shadow:0 6px 20px rgba(0,0,0,0.7);
+    }
+
+    .filters-label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;}
+    .filters input{
+      width:80px;padding:6px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:transparent;color:var(--text);
+      font-size:13px;
+    }
+    .filters select{
+      padding:6px 10px;border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--card);color:var(--text);
+      font-size:13px;
+    }
+
+    /* ===== PRODUCTS ===== */
+    .products-section{padding:20px;}
+    .section-title{font-size:22px;font-weight:800;margin-bottom:16px;}
+    .products-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+      gap:18px;
+    }
+    .product-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      padding:12px;
+      display:flex;flex-direction:column;
+      gap:6px;
+      position:relative;
+      transition:.25s;
+    }
+    .product-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 32px rgba(0,0,0,0.85);
+      border-color:rgba(255,122,26,0.6);
+    }
+    .product-image-wrapper{position:relative;}
+    .product-image-wrapper img{
+      width:100%;height:160px;object-fit:cover;
+      border-radius:var(--radius);
+    }
+    .product-quick-btn{
+      position:absolute;bottom:10px;right:10px;
+      padding:6px 10px;border-radius:var(--radius);
+      border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;
+      font-size:11px;font-weight:700;
+      box-shadow:var(--shadow);
+      cursor:pointer;opacity:0;transform:translateY(5px);
+      transition:.2s;
+    }
+    .product-card:hover .product-quick-btn{
+      opacity:1;transform:translateY(0);
+    }
+    .product-tag{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+    .product-title{font-size:15px;font-weight:700;}
+    .product-meta{
+      display:flex;justify-content:space-between;
+      font-size:11px;color:var(--muted);
+    }
+    .product-bottom{
+      margin-top:6px;
+      display:flex;gap:8px;align-items:center;
+    }
+    .product-price{font-weight:800;font-size:17px;color:var(--accent);}
+
+    /* Кількість */
+    .qty-control{
+      display:flex;align-items:center;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--bg2);
+      overflow:hidden;
+    }
+    .qty-input{
+      width:52px;border:0;outline:none;
+      text-align:center;
+      background:transparent;color:var(--text);
+      font-weight:700;font-size:14px;
+      padding:4px;
+    }
+    .qty-arrows{
+      display:flex;flex-direction:column;
+      border-left:1px solid var(--border);
+    }
+    .qty-arrow{
+      border:0;background:transparent;
+      width:20px;height:16px;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .qty-arrow svg{width:12px;height:12px;color:var(--accent);}
+
+    .product-add-btn{
+      flex:1;justify-content:center;
+      white-space:nowrap;
+    }
+
+    /* ===== INFO SECTION ===== */
+    .info-section{padding:24px 20px 40px;}
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:18px;
+    }
+    .info-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      padding:16px;
+      text-align:center;
+      font-size:13px;
+    }
+    .info-card h3{margin:8px 0;font-size:15px;}
+    .info-card p{color:var(--muted);}
+
+    /* ===== FOOTER ===== */
+    footer{
+      padding:24px 20px 20px;
+      border-top:1px solid var(--border);
+      background:#050509;
+      display:grid;
+      grid-template-columns:2fr 1.1fr 1.5fr 1.8fr;
+      gap:20px;
+      font-size:13px;color:var(--muted);
+    }
+    .footer-col{min-width:0;}
+    .footer-logo{
+      font-size:20px;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      margin-bottom:6px;
+    }
+    .footer-copy{margin-top:10px;font-size:12px;color:#717786;}
+    .footer-title{
+      font-weight:700;
+      font-size:14px;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+    .footer-nav{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .footer-nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:13px;
+    }
+    .footer-nav a:hover{
+      color:var(--accent2);
+    }
+    .footer-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:6px;
+      color:var(--muted);
+    }
+    .footer-link i{
+      width:16px;height:16px;
+    }
+    .footer-link:hover{
+      color:var(--accent2);
+    }
+    .footer-phone{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:6px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:radial-gradient(circle at top left,rgba(255,122,26,0.25),transparent 60%);
+      border:1px solid rgba(255,122,26,0.7);
+      color:var(--text);
+      font-weight:700;
+    }
+    .footer-phone i{
+      width:16px;height:16px;
+    }
+    .footer-phone:hover{
+      box-shadow:0 10px 32px rgba(0,0,0,0.9);
+      transform:translateY(-1px);
+    }
+    .footer-manager-box{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .footer-manager-avatar{
+      width:54px;height:54px;
+      border-radius:50%;
+      overflow:hidden;
+      border:2px solid rgba(255,122,26,0.8);
+      box-shadow:0 0 0 3px rgba(255,122,26,0.18);
+    }
+    .footer-manager-avatar img{
+      width:100%;height:100%;object-fit:cover;
+    }
+    .footer-manager-name{
+      font-weight:600;font-size:14px;margin-bottom:4px;
+    }
+
+    /* ===== MODALS ===== */
+    .modal-overlay{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(4px);
+      z-index:90;
+    }
+    .modal{
+      position:fixed;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      background:var(--bg2);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      max-width:900px;width:95%;
+      max-height:90vh;overflow-y:auto;
+      z-index:100;
+      padding:18px;
+    }
+    .modal-header{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:10px;
+    }
+    .modal-close{
+      border:0;background:transparent;color:var(--muted);
+      cursor:pointer;
+    }
+    .modal-body{
+      display:flex;gap:18px;flex-wrap:wrap;
+    }
+    .modal-body img{
+      width:280px;max-width:100%;border-radius:var(--radius);
+    }
+    .modal-info{flex:1;min-width:240px;font-size:14px;}
+    .modal-info h2{margin:4px 0 6px;font-size:20px;}
+    .modal-price{font-size:22px;color:var(--accent);font-weight:800;margin:8px 0;}
+    .modal-desc{color:var(--muted);font-size:13px;}
+    .modal-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+
+    .modal-qty-row{margin-top:10px;display:flex;align-items:center;gap:6px;font-size:13px;}
+
+    .modal-full{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--card);
+      font-size:13px;
+      color:var(--muted);
+      display:none;
+    }
+
+    /* ===== CHECKOUT MODAL ===== */
+    .checkout-form{
+      display:flex;flex-direction:column;gap:10px;
+      margin-top:10px;
+      font-size:14px;
+    }
+    .checkout-form input{
+      width:100%;padding:8px;border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--bg2);color:var(--text);
+      outline:none;font-size:14px;
+    }
+
+    /* ===== CART DRAWER ===== */
+    .cart-overlay{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,0.5);
+      z-index:80;
+    }
+    .cart-drawer{
+      position:fixed;top:0;right:-360px;
+      width:320px;max-width:90%;
+      height:100vh;
+      background:var(--bg2);
+      border-left:1px solid var(--border);
+      box-shadow:-6px 0 25px rgba(0,0,0,0.6);
+      z-index:90;
+      padding:14px;
+      display:flex;flex-direction:column;
+      transition:.3s;
+    }
+    .cart-drawer.open{right:0;}
+    .cart-header{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:10px;
+    }
+    .cart-body{
+      flex:1;overflow-y:auto;
+    }
+    .cart-item{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:10px;
+      margin-bottom:8px;
+      font-size:13px;
+    }
+    .cart-footer{
+      border-top:1px solid var(--border);
+      padding-top:10px;
+      margin-top:6px;
+    }
+    .cart-total-row{
+      display:flex;justify-content:space-between;
+      margin-bottom:10px;font-weight:700;
+    }
+
+    /* ===== TOAST ===== */
+    .toast{
+      position:fixed;right:16px;bottom:16px;
+      background:var(--bg2);
+      border-radius:var(--radius);
+      padding:10px 14px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      font-size:13px;
+      opacity:0;transform:translateY(10px);
+      transition:.25s;z-index:200;
+    }
+    .toast.show{opacity:1;transform:translateY(0);}
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:900px){
+      .hero{flex-direction:column;}
+      .hero-right{width:100%;}
+      footer{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+    @media(max-width:720px){
+      .header-center{order:3;width:100%;}
+      .search-bar{max-width:100%;}
+      footer{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body id="top">
+
+<header>
+  <div class="header-left">
+    <div class="logo">Stroy Shop</div>
+    <div class="logo-sub">Будматеріали з доставкою по Україні</div>
+  </div>
+
+  <div class="header-center">
+    <div class="search-bar">
+      <i data-lucide="search"></i>
+      <input id="searchInput" placeholder="Пошук: ковролін, плитка, шпалери..." />
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button class="btn btn-outline js-consult">
+      <i data-lucide="message-circle"></i>
+      Консультація
+    </button>
+    <button class="btn cart-btn" id="openCartBtn">
+      <i data-lucide="shopping-cart"></i>
+      <span>Кошик</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO / SLIDER -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-slide active" data-index="0">
+        <h1>Ремонт без нервів</h1>
+        <p>Ковролін, плитка, шпалери та самоклейка — все в одному місці. Підбір під ваш бюджет.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary js-consult">
+            <i data-lucide="send"></i> Потрібна порада
+          </button>
+          <button class="btn btn-outline" id="scrollToProductsBtn">
+            Переглянути товари
+          </button>
+        </div>
+      </div>
+      <div class="hero-slide" data-index="1">
+        <h1>Опт та знижки</h1>
+        <p>-10% при замовленні від 10 м². Персональні пропозиції для майстрів та дизайнерів.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary js-consult">
+            Запит на опт
+          </button>
+        </div>
+      </div>
+      <div class="hero-slide" data-index="2">
+        <h1>Доставка Новою Поштою</h1>
+        <p>Оплата при отриманні. Перевірка посилки на відділенні перед оплатою.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary js-consult">
+            Питання по доставці
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-dots">
+        <button class="hero-dot active" data-index="0"></button>
+        <button class="hero-dot" data-index="1"></button>
+        <button class="hero-dot" data-index="2"></button>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-info-row">
+        <i data-lucide="truck"></i>
+        <div>
+          <div class="hero-info-title">Доставка по Україні</div>
+          <div class="hero-info-text">Нова Пошта, оплата при отриманні</div>
+        </div>
+      </div>
+      <div class="hero-info-row">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <div class="hero-info-title">Гарантія якості</div>
+          <div class="hero-info-text">Перевірені постачальники та матеріали</div>
+        </div>
+      </div>
+      <div class="hero-info-row">
+        <i data-lucide="headphones"></i>
+        <div>
+          <div class="hero-info-title">Живий менеджер</div>
+          <div class="hero-info-text">Консультації в Telegram</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTERS -->
+  <section class="filters">
+    <div class="filters-left">
+      <span class="filters-label">Категорії:</span>
+      <div class="categories" id="categories"></div>
+    </div>
+
+    <div class="filters-right">
+      <div>
+        <span class="filters-label">Ціна:</span>
+        <input type="number" id="minPrice" placeholder="від">
+        <input type="number" id="maxPrice" placeholder="до">
+      </div>
+      <div>
+        <span class="filters-label">Сортування:</span>
+        <select id="sortSelect">
+          <option value="default">За замовчуванням</option>
+          <option value="price-asc">Спочатку дешевші</option>
+          <option value="price-desc">Спочатку дорожчі</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products-section" id="productsSection">
+    <h2 class="section-title">Популярні товари</h2>
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
+
+  <!-- INFO -->
+  <section class="info-section" id="howToOrder">
+    <h2 class="section-title">Як відбувається замовлення</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>1. Обираєте товари</h3>
+        <p>Додаєте в кошик позиції та потрібну кількість. Можна комбінувати різні категорії.</p>
+      </div>
+      <div class="info-card">
+        <h3>2. Заповнюєте дані</h3>
+        <p>Натискаєте «Оформити замовлення» — ми згенеруємо текст заявки в Telegram.</p>
+      </div>
+      <div class="info-card">
+        <h3>3. Відправка Новою Поштою</h3>
+        <p>Уточнюємо з вами деталі, відправляємо посилку. Оплата при отриманні.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-col footer-brand">
+    <div class="footer-logo">Stroy Shop</div>
+    <p>Інтернет-магазин будівельних матеріалів. Підбір, консультація та відправка по всій Україні.</p>
+    <div class="footer-copy">© <span id="year"></span> Stroy Shop. Всі права захищені.</div>
+  </div>
+
+  <div class="footer-col footer-nav-col">
+    <div class="footer-title">Навігація</div>
+    <nav class="footer-nav">
+      <a href="#productsSection">Каталог</a>
+      <a href="#howToOrder">Як замовити</a>
+      <a href="#top">Акції та знижки</a>
+    </nav>
+  </div>
+
+  <div class="footer-col footer-contacts">
+    <div class="footer-title">Контакти</div>
+    <a href="https://t.me/stroy_shop_ua" target="_blank" class="footer-link">
+      <i data-lucide="send"></i> Telegram-канал
+    </a>
+    <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" class="footer-link">
+      <i data-lucide="play-circle"></i> TikTok: @stroyshop_ua
+    </a>
+    <a href="tel:+380984927948" class="footer-phone">
+      <i data-lucide="phone"></i> +380&nbsp;98&nbsp;492&nbsp;79&nbsp;48
+    </a>
+  </div>
+
+  <div class="footer-col footer-manager">
+    <div class="footer-title">Ваш менеджер</div>
+    <div class="footer-manager-box">
+      <div class="footer-manager-avatar">
+        <img src="https://i.ibb.co/dqqPKMb/unnamed-1.jpg" alt="Менеджер магазину">
+      </div>
+      <div>
+        <div class="footer-manager-name">Менеджер Stroy Shop</div>
+        <a href="https://t.me/manager_stroyshop_ua" target="_blank" class="footer-link">
+          <i data-lucide="message-circle"></i> Написати в Telegram
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div id="productModalOverlay" class="modal-overlay hidden"></div>
+<div id="productModal" class="modal hidden">
+  <div class="modal-header">
+    <h3>Товар</h3>
+    <button class="modal-close" id="productModalClose"><i data-lucide="x"></i></button>
+  </div>
+  <div class="modal-body">
+    <img id="modalImage" src="" alt="">
+    <div class="modal-info">
+      <div class="filters-label" id="modalCategory"></div>
+      <h2 id="modalTitle"></h2>
+      <div>Артикул: <span id="modalSku"></span></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-desc" id="modalShort"></div>
+
+      <div class="modal-qty-row">
+        <span>Кількість:</span>
+        <div class="qty-control">
+          <input type="number" id="modalQtyInput" class="qty-input" min="1" value="1">
+          <div class="qty-arrows">
+            <button class="qty-arrow" id="modalQtyUp"><i data-lucide="chevron-up"></i></button>
+            <button class="qty-arrow" id="modalQtyDown"><i data-lucide="chevron-down"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="modalAddToCart">
+          <i data-lucide="shopping-cart"></i> Додати у кошик
+        </button>
+        <button class="btn btn-outline" id="modalToggleFull">
+          Детальний опис
+        </button>
+      </div>
+
+      <div class="modal-full" id="modalFull"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutOverlay" class="modal-overlay hidden"></div>
+<div id="checkoutModal" class="modal hidden">
+  <div class="modal-header">
+    <h3>Оформлення замовлення</h3>
+    <button class="modal-close" id="checkoutClose"><i data-lucide="x"></i></button>
+  </div>
+  <div class="modal-body">
+    <div class="modal-info">
+      <p class="modal-desc">
+        Заповніть контактні дані. Після натискання кнопки відкриється Telegram
+        з уже заповненим повідомленням. Ви просто натиснете «Відправити».
+      </p>
+      <form class="checkout-form" id="checkoutForm">
+        <label>Ім’я:<br><input id="checkoutName" required></label>
+        <label>Телефон:<br><input id="checkoutPhone" required></label>
+        <label>Місто:<br><input id="checkoutCity" required></label>
+        <label>Відділення Нової Пошти:<br><input id="checkoutPost" required></label>
+        <button class="btn btn-primary" type="submit">Відправити в Telegram</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div id="cartOverlay" class="cart-overlay hidden"></div>
+<aside id="cartDrawer" class="cart-drawer">
+  <div class="cart-header">
+    <h3>Кошик</h3>
+    <button class="modal-close" id="cartClose"><i data-lucide="x"></i></button>
+  </div>
+  <div class="cart-body" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>Разом:</span><span id="cartTotal">0 грн</span>
+    </div>
+    <button class="btn btn-primary" id="cartCheckoutBtn">Оформити замовлення</button>
+    <button class="btn btn-outline" id="cartClearBtn">Очистити кошик</button>
+  </div>
+</aside>
+
+<!-- TOAST -->
+<div id="toast" class="toast">Повідомлення</div>
+
+<script>
+  // ===== Налаштування =====
+  const TELEGRAM_USERNAME = 'manager_stroyshop_ua';
+
+  // ТЕПЕР ЧИТАЕМ ЛОКАЛЬНЫЙ ФАЙЛ РЯДОМ С index.html
+  const XML_FEED_URL = 'products.xml';
+
+  // Дефолтні товари на випадок, якщо XML не завантажиться
+  const DEFAULT_PRODUCTS = [
+    {
+      id:1,
+      title:'Ковролін SoftLux 4м — кремовий',
+      category:'Ковролін',
+      price:279,
+      sku:14417,
+      img:'https://via.placeholder.com/600x400?text=Carpet',
+      unit:'м',
+      short:'М’який і зносостійкий ковролін для житлових кімнат.',
+      full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+    },
+    {
+      id:2,
+      title:'Плівка біла матова 0.45м',
+      category:'Самоклейка',
+      price:59,
+      sku:14418,
+      img:'https://via.placeholder.com/600x400?text=Film',
+      unit:'м',
+      short:'Самоклейна плівка для меблів і декору.',
+      full:'Матовий білий відтінок, підходить для фасадів меблів, дверей, підвіконь. Легко клеїться без бульбашок.'
+    },
+    {
+      id:3,
+      title:'Шпалери Modern Stone',
+      category:'Шпалери',
+      price:129,
+      sku:14419,
+      img:'https://via.placeholder.com/600x400?text=Wallpaper',
+      unit:'м',
+      short:'Шпалери з ефектом натурального каменю.',
+      full:'Текстурована поверхня під камінь. Підходить для акцентних стін у вітальні, коридорі, кухні.'
+    },
+    {
+      id:4,
+      title:'Плитка самоклейка 20×20',
+      category:'Плитка',
+      price:250,
+      sku:14420,
+      img:'https://via.placeholder.com/600x400?text=Tile',
+      unit:'шт',
+      short:'Самоклейні плитки для швидкого оновлення кухні чи ванної.',
+      full:'Водостійка поверхня, підходить для фартухів на кухні та зон навколо умивальника.'
+    }
+  ];
+
+  // Поточний список товарів
+  let PRODUCTS = [...DEFAULT_PRODUCTS];
+
+  // ===== Стан кошика =====
+  let cart = JSON.parse(localStorage.getItem('stroy_shop_cart_v1') || '[]');
+
+  function saveCart(){
+    localStorage.setItem('stroy_shop_cart_v1', JSON.stringify(cart));
+  }
+
+  // ===== Допоміжні =====
+  function money(n){ return n + ' грн'; }
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2000);
+  }
+
+  function openTelegram(msg){
+    const url = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  // ===== Завантаження товарів з ЛОКАЛЬНОГО products.xml =====
+  async function loadProductsFromXML(){
+    try{
+      // ВАЖНО: тут уже НЕТ прокси, просто products.xml на тому же домені/шляху
+      const res = await fetch(XML_FEED_URL, { cache: 'no-store' });
+      if(!res.ok) throw new Error('Bad status: ' + res.status);
+
+      const text = await res.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, 'application/xml');
+
+      const items = Array.from(xml.getElementsByTagName('item'));
+      if(!items.length){
+        console.warn('XML: не знайдено тегів <item>. Використовую дефолтні товари.');
+        PRODUCTS = [...DEFAULT_PRODUCTS];
+        return;
+      }
+
+      const get = (node, tagName) => {
+        const el = node.getElementsByTagName(tagName)[0];
+        return el ? (el.textContent || '').trim() : '';
+      };
+
+      const placeholderImg = 'https://via.placeholder.com/600x400?text=Товар';
+
+      PRODUCTS = items
+        .map((node, index) => {
+          const rawId =
+            get(node, 'g:id') ||
+            get(node, 'id') ||
+            String(index + 1);
+
+          const numericId = Number((rawId || '').replace(/\D/g,'')) || (index + 1);
+
+          const title =
+            get(node, 'title') ||
+            get(node, 'g:title') ||
+            `Товар ${numericId}`;
+
+          const description =
+            get(node, 'description') ||
+            get(node, 'g:description') ||
+            '';
+
+          const priceText = get(node, 'g:price') || '0';
+          const price = parseFloat(
+            priceText
+              .replace(',', '.')
+              .replace(/[^\d.]/g, '')
+          ) || 0;
+
+          const img =
+            get(node, 'g:image_link') ||
+            get(node, 'g:additional_image_link') ||
+            placeholderImg;
+
+          const availability = (get(node, 'g:availability') || '').toLowerCase();
+
+          const category =
+            get(node, 'g:product_type') ||
+            'Інші товари';
+
+          // пропускаємо, якщо немає в наявності
+          if(availability && availability !== 'in stock'){
+            return null;
+          }
+
+          return {
+            id: numericId,
+            title,
+            category,
+            price,
+            sku: rawId,
+            img,
+            unit:'шт',
+            short: description ? description.slice(0,120) : 'Товар з XML-прайсу',
+            full: description || 'Детальний опис товару з XML-прайсу.'
+          };
+        })
+        .filter(Boolean);
+
+      if(!PRODUCTS.length){
+        console.warn('XML завантажено, але товари не сформувалися. Використовую дефолтні.');
+        PRODUCTS = [...DEFAULT_PRODUCTS];
+      }
+    }catch(err){
+      console.error('Помилка завантаження XML:', err);
+      PRODUCTS = [...DEFAULT_PRODUCTS];
+      showToast('Не вдалося прочитати products.xml, показуємо тестові товари.');
+    }
+  }
+
+  // ===== Рендер категорій =====
+  const categoriesEl = document.getElementById('categories');
+
+  function renderCategories(){
+    const categoryList = ['Усі', ...new Set(PRODUCTS.map(p=>p.category))];
+    categoriesEl.innerHTML = '';
+    categoryList.forEach(cat=>{
+      const btn = document.createElement('button');
+      btn.className = 'category-chip';
+      btn.textContent = cat;
+      if(cat === 'Усі') btn.classList.add('active');
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.category-chip').forEach(c=>c.classList.remove('active'));
+        btn.classList.add('active');
+        filterProducts();
+      });
+      categoriesEl.appendChild(btn);
+    });
+  }
+
+  // ===== Рендер товарів =====
+  const productsGrid = document.getElementById('productsGrid');
+
+  function renderProducts(list){
+    productsGrid.innerHTML = '';
+    list.forEach(p=>{
+      const card = document.createElement('article');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-image-wrapper">
+          <img src="${p.img}" alt="${p.title}">
+          <button class="product-quick-btn js-quick-view" data-id="${p.id}">Швидкий перегляд</button>
+        </div>
+        <div class="product-tag">${p.category}</div>
+        <div class="product-title">${p.title}</div>
+        <div class="product-meta">
+          <span>Артикул: ${p.sku}</span>
+          <span>${p.unit}</span>
+        </div>
+        <div class="product-bottom">
+          <div class="product-price">${money(p.price)}</div>
+          <div class="qty-control">
+            <input type="number" class="qty-input js-qty-input" data-id="${p.id}" min="1" value="1">
+            <div class="qty-arrows">
+              <button class="qty-arrow js-qty-up" data-id="${p.id}"><i data-lucide="chevron-up"></i></button>
+              <button class="qty-arrow js-qty-down" data-id="${p.id}"><i data-lucide="chevron-down"></i></button>
+            </div>
+          </div>
+          <button class="btn btn-primary product-add-btn js-add-to-cart" data-id="${p.id}">
+            <i data-lucide="shopping-cart"></i> У кошик
+          </button>
+        </div>
+      `;
+      productsGrid.appendChild(card);
+    });
+
+    lucide.createIcons();
+  }
+
+  // ===== Фільтрація =====
+  function filterProducts(){
+    let list = [...PRODUCTS];
+    const activeCatEl = document.querySelector('.category-chip.active');
+    const activeCat = activeCatEl ? activeCatEl.textContent : 'Усі';
+
+    if(activeCat !== 'Усі'){
+      list = list.filter(p=>p.category === activeCat);
+    }
+
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    if(q){
+      list = list.filter(p=>p.title.toLowerCase().includes(q));
+    }
+
+    const min = parseFloat(document.getElementById('minPrice').value || '0');
+    const max = parseFloat(document.getElementById('maxPrice').value || '0');
+    if(min>0) list = list.filter(p=>p.price >= min);
+    if(max>0) list = list.filter(p=>p.price <= max);
+
+    const sort = document.getElementById('sortSelect').value;
+    if(sort === 'price-asc') list.sort((a,b)=>a.price-b.price);
+    if(sort === 'price-desc') list.sort((a,b)=>b.price-a.price);
+
+    renderProducts(list);
+  }
+
+  // ===== Події для фільтрів =====
+  document.getElementById('searchInput').addEventListener('input', filterProducts);
+  document.getElementById('minPrice').addEventListener('input', filterProducts);
+  document.getElementById('maxPrice').addEventListener('input', filterProducts);
+  document.getElementById('sortSelect').addEventListener('change', filterProducts);
+
+  // ===== Події в гріді товарів (делегування) =====
+  productsGrid.addEventListener('click', (e)=>{
+    const quick = e.target.closest('.js-quick-view');
+    if(quick){
+      const id = Number(quick.dataset.id);
+      openProductModal(id);
+      return;
+    }
+
+    const addBtn = e.target.closest('.js-add-to-cart');
+    if(addBtn){
+      const id = Number(addBtn.dataset.id);
+      addToCart(id);
+      return;
+    }
+
+    const up = e.target.closest('.js-qty-up');
+    if(up){
+      const id = Number(up.dataset.id);
+      changeQty(id, +1);
+      return;
+    }
+
+    const down = e.target.closest('.js-qty-down');
+    if(down){
+      const id = Number(down.dataset.id);
+      changeQty(id, -1);
+      return;
+    }
+  });
+
+  function changeQty(id, delta){
+    const input = document.querySelector(`.js-qty-input[data-id="${id}"]`);
+    if(!input) return;
+    let v = parseFloat(input.value || '1') + delta;
+    if(v < 1) v = 1;
+    input.value = v;
+  }
+
+  // ===== Кошик =====
+  function addToCart(id, qtyFromModal){
+    const product = PRODUCTS.find(p=>p.id===id);
+    if(!product) return;
+
+    let qty;
+    if(typeof qtyFromModal === 'number'){
+      qty = qtyFromModal;
+    }else{
+      const input = document.querySelector(`.js-qty-input[data-id="${id}"]`);
+      qty = parseFloat(input?.value || '1');
+    }
+    if(qty < 1 || isNaN(qty)) qty = 1;
+
+    const existing = cart.find(it=>it.id===id);
+    if(existing) existing.qty += qty;
+    else cart.push({...product, qty});
+
+    saveCart();
+    updateCartUI();
+    showToast('Товар додано у кошик');
+  }
+
+  function updateCartUI(){
+    const box = document.getElementById('cartItems');
+    box.innerHTML = '';
+    let total = 0;
+    cart.forEach(item=>{
+      total += item.price * item.qty;
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <strong>${item.title}</strong><br>
+        ${item.qty} × ${item.price} грн = ${item.qty*item.price} грн
+        <button style="float:right;border:0;background:none;color:var(--danger);cursor:pointer;font-size:18px"
+          data-id="${item.id}" class="js-remove-cart">×</button>
+      `;
+      box.appendChild(div);
+    });
+    document.getElementById('cartTotal').textContent = money(total);
+    document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+  }
+
+  document.getElementById('cartItems').addEventListener('click',(e)=>{
+    const btn = e.target.closest('.js-remove-cart');
+    if(!btn) return;
+    const id = Number(btn.dataset.id);
+    cart = cart.filter(i=>i.id!==id);
+    saveCart();
+    updateCartUI();
+  });
+
+  document.getElementById('cartClearBtn').addEventListener('click',()=>{
+    cart = [];
+    saveCart();
+    updateCartUI();
+  });
+
+  // ===== Відкриття/закриття кошика =====
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartOverlay = document.getElementById('cartOverlay');
+
+  function toggleCart(open){
+    if(open){
+      cartDrawer.classList.add('open');
+      cartOverlay.classList.remove('hidden');
+    }else{
+      cartDrawer.classList.remove('open');
+      cartOverlay.classList.add('hidden');
+    }
+  }
+
+  document.getElementById('openCartBtn').addEventListener('click', ()=>toggleCart(true));
+  document.getElementById('cartClose').addEventListener('click', ()=>toggleCart(false));
+  cartOverlay.addEventListener('click', ()=>toggleCart(false));
+
+  // ===== Модалка товару =====
+  const productModal = document.getElementById('productModal');
+  const productModalOverlay = document.getElementById('productModalOverlay');
+  let currentProductId = null;
+
+  function openProductModal(id){
+    const p = PRODUCTS.find(x=>x.id===id);
+    if(!p) return;
+    currentProductId = id;
+
+    document.getElementById('modalImage').src = p.img;
+    document.getElementById('modalCategory').textContent = p.category;
+    document.getElementById('modalTitle').textContent = p.title;
+    document.getElementById('modalSku').textContent = p.sku;
+    document.getElementById('modalPrice').textContent = money(p.price);
+    document.getElementById('modalShort').textContent = p.short;
+    document.getElementById('modalFull').textContent = p.full;
+    document.getElementById('modalQtyInput').value = 1;
+    document.getElementById('modalFull').style.display = 'none';
+
+    productModal.classList.remove('hidden');
+    productModalOverlay.classList.remove('hidden');
+
+    lucide.createIcons();
+  }
+
+  function closeProductModal(){
+    productModal.classList.add('hidden');
+    productModalOverlay.classList.add('hidden');
+  }
+
+  document.getElementById('productModalClose').addEventListener('click', closeProductModal);
+  productModalOverlay.addEventListener('click', closeProductModal);
+
+  document.getElementById('modalQtyUp').addEventListener('click', ()=>{
+    const input = document.getElementById('modalQtyInput');
+    let v = parseFloat(input.value||'1')+1;
+    if(v<1) v=1;
+    input.value = v;
+  });
+  document.getElementById('modalQtyDown').addEventListener('click', ()=>{
+    const input = document.getElementById('modalQtyInput');
+    let v = parseFloat(input.value||'1')-1;
+    if(v<1) v=1;
+    input.value = v;
+  });
+
+  document.getElementById('modalAddToCart').addEventListener('click', ()=>{
+    if(currentProductId==null) return;
+    const qty = parseFloat(document.getElementById('modalQtyInput').value||'1');
+    addToCart(currentProductId, qty);
+    closeProductModal();
+  });
+
+  document.getElementById('modalToggleFull').addEventListener('click', ()=>{
+    const full = document.getElementById('modalFull');
+    full.style.display = full.style.display === 'block' ? 'none' : 'block';
+  });
+
+  // ===== Checkout (оформлення) =====
+  const checkoutModal = document.getElementById('checkoutModal');
+  const checkoutOverlay = document.getElementById('checkoutOverlay');
+
+  function openCheckout(){
+    if(cart.length===0){
+      alert('Кошик порожній');
+      return;
+    }
+    checkoutModal.classList.remove('hidden');
+    checkoutOverlay.classList.remove('hidden');
+  }
+  function closeCheckout(){
+    checkoutModal.classList.add('hidden');
+    checkoutOverlay.classList.add('hidden');
+  }
+
+  document.getElementById('cartCheckoutBtn').addEventListener('click', openCheckout);
+  document.getElementById('checkoutClose').addEventListener('click', closeCheckout);
+  checkoutOverlay.addEventListener('click', closeCheckout);
+
+  document.getElementById('checkoutForm').addEventListener('submit',(e)=>{
+    e.preventDefault();
+    if(cart.length===0){
+      alert('Кошик порожній');
+      return;
+    }
+    const name = document.getElementById('checkoutName').value;
+    const phone = document.getElementById('checkoutPhone').value;
+    const city = document.getElementById('checkoutCity').value;
+    const post = document.getElementById('checkoutPost').value;
+
+    let text = '🛒 Нове замовлення%0A';
+    text += `👤 Ім’я: ${name}%0A`;
+    text += `📞 Телефон: ${phone}%0A`;
+    text += `🏙 Місто: ${city}%0A`;
+    text += `📦 Відділення НП: ${post}%0A%0A`;
+    text += 'Товари:%0A';
+
+    let total = 0;
+    cart.forEach(item=>{
+      const line = `${item.title} — ${item.qty} ${item.unit} = ${item.qty*item.price} грн`;
+      total += item.qty*item.price;
+      text += encodeURIComponent(line) + '%0A';
+    });
+    text += `%0AРазом: ${total} грн`;
+
+    const url = `https://t.me/${TELEGRAM_USERNAME}?text=${text}`;
+    window.open(url,'_blank');
+
+    closeCheckout();
+  });
+
+  // ===== Консультація (кнопки) =====
+  document.querySelectorAll('.js-consult').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      openTelegram('Потрібна консультація щодо асортименту/ремонту');
+    });
+  });
+
+  // ===== Слайдер =====
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-dot');
+  let currentSlide = 0;
+
+  function showSlide(i){
+    slides.forEach(s=>s.classList.remove('active'));
+    dots.forEach(d=>d.classList.remove('active'));
+    slides[i].classList.add('active');
+    dots[i].classList.add('active');
+    currentSlide = i;
+  }
+  dots.forEach(d=>{
+    d.addEventListener('click', ()=>showSlide(Number(d.dataset.index)));
+  });
+  setInterval(()=>{
+    currentSlide = (currentSlide+1)%slides.length;
+    showSlide(currentSlide);
+  }, 7000);
+
+  // ===== Скролл до товарів =====
+  document.getElementById('scrollToProductsBtn').addEventListener('click', ()=>{
+    document.getElementById('productsSection').scrollIntoView({behavior:'smooth'});
+  });
+
+  // ===== INIT =====
+  (async function init(){
+    document.getElementById('year').textContent = new Date().getFullYear();
+    await loadProductsFromXML();   // 1) грузим локальный products.xml
+    renderCategories();            // 2) категории
+    renderProducts(PRODUCTS);      // 3) товары
+    updateCartUI();
+    lucide.createIcons();
+  })();
+</script>
+</body>
+</html>
