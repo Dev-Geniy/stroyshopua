@@ -468,9 +468,9 @@
     .modal-body{
       display:flex;gap:18px;flex-wrap:wrap;
     }
-    .modal-body img{
-      width:280px;max-width:100%;border-radius:var(--radius);
+    .modal-body img{width:280px;height:220px;object-fit:cover;border-radius:var(--radius);
     }
+
     .modal-info{flex:1;min-width:240px;font-size:14px;}
     .modal-info h2{margin:4px 0 6px;font-size:20px;}
     .modal-price{font-size:22px;color:var(--accent);font-weight:800;margin:8px 0;}
@@ -1247,8 +1247,10 @@
     document.getElementById('modalTitle').textContent = p.title;
     document.getElementById('modalSku').textContent = p.sku;
     document.getElementById('modalPrice').textContent = money(p.price);
-    document.getElementById('modalShort').textContent = p.short;
-    document.getElementById('modalFull').textContent = p.full;
+    
+    document.getElementById('modalShort').innerHTML = p.short;
+    document.getElementById('modalFull').innerHTML = p.full;
+    
     document.getElementById('modalQtyInput').value = 1;
     document.getElementById('modalFull').style.display = 'none';
 
