@@ -8,610 +8,18 @@
   <!-- Шрифт -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Основные стили -->
+  <link rel="stylesheet" href="style.css">
+
   <!-- Lucide (іконки, глобальна змінна lucide) -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <style>
-    :root{
-      --bg:#050509;
-      --bg2:#0a0b10;
-      --card:#11131c;
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --danger:#ff4e6d;
-      --text:#f5f5f7;
-      --muted:#9da3b5;
-      --radius:14px;
-      --border:rgba(255,255,255,0.08);
-      --shadow:0 8px 30px rgba(0,0,0,0.65);
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Inter',sans-serif;
-      background:
-        radial-gradient(circle at top left,rgba(255,122,26,0.18),transparent 55%),
-        linear-gradient(180deg,#050509,#050509 40%,#0b0d14 100%);
-      color:var(--text);
-      overflow-x:hidden;
-    }
-    a{color:var(--accent);text-decoration:none}
-
-    .hidden{display:none !important;}
-
-    /* ===== HEADER ===== */
-    header{
-      position:sticky;top:0;z-index:50;
-      background:
-        radial-gradient(circle at top left,rgba(255,122,26,0.16),transparent 60%),
-        rgba(5,5,9,0.96);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid var(--border);
-      padding:12px 20px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .header-left{display:flex;flex-direction:column}
-    .logo{
-      font-size:22px;
-      font-weight:800;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      letter-spacing:0.04em;
-    }
-    .logo-sub{font-size:12px;color:var(--muted)}
-
-    .header-center{
-      flex:1;
-      display:flex;
-      justify-content:center;
-    }
-    .search-bar{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid var(--border);
-      max-width:360px;
-      width:100%;
-      box-shadow:0 0 0 1px rgba(0,0,0,0.3);
-    }
-    .search-bar input{
-      border:0;background:transparent;outline:none;
-      color:var(--text);font-size:14px;width:100%;
-    }
-
-    .header-right{
-      display:flex;gap:8px;align-items:center;
-    }
-    .btn{
-      padding:10px 14px;
-      border-radius:var(--radius);
-      border:0;
-      cursor:pointer;
-      font-weight:600;
-      font-size:14px;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      transition:
-        transform .18s ease,
-        box-shadow .18s ease,
-        background-position .35s ease,
-        opacity .2s ease;
-    }
-    .btn-primary{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      background-size:200% 200%;
-      color:#000;
-      box-shadow:var(--shadow);
-    }
-    .btn-primary:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 32px rgba(0,0,0,0.8);
-      background-position:100% 0;
-    }
-    .btn-outline{
-      background:transparent;
-      border:1px solid rgba(255,122,26,0.8);
-      color:var(--accent);
-    }
-    .btn-outline:hover{
-      transform:translateY(-1px);
-      box-shadow:0 8px 28px rgba(0,0,0,0.7);
-      background:rgba(255,122,26,0.06);
-    }
-    .cart-btn{
-      background:radial-gradient(circle at top left,var(--accent2),var(--accent));
-      color:#000;
-      display:flex;align-items:center;gap:6px;
-    }
-    .cart-btn:hover{
-      transform:translateY(-1px);
-      box-shadow:0 10px 32px rgba(0,0,0,0.9);
-    }
-    .cart-count{
-      background:#000;color:var(--accent2);
-      padding:2px 7px;border-radius:999px;font-weight:800;font-size:12px;
-    }
-
-    /* ===== HERO / SLIDER ===== */
-    .hero{
-      padding:24px 20px 10px;
-      display:flex;gap:24px;flex-wrap:wrap;
-      align-items:flex-start;
-    }
-    .hero-left{flex:1;min-width:260px;position:relative;}
-    .hero-slide{
-      background:
-        radial-gradient(circle at top right,rgba(255,122,26,0.15),transparent 55%),
-        var(--bg2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:24px;
-      box-shadow:var(--shadow);
-      position:absolute;inset:0;
-      opacity:0;transform:translateY(10px);
-      transition:.35s;
-    }
-    .hero-slide.active{
-      opacity:1;transform:translateY(0);position:relative;
-    }
-    .hero-slide h1{font-size:26px;margin-bottom:8px}
-    .hero-slide p{font-size:14px;color:var(--muted);max-width:420px}
-    .hero-cta{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
-
-    .hero-dots{display:flex;gap:8px;margin-top:10px;}
-    .hero-dot{
-      width:10px;height:10px;border-radius:50%;
-      border:0;cursor:pointer;
-      background:var(--border);
-      transition:.2s;
-    }
-    .hero-dot.active{
-      background:var(--accent);
-      box-shadow:0 0 0 4px rgba(255,122,26,0.25);
-    }
-
-    .hero-right{
-      width:280px;min-width:260px;
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:16px;
-      box-shadow:var(--shadow);
-    }
-    .hero-info-row{
-      display:flex;gap:10px;margin-bottom:10px;
-    }
-    .hero-info-row i{
-      padding:8px;
-      border-radius:12px;
-      background:rgba(255,122,26,0.1);
-    }
-    .hero-info-title{font-weight:700;font-size:14px}
-    .hero-info-text{font-size:13px;color:var(--muted)}
-
-    /* ===== FILTERS ===== */
-    .filters{
-      padding:10px 20px 20px;
-      display:flex;justify-content:space-between;
-      gap:16px;flex-wrap:wrap;
-      border-bottom:1px solid var(--border);
-    }
-    .filters-left{display:flex;flex-direction:column;gap:8px}
-    .filters-right{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-
-    .categories{display:flex;gap:8px;flex-wrap:wrap;}
-    .category-chip{
-      padding:8px 14px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,0.02);
-      cursor:pointer;
-      font-size:13px;font-weight:600;
-      transition:.2s;
-    }
-    .category-chip:hover{
-      border-color:rgba(255,122,26,0.7);
-    }
-    .category-chip.active{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:#000;border-color:transparent;
-      box-shadow:0 6px 20px rgba(0,0,0,0.7);
-    }
-
-    .filters-label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px;}
-    .filters input{
-      width:80px;padding:6px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      background:transparent;color:var(--text);
-      font-size:13px;
-    }
-    .filters select{
-      padding:6px 10px;border-radius:var(--radius);
-      border:1px solid var(--border);
-      background:var(--card);color:var(--text);
-      font-size:13px;
-    }
-
-    /* ===== PRODUCTS ===== */
-    .products-section{padding:20px;}
-    .section-title{font-size:22px;font-weight:800;margin-bottom:16px;}
-    .products-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
-      gap:18px;
-    }
-    .product-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      padding:12px;
-      display:flex;flex-direction:column;
-      gap:6px;
-      position:relative;
-      transition:.25s;
-    }
-    .product-card:hover{
-      transform:translateY(-3px);
-      box-shadow:0 10px 32px rgba(0,0,0,0.85);
-      border-color:rgba(255,122,26,0.6);
-    }
-    .product-image-wrapper{position:relative;}
-    .product-image-wrapper img{
-      width:100%;height:160px;object-fit:cover;
-      border-radius:var(--radius);
-    }
-    .product-quick-btn{
-      position:absolute;bottom:10px;right:10px;
-      padding:6px 10px;border-radius:var(--radius);
-      border:0;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;
-      font-size:11px;font-weight:700;
-      box-shadow:var(--shadow);
-      cursor:pointer;opacity:0;transform:translateY(5px);
-      transition:.2s;
-    }
-    .product-card:hover .product-quick-btn{
-      opacity:1;transform:translateY(0);
-    }
-    .product-tag{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-    .product-title{font-size:15px;font-weight:700;}
-    .product-meta{
-      display:flex;justify-content:space-between;
-      font-size:11px;color:var(--muted);
-    }
-    .product-bottom{
-      margin-top:6px;
-      display:flex;gap:8px;align-items:center;
-    }
-    .product-price{font-weight:800;font-size:17px;color:var(--accent);}
-
-    /* Кількість */
-    .qty-control{
-      display:flex;align-items:center;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      background:var(--bg2);
-      overflow:hidden;
-    }
-    .qty-input{
-      width:52px;border:0;outline:none;
-      text-align:center;
-      background:transparent;color:var(--text);
-      font-weight:700;font-size:14px;
-      padding:4px;
-    }
-    .qty-arrows{
-      display:flex;flex-direction:column;
-      border-left:1px solid var(--border);
-    }
-    .qty-arrow{
-      border:0;background:transparent;
-      width:20px;height:16px;
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;
-    }
-    .qty-arrow svg{width:12px;height:12px;color:var(--accent);}
-
-    .product-add-btn{
-      flex:1;justify-content:center;
-      white-space:nowrap;
-    }
-
-    /* ===== INFO SECTION ===== */
-    .info-section{padding:24px 20px 40px;}
-    .info-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:18px;
-    }
-    .info-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      padding:16px;
-      text-align:center;
-      font-size:13px;
-    }
-    .info-card h3{margin:8px 0;font-size:15px;}
-    .info-card p{color:var(--muted);}
-
-    /* ===== FOOTER ===== */
-    footer{
-      padding:24px 20px 20px;
-      border-top:1px solid var(--border);
-      background:#050509;
-      display:grid;
-      grid-template-columns:2fr 1.1fr 1.5fr 1.8fr;
-      gap:20px;
-      font-size:13px;color:var(--muted);
-    }
-    .footer-col{min-width:0;}
-    .footer-logo{
-      font-size:20px;
-      font-weight:800;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      margin-bottom:6px;
-    }
-    .footer-copy{margin-top:10px;font-size:12px;color:#717786;}
-    .footer-title{
-      font-weight:700;
-      font-size:14px;
-      margin-bottom:8px;
-      color:var(--text);
-    }
-    .footer-nav{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .footer-nav a{
-      color:var(--muted);
-      text-decoration:none;
-      font-size:13px;
-    }
-    .footer-nav a:hover{
-      color:var(--accent2);
-    }
-    .footer-link{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      margin-bottom:6px;
-      color:var(--muted);
-    }
-    .footer-link i{
-      width:16px;height:16px;
-    }
-    .footer-link:hover{
-      color:var(--accent2);
-    }
-    .footer-phone{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      margin-top:6px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:radial-gradient(circle at top left,rgba(255,122,26,0.25),transparent 60%);
-      border:1px solid rgba(255,122,26,0.7);
-      color:var(--text);
-      font-weight:700;
-    }
-    .footer-phone i{
-      width:16px;height:16px;
-    }
-    .footer-phone:hover{
-      box-shadow:0 10px 32px rgba(0,0,0,0.9);
-      transform:translateY(-1px);
-    }
-    .footer-manager-box{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .footer-manager-avatar{
-      width:54px;height:54px;
-      border-radius:50%;
-      overflow:hidden;
-      border:2px solid rgba(255,122,26,0.8);
-      box-shadow:0 0 0 3px rgba(255,122,26,0.18);
-    }
-    .footer-manager-avatar img{
-      width:100%;height:100%;object-fit:cover;
-    }
-    .footer-manager-name{
-      font-weight:600;font-size:14px;margin-bottom:4px;
-    }
-
-    /* ===== MODALS ===== */
-    .modal-overlay{
-      position:fixed;inset:0;
-      background:rgba(0,0,0,0.6);
-      backdrop-filter:blur(4px);
-      z-index:90;
-    }
-    .modal{
-      position:fixed;top:50%;left:50%;
-      transform:translate(-50%,-50%);
-      background:var(--bg2);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      max-width:900px;width:95%;
-      max-height:90vh;overflow-y:auto;
-      z-index:100;
-      padding:18px;
-    }
-    .modal-header{
-      display:flex;justify-content:space-between;align-items:center;
-      margin-bottom:10px;
-    }
-    .modal-close{
-      border:0;background:transparent;color:var(--muted);
-      cursor:pointer;
-    }
-    .modal-body{
-      display:flex;gap:18px;flex-wrap:wrap;
-    }
-    .modal-body img{width:280px;height:220px;object-fit:cover;border-radius:var(--radius);
-    }
-
-    .modal-info{flex:1;min-width:240px;font-size:14px;}
-    .modal-info h2{margin:4px 0 6px;font-size:20px;}
-    .modal-price{font-size:22px;color:var(--accent);font-weight:800;margin:8px 0;}
-    .modal-desc{color:var(--muted);font-size:13px;}
-    .modal-actions{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
-
-    .modal-qty-row{margin-top:10px;display:flex;align-items:center;gap:6px;font-size:13px;}
-
-    .modal-full{
-      margin-top:12px;
-      padding:10px 12px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      background:var(--card);
-      font-size:13px;
-      color:var(--muted);
-      display:none;
-    }
-
-    /* ===== CHECKOUT MODAL ===== */
-    .checkout-form{
-      display:flex;flex-direction:column;gap:10px;
-      margin-top:10px;
-      font-size:14px;
-    }
-    .checkout-form input{
-      width:100%;padding:8px;border-radius:var(--radius);
-      border:1px solid var(--border);
-      background:var(--bg2);color:var(--text);
-      outline:none;font-size:14px;
-    }
-
-    /* ===== CART DRAWER ===== */
-    .cart-overlay{
-      position:fixed;inset:0;
-      background:rgba(0,0,0,0.5);
-      z-index:80;
-    }
-    .cart-drawer{
-      position:fixed;top:0;right:-360px;
-      width:320px;max-width:90%;
-      height:100vh;
-      background:var(--bg2);
-      border-left:1px solid var(--border);
-      box-shadow:-6px 0 25px rgba(0,0,0,0.6);
-      z-index:90;
-      padding:14px;
-      display:flex;flex-direction:column;
-      transition:.3s;
-    }
-    .cart-drawer.open{right:0;}
-    .cart-header{
-      display:flex;justify-content:space-between;align-items:center;
-      margin-bottom:10px;
-    }
-    .cart-body{
-      flex:1;overflow-y:auto;
-    }
-    .cart-item{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:10px;
-      margin-bottom:8px;
-      font-size:13px;
-    }
-    .cart-footer{
-      border-top:1px solid var(--border);
-      padding-top:10px;
-      margin-top:6px;
-    }
-    .cart-total-row{
-      display:flex;justify-content:space-between;
-      margin-bottom:10px;font-weight:700;
-    }
-
-    /* ===== TOAST ===== */
-    .toast{
-      position:fixed;right:16px;bottom:16px;
-      background:var(--bg2);
-      border-radius:var(--radius);
-      padding:10px 14px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      font-size:13px;
-      opacity:0;transform:translateY(10px);
-      transition:.25s;z-index:200;
-    }
-    .toast.show{opacity:1;transform:translateY(0);}
-    
-    /* ===== RESPONSIVE ===== */
-    @media(max-width:900px){
-      .hero{flex-direction:column;}
-      .hero-right{width:100%;}
-      footer{
-        grid-template-columns:1fr 1fr;
-      }
-    }
-    @media(max-width:720px){
-      .header-center{order:3;width:100%;}
-      .search-bar{max-width:100%;}
-      footer{
-        grid-template-columns:1fr;
-      }
-    }
-
-    .modal-full {
-        display: none;
-        padding: 16px;
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.04); /* мягкий фон */
-        font-size: 14px;
-        line-height: 1.6;
-        color: var(--text);
-    }
-
-    .modal-full p {
-        margin-bottom: 12px;
-    }
-
-    .modal-full ol,
-    .modal-full ul {
-        padding-left: 20px;
-        margin-bottom: 14px;
-    }
-
-    .modal-full li {
-        margin-bottom: 8px;
-    }
-
-    .modal-full strong,
-    .modal-full b {
-        color: var(--accent2);
-        font-weight: 700;
-    }
-  </style>
+  <!-- Наш JS -->
+  <script src="script.js" defer></script>
 </head>
 <body id="top">
 
-<header>
+<header class="header">
   <div class="header-left">
     <div class="logo">Stroy Shop</div>
     <div class="logo-sub">Будматеріали з доставкою по Україні</div>
@@ -653,6 +61,7 @@
           </button>
         </div>
       </div>
+
       <div class="hero-slide" data-index="1">
         <h1>Опт та знижки</h1>
         <p>-10% при замовленні від 10 м². Персональні пропозиції для майстрів та дизайнерів.</p>
@@ -662,6 +71,7 @@
           </button>
         </div>
       </div>
+
       <div class="hero-slide" data-index="2">
         <h1>Доставка Новою Поштою</h1>
         <p>Оплата при отриманні. Перевірка посилки на відділенні перед оплатою.</p>
@@ -708,16 +118,18 @@
   <section class="filters">
     <div class="filters-left">
       <span class="filters-label">Категорії:</span>
-      <div class="categories" id="categories"></div>
+      <div class="categories" id="categories">
+        <!-- Кнопки категорий JS добавит сюда -->
+      </div>
     </div>
 
     <div class="filters-right">
-      <div>
+      <div class="filters-price-box">
         <span class="filters-label">Ціна:</span>
         <input type="number" id="minPrice" placeholder="від">
         <input type="number" id="maxPrice" placeholder="до">
       </div>
-      <div>
+      <div class="filters-sort-box">
         <span class="filters-label">Сортування:</span>
         <select id="sortSelect">
           <option value="default">За замовчуванням</option>
@@ -731,7 +143,9 @@
   <!-- PRODUCTS -->
   <section class="products-section" id="productsSection">
     <h2 class="section-title">Популярні товари</h2>
-    <div class="products-grid" id="productsGrid"></div>
+    <div class="products-grid" id="productsGrid">
+      <!-- Карточки товаров JS рендерит сюда -->
+    </div>
   </section>
 
   <!-- INFO -->
@@ -837,52 +251,42 @@
 
       <div class="modal-full" id="modalFull"></div>
 
+      <div class="modal-help">
+        <div class="modal-help-card">
+          <div class="modal-help-avatar">
+            <img src="https://i.ibb.co/dqqPKMb/unnamed-1.jpg" alt="Менеджер">
+          </div>
+          <div class="modal-help-content">
+            <div class="modal-help-title">Не знайшли відповідь на питання?</div>
+            <a href="https://t.me/manager_stroyshop_ua" target="_blank" class="btn btn-outline">
+              <i data-lucide="message-circle"></i> Зв'язатися з менеджером
+            </a>
+          </div>
+        </div>
 
+        <div class="hero-info-row">
+          <i data-lucide="truck"></i>
+          <div>
+            <div class="hero-info-title">Доставка по Україні</div>
+            <div class="hero-info-text">Нова Пошта, оплата при отриманні</div>
+          </div>
+        </div>
+        <div class="hero-info-row">
+          <i data-lucide="shield-check"></i>
+          <div>
+            <div class="hero-info-title">Гарантія якості</div>
+            <div class="hero-info-text">Перевірені постачальники</div>
+          </div>
+        </div>
+        <div class="hero-info-row">
+          <i data-lucide="headphones"></i>
+          <div>
+            <div class="hero-info-title">Живий менеджер</div>
+            <div class="hero-info-text">Telegram-консультації</div>
+          </div>
+        </div>
+      </div>
 
-
-
-
-<div class="modal-help">
-  <div style="display:flex;align-items:center;gap:14px;margin-top:24px;padding:16px;border:1px solid var(--border);border-radius:var(--radius);background:rgba(255,255,255,0.03);box-shadow:var(--shadow);">
-    <div style="flex-shrink:0;width:52px;height:52px;border-radius:50%;overflow:hidden;border:2px solid var(--accent2);">
-      <img src="https://i.ibb.co/dqqPKMb/unnamed-1.jpg" alt="Менеджер" style="width:100%;height:100%;object-fit:cover;">
-    </div>
-    <div style="flex:1;">
-      <div style="font-weight:700;margin-bottom:4px;">Не знайшли відповідь на питання?</div>
-      <a href="https://t.me/manager_stroyshop_ua" target="_blank" class="btn btn-outline">
-        <i data-lucide="message-circle"></i> Зв'язатися з менеджером
-      </a>
-    </div>
-  </div>
-  <div class="hero-info-row" style="margin-top:18px;">
-    <i data-lucide="truck"></i>
-    <div>
-      <div class="hero-info-title">Доставка по Україні</div>
-      <div class="hero-info-text">Нова Пошта, оплата при отриманні</div>
-    </div>
-  </div>
-  <div class="hero-info-row">
-    <i data-lucide="shield-check"></i>
-    <div>
-      <div class="hero-info-title">Гарантія якості</div>
-      <div class="hero-info-text">Перевірені постачальники</div>
-    </div>
-  </div>
-  <div class="hero-info-row">
-    <i data-lucide="headphones"></i>
-    <div>
-      <div class="hero-info-title">Живий менеджер</div>
-      <div class="hero-info-text">Telegram-консультації</div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-      
     </div>
   </div>
 </div>
@@ -931,366 +335,5 @@
 <!-- TOAST -->
 <div id="toast" class="toast">Повідомлення</div>
 
-<script>
-/* ============================================================
-   🟧 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ
-============================================================ */
-const TELEGRAM_USERNAME = 'manager_stroyshop_ua';
-const XML_FEED_URL = 'products.xml';
-
-/* ============================================================
-   🟧 2. СПИСОК КАТЕГОРИЙ (по ключевым словам)
-============================================================ */
-const CATEGORY_KEYWORDS = [
-  { name: '3D панелі', keywords: ['3D панель', 'Панель стеновая 3D'] },
-  { name: 'ПВХ панелі', keywords: ['ПВХ панель', 'ПВХ плита'] },
-  { name: 'Стенові панелі', keywords: ['Панель стеновая', 'Панель-рейка', 'Панель рейка'] },
-  { name: 'Плитка', keywords: ['Виниловая плитка', 'ПВХ плитка', 'Полиуретановая плитка', 'Алюминиевая плитка', 'LVT плитка', 'Плитка под ковролин'] },
-  { name: 'PET плитка', keywords: ['PET мозаика', 'Стеновая PET плитка'] },
-  { name: 'Профіль і декор', keywords: ['Профиль', 'Рейка декоративная', 'Молдинг'] },
-  { name: 'Плінтус', keywords: ['Плинтус', 'Плінтус'] },
-  { name: 'Самоклейка', keywords: ['Самоклеющаяся пленка', 'Пленка на самоклейке', 'Пленка оконная'] },
-  { name: 'Обої', keywords: ['Тёплые обои', 'Самоклеющиеся обои'] },
-  { name: 'Мозаїка', keywords: ['Мозаика из декоративного стекла'] },
-  { name: 'Покриття', keywords: ['Покрытие виниловое', 'Напольное виниловое покрытие', 'Пол пазл', 'Пол-пазл'] },
-  { name: 'Коврики', keywords: ['Коврик', 'Коврик детский', 'Термоковрик', 'Влагопоглощающий коврик'] },
-  { name: 'Дзеркала', keywords: ['Зеркало', 'Зеркало акриловое', 'Зеркальный декор'] },
-  { name: 'Екошкіра', keywords: ['Самоклеющая экокожа'] },
-  { name: 'Меблі', keywords: ['Контейнер', 'Тумба', 'Стол', 'Стул', 'Стеллаж', 'Этажерка', 'Полка', 'Шкаф', 'Надувное', 'Диван', 'Набор мебели'] }
-];
-
-/* ============================================================
-   🟧 3. Функция определения категории по названию
-============================================================ */
-function getCategoryFromTitle(title) {
-  const lower = title.toLowerCase();
-  for (const group of CATEGORY_KEYWORDS) {
-    for (const key of group.keywords) {
-      if (lower.includes(key.toLowerCase())) {
-        return group.name;
-      }
-    }
-  }
-  return 'Інше';
-}
-
-/* ============================================================
-   🟧 4. ДЕФОЛТНЫЕ ТОВАРЫ
-============================================================ */
-const DEFAULT_PRODUCTS = [
-  {
-    id: 1,
-    title: 'Ковролін SoftLux 4м — кремовий',
-    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
-    price: 279,
-    sku: 14417,
-    img: 'https://via.placeholder.com/600x400?text=Carpet',
-    unit: 'м',
-    short:'М’який і зносостійкий ковролін для житлових кімнат.',
-    full:'Ковролін SoftLux — щільний та приємний матеріал.'
-  }
-];
-
-let PRODUCTS = [...DEFAULT_PRODUCTS];
-
-/* ============================================================
-   🟧 5. CART
-============================================================ */
-let cart = JSON.parse(localStorage.getItem('stroy_shop_cart_v1') || '[]');
-
-function saveCart(){
-  localStorage.setItem('stroy_shop_cart_v1', JSON.stringify(cart));
-}
-
-function money(n){ return n + ' грн'; }
-
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2000);
-}
-
-/* ============================================================
-   🟧 6. ЗАГРУЗКА ТОВАРОВ ИЗ XML
-============================================================ */
-async function loadProductsFromXML(){
-  try{
-    const res = await fetch(XML_FEED_URL, { cache:'no-store' });
-    if(!res.ok) throw new Error(res.status);
-
-    const text = await res.text();
-    const xml = new DOMParser().parseFromString(text, 'application/xml');
-
-    const items = Array.from(xml.getElementsByTagName('item'));
-    if(!items.length) {
-      PRODUCTS = [...DEFAULT_PRODUCTS];
-      return;
-    }
-
-    const get = (node, tag) => {
-      const el = node.getElementsByTagName(tag)[0];
-      return el ? el.textContent.trim() : '';
-    };
-
-    PRODUCTS = items.map((node, index) => {
-      const rawId = get(node, 'g:id') || index+1;
-      const id = Number(String(rawId).replace(/\D/g,'')) || (index+1);
-
-      const title = get(node, 'title') || `Товар ${id}`;
-      const description = get(node, 'description');
-
-      const priceText = get(node, 'g:price');
-      const price = parseFloat(priceText.replace(',', '.')) || 0;
-
-      const img =
-        get(node, 'g:image_link') ||
-        'https://via.placeholder.com/600x400?text=Товар';
-
-      const avail = get(node, 'g:availability').toLowerCase();
-      if(avail && avail !== 'in stock') return null;
-
-      return {
-        id,
-        title,
-        category: getCategoryFromTitle(title),
-        price,
-        sku: rawId,
-        img,
-        unit:'шт',
-        short: description ? description.slice(0,120) : '',
-        full: description || ''
-      };
-    }).filter(Boolean);
-
-  } catch(e){
-    PRODUCTS = [...DEFAULT_PRODUCTS];
-    showToast('Помилка XML, завантажено дефолтні товари');
-  }
-}
-
-/* ============================================================
-   🟧 7. РЕНДЕР КАТЕГОРИЙ
-============================================================ */
-const categoriesEl = document.getElementById('categories');
-
-function renderCategories() {
-  const list = ['Усі', ...CATEGORY_KEYWORDS.map(cat => cat.name)];
-  categoriesEl.innerHTML = '';
-
-  list.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.className = 'category-chip';
-    btn.textContent = cat;
-
-    if (cat === 'Усі') btn.classList.add('active');
-
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      filterProducts();
-    });
-
-    categoriesEl.appendChild(btn);
-  });
-}
-
-/* ============================================================
-   🟧 8. РЕНДЕР ТОВАРОВ
-============================================================ */
-const productsGrid = document.getElementById('productsGrid');
-
-function renderProducts(list){
-  productsGrid.innerHTML = '';
-
-  list.forEach(p=>{
-    const card = document.createElement('article');
-    card.className = 'product-card';
-
-    card.innerHTML = `
-      <div class="product-image-wrapper">
-        <img src="${p.img}" alt="${p.title}">
-        <button class="product-quick-btn js-quick-view" data-id="${p.id}">Швидкий перегляд</button>
-      </div>
-
-      <div class="product-tag">${p.category}</div>
-      <div class="product-title">${p.title}</div>
-
-      <div class="product-meta">
-        <span>Артикул: ${p.sku}</span>
-        <span>${p.unit}</span>
-      </div>
-
-      <div class="product-bottom">
-        <div class="product-price">${money(p.price)}</div>
-
-        <div class="qty-control">
-          <input type="number" class="qty-input js-qty-input" data-id="${p.id}" min="1" value="1">
-          <div class="qty-arrows">
-            <button class="qty-arrow js-qty-up" data-id="${p.id}"><i data-lucide="chevron-up"></i></button>
-            <button class="qty-arrow js-qty-down" data-id="${p.id}"><i data-lucide="chevron-down"></i></button>
-          </div>
-        </div>
-
-        <button class="btn btn-primary product-add-btn js-add-to-cart" data-id="${p.id}">
-          <i data-lucide="shopping-cart"></i> У кошик
-        </button>
-      </div>
-    `;
-
-    productsGrid.appendChild(card);
-  });
-
-  lucide.createIcons();
-}
-
-/* ============================================================
-   🟧 9. ФИЛЬТРАЦИЯ
-============================================================ */
-function filterProducts(){
-  let list = [...PRODUCTS];
-
-  const active = document.querySelector('.category-chip.active');
-  const cat = active ? active.textContent : 'Усі';
-  if(cat !== 'Усі') list = list.filter(p => p.category === cat);
-
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  if(q) list = list.filter(p => p.title.toLowerCase().includes(q));
-
-  const min = parseFloat(document.getElementById('minPrice').value || 0);
-  const max = parseFloat(document.getElementById('maxPrice').value || 0);
-  if(min>0) list = list.filter(p => p.price >= min);
-  if(max>0) list = list.filter(p => p.price <= max);
-
-  const sort = document.getElementById('sortSelect').value;
-  if(sort === 'price-asc') list.sort((a,b)=>a.price-b.price);
-  if(sort === 'price-desc') list.sort((a,b)=>b.price-a.price);
-
-  renderProducts(list);
-}
-
-/* ============================================================
-   🟧 10. СОБЫТИЯ ДЛЯ ГРИДА (делегирование)
-============================================================ */
-productsGrid.addEventListener('click', e=>{
-  const quick = e.target.closest('.js-quick-view');
-  if(quick){
-    openProductModal(Number(quick.dataset.id));
-    return;
-  }
-
-  const addBtn = e.target.closest('.js-add-to-cart');
-  if(addBtn){
-    addToCart(Number(addBtn.dataset.id));
-    return;
-  }
-
-  const up = e.target.closest('.js-qty-up');
-  if(up){
-    const id = Number(up.dataset.id);
-    const input = document.querySelector(`.js-qty-input[data-id="${id}"]`);
-    input.value = Number(input.value)+1;
-    return;
-  }
-
-  const down = e.target.closest('.js-qty-down');
-  if(down){
-    const id = Number(down.dataset.id);
-    const input = document.querySelector(`.js-qty-input[data-id="${id}"]`);
-    input.value = Math.max(1, Number(input.value)-1);
-    return;
-  }
-});
-
-/* ============================================================
-   🟧 11. КОРЗИНА
-============================================================ */
-function addToCart(id, qtyFromModal){
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(!p) return;
-
-  let qty = qtyFromModal ??
-    parseFloat(document.querySelector(`.js-qty-input[data-id="${id}"]`)?.value || 1);
-
-  if(isNaN(qty) || qty<1) qty = 1;
-
-  const found = cart.find(x=>x.id===id);
-  if(found) found.qty += qty;
-  else cart.push({...p, qty});
-
-  saveCart();
-  updateCartUI();
-  showToast('Товар додано у кошик');
-}
-
-function updateCartUI(){
-  const box = document.getElementById('cartItems');
-  box.innerHTML = '';
-  let total = 0;
-
-  cart.forEach(item=>{
-    total += item.qty * item.price;
-
-    const div = document.createElement('div');
-    div.className = 'cart-item';
-    div.innerHTML = `
-      <strong>${item.title}</strong><br>
-      ${item.qty} × ${item.price} грн = ${item.qty*item.price} грн
-      <button style="float:right;border:0;background:none;color:var(--danger);cursor:pointer;font-size:18px"
-        data-id="${item.id}" class="js-remove-cart">×</button>
-    `;
-    box.appendChild(div);
-  });
-
-  document.getElementById('cartTotal').textContent = money(total);
-  document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
-}
-
-/* ============================================================
-   🟧 12. МОДАЛКА ТОВАРА
-============================================================ */
-function openProductModal(id){
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(!p) return;
-
-  currentProductId = id;
-
-  modalImage.src = p.img;
-  modalCategory.textContent = p.category;
-  modalTitle.textContent = p.title;
-  modalSku.textContent = p.sku;
-  modalPrice.textContent = money(p.price);
-
-  modalShort.innerHTML = p.short;
-  modalFull.innerHTML = p.full;
-
-  modalFull.style.display = 'none';
-  modalQtyInput.value = 1;
-
-  productModal.classList.remove('hidden');
-  productModalOverlay.classList.remove('hidden');
-
-  lucide.createIcons();
-}
-
-function closeProductModal(){
-  productModal.classList.add('hidden');
-  productModalOverlay.classList.add('hidden');
-}
-
-/* ============================================================
-   🟧 13. ИНИЦИАЛИЗАЦИЯ
-============================================================ */
-(async function init(){
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  await loadProductsFromXML();
-  renderCategories();
-  renderProducts(PRODUCTS);
-  updateCartUI();
-
-  lucide.createIcons();
-})();
-</script>
 </body>
 </html>
