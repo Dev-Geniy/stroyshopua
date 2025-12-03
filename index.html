@@ -607,40 +607,6 @@
         color: var(--accent2);
         font-weight: 700;
     }
-
-
-
-
-
-
-
-
- .product-info-icons {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.product-info-icons .info-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.product-info-icons .info-item i {
-  width: 14px;
-  height: 14px;
-  padding: 4px;
-  background: rgba(255, 122, 26, 0.08);
-  border-radius: 50%;
-  color: var(--accent);
-}
-
   </style>
 </head>
 <body id="top">
@@ -1113,48 +1079,75 @@
   // ===== Рендер товарів =====
   const productsGrid = document.getElementById('productsGrid');
 
-  function renderProducts(list){
-    productsGrid.innerHTML = '';
-    list.forEach(p=>{
-      const card = document.createElement('article');
-      card.className = 'product-card';
-      card.innerHTML = `
-        <div class="product-image-wrapper">
-          <img src="${p.img}" alt="${p.title}">
-          <button class="product-quick-btn js-quick-view" data-id="${p.id}">Швидкий перегляд</button>
-        </div>
-        <div class="product-tag">${p.category}</div>
-        <div class="product-title">${p.title}</div>
-        <div class="product-meta">
-          <span>Артикул: ${p.sku}</span>
-          <span>${p.unit}</span>
-        </div>
-        <div class="product-bottom">
-          <div class="product-price">${money(p.price)}</div>
-          <div class="qty-control">
-            <input type="number" class="qty-input js-qty-input" data-id="${p.id}" min="1" value="1">
-            <div class="qty-arrows">
-              <button class="qty-arrow js-qty-up" data-id="${p.id}"><i data-lucide="chevron-up"></i></button>
-              <button class="qty-arrow js-qty-down" data-id="${p.id}"><i data-lucide="chevron-down"></i></button>
-            </div>
+
+
+
+
+
+
+
+  
+  
+function renderProducts(list){
+  productsGrid.innerHTML = '';
+  list.forEach(p=>{
+    const card = document.createElement('article');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-image-wrapper">
+        <img src="${p.img}" alt="${p.title}">
+        <button class="product-quick-btn js-quick-view" data-id="${p.id}">Швидкий перегляд</button>
+      </div>
+      <div class="product-tag">${p.category}</div>
+      <div class="product-title">${p.title}</div>
+      <div class="product-meta">
+        <span>Артикул: ${p.sku}</span>
+        <span>${p.unit}</span>
+      </div>
+      <div class="product-bottom">
+        <div class="product-price">${money(p.price)}</div>
+        <div class="qty-control">
+          <input type="number" class="qty-input js-qty-input" data-id="${p.id}" min="1" value="1">
+          <div class="qty-arrows">
+            <button class="qty-arrow js-qty-up" data-id="${p.id}"><i data-lucide="chevron-up"></i></button>
+            <button class="qty-arrow js-qty-down" data-id="${p.id}"><i data-lucide="chevron-down"></i></button>
           </div>
-          <button class="btn btn-primary product-add-btn js-add-to-cart" data-id="${p.id}">
-            <i data-lucide="shopping-cart"></i> У кошик
-          </button>
         </div>
+        <button class="btn btn-primary product-add-btn js-add-to-cart" data-id="${p.id}">
+          <i data-lucide="shopping-cart"></i> У кошик
+        </button>
+      </div>
 
-<div class="product-info-icons">
-  <div class="info-item"><i data-lucide="truck"></i><span>Доставка по Україні</span></div>
-  <div class="info-item"><i data-lucide="shield-check"></i><span>Гарантія якості</span></div>
-  <div class="info-item"><i data-lucide="headphones"></i><span>Менеджер онлайн</span></div>
-</div>
+      <!-- 🔶 Новый блок: помощь от менеджера -->
+      <div class="product-help-box" style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;">Не знайшли відповідь на запитання?</div>
+        <a href="https://t.me/manager_stroyshop_ua" target="_blank" class="btn btn-outline" style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,122,26,0.7);box-shadow:0 0 0 3px rgba(255,122,26,0.15);">
+            <img src="https://i.ibb.co/dqqPKMb/unnamed-1.jpg" alt="Менеджер" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <span>Запитати у менеджера</span>
+        </a>
+      </div>
 
-      `;
-      productsGrid.appendChild(card);
-    });
+      <!-- 🔶 Новый блок: иконки преимуществ -->
+      <div class="product-info-icons">
+        <div class="info-item"><i data-lucide="truck"></i><span>Доставка по Україні</span></div>
+        <div class="info-item"><i data-lucide="shield-check"></i><span>Гарантія якості</span></div>
+        <div class="info-item"><i data-lucide="headphones"></i><span>Менеджер онлайн</span></div>
+      </div>
+    `;
+    productsGrid.appendChild(card);
+  });
 
-    lucide.createIcons();
-  }
+  lucide.createIcons();
+}
+
+
+
+
+
+
+  
 
   // ===== Фільтрація =====
   function filterProducts(){
