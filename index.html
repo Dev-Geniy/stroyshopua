@@ -560,7 +560,7 @@
       transition:.25s;z-index:200;
     }
     .toast.show{opacity:1;transform:translateY(0);}
-
+    
     /* ===== RESPONSIVE ===== */
     @media(max-width:900px){
       .hero{flex-direction:column;}
@@ -576,6 +576,38 @@
         grid-template-columns:1fr;
       }
     }
+
+    .modal-full {
+        display: none;
+        padding: 16px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04); /* мягкий фон */
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text);
+    }
+
+    .modal-full p {
+        margin-bottom: 12px;
+    }
+
+    .modal-full ol,
+    .modal-full ul {
+        padding-left: 20px;
+        margin-bottom: 14px;
+    }
+
+    .modal-full li {
+        margin-bottom: 8px;
+    }
+
+    .modal-full strong,
+    .modal-full b {
+        color: var(--accent2);
+        font-weight: 700;
+    }
+
   </style>
 </head>
 <body id="top">
