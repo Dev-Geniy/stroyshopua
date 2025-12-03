@@ -1074,19 +1074,19 @@ async function loadProductsFromXML(){
 ============================================================ */
 const categoriesEl = document.getElementById('categories');
 
-function renderCategories(){
-  const list = ['Усі', ...new Set(PRODUCTS.map(p => p.category))];
+function renderCategories() {
+  const list = ['Усі', ...CATEGORY_KEYWORDS.map(cat => cat.name)];
   categoriesEl.innerHTML = '';
 
-  list.forEach(cat=>{
+  list.forEach(cat => {
     const btn = document.createElement('button');
     btn.className = 'category-chip';
     btn.textContent = cat;
 
-    if(cat === 'Усі') btn.classList.add('active');
+    if (cat === 'Усі') btn.classList.add('active');
 
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.category-chip').forEach(c=>c.classList.remove('active'));
+      document.querySelectorAll('.category-chip').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
       filterProducts();
     });
