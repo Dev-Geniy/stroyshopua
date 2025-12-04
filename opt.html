@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Оптовим клієнтам — Професійні програми Stroy Shop</title>
+
+  <!-- ШРИФТ -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- ПРО ИКОНКИ -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#0d0f14;
+      --card:#11131c;
+      --card2:#161821;
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --muted:#9aa0b3;
+      --text:#f5f5f7;
+      --radius:16px;
+      --border:rgba(255,255,255,0.1);
+      --shadow:0 10px 40px rgba(0,0,0,0.7);
+      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);}
+
+    /* HEADER */
+    header{
+      padding:22px;
+      backdrop-filter:blur(12px);
+      background:rgba(8,10,14,0.75);
+      border-bottom:1px solid var(--border);
+      position:sticky;top:0;z-index:20;
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .logo{
+      font-size:26px;font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      letter-spacing:1px;text-transform:uppercase;
+    }
+    .btn{
+      padding:14px 22px;border-radius:var(--radius);
+      background:var(--grad);color:#000;font-weight:700;
+      box-shadow:var(--shadow);transition:.3s;
+    }
+    .btn:hover{transform:translateY(-3px);}
+
+    /* HERO */
+    .hero{
+      padding:80px 20px 40px;text-align:center;max-width:900px;margin:auto;
+    }
+    .hero h1{
+      font-size:44px;font-weight:800;
+      background:var(--grad);-webkit-background-clip:text;color:transparent;
+      margin-bottom:16px;
+    }
+    .hero p{font-size:18px;color:var(--muted);max-width:600px;margin:auto;margin-bottom:28px;}
+
+    /* STATISTICS */
+    .stats{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:22px;max-width:1100px;margin:50px auto;padding:0 20px;
+    }
+    .stat-card{
+      background:var(--card);border-radius:var(--radius);padding:26px;
+      text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);
+    }
+    .stat-card h2{
+      font-size:38px;font-weight:800;color:var(--accent2);
+      text-shadow:0 0 18px rgba(255,180,70,0.5);
+    }
+    .stat-card p{color:var(--muted);margin-top:8px;}
+
+    /* MARKET ANALYTICS */
+    .market{
+      max-width:900px;margin:60px auto;padding:0 20px;
+      text-align:center;
+    }
+    .market h2{
+      font-size:32px;background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      margin-bottom:20px;
+    }
+    .market-box{
+      background:var(--card2);padding:26px;border-radius:var(--radius);
+      border:1px solid var(--border);box-shadow:var(--shadow);text-align:left;
+    }
+    .market-box ul{color:var(--muted);margin-top:10px;font-size:16px;}
+    .market-box li{margin-bottom:10px;}
+
+    /* BENEFITS */
+    .benefits{
+      max-width:1100px;margin:40px auto;padding:0 20px;
+      display:grid;gap:22px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+    .benefit-card{
+      background:var(--card);border-radius:var(--radius);
+      padding:26px;border:1px solid var(--border);box-shadow:var(--shadow);
+    }
+    .benefit-card h3{
+      display:flex;align-items:center;gap:8px;
+      font-size:20px;margin-bottom:10px;color:var(--accent2);
+    }
+    .benefit-card p{font-size:15px;color:var(--muted);}
+
+    /* CTA */
+    .cta{
+      max-width:900px;margin:70px auto;padding:40px;
+      background:var(--card2);border-radius:var(--radius);
+      border:1px solid var(--border);box-shadow:var(--shadow);text-align:center;
+    }
+    .cta h2{font-size:30px;margin-bottom:10px;font-weight:800;}
+    .cta p{color:var(--muted);margin-bottom:22px;}
+
+    /* FAQ */
+    .faq{max-width:900px;margin:60px auto;padding:0 20px;}
+    .faq h2{text-align:center;font-size:30px;margin-bottom:20px;}
+    .faq-item{
+      background:var(--card);padding:22px;border-radius:var(--radius);
+      border:1px solid var(--border);margin-bottom:16px;
+    }
+    .faq-item h3{font-size:18px;margin-bottom:8px;color:var(--accent);}
+
+    footer{
+      margin-top:60px;padding:26px;text-align:center;
+      border-top:1px solid var(--border);color:var(--muted);
+    }
+    a {
+  text-decoration: none;
+    }
+    .btn i {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.4;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Stroy Shop</div>
+  <a href="index.html" class="btn">⬅ Назад до магазину</a>
+</header>
+
+<section class="hero">
+  <h1>Оптові поставки для бізнесу</h1>
+  <p>Професійні програми співпраці для магазинів, дизайнерів, майстрів, дропшиперів та маркетплейсів.</p>
+  <a href="https://t.me/manager_stroyshop_ua" class="btn">
+  <i data-lucide="messages-square"></i>
+  Зв’язатися з менеджером
+</a>
+</section>
+
+<!-- STATISTICS -->
+<section class="stats">
+  <div class="stat-card">
+    <h2>320+</h2>
+    <p>Партнерів працює з нами</p>
+  </div>
+
+  <div class="stat-card">
+    <h2>1800+</h2>
+    <p>Замовлень у партнерів щодня</p>
+  </div>
+
+  <div class="stat-card">
+    <h2>4.2 млн ₴</h2>
+    <p>Середній оборот партнерів за рік</p>
+  </div>
+</section>
+
+<!-- MARKET ANALYTICS -->
+<section class="market">
+  <h2>Аналітика ринку 2025</h2>
+
+  <div class="market-box">
+    <p>За даними ринку оздоблювальних матеріалів у 2025 році:</p>
+    <ul>
+      <li>• Попит на покриття, плівку та панелі зріс на <b>38%</b>.</li>
+      <li>• 6 із 10 клієнтів обирають онлайн-магазини.</li>
+      <li>• Найшвидше зростає ніша: <b>LVT плитка, ПВХ панелі, 3D панелі</b>.</li>
+      <li>• 72% майстрів купують матеріали онлайн у оптових постачальників.</li>
+      <li>• Рентабельність перепродажу декоративних матеріалів у середньому <b>45–120%</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits">
+
+  <div class="benefit-card">
+    <h3><i data-lucide="wallet"></i> Оптові ціни</h3>
+    <p>Прямі поставки та гнучкі знижки для бізнес-клієнтів.</p>
+  </div>
+
+  <div class="benefit-card">
+    <h3><i data-lucide="truck"></i> Логістика 24/7</h3>
+    <p>Відправка НП та Укрпошта того ж дня.</p>
+  </div>
+
+  <div class="benefit-card">
+    <h3><i data-lucide="user-check"></i> Персональний менеджер</h3>
+    <p>Підбір, бронювання, швидкі консультації.</p>
+  </div>
+
+  <div class="benefit-card">
+    <h3><i data-lucide="package"></i> Стабільний склад</h3>
+    <p>Регулярні імпортні поставки та оновлення.</p>
+  </div>
+
+  <div class="benefit-card">
+    <h3><i data-lucide="chart-line-up"></i> Підвищення прибутку</h3>
+    <p>Партнерські програми з комісією та кешбеком.</p>
+  </div>
+
+  <div class="benefit-card">
+    <h3><i data-lucide="sparkles"></i> Фото/відео контент</h3>
+    <p>Готові матеріали для маркетплейсів та соцмереж.</p>
+  </div>
+
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Почнімо співпрацю вже сьогодні</h2>
+  <p>Менеджер сформує індивідуальну пропозицію під ваш бізнес.</p>
+  <a href="https://t.me/manager_stroyshop_ua" class="btn">
+  <i data-lucide="messages-square"></i>
+  Зв’язатися з менеджером
+</a>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <h2>Поширені питання</h2>
+
+  <div class="faq-item">
+    <h3>З якої кількості стартує опт?</h3>
+    <p>Від 5–10 одиниць або від 10 м². Індивідуальні умови для великих клієнтів.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Оплата?</h3>
+    <p>Накладений платіж, передплата або рахунок-фактура для юр. осіб.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Доставляєте зразки?</h3>
+    <p>Так, можемо надіслати відео або фізичні зразки.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Чи можна працювати через маркетплейси?</h3>
+    <p>Так — Prom, Rozetka, Epicentr Marketplace.</p>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Stroy Shop — Професійні оптові програми
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  lucide.createIcons();
+</script>
+
+</body>
+</html>
