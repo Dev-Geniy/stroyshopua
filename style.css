@@ -1056,3 +1056,104 @@ footer{
   font-size:12px;
   box-shadow:0 0 6px rgba(255, 60, 40, 0.4);
 }
+
+@keyframes pulse-btn {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* Пульсация кнопки Детальний опис */
+#modalToggleFull {
+  animation: pulse-btn 1.6s infinite ease-in-out;
+}
+
+/* Всплеск при добавлении товара */
+@keyframes cart-bubble {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.cart-btn.cart-added {
+  animation: cart-bubble 0.35s ease-out;
+}
+
+/* Постоянная пульсация, если корзина не пустая */
+@keyframes cart-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.cart-btn.cart-has-items {
+  animation: cart-pulse 1.8s infinite ease-in-out;
+}
+
+/* Увеличение изображения в модалке */
+.modal-body img.zoomed {
+  transform: scale(1.25);
+  z-index: 10;
+  transition: transform 0.25s ease;
+}
+
+.modal-body img {
+  transition: transform 0.25s ease;
+  cursor: zoom-in;
+}
+
+/* ============================
+   LOADER OVERLAY
+============================ */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,5,9,0.95);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.4s ease;
+}
+
+.loader.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Красивая анимация спиннера */
+.loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(255,255,255,0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loader-text {
+  color: var(--muted);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Анимация появления товаров */
+.product-card {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+
+.product-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
