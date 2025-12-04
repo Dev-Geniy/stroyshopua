@@ -1,145 +1,481 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Оптовим клієнтам — Професійні програми Stroy Shop</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Оптова співпраця — Stroy Shop</title>
 
   <!-- ШРИФТ -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- ПРО ИКОНКИ -->
+  <!-- ИКОНКИ -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    :root{
+    :root {
       --bg:#050509;
-      --bg2:#0d0f14;
-      --card:#11131c;
-      --card2:#161821;
+      --bg2:#0c0d12;
+      --card:rgba(255,255,255,0.04);
+      --card2:rgba(255,255,255,0.06);
       --accent:#ff7a1a;
       --accent2:#ffb347;
-      --muted:#9aa0b3;
-      --text:#f5f5f7;
-      --radius:16px;
+      --muted:#a4a9b7;
+      --text:#f1f1f4;
+      --radius:18px;
       --border:rgba(255,255,255,0.1);
-      --shadow:0 10px 40px rgba(0,0,0,0.7);
+      --shadow:0 20px 50px rgba(0,0,0,0.55);
       --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+      --trans:0.25s;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:"Inter",sans-serif;background:var(--bg);color:var(--text);}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.45;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
 
     /* HEADER */
     header{
-      padding:22px;
-      backdrop-filter:blur(12px);
-      background:rgba(8,10,14,0.75);
+      position:sticky;
+      top:0;
+      z-index:10;
+      padding:18px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      backdrop-filter:blur(14px);
+      background:rgba(5,5,9,0.8);
       border-bottom:1px solid var(--border);
-      position:sticky;top:0;z-index:20;
-      display:flex;justify-content:space-between;align-items:center;
     }
+
     .logo{
-      font-size:26px;font-weight:800;
+      font-size:clamp(20px,3vw,28px);
+      font-weight:800;
       background:var(--grad);
-      -webkit-background-clip:text;color:transparent;
-      letter-spacing:1px;text-transform:uppercase;
+      -webkit-background-clip:text;
+      color:transparent;
+      letter-spacing:1px;
+      text-transform:uppercase;
     }
+
     .btn{
-      padding:14px 22px;border-radius:var(--radius);
-      background:var(--grad);color:#000;font-weight:700;
-      box-shadow:var(--shadow);transition:.3s;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 20px;
+      background:var(--grad);
+      border-radius:var(--radius);
+      font-size:14px;
+      font-weight:700;
+      color:#000;
+      cursor:pointer;
+      border:none;
+      transition:var(--trans);
+      box-shadow:var(--shadow);
+      white-space:nowrap;
     }
-    .btn:hover{transform:translateY(-3px);}
+
+    .btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 24px 50px rgba(0,0,0,0.75);
+    }
+
+    .btn-outline{
+      background:transparent;
+      border:1px solid var(--accent);
+      color:var(--accent2);
+      box-shadow:none;
+    }
+
+    .btn-outline:hover{
+      background:rgba(255,122,26,0.08);
+      box-shadow:var(--shadow);
+    }
+
+    .btn i{
+      width:20px;
+      height:20px;
+    }
+
+    /* SECTION BASE */
+    .section{
+      max-width:1150px;
+      margin:50px auto;
+      padding:0 20px;
+    }
+
+    .title{
+      font-size:clamp(24px,4vw,34px);
+      font-weight:800;
+      margin-bottom:10px;
+      line-height:1.2;
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:clamp(14px,2.4vw,16px);
+      max-width:680px;
+      margin-bottom:24px;
+    }
 
     /* HERO */
     .hero{
-      padding:80px 20px 40px;text-align:center;max-width:900px;margin:auto;
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:32px;
+      align-items:center;
+      max-width:1150px;
+      margin:50px auto;
+      padding:0 20px;
     }
+
     .hero h1{
-      font-size:44px;font-weight:800;
-      background:var(--grad);-webkit-background-clip:text;color:transparent;
-      margin-bottom:16px;
+      font-size:clamp(30px,4vw,45px);
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      font-weight:800;
+      margin-bottom:12px;
+      line-height:1.15;
     }
-    .hero p{font-size:18px;color:var(--muted);max-width:600px;margin:auto;margin-bottom:28px;}
 
-    /* STATISTICS */
-    .stats{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:22px;max-width:1100px;margin:50px auto;padding:0 20px;
-    }
-    .stat-card{
-      background:var(--card);border-radius:var(--radius);padding:26px;
-      text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);
-    }
-    .stat-card h2{
-      font-size:38px;font-weight:800;color:var(--accent2);
-      text-shadow:0 0 18px rgba(255,180,70,0.5);
-    }
-    .stat-card p{color:var(--muted);margin-top:8px;}
-
-    /* MARKET ANALYTICS */
-    .market{
-      max-width:900px;margin:60px auto;padding:0 20px;
-      text-align:center;
-    }
-    .market h2{
-      font-size:32px;background:var(--grad);
-      -webkit-background-clip:text;color:transparent;
+    .hero p{
+      color:var(--muted);
+      font-size:clamp(14px,2.4vw,17px);
+      max-width:540px;
       margin-bottom:20px;
     }
-    .market-box{
-      background:var(--card2);padding:26px;border-radius:var(--radius);
-      border:1px solid var(--border);box-shadow:var(--shadow);text-align:left;
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:24px;
     }
-    .market-box ul{color:var(--muted);margin-top:10px;font-size:16px;}
-    .market-box li{margin-bottom:10px;}
+
+    .tag{
+      padding:6px 12px;
+      font-size:12px;
+      background:rgba(255,255,255,0.05);
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .hero-side{
+      padding:20px;
+      background:var(--card2);
+      border-radius:24px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    .hero-side-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .side-row{
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:14px;
+      padding:6px 0;
+      border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+
+    .side-row:last-child{
+      border-bottom:none;
+    }
+
+    .side-row strong{
+      color:var(--accent2);
+    }
+
+    /* GRID */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .card h3{
+      font-size:18px;
+      color:var(--accent2);
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .card p{
+      font-size:14px;
+      color:var(--muted);
+    }
 
     /* BENEFITS */
-    .benefits{
-      max-width:1100px;margin:40px auto;padding:0 20px;
-      display:grid;gap:22px;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    .benefits-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:16px;
     }
-    .benefit-card{
-      background:var(--card);border-radius:var(--radius);
-      padding:26px;border:1px solid var(--border);box-shadow:var(--shadow);
+
+    .benefit{
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px 18px;
+      font-size:14px;
+      color:var(--muted);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
     }
-    .benefit-card h3{
-      display:flex;align-items:center;gap:8px;
-      font-size:20px;margin-bottom:10px;color:var(--accent2);
+
+    .benefit i{
+      width:18px;
+      height:18px;
+      flex-shrink:0;
+      color:var(--accent2);
     }
-    .benefit-card p{font-size:15px;color:var(--muted);}
+
+    .benefit-title{
+      font-weight:600;
+      color:var(--text);
+      margin-bottom:4px;
+      font-size:14px;
+    }
+
+    /* STEPS */
+    .steps .step{
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:20px;
+      position:relative;
+    }
+
+    .step-num{
+      position:absolute;
+      right:12px;
+      top:12px;
+      font-size:20px;
+      font-weight:800;
+      color:rgba(255,255,255,0.12);
+    }
+
+    .step-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .step-text{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    /* VOLUMES */
+    .volume-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .volume-title{
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:var(--accent2);
+    }
+
+    .volume-note{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .volume-label{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      background:rgba(255,122,26,0.16);
+      color:var(--accent2);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      margin-bottom:8px;
+    }
+
+    /* CATEGORIES */
+    .categories-wrap{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+    }
+
+    .categories-block{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .categories-block h3{
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:var(--accent2);
+    }
+
+    .categories-block ul{
+      list-style:none;
+      columns:2;
+      gap:10px;
+      font-size:13px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .categories-block li{
+      margin-bottom:4px;
+    }
+
+    @media(max-width:600px){
+      .categories-block ul{
+        columns:1;
+      }
+    }
 
     /* CTA */
     .cta{
-      max-width:900px;margin:70px auto;padding:40px;
-      background:var(--card2);border-radius:var(--radius);
-      border:1px solid var(--border);box-shadow:var(--shadow);text-align:center;
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:26px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
     }
-    .cta h2{font-size:30px;margin-bottom:10px;font-weight:800;}
-    .cta p{color:var(--muted);margin-bottom:22px;}
+
+    .cta h3{
+      font-size:clamp(22px,4vw,28px);
+      font-weight:800;
+      margin-bottom:4px;
+    }
+
+    .cta p{
+      color:var(--muted);
+      font-size:14px;
+      max-width:420px;
+    }
 
     /* FAQ */
-    .faq{max-width:900px;margin:60px auto;padding:0 20px;}
-    .faq h2{text-align:center;font-size:30px;margin-bottom:20px;}
     .faq-item{
-      background:var(--card);padding:22px;border-radius:var(--radius);
-      border:1px solid var(--border);margin-bottom:16px;
+      background:var(--card);
+      padding:20px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      margin-bottom:14px;
     }
-    .faq-item h3{font-size:18px;margin-bottom:8px;color:var(--accent);}
+
+    .faq-item h3{
+      font-size:16px;
+      color:var(--accent2);
+      margin-bottom:6px;
+    }
+
+    .faq-item p{
+      color:var(--muted);
+      font-size:14px;
+    }
 
     footer{
-      margin-top:60px;padding:26px;text-align:center;
-      border-top:1px solid var(--border);color:var(--muted);
+      text-align:center;
+      padding:22px;
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid var(--border);
+      margin-top:40px;
     }
-    a {
-  text-decoration: none;
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero{
+        grid-template-columns:1fr;
+        margin-top:24px;
+        gap:24px;
+      }
+
+      .cta{
+        flex-direction:column;
+        align-items:flex-start;
+      }
     }
-    .btn i {
-  width: 20px;
-  height: 20px;
-  stroke-width: 2.4;
+
+    @media(max-width:640px){
+      header{
+        padding:14px 16px;
+      }
+
+      .btn{
+        padding:10px 14px;
+        font-size:13px;
+      }
+
+      .section{
+        margin:40px auto;
+      }
+    }
+
+    @media(max-width:480px){
+      .hero h1{
+        font-size:28px;
+      }
+
+      .hero p{
+        font-size:14px;
+      }
+
+      .title{
+        font-size:22px;
+      }
     }
   </style>
 </head>
@@ -147,129 +483,354 @@
 
 <header>
   <div class="logo">Stroy Shop</div>
-  <a href="index.html" class="btn">⬅ Назад до магазину</a>
+  <a href="index.html" class="btn btn-outline">
+    <i data-lucide="arrow-left"></i>
+    Назад до магазину
+  </a>
 </header>
 
+<!-- HERO -->
 <section class="hero">
-  <h1>Оптові поставки для бізнесу</h1>
-  <p>Професійні програми співпраці для магазинів, дизайнерів, майстрів, дропшиперів та маркетплейсів.</p>
-  <a href="https://t.me/manager_stroyshop_ua" class="btn">
-  <i data-lucide="messages-square"></i>
-  Зв’язатися з менеджером
-</a>
+  <div>
+    <h1>Оптові поставки для бізнесу</h1>
+    <p>
+      Регулярні закупівлі будматеріалів для магазинів, студій ремонту,
+      майстерень та бізнесу по всій Україні. Склади в Дніпрі та Вінниці,
+      швидкі відправки та персональна підтримка менеджера.
+    </p>
+
+    <div class="tags">
+      <span class="tag">Регулярні закупівлі для бізнесу</span>
+      <span class="tag">Нижча оптова ціна</span>
+      <span class="tag">Резерв товару на 2 складах</span>
+    </div>
+
+    <div class="hero-actions">
+      <a
+        href="https://t.me/manager_stroyshop_ua?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D0%B3%D0%BE%D0%B2%D0%BE%D1%80%D0%B8%D1%82%D0%B8%20%D0%BE%D0%BF%D1%82%D0%BE%D0%B2%D1%83%20%D1%81%D0%BF%D1%96%D0%B2%D0%BF%D1%80%D0%B0%D1%86%D1%8E%20%D0%B7%20Stroy%20Shop"
+        class="btn"
+        target="_blank"
+      >
+        <i data-lucide="handshake"></i>
+        Запросити оптові умови
+      </a>
+
+      <a
+        href="https://t.me/manager_stroyshop_ua?text=%D0%9F%D1%80%D0%BE%D1%88%D1%83%20%D0%BF%D1%80%D0%B8%D1%81%D0%BB%D0%B0%D1%82%D0%B8%20%D0%BE%D0%BF%D1%82%D0%BE%D0%B2%D0%B8%D0%B9%20%D0%BF%D1%80%D0%B0%D0%B9%D1%81%20%D1%82%D0%B0%20%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3"
+        class="btn btn-outline"
+        target="_blank"
+      >
+        <i data-lucide="file-text"></i>
+        Отримати оптовий прайс
+      </a>
+    </div>
+  </div>
+
+  <aside class="hero-side">
+    <div class="hero-side-title">Формат співпраці</div>
+    <div class="side-row">
+      <span>Тип співпраці</span>
+      <strong>Оптові поставки</strong>
+    </div>
+    <div class="side-row">
+      <span>Склади</span>
+      <strong>Дніпро та Вінниця</strong>
+    </div>
+    <div class="side-row">
+      <span>Відправка</span>
+      <strong>Нова Пошта / Укрпошта / кур’єр</strong>
+    </div>
+    <div class="side-row">
+      <span>Знижки</span>
+      <strong>Індивідуальні при великих замовленнях</strong>
+    </div>
+    <div class="side-row">
+      <span>Документи</span>
+      <strong>Можливість працювати по договору</strong>
+    </div>
+    <div class="side-row">
+      <span>Підтримка</span>
+      <strong>Менеджер на всіх етапах</strong>
+    </div>
+  </aside>
 </section>
 
-<!-- STATISTICS -->
-<section class="stats">
-  <div class="stat-card">
-    <h2>320+</h2>
-    <p>Партнерів працює з нами</p>
-  </div>
+<!-- ДЛЯ КОГО ОПТ -->
+<section class="section">
+  <h2 class="title">Кому підходить опт Stroy Shop</h2>
+  <p class="sub">
+    Ми працюємо з бізнесами, яким важливо мати стабільні поставки, широкий асортимент
+    та передбачувану логістику.
+  </p>
 
-  <div class="stat-card">
-    <h2>1800+</h2>
-    <p>Замовлень у партнерів щодня</p>
-  </div>
-
-  <div class="stat-card">
-    <h2>4.2 млн ₴</h2>
-    <p>Середній оборот партнерів за рік</p>
-  </div>
-</section>
-
-<!-- MARKET ANALYTICS -->
-<section class="market">
-  <h2>Аналітика ринку 2025</h2>
-
-  <div class="market-box">
-    <p>За даними ринку оздоблювальних матеріалів у 2025 році:</p>
-    <ul>
-      <li>• Попит на покриття, плівку та панелі зріс на <b>38%</b>.</li>
-      <li>• 6 із 10 клієнтів обирають онлайн-магазини.</li>
-      <li>• Найшвидше зростає ніша: <b>LVT плитка, ПВХ панелі, 3D панелі</b>.</li>
-      <li>• 72% майстрів купують матеріали онлайн у оптових постачальників.</li>
-      <li>• Рентабельність перепродажу декоративних матеріалів у середньому <b>45–120%</b>.</li>
-    </ul>
+  <div class="grid">
+    <div class="card">
+      <h3><i data-lucide="building-2"></i> Магазини та шоуруми</h3>
+      <p>Офлайн та онлайн-магазини декору, будматеріалів, меблів та товарів для дому.</p>
+    </div>
+    <div class="card">
+      <h3><i data-lucide="paint-roller"></i> Студії ремонту та дизайнери</h3>
+      <p>Компанії, що роблять ремонти “під ключ”, дизайнери інтер’єрів, авторські студії.</p>
+    </div>
+    <div class="card">
+      <h3><i data-lucide="briefcase"></i> B2B та проєктні клієнти</h3>
+      <p>Готелі, салони краси, офіси, кав’ярні, манікюрні студії, HoReCa та інші бізнеси.</p>
+    </div>
   </div>
 </section>
 
-<!-- BENEFITS -->
-<section class="benefits">
+<!-- ПЕРЕВАГИ -->
+<section class="section">
+  <h2 class="title">Переваги оптового партнера Stroy Shop</h2>
+  <p class="sub">
+    Ми допомагаємо будувати довгострокову співпрацю — з прозорими умовами, стабільними поставками та персональним підходом.
+  </p>
 
-  <div class="benefit-card">
-    <h3><i data-lucide="wallet"></i> Оптові ціни</h3>
-    <p>Прямі поставки та гнучкі знижки для бізнес-клієнтів.</p>
+  <div class="benefits-list">
+    <div class="benefit">
+      <i data-lucide="badge-percent"></i>
+      <div>
+        <div class="benefit-title">Нижча оптова ціна</div>
+        <div>Спеціальні оптові прайси для регулярних закупівель.</div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="truck"></i>
+      <div>
+        <div class="benefit-title">Швидкі відправки</div>
+        <div>Оперативна комплектація замовлень зі складів у Дніпрі та Вінниці.</div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="warehouse"></i>
+      <div>
+        <div class="benefit-title">Резерв товарів на 2 складах</div>
+        <div>Можливість резервувати позиції під ваші проєкти та регулярні поставки.</div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="trending-up"></i>
+      <div>
+        <div class="benefit-title">Індивідуальні знижки</div>
+        <div>Гнучка система знижок при великих партіях та довгостроковій співпраці.</div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="file-signature"></i>
+      <div>
+        <div class="benefit-title">Робота по договору</div>
+        <div>Офіційне оформлення співпраці та прозорі умови для юросіб та ФОП.</div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="user-round"></i>
+      <div>
+        <div class="benefit-title">Підтримка менеджера</div>
+        <div>Персональний супровід на всіх етапах — від підбору до логістики.</div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <div class="benefit-card">
-    <h3><i data-lucide="truck"></i> Логістика 24/7</h3>
-    <p>Відправка НП та Укрпошта того ж дня.</p>
+<!-- АСОРТИМЕНТ -->
+<section class="section">
+  <h2 class="title">Асортимент для оптових закупівель</h2>
+  <p class="sub">
+    Широкий вибір матеріалів для стін, підлоги, декору та організації простору.
+  </p>
+
+  <div class="categories-wrap">
+    <div class="categories-block">
+      <h3>Стінові рішення</h3>
+      <ul>
+        <li>3D панелі</li>
+        <li>ПВХ панелі</li>
+        <li>Стенові панелі</li>
+        <li>Теплі та самоклейні шпалери</li>
+        <li>Самоклеюча плівка</li>
+        <li>Мозаїка</li>
+        <li>Екошкіра</li>
+        <li>Дзеркала</li>
+      </ul>
+    </div>
+
+    <div class="categories-block">
+      <h3>Підлога та покриття</h3>
+      <ul>
+        <li>Плитка</li>
+        <li>PET плитка</li>
+        <li>Вінілові покриття</li>
+        <li>Підлога-пазл</li>
+        <li>Килимки</li>
+        <li>Профілі та декор</li>
+        <li>Плінтуси</li>
+      </ul>
+    </div>
+
+    <div class="categories-block">
+      <h3>Для бізнесу та організації</h3>
+      <ul>
+        <li>Манікюр (матеріали/декор)</li>
+        <li>Меблі й зберігання</li>
+        <li>Рішення для салонів та студій</li>
+        <li>Організація простору</li>
+      </ul>
+    </div>
   </div>
+</section>
 
-  <div class="benefit-card">
-    <h3><i data-lucide="user-check"></i> Персональний менеджер</h3>
-    <p>Підбір, бронювання, швидкі консультації.</p>
+<!-- ОБСЯГИ ТА ФОРМАТИ -->
+<section class="section">
+  <h2 class="title">Формати співпраці та обсяги</h2>
+  <p class="sub">
+    Ми підбираємо умови під ваш бізнес — від невеликих регулярних закупівель до великих партій для мережевих проєктів.
+  </p>
+
+  <div class="grid">
+    <div class="volume-card">
+      <div class="volume-label">Стартовий опт</div>
+      <div class="volume-title">Невеликі регулярні закупівлі</div>
+      <div class="volume-note">Для магазинів, салонів, майстерень та студій.</div>
+      <ul style="color:var(--muted);font-size:13px;margin-left:18px;">
+        <li>Гнучка мінімальна сума замовлення</li>
+        <li>Базові оптові ціни</li>
+        <li>Рекомендації по асортименту</li>
+      </ul>
+    </div>
+
+    <div class="volume-card">
+      <div class="volume-label">Регулярний опт</div>
+      <div class="volume-title">Стабільні поставки</div>
+      <div class="volume-note">Для бізнесів з постійними замовленнями та трафіком.</div>
+      <ul style="color:var(--muted);font-size:13px;margin-left:18px;">
+        <li>Персональний менеджер</li>
+        <li>Резерв товару на складах</li>
+        <li>Індивідуальні ціни по ключових позиціях</li>
+      </ul>
+    </div>
+
+    <div class="volume-card">
+      <div class="volume-label">Великий опт</div>
+      <div class="volume-title">Партії для проєктів і мереж</div>
+      <div class="volume-note">Для великих ремонті, HoReCa та мережевих клієнтів.</div>
+      <ul style="color:var(--muted);font-size:13px;margin-left:18px;">
+        <li>Максимально вигідні цінові умови</li>
+        <li>Можливість постачання під проєкт</li>
+        <li>Оформлення по договору</li>
+      </ul>
+    </div>
   </div>
+</section>
 
-  <div class="benefit-card">
-    <h3><i data-lucide="package"></i> Стабільний склад</h3>
-    <p>Регулярні імпортні поставки та оновлення.</p>
+<!-- КРОКИ ЗАПУСКУ -->
+<section class="section">
+  <h2 class="title">Як розпочати оптову співпрацю</h2>
+
+  <div class="grid steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Звернення в Telegram</div>
+      <div class="step-text">
+        Пишете нашому менеджеру, розповідаєте про ваш бізнес та потреби.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Отримання оптового прайсу</div>
+      <div class="step-text">
+        Узгоджуємо категорії, надсилаємо прайс, каталог та приклади матеріалів.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Погодження умов</div>
+      <div class="step-text">
+        Обговорюємо обсяги, знижки, можливість договору та графік поставок.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Регулярні поставки</div>
+      <div class="step-text">
+        Формуємо замовлення, резервуємо товар та запускаємо стабільні відправки.
+      </div>
+    </div>
   </div>
-
-  <div class="benefit-card">
-    <h3><i data-lucide="chart-line-up"></i> Підвищення прибутку</h3>
-    <p>Партнерські програми з комісією та кешбеком.</p>
-  </div>
-
-  <div class="benefit-card">
-    <h3><i data-lucide="sparkles"></i> Фото/відео контент</h3>
-    <p>Готові матеріали для маркетплейсів та соцмереж.</p>
-  </div>
-
 </section>
 
 <!-- CTA -->
-<section class="cta">
-  <h2>Почнімо співпрацю вже сьогодні</h2>
-  <p>Менеджер сформує індивідуальну пропозицію під ваш бізнес.</p>
-  <a href="https://t.me/manager_stroyshop_ua" class="btn">
-  <i data-lucide="messages-square"></i>
-  Зв’язатися з менеджером
-</a>
+<section class="section">
+  <div class="cta">
+    <div>
+      <h3>Готові до оптової співпраці?</h3>
+      <p>
+        Напишіть менеджеру, щоб отримати актуальний оптовий прайс, умови та
+        пропозиції саме під ваш бізнес.
+      </p>
+    </div>
+
+    <a
+      href="https://t.me/manager_stroyshop_ua?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D1%82%D1%80%D0%B8%D0%BC%D0%B0%D1%82%D0%B8%20%D0%BE%D0%BF%D1%82%D0%BE%D0%B2%D0%B8%D0%B9%20%D0%BF%D1%80%D0%B0%D0%B9%D1%81%20%D1%82%D0%B0%20%D0%B7%D1%80%D0%BE%D0%B7%D1%83%D0%BC%D1%96%D1%82%D0%B8%20%D1%83%D0%BC%D0%BE%D0%B2%D0%B8%20%D1%81%D0%BF%D1%96%D0%B2%D0%BF%D1%80%D0%B0%D1%86%D1%96"
+      class="btn"
+      target="_blank"
+    >
+      <i data-lucide="send"></i>
+      Отримати оптовий прайс
+    </a>
+  </div>
 </section>
 
 <!-- FAQ -->
-<section class="faq">
-  <h2>Поширені питання</h2>
+<section class="section">
+  <h2 class="title">Поширені питання</h2>
 
   <div class="faq-item">
-    <h3>З якої кількості стартує опт?</h3>
-    <p>Від 5–10 одиниць або від 10 м². Індивідуальні умови для великих клієнтів.</p>
+    <h3>Яка мінімальна сума або обсяг оптового замовлення?</h3>
+    <p>
+      Мінімальний обсяг обговорюється індивідуально. Для різних категорій товарів можливі різні пороги входу.
+    </p>
   </div>
 
   <div class="faq-item">
-    <h3>Оплата?</h3>
-    <p>Накладений платіж, передплата або рахунок-фактура для юр. осіб.</p>
+    <h3>За скільки днів ви відправляєте оптові замовлення?</h3>
+    <p>
+      Більшість позицій відвантажується протягом 1–2 робочих днів зі складів у Дніпрі та Вінниці.
+      Для великих партій строки узгоджуються окремо.
+    </p>
   </div>
 
   <div class="faq-item">
-    <h3>Доставляєте зразки?</h3>
-    <p>Так, можемо надіслати відео або фізичні зразки.</p>
+    <h3>Чи можна працювати по договору та з документами?</h3>
+    <p>
+      Так, є можливість офіційної співпраці з договором, рахунками та закриттям документів для ФОП та юросіб.
+    </p>
   </div>
 
   <div class="faq-item">
-    <h3>Чи можна працювати через маркетплейси?</h3>
-    <p>Так — Prom, Rozetka, Epicentr Marketplace.</p>
+    <h3>Чи можна зарезервувати товар під проєкт?</h3>
+    <p>
+      Так, ми можемо резервувати товар на складах під ваші проєкти або регулярні поставки за попередньою домовленістю.
+    </p>
   </div>
 </section>
 
 <footer>
-  © <span id="year"></span> Stroy Shop — Професійні оптові програми
+  © <span id="year"></span> Stroy Shop — Оптові поставки для бізнесу
 </footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
-  lucide.createIcons();
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 </script>
 
 </body>
