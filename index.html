@@ -91,8 +91,8 @@
       </div>
 
       <div class="hero-slide" data-index="2">
-        <h1>Доставка Новою Поштою</h1>
-        <p>Оплата при отриманні. Перевірка посилки на відділенні перед оплатою.</p>
+        <h1>Доставка по Україні — Нова Пошта та Укрпошта</h1>
+        <p>Оплата при отриманні або передплата. Перевірка посилки на відділенні перед оплатою.</p>
         <div class="hero-cta">
           <button class="btn btn-primary js-consult">
             Питання по доставці
@@ -112,7 +112,7 @@
         <i data-lucide="truck"></i>
         <div>
           <div class="hero-info-title">Доставка по Україні</div>
-          <div class="hero-info-text">Нова Пошта, оплата при отриманні</div>
+          <div class="hero-info-text">Нова Пошта або Укрпошта, оплата при отриманні або передплата</div>
         </div>
       </div>
       <div class="hero-info-row">
@@ -198,7 +198,7 @@
     <p>Інтернет-магазин будівельних матеріалів. Підбір, консультація та відправка по всій Україні.</p>
     <div class="footer-copy">© <span id="year"></span> Stroy Shop. Всі права захищені.</div>
   </div>
-
+  
   <div class="footer-col footer-nav-col">
     <div class="footer-title">Навігація</div>
     <nav class="footer-nav">
@@ -210,6 +210,17 @@
 
   </div>
 
+  <div class="footer-col footer-coop">
+    <div class="footer-title">Співпраця</div>
+
+      <nav class="footer-nav">
+        <a href="opt.html">Оптовим клієнтам</a>
+        <a href="dropshipping.html">Дропшиперам</a>
+        <a href="partners.html">Партнерська програма</a>
+        <a href="jobs.html">Робота та вакансії</a>
+    </nav>
+  </div>
+  
   <div class="footer-col footer-contacts">
     <div class="footer-title">Контакти</div>
     <a href="https://t.me/stroy_shop_ua" target="_blank" class="footer-link">
@@ -223,6 +234,20 @@
     </a>
   </div>
 
+  <div class="footer-col">
+  <div class="footer-title">Доставка</div>
+
+  <div class="delivery-footer-item">
+    <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="">
+    <span>Нова Пошта — оплата при отриманні або передплата</span>
+  </div>
+
+  <div class="delivery-footer-item">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="">
+    <span>Укрпошта — оплата при отриманні або передплата</span>
+  </div>
+</div>
+  
   <div class="footer-col footer-manager">
     <div class="footer-title">Ваш менеджер</div>
     <div class="footer-manager-box">
@@ -237,6 +262,7 @@
       </div>
     </div>
   </div>
+  
 </footer>
 
 <!-- PRODUCT MODAL -->
@@ -276,20 +302,35 @@
       </div>
 
       <div class="modal-full" id="modalFull"></div>
+      
+      
+      
+      <div class="modal-delivery-logos">
+  <div class="delivery-item">
+    <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="Нова Пошта">
+    <span>Нова Пошта</span>
+  </div>
+
+  <div class="delivery-item">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="Укрпошта">
+    <span>Укрпошта</span>
+  </div>
+</div>
 
       <div class="modal-help">
                 <div class="hero-info-row">
           <i data-lucide="truck"></i>
           <div>
             <div class="hero-info-title">Доставка по Україні</div>
-            <div class="hero-info-text">Нова Пошта, оплата при отриманні</div>
+            <div class="hero-info-text">Нова Пошта або Укрпошта, оплата при отриманні або передплата
+</div>
           </div>
         </div>
         <div class="hero-info-row">
           <i data-lucide="shield-check"></i>
           <div>
             <div class="hero-info-title">Гарантія якості</div>
-            <div class="hero-info-text">Перевірені постачальники</div>
+            <div class="hero-info-text">Перевірені постачальники та матеріали</div>
           </div>
         </div>
         <div class="hero-info-row">
@@ -310,10 +351,7 @@
             </a>
           </div>
         </div>
-
-
       </div>
-
     </div>
   </div>
 </div>
@@ -335,7 +373,8 @@
         <label>Ім’я:<br><input id="checkoutName" required></label>
         <label>Телефон:<br><input id="checkoutPhone" required></label>
         <label>Місто:<br><input id="checkoutCity" required></label>
-        <label>Відділення Нової Пошти:<br><input id="checkoutPost" required></label>
+        <label>Служба доставки:<br><select id="checkoutService" required><option value="Нова Пошта">Нова Пошта</option><option value="Укрпошта">Укрпошта</option></select></label>
+        <label>Відділення отримання:<br><input id="checkoutPost" required></label>
         <button class="btn btn-primary" type="submit">Відправити в Telegram</button>
       </form>
     </div>
