@@ -1,55 +1,60 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Дропшипінг — партнерська програма Stroy Shop</title>
 
   <!-- ШРИФТ -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- ИКОНКИ LUCIDE -->
+  <!-- ИКОНКИ -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    :root{
+    :root {
       --bg:#050509;
-      --bg2:#0d0f14;
-      --card:#11131c;
-      --card2:#161821;
+      --bg2:#0c0d12;
+      --card:rgba(255,255,255,0.04);
+      --card2:rgba(255,255,255,0.06);
       --accent:#ff7a1a;
       --accent2:#ffb347;
-      --muted:#9aa0b3;
-      --text:#f5f5f7;
-      --radius:16px;
+      --muted:#a4a9b7;
+      --text:#f1f1f4;
+      --radius:18px;
       --border:rgba(255,255,255,0.1);
-      --shadow:0 10px 40px rgba(0,0,0,0.7);
+      --shadow:0 20px 50px rgba(0,0,0,0.55);
       --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+      --trans:0.25s;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box;}
+    *{
+      margin:0; padding:0; box-sizing:border-box;
+    }
+
     body{
       font-family:"Inter",sans-serif;
-      background:radial-gradient(circle at top left,rgba(255,122,26,0.18),transparent 55%),var(--bg);
+      background:radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%), var(--bg);
       color:var(--text);
+      line-height:1.45;
     }
-    a{text-decoration:none;color:inherit;}
+
+    a{
+      color:inherit; text-decoration:none;
+    }
 
     /* HEADER */
     header{
-      padding:18px 22px;
-      backdrop-filter:blur(12px);
-      background:rgba(8,10,14,0.85);
+      position:sticky; top:0; z-index:10;
+      padding:18px 24px;
+      display:flex; justify-content:space-between; align-items:center;
+      backdrop-filter:blur(14px);
+      background:rgba(5,5,9,0.72);
       border-bottom:1px solid var(--border);
-      position:sticky;
-      top:0;
-      z-index:20;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
     }
+
     .logo{
-      font-size:24px;
+      font-size:clamp(20px, 3vw, 28px);
       font-weight:800;
       background:var(--grad);
       -webkit-background-clip:text;
@@ -57,858 +62,402 @@
       letter-spacing:1px;
       text-transform:uppercase;
     }
+
     .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:12px 20px;
-      border-radius:var(--radius);
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px; padding:12px 20px;
       background:var(--grad);
-      color:#000;
-      font-weight:700;
-      font-size:14px;
+      border-radius:var(--radius);
+      font-size:14px; font-weight:700;
+      color:#000; cursor:pointer; border:none;
+      transition:var(--trans);
       box-shadow:var(--shadow);
-      border:none;
-      cursor:pointer;
-      transition:.25s;
       white-space:nowrap;
     }
-    .btn:hover{
-      transform:translateY(-3px);
-      box-shadow:0 14px 40px rgba(0,0,0,0.85);
-    }
+    .btn:hover{ transform:translateY(-3px); box-shadow:0 24px 50px rgba(0,0,0,0.75); }
+
     .btn-outline{
-      background:transparent;
-      color:var(--accent2);
-      border:1px solid rgba(255,122,26,0.8);
-      box-shadow:none;
+      background:transparent; border:1px solid var(--accent);
+      color:var(--accent2); box-shadow:none;
     }
     .btn-outline:hover{
       background:rgba(255,122,26,0.08);
       box-shadow:var(--shadow);
     }
-    .btn i{
-      width:20px;
-      height:20px;
-      stroke-width:2.4;
+
+    .btn i{ width:20px; height:20px; }
+
+    /* SECTION BASE */
+    .section{
+      max-width:1150px; margin:50px auto; padding:0 20px;
+    }
+
+    .title{
+      font-size:clamp(24px,4vw,34px);
+      font-weight:800; margin-bottom:10px;
+      line-height:1.2;
+    }
+
+    .sub{
+      color:var(--muted); font-size:clamp(14px,2.4vw,16px);
+      max-width:640px; margin-bottom:24px;
     }
 
     /* HERO */
     .hero{
-      max-width:1100px;
-      margin:50px auto 40px;
-      padding:0 20px;
       display:grid;
-      grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);
-      gap:32px;
-      align-items:center;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:32px; align-items:center;
+      max-width:1150px; margin:50px auto;
+      padding:0 20px;
     }
-    .hero-main h1{
-      font-size:40px;
-      line-height:1.12;
-      font-weight:800;
+
+    .hero h1{
+      font-size:clamp(30px,4vw,45px);
       background:var(--grad);
       -webkit-background-clip:text;
       color:transparent;
-      margin-bottom:14px;
+      font-weight:800;
+      margin-bottom:12px;
+      line-height:1.15;
     }
-    .hero-main p{
+
+    .hero p{
       color:var(--muted);
-      font-size:17px;
+      font-size:clamp(14px,2.4vw,17px);
       max-width:520px;
       margin-bottom:20px;
     }
-    .hero-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:22px;
+
+    .tags{
+      display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;
     }
-    .hero-tag{
-      padding:6px 10px;
+    .tag{
+      padding:6px 12px; font-size:12px;
+      background:rgba(255,255,255,0.05);
       border-radius:999px;
-      border:1px solid rgba(255,255,255,0.08);
-      font-size:12px;
+      border:1px solid var(--border);
       color:var(--muted);
-      background:rgba(0,0,0,0.35);
-    }
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
     }
 
     .hero-side{
-      background:var(--card);
+      padding:20px;
+      background:var(--card2);
       border-radius:24px;
       border:1px solid var(--border);
       box-shadow:var(--shadow);
-      padding:20px 20px 18px;
-    }
-    .hero-side-title{
-      font-size:15px;
-      font-weight:700;
-      margin-bottom:8px;
-    }
-    .hero-side-row{
-      display:flex;
-      justify-content:space-between;
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .hero-side-row strong{
-      color:var(--accent2);
     }
 
-    /* STATS */
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:20px;
-      max-width:1100px;
-      margin:20px auto 40px;
-      padding:0 20px;
+    .side-row{
+      display:flex; justify-content:space-between;
+      color:var(--muted); font-size:14px;
+      padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.06);
     }
-    .stat-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:20px 18px 18px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-    .stat-label{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .stat-main{
-      font-size:32px;
-      font-weight:800;
-      color:var(--accent2);
-      text-shadow:0 0 18px rgba(255,180,70,0.55);
-    }
-    .stat-note{
-      margin-top:6px;
-      font-size:12px;
-      color:var(--muted);
-    }
+    .side-row:last-child{ border-bottom:none; }
+    .side-row strong{ color:var(--accent2); }
 
-    /* SECTION WRAPPER */
-    .section{
-      max-width:1100px;
-      margin:40px auto;
-      padding:0 20px;
-    }
-    .section-title{
-      font-size:26px;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-    .section-sub{
-      font-size:15px;
-      color:var(--muted);
-      margin-bottom:18px;
-      max-width:620px;
-    }
-
-    /* WHAT IS DROPSHIPPING */
-    .info-grid{
+    /* CARDS GRID */
+    .grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
+      gap:20px;
     }
-    .info-card{
+
+    .card{
       background:var(--card);
-      border-radius:var(--radius);
       border:1px solid var(--border);
+      border-radius:var(--radius);
       padding:20px;
       box-shadow:var(--shadow);
     }
-    .info-card h3{
+
+    .card h3{
       font-size:18px;
-      margin-bottom:8px;
-      display:flex;
-      align-items:center;
-      gap:8px;
       color:var(--accent2);
-    }
-    .info-card p{
-      font-size:14px;
-      color:var(--muted);
+      margin-bottom:8px;
+      display:flex; align-items:center; gap:8px;
     }
 
-    /* HOW IT WORKS (STEPS) */
-    .steps{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:18px;
-      margin-top:6px;
+    .card p{
+      font-size:14px; color:var(--muted);
     }
-    .step-card{
+
+    /* STEPS */
+    .steps .step{
       background:var(--card2);
-      border-radius:var(--radius);
       border:1px solid var(--border);
-      padding:18px;
+      border-radius:var(--radius);
+      padding:20px;
       position:relative;
     }
-    .step-number{
-      position:absolute;
-      top:10px;
-      right:16px;
-      font-weight:800;
-      font-size:18px;
-      color:rgba(255,255,255,0.14);
+    .step-num{
+      position:absolute; right:12px; top:12px;
+      font-size:20px; font-weight:800;
+      color:rgba(255,255,255,0.1);
     }
-    .step-title{
-      font-weight:600;
-      margin-bottom:6px;
-      font-size:15px;
-    }
-    .step-text{
-      font-size:13px;
-      color:var(--muted);
-    }
+    .step-title{ font-size:16px; font-weight:600; margin-bottom:6px; }
+    .step-text{ font-size:14px; color:var(--muted); }
 
-    /* COMPARISON (NO TABLE) */
-    .compare-cards{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:14px;
-      margin-top:10px;
-    }
-    .compare-card{
+    /* COMPARE */
+    .compare .c-card{
       background:var(--card);
       border-radius:var(--radius);
+      padding:20px;
       border:1px solid var(--border);
-      padding:16px 18px;
       box-shadow:var(--shadow);
     }
-    .compare-title{
-      font-weight:700;
-      font-size:16px;
-      margin-bottom:6px;
-      color:var(--accent2);
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .compare-card ul{
-      margin-left:16px;
-      margin-top:4px;
-      color:var(--muted);
-      font-size:13px;
-    }
-    .compare-card li{margin-bottom:3px;}
 
-    .compare-badge{
-      display:inline-block;
-      padding:3px 8px;
-      border-radius:999px;
-      background:rgba(255,122,26,0.16);
-      color:var(--accent2);
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.06em;
+    .compare h4{
+      font-size:16px; font-weight:700;
+      margin-bottom:8px; color:var(--accent2);
+    }
+
+    .compare ul{
+      margin-left:18px; color:var(--muted); font-size:14px;
+    }
+
+    .badge{
+      padding:3px 8px; background:rgba(255,122,26,0.16);
+      border-radius:999px; color:var(--accent2);
+      font-size:11px; margin-left:6px;
     }
 
     /* CALCULATOR */
     .calc-wrap{
-      display:grid;
-      grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
-      gap:20px;
-      margin-top:10px;
+      display:grid; grid-template-columns:1fr 1fr; gap:22px;
     }
-    .calc-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-    .calc-card h3{
-      font-size:18px;
-      margin-bottom:8px;
-    }
-    .calc-row{
-      display:flex;
-      flex-direction:column;
-      gap:5px;
-      margin-bottom:10px;
-      font-size:14px;
-      color:var(--muted);
-    }
-    .calc-row input{
-      padding:8px 10px;
-      border-radius:10px;
-      border:1px solid var(--border);
+
+    .calc input{
+      width:100%; padding:10px;
       background:var(--bg2);
-      color:var(--text);
-      outline:none;
-      font-size:14px;
-    }
-    .calc-result{
-      margin-top:10px;
-      font-size:14px;
-    }
-    .calc-result strong{color:var(--accent2);}
-
-    /* PARTNERS EARNINGS */
-    .earn-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:18px;
-      margin-top:12px;
-    }
-    .earn-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-    .earn-number{
-      font-size:26px;
-      font-weight:800;
-      color:var(--accent2);
-      margin-bottom:4px;
-    }
-    .earn-label{
-      font-size:13px;
-      color:var(--muted);
+      border-radius:10px; border:1px solid var(--border);
+      color:var(--text); margin-top:4px;
     }
 
-    /* CASES */
-    .cases{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
-      margin-top:8px;
-    }
-    .case-card{
+    .calc-result{ margin-top:12px; font-size:14px; }
+
+    /* CTA */
+    .cta{
       background:var(--card2);
-      border-radius:var(--radius);
       border:1px solid var(--border);
-      padding:18px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .case-tag{
-      font-size:12px;
-      color:var(--accent2);
-      margin-bottom:4px;
-    }
-    .case-name{
-      font-weight:600;
-      margin-bottom:6px;
-      color:var(--text);
-    }
-    .case-highlight{
-      margin-top:8px;
-      color:var(--accent2);
-      font-weight:600;
+      border-radius:26px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      display:flex; justify-content:space-between; align-items:center;
+      gap:20px; flex-wrap:wrap;
     }
 
-    /* READY CTA BIG */
-    .cta-wide{
-      max-width:1100px;
-      margin:40px auto;
-      padding:0 20px 10px;
+    .cta h3{
+      font-size:clamp(22px,4vw,28px);
+      font-weight:800; margin-bottom:4px;
     }
-    .cta-card{
-      background:var(--card2);
-      border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      padding:22px 22px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-      flex-wrap:wrap;
-    }
-    .cta-text{
+
+    .cta p{
+      color:var(--muted);
+      font-size:14px;
       max-width:420px;
-    }
-    .cta-text h3{
-      font-size:22px;
-      font-weight:800;
-      margin-bottom:4px;
-    }
-    .cta-text p{
-      font-size:14px;
-      color:var(--muted);
     }
 
     /* FAQ */
-    .faq{
-      max-width:900px;
-      margin:0 auto 40px;
-      padding:0 20px;
-    }
-    .faq h2{
-      text-align:center;
-      font-size:24px;
-      margin-bottom:18px;
-    }
     .faq-item{
       background:var(--card);
-      padding:18px;
+      padding:20px;
       border-radius:var(--radius);
       border:1px solid var(--border);
-      margin-bottom:12px;
-      font-size:14px;
+      margin-bottom:14px;
     }
     .faq-item h3{
-      font-size:16px;
-      margin-bottom:6px;
-      color:var(--accent2);
+      font-size:16px; color:var(--accent2); margin-bottom:6px;
     }
+    .faq-item p{ color:var(--muted); font-size:14px; }
 
     footer{
-      margin-top:30px;
-      padding:22px;
-      text-align:center;
+      text-align:center; padding:22px;
+      color:var(--muted); font-size:13px;
       border-top:1px solid var(--border);
-      color:var(--muted);
-      font-size:13px;
-      background:#050509;
+      margin-top:40px;
     }
 
-    /* RESPONSIVE */
+    /* ========= MOBILE (Идеальная адаптация) ========= */
     @media(max-width:900px){
       .hero{
         grid-template-columns:1fr;
-        gap:22px;
+        margin-top:20px;
       }
-      .hero-main h1{
-        font-size:32px;
+      .cta{
+        flex-direction:column; align-items:flex-start;
       }
+      .calc-wrap{ grid-template-columns:1fr; }
     }
 
-    @media(max-width:720px){
-      header{
-        flex-direction:row;
-        gap:10px;
-      }
-      .logo{
-        font-size:20px;
-      }
+    @media(max-width:480px){
       .btn{
         padding:10px 14px;
         font-size:13px;
       }
-      .hero{
-        margin-top:30px;
+      .hero h1{
+        font-size:28px;
       }
-      .cta-card{
-        flex-direction:column;
-        align-items:flex-start;
+      .section{
+        margin:40px auto;
+      }
+      .grid{
+        grid-template-columns:1fr;
       }
     }
+
   </style>
 </head>
 <body>
 
 <header>
   <div class="logo">Stroy Shop</div>
-  <a href="index.html" class="btn btn-outline">
-    <i data-lucide="arrow-left"></i>
-    Назад до магазину
-  </a>
+  <a href="index.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Назад</a>
 </header>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-main">
+  <div>
     <h1>Дропшипінг з Stroy Shop</h1>
-    <p>Запускайте продаж будматеріалів без складу, закупівель та ризику залишків. Ми беремо на себе склад, упаковку та відправку.</p>
+    <p>Запускайте продаж будматеріалів без ризиків, складу та вкладень. Ми обробляємо всі замовлення замість вас.</p>
 
-    <div class="hero-tags">
-      <span class="hero-tag">Без інвестицій у товар</span>
-      <span class="hero-tag">Відправки Нова Пошта / Укрпошта</span>
-      <span class="hero-tag">Підтримка в Telegram</span>
+    <div class="tags">
+      <span class="tag">Без складу</span>
+      <span class="tag">Відправки Новою Поштою</span>
+      <span class="tag">Матеріали для продажу</span>
     </div>
 
-    <div class="hero-actions">
-      <a
-        href="https://t.me/manager_stroyshop_ua?text=%D0%A5%D0%BE%D1%87%D1%83%20%D1%81%D1%82%D0%B0%D1%82%D0%B8%20%D0%B4%D1%80%D0%BE%D0%BF%D1%88%D0%B8%D0%BF-%D0%BF%D0%B0%D1%80%D1%82%D0%BD%D0%B5%D1%80%D0%BE%D0%BC%20Stroy%20Shop"
-        class="btn"
-        target="_blank"
-      >
-        <i data-lucide="handshake"></i>
-        Стати дропшип-партнером
-      </a>
-
-      <a
-        href="https://t.me/manager_stroyshop_ua?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D1%82%D1%80%D0%B8%D0%BC%D0%B0%D1%82%D0%B8%20%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D1%96%D0%B0%D0%BB%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D1%81%D1%82%D0%B0%D1%80%D1%82%D1%83%20%D0%B4%D1%80%D0%BE%D0%BF%D1%88%D0%B8%D0%BF%D1%96%D0%BD%D0%B3%D1%83%20Stroy%20Shop"
-        class="btn btn-outline"
-        target="_blank"
-      >
-        <i data-lucide="send"></i>
-        Отримати матеріали для старту
-      </a>
-    </div>
+    <a href="#" class="btn"><i data-lucide="handshake"></i> Стати партнером</a>
   </div>
 
-  <aside class="hero-side">
-    <div class="hero-side-title">Формат співпраці</div>
-    <div class="hero-side-row">
-      <span>Тип партнерства</span>
-      <strong>Дропшипінг</strong>
-    </div>
-    <div class="hero-side-row">
-      <span>Стартові вкладення</span>
-      <strong>0 ₴ у склад</strong>
-    </div>
-    <div class="hero-side-row">
-      <span>Середня маржа</span>
-      <strong>25–60%</strong>
-    </div>
-    <div class="hero-side-row">
-      <span>Відправка клієнту</span>
-      <strong>Нова Пошта / Укрпошта</strong>
-    </div>
-    <div class="hero-side-row">
-      <span>Формати</span>
-      <strong>Instagram, TikTok, сайти, маркетплейси</strong>
-    </div>
-  </aside>
-</section>
-
-<!-- STATS -->
-<section class="stats">
-  <div class="stat-card">
-    <div class="stat-label">Партнерів працює з нами</div>
-    <div class="stat-main">
-      <span class="stat-number" data-target="320" data-suffix="+">0</span>
-    </div>
-    <div class="stat-note">Магазини, дизайнери, маркетплейси, блогери.</div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-label">Замовлень у партнерів щодня</div>
-    <div class="stat-main">
-      <span class="stat-number" data-target="1800" data-suffix="+">0</span>
-    </div>
-    <div class="stat-note">У пікові дні у всіх каналах збуту.</div>
-  </div>
-
-  <div class="stat-card">
-    <div class="stat-label">Сумарний оборот партнерів на рік</div>
-    <div class="stat-main">
-      <span class="stat-number" data-target="6.5" data-suffix=" млн ₴" data-decimal="true">0</span>
-    </div>
-    <div class="stat-note">За даними внутрішньої статистики Stroy Shop.</div>
+  <div class="hero-side">
+    <div class="side-row"><span>Тип</span><strong>Дропшипінг</strong></div>
+    <div class="side-row"><span>Маржа</span><strong>25–60%</strong></div>
+    <div class="side-row"><span>Вкладення</span><strong>0 ₴</strong></div>
+    <div class="side-row"><span>Відправка</span><strong>НП / Укрпошта</strong></div>
   </div>
 </section>
 
-<!-- WHAT IS DROPSHIPPING -->
+<!-- WHAT -->
 <section class="section">
-  <h2 class="section-title">Що таке дропшипінг з Stroy Shop</h2>
-  <p class="section-sub">Ви продаєте — ми беремо на себе весь бек-офіс: склад, пакування, логістику та частину консультацій. Без вкладень у товар.</p>
+  <h2 class="title">Як це працює</h2>
+  <p class="sub">Проста модель, що дозволяє заробляти вже з першого дня.</p>
 
-  <div class="info-grid">
-    <div class="info-card">
-      <h3><i data-lucide="store"></i> Для кого це підходить</h3>
-      <p>Інтернет-магазини, Instagram/ТikTok сторінки, студії ремонту, дизайнери, маркетологи та блогери, які хочуть монетизувати аудиторію.</p>
+  <div class="grid">
+    <div class="card">
+      <h3><i data-lucide="store"></i> Для кого</h3>
+      <p>Блогери, магазини, маркетологи, ремонтні компанії.</p>
     </div>
-    <div class="info-card">
-      <h3><i data-lucide="infinity"></i> Що ми робимо за вас</h3>
-      <p>Підтримуємо наявність товару, пакуємо замовлення, відправляємо Новою Поштою та Укрпоштою, контролюємо повернення та якість обробки.</p>
+    <div class="card">
+      <h3><i data-lucide="infinity"></i> Що ми робимо</h3>
+      <p>Склад, пакування, логістика, консультації клієнтів.</p>
     </div>
-    <div class="info-card">
-      <h3><i data-lucide="rocket"></i> Як ви заробляєте</h3>
-      <p>Ви отримуєте оптову ціну, самі формуєте націнку (маржу) та працюєте з кінцевим клієнтом. Різниця між продажем та закупівлею — ваш чистий дохід.</p>
+    <div class="card">
+      <h3><i data-lucide="rocket"></i> Ваш заробіток</h3>
+      <p>Різниця між оптовою та роздрібною ціною — ваш дохід.</p>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
+<!-- STEPS -->
 <section class="section">
-  <h2 class="section-title">Як це працює — проста схема</h2>
-  <p class="section-sub">Запуск займає від 1 до 3 днів. Після підключення ви отримуєте каталог, прайс та матеріали для продажу.</p>
+  <h2 class="title">Кроки запуску</h2>
 
-  <div class="steps">
-    <div class="step-card">
-      <div class="step-number">01</div>
-      <div class="step-title">Заявка в Telegram</div>
-      <div class="step-text">Пишете менеджеру, розповідаєте про формат бізнесу. Ми підбираємо для вас потрібні категорії товарів.</div>
+  <div class="grid steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Заявка</div>
+      <div class="step-text">Пишете менеджеру, отримуєте консультацію.</div>
     </div>
-    <div class="step-card">
-      <div class="step-number">02</div>
-      <div class="step-title">Отримуєте прайс і матеріали</div>
-      <div class="step-text">Каталог у зручному форматі, фото, відео, опис, рекомендації по ціноутворенню та позиціонуванню.</div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Матеріали</div>
+      <div class="step-text">Прайс, фото, відео, рекомендації.</div>
     </div>
-    <div class="step-card">
-      <div class="step-number">03</div>
-      <div class="step-title">Розміщуєте товари</div>
-      <div class="step-text">Додаєте позиції на сайт, маркетплейс або сторінки в соцмережах. Ми допомагаємо з першим налаштуванням.</div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Розміщення</div>
+      <div class="step-text">Додаєте товари на майданчик.</div>
     </div>
-    <div class="step-card">
-      <div class="step-number">04</div>
-      <div class="step-title">Приймаємо та відправляємо замовлення</div>
-      <div class="step-text">Ви передаєте нам дані клієнта — ми пакуємо замовлення та відправляємо Новою Поштою або Укрпоштою від вашого імені.</div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Відправки</div>
+      <div class="step-text">Ми пакуємо та відправляємо за вас.</div>
     </div>
   </div>
 </section>
 
-<!-- COMPARISON -->
-<section class="section">
-  <h2 class="section-title">Що краще? Порівняння моделей продажу</h2>
-  <p class="section-sub">Класичний склад вимагає великих вкладень. Опт пом’якшує ризики, але все одно потребує закупівлі. Дропшипінг знімає більшість бар’єрів.</p>
+<!-- COMPARE -->
+<section class="section compare">
+  <h2 class="title">Порівняння моделей</h2>
 
-  <div class="compare-cards">
-    <div class="compare-card">
-      <div class="compare-title">Класичний склад</div>
+  <div class="grid">
+    <div class="c-card">
+      <h4>Класичний склад</h4>
       <ul>
         <li>Великі витрати</li>
-        <li>Ризики залишків</li>
+        <li>Ризик залишків</li>
         <li>Довгий старт</li>
-        <li>Залежність від закупівлі</li>
       </ul>
     </div>
 
-    <div class="compare-card">
-      <div class="compare-title">Опт</div>
+    <div class="c-card">
+      <h4>Опт</h4>
       <ul>
-        <li>Середні витрати</li>
+        <li>Закупівля необхідна</li>
         <li>Часткові ризики</li>
-        <li>Старт 2–4 тижні</li>
-        <li>Кращі закупівельні ціни</li>
       </ul>
     </div>
 
-    <div class="compare-card">
-      <div class="compare-title">Дропшипінг <span class="compare-badge">Рекомендовано</span></div>
+    <div class="c-card">
+      <h4>Дропшипінг <span class="badge">кращий вибір</span></h4>
       <ul>
-        <li>Немає вкладень у склад</li>
-        <li>Мінімум ризиків</li>
-        <li>Старт за 1–3 дні</li>
+        <li>Без вкладень</li>
+        <li>Старт за 1 день</li>
         <li>Маржа 25–60%</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- CALCULATOR + EARNINGS -->
+<!-- CTA -->
 <section class="section">
-  <h2 class="section-title">Калькулятор доходу</h2>
-  <p class="section-sub">Оцініть потенціал ваших продажів з дропшипінгом Stroy Shop. Це приблизні розрахунки, але вони допомагають зрозуміти порядок цифр.</p>
-
-  <div class="calc-wrap">
-    <div class="calc-card">
-      <h3>Розрахунок за 1 місяць</h3>
-
-      <div class="calc-row">
-        <label>Середня кількість замовлень на день</label>
-        <input type="number" id="ordersPerDay" value="5" min="1">
-      </div>
-
-      <div class="calc-row">
-        <label>Середній прибуток з одного замовлення, ₴</label>
-        <input type="number" id="profitPerOrder" value="250" min="1">
-      </div>
-
-      <div class="calc-row">
-        <label>Кількість днів роботи в місяць</label>
-        <input type="number" id="daysPerMonth" value="26" min="1" max="31">
-      </div>
-
-      <button class="btn" id="calcBtn">
-        <i data-lucide="calculator"></i>
-        Порахувати потенціал
-      </button>
-
-      <div class="calc-result" id="calcResult">
-        Введіть свої дані та натисніть «Порахувати потенціал».
-      </div>
+  <div class="cta">
+    <div>
+      <h3>Готові почати?</h3>
+      <p>Отримайте повний пакет матеріалів для легкого старту та перших продажів.</p>
     </div>
-
-    <div class="calc-card">
-      <h3>Скільки заробляють наші партнери</h3>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:10px;">
-        Реальні діапазони за підсумками співпраці різних типів партнерів.
-      </p>
-
-      <div class="earn-grid">
-        <div class="earn-card">
-          <div class="earn-number stat-number" data-target="15000" data-suffix="+ ₴">0</div>
-          <div class="earn-label">Нові партнери (перші 2–3 місяці)</div>
-        </div>
-        <div class="earn-card">
-          <div class="earn-number stat-number" data-target="35000" data-suffix="+ ₴">0</div>
-          <div class="earn-label">Стабільні партнери з постійним трафіком</div>
-        </div>
-        <div class="earn-card">
-          <div class="earn-number stat-number" data-target="120000" data-suffix="+ ₴">0</div>
-          <div class="earn-label">Топ-партнери з маркетплейсів та великих проєктів</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CASES -->
-<section class="section">
-  <h2 class="section-title">Кейси наших партнерів</h2>
-  <p class="section-sub">Коротко про те, як різні формати бізнесу використовують дропшипінг Stroy Shop.</p>
-
-  <div class="cases">
-    <div class="case-card">
-      <div class="case-tag">Instagram-магазин декору</div>
-      <div class="case-name">«Decor Home UA»</div>
-      <p>Починали з продажу кількох видів самоклейки та панелей. За 4 місяці розширили асортимент до 80 позицій.</p>
-      <div class="case-highlight">Результат: ~32 000+ ₴ чистого прибутку на місяць.</div>
-    </div>
-
-    <div class="case-card">
-      <div class="case-tag">Маркетплейс</div>
-      <div class="case-name">Продавець на Prom.ua</div>
-      <p>Працює з нашими ковролінами та ПВХ-плиткою. Власного складу немає — працює лише за моделлю дропшипінгу.</p>
-      <div class="case-highlight">Результат: 50–80 замовлень на місяць тільки по одній категорії.</div>
-    </div>
-
-    <div class="case-card">
-      <div class="case-tag">Студія ремонту</div>
-      <div class="case-name">Компанія з комплексних ремонтів</div>
-      <p>Додають наші матеріали в свої пакети «під ключ». Клієнт замовляє ремонт, а матеріали відправляємо ми.</p>
-      <div class="case-highlight">Результат: додаткові 60 000+ ₴ обороту щомісяця.</div>
-    </div>
-  </div>
-</section>
-
-<!-- READY CTA WIDE -->
-<section class="cta-wide">
-  <div class="cta-card">
-    <div class="cta-text">
-      <h3>Готові розпочати?</h3>
-      <p>Отримайте матеріали та інструкції для старту: прайс, каталог, фото, відео та рекомендації по цінах.</p>
-    </div>
-
-    <a
-      href="https://t.me/manager_stroyshop_ua?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D1%82%D1%80%D0%B8%D0%BC%D0%B0%D1%82%D0%B8%20%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D1%96%D0%B0%D0%BB%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D1%81%D1%82%D0%B0%D1%80%D1%82%D1%83%20%D0%B4%D1%80%D0%BE%D0%BF%D1%88%D0%B8%D0%BF%D1%96%D0%BD%D0%B3%D1%83%20Stroy%20Shop"
-      class="btn"
-      target="_blank"
-    >
-      <i data-lucide="send"></i>
-      Отримати матеріали для старту
-    </a>
+    <a href="#" class="btn"><i data-lucide="send"></i> Отримати матеріали</a>
   </div>
 </section>
 
 <!-- FAQ -->
-<section class="faq">
-  <h2>Поширені питання</h2>
+<section class="section">
+  <h2 class="title">Поширені питання</h2>
 
   <div class="faq-item">
-    <h3>Які вкладення потрібні для старту?</h3>
-    <p>У класичному розумінні — жодних. Ви не викуповуєте товар на склад. Потрібні лише час, канал продажу та базові навички комунікації з клієнтами.</p>
+    <h3>Чи потрібні вкладення?</h3>
+    <p>Ні. Ви не викуповуєте товар.</p>
   </div>
 
   <div class="faq-item">
-    <h3>Як оформлюються відправки?</h3>
-    <p>Відправляємо Новою Поштою та Укрпоштою. Можливий наложений платіж (оплата при отриманні) або передплата — за домовленістю з вашим клієнтом.</p>
+    <h3>Як оформлюються посилки?</h3>
+    <p>Відправлення здійснюється Новою Поштою або Укрпоштою.</p>
   </div>
 
   <div class="faq-item">
-    <h3>Що робити, якщо клієнт відмовився від посилки?</h3>
-    <p>Ми беремо на себе повернення та повторну реалізацію товару. Для партнерів немає ризику залишків на складі.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи допомагаєте ви з контентом?</h3>
-    <p>Так. Надаємо фото, відео, базові описи, а також рекомендації по оформленню карток товару та сторінок в соцмережах.</p>
+    <h3>Що з поверненнями?</h3>
+    <p>Повернення бере на себе Stroy Shop.</p>
   </div>
 </section>
 
 <footer>
-  © <span id="year"></span> Stroy Shop — Дропшипінг програма для партнерів
+  © <span id="year"></span> Stroy Shop
 </footer>
 
 <script>
-  // Год в футере
   document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Иконки
-  if (window.lucide) {
-    lucide.createIcons();
-  }
-
-  // COUNT-UP для всех .stat-number
-  function animateNumber(el){
-    const target = parseFloat(el.getAttribute('data-target')) || 0;
-    const suffix = el.getAttribute('data-suffix') || '';
-    const isDecimal = el.getAttribute('data-decimal') === 'true';
-    const duration = 1600;
-    const start = 0;
-    const startTime = performance.now();
-
-    function frame(now){
-      const progress = Math.min((now - startTime) / duration, 1);
-      let value = start + (target - start) * progress;
-
-      if(isDecimal){
-        value = value.toFixed(1).replace('.', ',');
-      }else{
-        value = Math.round(value).toLocaleString('uk-UA');
-      }
-      el.textContent = value + suffix;
-
-      if(progress < 1){
-        requestAnimationFrame(frame);
-      }
-    }
-    requestAnimationFrame(frame);
-  }
-
-  const animated = new Set();
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        const el = entry.target;
-        if(!animated.has(el)){
-          animateNumber(el);
-          animated.add(el);
-        }
-      }
-    });
-  }, {threshold:0.3});
-
-  document.querySelectorAll('.stat-number').forEach(el=>observer.observe(el));
-
-  // КАЛЬКУЛЯТОР
-  const ordersInput = document.getElementById('ordersPerDay');
-  const profitInput = document.getElementById('profitPerOrder');
-  const daysInput = document.getElementById('daysPerMonth');
-  const calcBtn = document.getElementById('calcBtn');
-  const calcResult = document.getElementById('calcResult');
-
-  function formatMoney(value){
-    return value.toLocaleString('uk-UA', {maximumFractionDigits:0}) + ' ₴';
-  }
-
-  calcBtn.addEventListener('click', ()=>{
-    const orders = Math.max(1, parseInt(ordersInput.value || '0', 10));
-    const profit = Math.max(1, parseInt(profitInput.value || '0', 10));
-    const days = Math.min(31, Math.max(1, parseInt(daysInput.value || '0', 10)));
-
-    const month = orders * profit * days;
-    const year = month * 12;
-
-    calcResult.innerHTML = `
-      При <strong>${orders}</strong> замовленнях на день та прибутку
-      <strong>${formatMoney(profit)}</strong> з одного замовлення ви можете розраховувати на:
-      <br><br>
-      <strong>≈ ${formatMoney(month)}</strong> на місяць<br>
-      <strong>≈ ${formatMoney(year)}</strong> на рік
-      <br><br>
-      Це орієнтовні розрахунки. Фактичний результат залежить від трафіку, конверсії та середнього чеку.
-    `;
-  });
+  lucide.createIcons();
 </script>
 
 </body>
