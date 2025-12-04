@@ -59,7 +59,7 @@ const DEFAULT_PRODUCTS = [
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
-    img:'https://via.placeholder.com/600x400?text=Carpet',
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
     unit:'м',
     short:'М’який і зносостійкий ковролін для житлових кімнат.',
     full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
@@ -70,7 +70,7 @@ const DEFAULT_PRODUCTS = [
     category: getCategoryFromTitle('Плівка біла матова 0.45м'),
     price:59,
     sku:14418,
-    img:'https://via.placeholder.com/600x400?text=Film',
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
     unit:'м',
     short:'Самоклейна плівка для меблів і декору.',
     full:'Матовий білий відтінок, підходить для фасадів меблів, дверей, підвіконь. Легко клеїться без бульбашок.'
@@ -81,7 +81,7 @@ const DEFAULT_PRODUCTS = [
     category: getCategoryFromTitle('Шпалери Modern Stone'),
     price:129,
     sku:14419,
-    img:'https://via.placeholder.com/600x400?text=Wallpaper',
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
     unit:'м',
     short:'Шпалери з ефектом натурального каменю.',
     full:'Текстурована поверхня під камінь. Підходить для акцентних стін у вітальні, коридорі, кухні.'
@@ -92,7 +92,7 @@ const DEFAULT_PRODUCTS = [
     category: getCategoryFromTitle('Плитка самоклейка 20×20'),
     price:250,
     sku:14420,
-    img:'https://via.placeholder.com/600x400?text=Tile',
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
     unit:'шт',
     short:'Самоклейні плитки для швидкого оновлення кухні чи ванної.',
     full:'Водостійка поверхня, підходить для фартухів на кухні та зон навколо умивальника.'
@@ -319,9 +319,22 @@ function renderProducts(list){
   });
 
   if (window.lucide) {
+    // Анимация появления карточек
+requestAnimationFrame(() => {
+  document.querySelectorAll('.product-card').forEach(card => {
+    setTimeout(() => card.classList.add('show'), 50);
+  });
+});
+
     lucide.createIcons();
   }
 }
+
+function hideLoader() {
+  const loader = document.getElementById('loader');
+  if (loader) loader.classList.add('hide');
+}
+
 
 /* ============================================================
    🟧 9. ФИЛЬТР ТОВАРОВ
@@ -436,6 +449,7 @@ function addToCart(id, qtyFromModal){
 
   saveCart();
   updateCartUI();
+
   showToast('Товар додано у кошик');
 }
 
@@ -473,6 +487,23 @@ function updateCartUI(){
 
   document.getElementById('cartTotal').textContent = money(total);
   document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+
+  /* -----------------------------------------------
+     🟧 АНИМАЦИЯ КНОПКИ КОРЗИНЫ
+  ------------------------------------------------ */
+  const cartBtn = document.querySelector('.cart-btn');
+
+  // Всплеск при добавлении товара (bubble)
+  cartBtn.classList.remove('cart-added');
+  void cartBtn.offsetWidth; // перезапуск CSS-анимации
+  cartBtn.classList.add('cart-added');
+
+  // Пульсация, если корзина не пустая
+  if (cart.length > 0) {
+    cartBtn.classList.add('cart-has-items');
+  } else {
+    cartBtn.classList.remove('cart-has-items');
+  }
 }
 
 
@@ -490,6 +521,7 @@ document.getElementById('cartClearBtn').addEventListener('click',()=>{
   saveCart();
   updateCartUI();
 });
+
 
 /* ============================================================
    🟧 13. ОТКРЫТИЕ / ЗАКРЫТИЕ КОРЗИНЫ
@@ -769,12 +801,14 @@ if (scrollBtn) {
 (async function init(){
   const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
+  
+  
   await loadProductsFromXML();   // грузим products.xml
   renderCategories();            // рисуем кнопки категорий
   renderSaleProducts();          // Загрузка акционных
   renderProducts(PRODUCTS);      // показываем товары
   updateCartUI();                // корзина
+  hideLoader();                  // прячем анимацию после загрузки товаров
   if (window.lucide) {
     lucide.createIcons();
   }
@@ -804,3 +838,10 @@ if (saleSlider) {
     saleSlider.scrollLeft = scrollLeftStart + dx;
   });
 }
+
+// Клик по фото — увеличиваем / возвращаем назад
+const modalImg = document.getElementById('modalImage');
+
+modalImg.addEventListener('click', () => {
+  modalImg.classList.toggle('zoomed');
+});
