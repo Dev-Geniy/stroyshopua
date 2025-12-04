@@ -55,7 +55,7 @@ function getCategoryFromTitle(title) {
 const DEFAULT_PRODUCTS = [
   {
     id:1,
-    title:'Ковролін SoftLux 4м — кремовий',
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -66,7 +66,7 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id:2,
-    title:'Плівка біла матова 0.45м',
+    title:'Уценка Плівка біла матова 0.45м',
     category: getCategoryFromTitle('Плівка біла матова 0.45м'),
     price:59,
     sku:14418,
@@ -219,6 +219,30 @@ async function loadProductsFromXML(){
 ============================================================ */
 const categoriesEl = document.getElementById('categories');
 
+function renderSaleProducts(){
+  const saleBox = document.getElementById('saleSlider');
+  if(!saleBox) return;
+
+  const saleItems = PRODUCTS.filter(p =>
+    p.title.toLowerCase().includes('уцен')
+  );
+
+  saleBox.innerHTML = '';
+
+  saleItems.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'sale-card';
+    card.innerHTML = `
+      <img src="${p.img}">
+      <div class="sale-card-title">${p.title}</div>
+      <div class="sale-card-price">${money(p.price)}</div>
+    `;
+    card.addEventListener('click', ()=> openProductModal(p.id));
+    saleBox.appendChild(card);
+  });
+}
+
+
 function renderCategories(){
   categoriesEl.innerHTML = '';
 
@@ -256,6 +280,11 @@ function renderCategories(){
 ============================================================ */
 const productsGrid = document.getElementById('productsGrid');
 
+function highlightSale(text){
+  if(!text) return text;
+  return text.replace(/Уценка/gi, '<span class="badge-sale">Уценка</span>');
+}
+
 function renderProducts(list){
   productsGrid.innerHTML = '';
   list.forEach(p=>{
@@ -267,7 +296,7 @@ function renderProducts(list){
         <button class="product-quick-btn js-quick-view" data-id="${p.id}">Швидкий перегляд</button>
       </div>
       <div class="product-tag">${p.category || ''}</div>
-      <div class="product-title">${p.title}</div>
+      <div class="product-title">${highlightSale(p.title)}</div>
       <div class="product-meta">
         <span>Артикул: ${p.sku}</span>
         <span>${p.unit}</span>
@@ -414,21 +443,38 @@ function updateCartUI(){
   const box = document.getElementById('cartItems');
   box.innerHTML = '';
   let total = 0;
+
   cart.forEach(item=>{
     total += item.price * item.qty;
+
     const div = document.createElement('div');
     div.className = 'cart-item';
     div.innerHTML = `
+      <img src="${item.img}" 
+           alt="${item.title}" 
+           style="width:100%;border-radius:10px;margin-bottom:8px;">
+
       <strong>${item.title}</strong><br>
-      ${item.qty} × ${item.price} грн = ${item.qty*item.price} грн
-      <button style="float:right;border:0;background:none;color:var(--danger);cursor:pointer;font-size:18px"
-        data-id="${item.id}" class="js-remove-cart">×</button>
+
+      ${item.qty} × ${item.price} грн = ${item.qty * item.price} грн
+
+      <button style="
+          float:right;
+          border:0;
+          background:none;
+          color:var(--danger);
+          cursor:pointer;
+          font-size:18px
+      " data-id="${item.id}" class="js-remove-cart">×</button>
     `;
+
     box.appendChild(div);
   });
+
   document.getElementById('cartTotal').textContent = money(total);
   document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
 }
+
 
 document.getElementById('cartItems').addEventListener('click',(e)=>{
   const btn = e.target.closest('.js-remove-cart');
@@ -481,22 +527,106 @@ const modalShort = document.getElementById('modalShort');
 const modalFull = document.getElementById('modalFull');
 const modalQtyInput = document.getElementById('modalQtyInput');
 
+/**
+ * Красиво форматируем длинное описание:
+ * - абзацы
+ * - маркеры списков (- • — *)
+ * - нумерованные списки (1., 2) 
+ * - заголовки (строки, заканчивающиеся ':')
+ */
+function formatDescription(text){
+  if (!text) return '';
+
+  // Нормализуем переносы строк и пробелы
+  text = text
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/\u00A0/g, ' ')
+    .trim();
+
+  const lines = text.split('\n');
+  const htmlParts = [];
+
+  let inUl = false;
+  let inOl = false;
+
+  const closeLists = () => {
+    if (inUl) {
+      htmlParts.push('</ul>');
+      inUl = false;
+    }
+    if (inOl) {
+      htmlParts.push('</ol>');
+      inOl = false;
+    }
+  };
+
+  for (let rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line) continue;
+
+    // Заголовок (строка, заканчивающаяся двоеточием)
+    if (/^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ0-9].*:\s*$/.test(line)) {
+      closeLists();
+      const title = line.replace(/:\s*$/, '');
+      htmlParts.push(`<h3>${title}</h3>`);
+      continue;
+    }
+
+    // Маркированный список: "-", "–", "•", "*"
+    const bulletMatch = line.match(/^[-–•*]\s+(.+)/);
+    if (bulletMatch) {
+      if (!inUl) {
+        closeLists();
+        htmlParts.push('<ul>');
+        inUl = true;
+      }
+      htmlParts.push(`<li>${bulletMatch[1]}</li>`);
+      continue;
+    }
+
+    // Нумерованный список: "1.", "2)", "3 "
+    const numMatch = line.match(/^(\d+)[\).\s]\s*(.+)/);
+    if (numMatch) {
+      if (!inOl) {
+        closeLists();
+        htmlParts.push('<ol>');
+        inOl = true;
+      }
+      htmlParts.push(`<li>${numMatch[2]}</li>`);
+      continue;
+    }
+
+    // Обычный абзац
+    closeLists();
+    htmlParts.push(`<p>${line}</p>`);
+  }
+
+  // Закрываем открытые списки
+  closeLists();
+
+  return htmlParts.join('');
+}
+
 function openProductModal(id){
-  const p = PRODUCTS.find(x=>x.id===id);
-  if(!p) return;
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
   currentProductId = id;
 
   modalImage.src = p.img;
   modalCategory.textContent = p.category || '';
-  modalTitle.textContent = p.title;
+  modalTitle.innerHTML = highlightSale(p.title);
   modalSku.textContent = p.sku;
   modalPrice.textContent = money(p.price);
-  
+
+  // Короткое описание как есть
   modalShort.innerHTML = p.short;
-  modalFull.innerHTML = p.full;
-  
+
+  // Детальное описание — с красивым форматированием
+  modalFull.innerHTML = formatDescription(p.full);
+
   modalQtyInput.value = 1;
-  modalFull.style.display = 'none';
+  modalFull.style.display = 'none'; // по умолчанию скрыто
 
   productModal.classList.remove('hidden');
   productModalOverlay.classList.remove('hidden');
@@ -514,25 +644,26 @@ function closeProductModal(){
 document.getElementById('productModalClose').addEventListener('click', closeProductModal);
 productModalOverlay.addEventListener('click', closeProductModal);
 
-document.getElementById('modalQtyUp').addEventListener('click', ()=>{
-  let v = parseFloat(modalQtyInput.value||'1')+1;
-  if(v<1) v=1;
-  modalQtyInput.value = v;
-});
-document.getElementById('modalQtyDown').addEventListener('click', ()=>{
-  let v = parseFloat(modalQtyInput.value||'1')-1;
-  if(v<1) v=1;
+document.getElementById('modalQtyUp').addEventListener('click', () => {
+  let v = parseFloat(modalQtyInput.value || '1') + 1;
+  if (v < 1) v = 1;
   modalQtyInput.value = v;
 });
 
-document.getElementById('modalAddToCart').addEventListener('click', ()=>{
-  if(currentProductId==null) return;
-  const qty = parseFloat(modalQtyInput.value||'1');
+document.getElementById('modalQtyDown').addEventListener('click', () => {
+  let v = parseFloat(modalQtyInput.value || '1') - 1;
+  if (v < 1) v = 1;
+  modalQtyInput.value = v;
+});
+
+document.getElementById('modalAddToCart').addEventListener('click', () => {
+  if (currentProductId == null) return;
+  const qty = parseFloat(modalQtyInput.value || '1');
   addToCart(currentProductId, qty);
   closeProductModal();
 });
 
-document.getElementById('modalToggleFull').addEventListener('click', ()=>{
+document.getElementById('modalToggleFull').addEventListener('click', () => {
   modalFull.style.display = modalFull.style.display === 'block' ? 'none' : 'block';
 });
 
@@ -641,9 +772,35 @@ if (scrollBtn) {
 
   await loadProductsFromXML();   // грузим products.xml
   renderCategories();            // рисуем кнопки категорий
+  renderSaleProducts();          // Загрузка акционных
   renderProducts(PRODUCTS);      // показываем товары
   updateCartUI();                // корзина
   if (window.lucide) {
     lucide.createIcons();
   }
 })();
+
+/* ============================================================
+   🟧 19. СКРОЛИНГ УЦЕНЁННЫХ ТОВАРОВ
+============================================================ */
+const saleSlider = document.getElementById('saleSlider');
+if (saleSlider) {
+  saleSlider.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    saleSlider.scrollLeft += e.deltaY * 1.5;
+  }, { passive: false });
+
+  // Сенсорный свайп (touch)
+  let startX = 0;
+  let scrollLeftStart = 0;
+
+  saleSlider.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].pageX;
+    scrollLeftStart = saleSlider.scrollLeft;
+  });
+
+  saleSlider.addEventListener('touchmove', (e) => {
+    const dx = startX - e.touches[0].pageX;
+    saleSlider.scrollLeft = scrollLeftStart + dx;
+  });
+}
