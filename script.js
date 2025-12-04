@@ -1,7 +1,7 @@
 /* ============================================================
    🟧 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ
 ============================================================ */
-const TELEGRAM_USERNAME = 'manager_stroyshop_ua';
+const TELEGRAM_USERNAME = 'manager_samostroy_shop';
 const XML_FEED_URL = 'products.xml';
 
 /* ============================================================
@@ -734,7 +734,7 @@ document.getElementById('checkoutForm').addEventListener('submit',(e)=>{
   const post = document.getElementById('checkoutPost').value;
   const service = document.getElementById('checkoutService').value;
 
-  let text = '🛒 Нове замовлення%0A';
+  let text = 'Samostroy Shop 🛒 Нове замовлення, сайт: http://www.samostroy.shop';
   text += `👤 Ім’я: ${name}%0A`;
   text += `📞 Телефон: ${phone}%0A`;
   text += `🏙 Місто: ${city}%0A`;
