@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Самоклеюча екошкіра — Stroy Shop</title>
+
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Іконки Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#0a0b10;
+      --card:#11131c;
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --danger:#ff4e6d;
+      --text:#f5f5f7;
+      --muted:#9da3b5;
+      --radius:14px;
+      --border:rgba(255,255,255,0.08);
+      --shadow:0 8px 30px rgba(0,0,0,0.65);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(255,122,26,0.18),transparent 55%),
+        linear-gradient(180deg,#050509,#050509 40%,#0b0d14 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+    a{text-decoration:none;color:inherit;}
+
+    .hidden{display:none!important;}
+
+    /* HEADER */
+    .logo-wrapper{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .logo-avatar{
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      overflow:hidden;
+      border:2px solid rgba(255,122,26,0.8);
+      box-shadow:0 0 0 3px rgba(255,122,26,0.18);
+      flex-shrink:0;
+    }
+    .logo-avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .header{
+      position:sticky;
+      top:0;
+      z-index:40;
+      background:
+        radial-gradient(circle at top left,rgba(255,122,26,0.16),transparent 60%),
+        rgba(5,5,9,0.96);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .header-left{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .logo{
+      font-size:22px;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      letter-spacing:0.04em;
+    }
+    .logo-sub{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .header-center{
+      flex:1;
+      display:flex;
+      justify-content:center;
+      min-width:220px;
+    }
+    .search-bar{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);
+      max-width:360px;
+      width:100%;
+      box-shadow:0 0 0 1px rgba(0,0,0,0.3);
+    }
+    .search-bar input{
+      border:0;
+      background:transparent;
+      outline:none;
+      color:var(--text);
+      font-size:14px;
+      width:100%;
+    }
+    .header-right{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    /* BUTTONS */
+    .btn{
+      padding:9px 14px;
+      border-radius:var(--radius);
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      font-size:14px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background-position .35s ease,
+        opacity .2s ease;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      background-size:200% 200%;
+      color:#000;
+      box-shadow:var(--shadow);
+    }
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 32px rgba(0,0,0,0.8);
+      background-position:100% 0;
+    }
+    .btn-outline{
+      background:transparent;
+      border:1px solid rgba(255,122,26,0.8);
+      color:var(--accent2);
+    }
+    .btn-outline:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 28px rgba(0,0,0,0.7);
+      background:rgba(255,122,26,0.06);
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+    .btn-ghost:hover{
+      border-color:rgba(255,255,255,0.24);
+      background:rgba(255,255,255,0.02);
+    }
+
+    .cart-btn{
+      background:radial-gradient(circle at top left,var(--accent2),var(--accent));
+      color:#000;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .cart-count{
+      background:#000;
+      color:var(--accent2);
+      padding:2px 7px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:12px;
+    }
+
+    /* CART ANIMATIONS */
+    @keyframes cart-bubble {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+    .cart-btn.cart-added { animation: cart-bubble .35s ease-out; }
+
+    @keyframes cart-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .cart-btn.cart-has-items { animation: cart-pulse 1.8s infinite ease-in-out; }
+
+    /* HERO CATEGORY */
+    .hero-category{
+      padding:26px 18px 10px;
+      max-width:1150px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);
+      gap:24px;
+      align-items:center;
+    }
+    .hero-main-title{
+      font-size:30px;
+      line-height:1.15;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      margin-bottom:8px;
+    }
+    .hero-main-sub{
+      font-size:15px;
+      color:var(--muted);
+      max-width:520px;
+      margin-bottom:14px;
+    }
+    .hero-pills{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:16px;
+    }
+    .hero-pill{
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.08);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .hero-cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .hero-side-card{
+      background:
+        radial-gradient(circle at top right,rgba(255,122,26,0.18),transparent 55%),
+        var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      padding:18px 18px 16px;
+    }
+    .hero-side-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      font-size:13px;
+    }
+    .hero-side-item{
+      display:flex;
+      gap:8px;
+    }
+    .hero-side-icon{
+      width:32px;
+      height:32px;
+      border-radius:12px;
+      background:rgba(255,122,26,0.1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+    .hero-side-item-title{
+      font-weight:600;
+      margin-bottom:2px;
+    }
+    .hero-side-item-text{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* SECTIONS */
+    .section{
+      max-width:1150px;
+      margin:20px auto;
+      padding:0 18px;
+    }
+    .section-header{
+      margin-bottom:14px;
+    }
+    .section-title{
+      font-size:22px;
+      font-weight:800;
+      margin-bottom:4px;
+    }
+    .section-sub{
+      font-size:14px;
+      color:var(--muted);
+      max-width:650px;
+    }
+
+    .benefits-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+    }
+    .benefit-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:14px 14px 12px;
+      box-shadow:var(--shadow);
+      font-size:13px;
+    }
+    .benefit-card h3{
+      font-size:15px;
+      margin-bottom:4px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .benefit-card p{color:var(--muted);}
+
+    /* FILTER + PRODUCTS */
+    .filter-bar{
+      max-width:1150px;
+      margin:20px auto 6px;
+      padding:0 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      justify-content:space-between;
+      align-items:flex-end;
+    }
+    .filter-group{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:13px;
+    }
+    .filter-label{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:600;
+    }
+    .filter-inputs{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+    .filter-inputs input{
+      width:86px;
+      padding:6px 8px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--bg2);
+      color:var(--text);
+      font-size:13px;
+      outline:none;
+    }
+    .filter-select{
+      padding:6px 8px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--bg2);
+      color:var(--text);
+      font-size:13px;
+      outline:none;
+    }
+
+    .products-section{
+      max-width:1150px;
+      margin:4px auto 24px;
+      padding:0 18px 10px;
+    }
+    .products-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+      gap:18px;
+    }
+    .product-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      position:relative;
+      transition:.25s;
+      opacity:0;
+      transform:translateY(8px);
+    }
+    .product-card.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .product-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 32px rgba(0,0,0,0.85);
+      border-color:rgba(255,122,26,0.6);
+    }
+    .product-image-wrapper{
+      position:relative;
+    }
+    .product-image-wrapper img{
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      border-radius:var(--radius);
+    }
+    .product-quick-btn{
+      position:absolute;
+      bottom:10px;
+      right:10px;
+      padding:6px 10px;
+      border-radius:var(--radius);
+      border:0;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#000;
+      font-size:11px;
+      font-weight:700;
+      box-shadow:var(--shadow);
+      cursor:pointer;
+      opacity:0;
+      transform:translateY(5px);
+      transition:.2s;
+    }
+    .product-card:hover .product-quick-btn{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .product-tag{
+      font-size:11px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .product-title{
+      font-size:15px;
+      font-weight:700;
+    }
+    .product-meta{
+      display:flex;
+      justify-content:space-between;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .product-bottom{
+      margin-top:6px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    .product-price{
+      font-weight:800;
+      font-size:17px;
+      color:var(--accent);
+    }
+
+    .qty-control{
+      display:flex;
+      align-items:center;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--bg2);
+      overflow:hidden;
+    }
+    .qty-input{
+      width:52px;
+      border:0;
+      outline:none;
+      text-align:center;
+      background:transparent;
+      color:var(--text);
+      font-weight:700;
+      font-size:14px;
+      padding:4px;
+    }
+    .qty-arrows{
+      display:flex;
+      flex-direction:column;
+      border-left:1px solid var(--border);
+    }
+    .qty-arrow{
+      border:0;
+      background:transparent;
+      width:20px;
+      height:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+    .qty-arrow svg{
+      width:12px;
+      height:12px;
+      color:var(--accent);
+    }
+    .product-add-btn{
+      flex:1;
+      justify-content:center;
+      white-space:nowrap;
+    }
+
+    .no-products{
+      font-size:14px;
+      color:var(--muted);
+      padding:14px;
+      border-radius:var(--radius);
+      border:1px dashed var(--border);
+      background:rgba(0,0,0,0.3);
+      text-align:center;
+      margin-top:8px;
+    }
+
+    .badge-sale{
+      display:inline-block;
+      background:linear-gradient(135deg,#ff3b30,#ff7a1a);
+      color:#000;
+      padding:2px 6px;
+      border-radius:6px;
+      font-weight:700;
+      font-size:12px;
+      box-shadow:0 0 6px rgba(255,60,40,0.4);
+      margin-right:6px;
+    }
+
+    /* ADVANTAGES BLOCK */
+    .advantage-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:16px;
+    }
+    .advantage-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:14px;
+      box-shadow:var(--shadow);
+      font-size:13px;
+    }
+    .advantage-card h3{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:15px;
+      margin-bottom:4px;
+    }
+    .advantage-card p{color:var(--muted);}
+
+    /* WHOLESALE BANNER */
+    .wholesale-banner{
+      max-width:1150px;
+      margin:18px auto 26px;
+      padding:0 18px;
+    }
+    .wholesale-card{
+      border-radius:20px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      padding:18px 18px 16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      background:
+        radial-gradient(circle at top right,rgba(255,122,26,0.16),transparent 60%),
+        var(--card);
+    }
+    .wholesale-text{
+      max-width:480px;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .wholesale-title{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:4px;
+      color:var(--accent2);
+    }
+    .wholesale-pills{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      font-size:12px;
+    }
+    .wholesale-pill{
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      color:var(--muted);
+      background:rgba(0,0,0,0.35);
+    }
+
+    /* FAQ */
+    .faq{
+      max-width:900px;
+      margin:0 auto 30px;
+      padding:0 18px;
+    }
+    .faq-item{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:13px 14px 11px;
+      margin-bottom:10px;
+      font-size:13px;
+    }
+    .faq-item h3{
+      font-size:15px;
+      margin-bottom:4px;
+      color:var(--accent2);
+    }
+    .faq-item p{color:var(--muted);}
+
+    /* FOOTER */
+    footer{
+      padding:22px 18px 18px;
+      border-top:1px solid var(--border);
+      background:#050509;
+      display:grid;
+      grid-template-columns:2fr 1.1fr 1.5fr 1.8fr 1.8fr 1.8fr;
+      gap:20px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .footer-col{min-width:0;}
+    .footer-logo{
+      font-size:20px;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      margin-bottom:6px;
+    }
+    .footer-copy{
+      margin-top:10px;
+      font-size:12px;
+      color:#717786;
+    }
+    .footer-title{
+      font-weight:700;
+      font-size:14px;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+    .footer-nav{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .footer-nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:13px;
+    }
+    .footer-nav a:hover{color:var(--accent2);}
+    .footer-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-bottom:6px;
+      color:var(--muted);
+    }
+    .footer-link:hover{color:var(--accent2);}
+    .footer-phone{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:6px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:radial-gradient(circle at top left,rgba(255,122,26,0.25),transparent 60%);
+      border:1px solid rgba(255,122,26,0.7);
+      color:var(--text);
+      font-weight:700;
+    }
+    .footer-phone:hover{
+      box-shadow:0 10px 32px rgba(0,0,0,0.9);
+      transform:translateY(-1px);
+    }
+    .footer-manager-box{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .footer-manager-avatar{
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      overflow:hidden;
+      border:2px solid rgba(255,122,26,0.8);
+      box-shadow:0 0 0 3px rgba(255,122,26,0.18);
+    }
+    .footer-manager-avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .footer-manager-name{
+      font-weight:600;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+    .delivery-footer-item{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:6px;
+      font-size:12px;
+    }
+    .delivery-footer-item img{
+      width:26px;
+      height:26px;
+      object-fit:contain;
+    }
+
+    /* MODALS & CART */
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(4px);
+      z-index:90;
+    }
+    .modal{
+      position:fixed;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      background:var(--bg2);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      max-width:900px;
+      width:95%;
+      max-height:90vh;
+      overflow-y:auto;
+      z-index:100;
+      padding:18px;
+    }
+    .modal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .modal-close{
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+    }
+    .modal-body{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+    .modal-body img{
+      width:280px;
+      height:220px;
+      object-fit:cover;
+      border-radius:var(--radius);
+      transition:transform .25s;
+      cursor:zoom-in;
+    }
+    .modal-body img.zoomed{
+      transform:scale(1.25);
+      z-index:10;
+    }
+    .modal-info{
+      flex:1;
+      min-width:240px;
+      font-size:14px;
+    }
+    .modal-info h2{
+      margin:4px 0 6px;
+      font-size:20px;
+    }
+    .modal-price{
+      font-size:22px;
+      color:var(--accent);
+      font-weight:800;
+      margin:8px 0;
+    }
+    .modal-desc{color:var(--muted);font-size:13px;}
+    .modal-actions{
+      margin-top:10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .modal-qty-row{
+      margin-top:10px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:13px;
+    }
+    .modal-full{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--card);
+      font-size:13px;
+      color:var(--muted);
+      display:none;
+    }
+    .modal-full h3{
+      margin-top:10px;
+      margin-bottom:6px;
+      font-size:15px;
+      font-weight:700;
+      color:var(--text);
+    }
+    .modal-full p{margin:4px 0;}
+    .modal-full ul,
+    .modal-full ol{
+      margin:6px 0 8px 18px;
+      padding-left:18px;
+    }
+    .modal-full li{margin-bottom:3px;}
+
+    .modal-delivery-logos{
+      display:flex;
+      gap:16px;
+      margin:14px 0 6px;
+    }
+    .modal-delivery-logos .delivery-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(255,255,255,0.04);
+      padding:6px 12px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .modal-delivery-logos img{
+      width:28px;
+      height:28px;
+      object-fit:contain;
+    }
+
+    .modal-help{
+      margin-top:16px;
+      font-size:13px;
+    }
+    .hero-info-row{
+      display:flex;
+      gap:10px;
+      margin-bottom:8px;
+      font-size:12px;
+    }
+    .hero-info-row i{
+      padding:7px;
+      border-radius:10px;
+      background:rgba(255,122,26,0.1);
+    }
+    .hero-info-title{font-weight:600;}
+    .hero-info-text{color:var(--muted);}
+
+    .modal-help-card{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-top:14px;
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,0.03);
+      box-shadow:var(--shadow);
+    }
+    .modal-help-avatar{
+      flex-shrink:0;
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      overflow:hidden;
+      border:2px solid var(--accent2);
+    }
+    .modal-help-avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .modal-help-title{
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .checkout-form{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:10px;
+      font-size:14px;
+    }
+    .checkout-form input,
+    .checkout-form select{
+      width:100%;
+      padding:8px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:var(--bg2);
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+    }
+
+    .cart-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      z-index:80;
+    }
+    .cart-drawer{
+      position:fixed;
+      top:0;
+      right:-360px;
+      width:320px;
+      max-width:90%;
+      height:100vh;
+      background:var(--bg2);
+      border-left:1px solid var(--border);
+      box-shadow:-6px 0 25px rgba(0,0,0,0.6);
+      z-index:90;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      transition:.3s;
+    }
+    .cart-drawer.open{right:0;}
+    .cart-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .cart-body{
+      flex:1;
+      overflow-y:auto;
+    }
+    .cart-item{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:10px;
+      margin-bottom:8px;
+      font-size:13px;
+    }
+    .cart-footer{
+      border-top:1px solid var(--border);
+      padding-top:10px;
+      margin-top:6px;
+    }
+    .cart-total-row{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    .toast{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      background:var(--bg2);
+      border-radius:var(--radius);
+      padding:10px 14px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      font-size:13px;
+      opacity:0;
+      transform:translateY(10px);
+      transition:.25s;
+      z-index:200;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* PULSE FOR DETAILS BUTTON */
+    @keyframes pulse-btn {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+    #modalToggleFull{
+      animation:pulse-btn 1.6s infinite ease-in-out;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:960px){
+      .hero-category{
+        grid-template-columns:1fr;
+      }
+    }
+    @media(max-width:1100px){
+      footer{
+        grid-template-columns:2fr 1.5fr 1.5fr 1.8fr;
+      }
+    }
+    @media(max-width:900px){
+      footer{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+    @media(max-width:720px){
+      .header-center{order:3;width:100%;}
+      .search-bar{max-width:100%;}
+      footer{grid-template-columns:1fr;}
+      .wholesale-card{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body id="top">
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-wrapper">
+      <div class="logo-avatar">
+        <img src="https://i.ibb.co/PZGTwyqp/unnamed.jpg" alt="logo">
+      </div>
+      <div>
+        <div class="logo">Stroy Shop</div>
+        <div class="logo-sub">Будматеріали з доставкою по Україні</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-center">
+    <div class="search-bar">
+      <i data-lucide="search"></i>
+      <input id="searchInput" placeholder="Пошук по екошкірі: самоклеюча, рулон, реставрація..." />
+    </div>
+  </div>
+
+  <div class="header-right">
+    <button class="btn btn-outline js-consult">
+      <i data-lucide="message-circle"></i>
+      Консультація
+    </button>
+    <button class="btn cart-btn" id="openCartBtn">
+      <i data-lucide="shopping-cart"></i>
+      <span>Кошик</span>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO CATEGORY -->
+  <section class="hero-category">
+    <div>
+      <h1 class="hero-main-title">Самоклеюча екошкіра в рулонах для меблів, авто та інтер’єру</h1>
+      <p class="hero-main-sub">
+        Самоклеюча екокожа в рулоні допоможе швидко і акуратно приховати потертості, подряпини, порізи та інші
+        дефекти на меблях, дверях, підлокітниках, сидіннях, елементах салону авто та декоративних панелях.
+        Без майстрів — просто вирізаєте та наклеюєте.
+      </p>
+
+      <div class="hero-pills">
+        <span class="hero-pill">Швидка реставрація без перетяжки</span>
+        <span class="hero-pill">Самоклеюча основа — без клею та інструментів</span>
+        <span class="hero-pill">Стійка до зносу, вологи та забруднень</span>
+        <span class="hero-pill">Підходить для меблів, дверей, авто та декору</span>
+      </div>
+
+      <div class="hero-cta-row">
+        <button class="btn btn-primary js-scroll-products">
+          <i data-lucide="grid-3x3"></i>
+          Переглянути всю екошкіру
+        </button>
+        <button class="btn btn-ghost js-consult">
+          <i data-lucide="send"></i>
+          Підібрати екошкіру під ваш виріб
+        </button>
+      </div>
+    </div>
+
+    <aside class="hero-side-card">
+      <div class="hero-side-grid">
+        <div class="hero-side-item">
+          <div class="hero-side-icon">
+            <i data-lucide="sofa"></i>
+          </div>
+          <div>
+            <div class="hero-side-item-title">Реставрація меблів</div>
+            <div class="hero-side-item-text">
+              Оновлення диванів, крісел, стільців, узголів’їв ліжка, підлокітників та м’яких елементів без дорогої перетяжки.
+            </div>
+          </div>
+        </div>
+        <div class="hero-side-item">
+          <div class="hero-side-icon">
+            <i data-lucide="car"></i>
+          </div>
+          <div>
+            <div class="hero-side-item-title">Салон авто</div>
+            <div class="hero-side-item-text">
+              Оновлення обшивки дверей, торпедо, центрального підлокітника та інших елементів салону в домашніх умовах.
+            </div>
+          </div>
+        </div>
+        <div class="hero-side-item">
+          <div class="hero-side-icon">
+            <i data-lucide="shield-check"></i>
+          </div>
+          <div>
+            <div class="hero-side-item-title">Захист від зносу</div>
+            <div class="hero-side-item-text">
+              Захищає поверхню від кігтів домашніх улюбленців, потертостей та дрібних механічних пошкоджень.
+            </div>
+          </div>
+        </div>
+        <div class="hero-side-item">
+          <div class="hero-side-icon">
+            <i data-lucide="scissors"></i>
+          </div>
+          <div>
+            <div class="hero-side-item-title">Легка робота з матеріалом</div>
+            <div class="hero-side-item-text">
+              Можна вирізати фігурні заплатки, смуги або цілі панелі під розмір. Клеїться на рівну, чисту основу.
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">Чим зручна самоклеюча екошкіра</h2>
+      <p class="section-sub">
+        Матеріал підходить для швидкої реставрації предметів щоденного користування: дивани, стільці, пуфи,
+        двері, полички, підлокітники, підголівники, салон авто, декоративні панелі та інші поверхні, де хочеться
+        оновити вигляд без складних робіт.
+      </p>
+    </div>
+    <div class="benefits-grid">
+      <article class="benefit-card">
+        <h3><i data-lucide="wand-2"></i> Швидке маскування дефектів</h3>
+        <p>Закриває порізи, пропали від сигарет, потертості та подряпини. Не потрібно змінювати увесь виріб — достатньо
+          оновити тільки пошкоджену ділянку.</p>
+      </article>
+      <article class="benefit-card">
+        <h3><i data-lucide="droplets"></i> Стійкість до вологи та забруднень</h3>
+        <p>Екошкіра не боїться крапель води та легко очищується від більшості побутових забруднень. Догляд — мінімальний.</p>
+      </article>
+      <article class="benefit-card">
+        <h3><i data-lucide="layers"></i> Універсальне застосування</h3>
+        <p>Підходить для меблів, дверей, полиць, декоративних панелей, підлокітників, автомобільних салонів та інших поверхонь.</p>
+      </article>
+      <article class="benefit-card">
+        <h3><i data-lucide="wallet-cards"></i> Бюджетне рішення</h3>
+        <p>Допомагає продовжити термін служби меблів та інтер’єру без дорогої перетяжки або повної заміни предметів.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- FILTER BAR -->
+  <section class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Фільтр за ціною, грн</span>
+      <div class="filter-inputs">
+        <input type="number" id="minPrice" placeholder="від">
+        <input type="number" id="maxPrice" placeholder="до">
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Сортування</span>
+      <select id="sortSelect" class="filter-select">
+        <option value="default">За замовчуванням</option>
+        <option value="price-asc">Спочатку дешевші</option>
+        <option value="price-desc">Спочатку дорожчі</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products-section" id="productsSection">
+    <div class="section-header">
+      <h2 class="section-title">Товари категорії «Екошкіра»</h2>
+      <p class="section-sub">
+        Тут зібрана самоклеюча екошкіра в рулонах та відрізах, які підходять для реставрації меблів, дверей,
+        салону авто та декоративних елементів. Обирайте колір, фактуру й розмір — ми допоможемо порадою.
+      </p>
+    </div>
+    <div id="noProducts" class="no-products hidden">
+      Наразі немає товарів цієї категорії в наявності. Напишіть менеджеру — підберемо альтернативу або уточнимо строки поставки.
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <!-- Товари з XML з’являться тут -->
+    </div>
+  </section>
+
+  <!-- ADVANTAGES STROY SHOP -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">Переваги покупки екошкіри у Stroy Shop</h2>
+      <p class="section-sub">
+        Ми працюємо з матеріалами для ремонту та декору, допомагаємо підібрати рішення під конкретну задачу:
+        від дрібних заплаток до комплексної реставрації меблів та салону авто.
+      </p>
+    </div>
+    <div class="advantage-grid">
+      <article class="advantage-card">
+        <h3><i data-lucide="truck"></i> Доставка по всій Україні</h3>
+        <p>Відправляємо Новою Поштою та Укрпоштою. Можлива післяплата або передплата — як вам зручніше.</p>
+      </article>
+      <article class="advantage-card">
+        <h3><i data-lucide="shield-check"></i> Перевірені матеріали</h3>
+        <p>Використовуємо екошкіру, стійку до зносу, деформацій, вологи та забруднень — для тривалої служби виробів.</p>
+      </article>
+      <article class="advantage-card">
+        <h3><i data-lucide="headphones"></i> Живий менеджер</h3>
+        <p>Допоможемо обрати потрібний колір, фактуру та формат під вашу конкретну задачу — з фото або описом.</p>
+      </article>
+      <article class="advantage-card">
+        <h3><i data-lucide="file-pen-line"></i> Рекомендації по наклеюванню</h3>
+        <p>Пояснимо, як підготувати поверхню, вирізати заплатки, приклеїти без складок та бульбашок.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- WHOLESALE BANNER -->
+  <section class="wholesale-banner">
+    <div class="wholesale-card">
+      <div class="wholesale-text">
+        <div class="wholesale-title">Оптові ціни на екошкіру для майстерень та студій</div>
+        <p>
+          Якщо ви займаєтесь реставрацією меблів, перетяжкою, тюнінгом авто або декором інтер’єрів —
+          можемо запропонувати спеціальні умови на самоклеючу екошкіру.
+        </p>
+        <div class="wholesale-pills">
+          <span class="wholesale-pill">Знижки при регулярних закупівлях</span>
+          <span class="wholesale-pill">Підбір кольорів і фактур під ваші проєкти</span>
+          <span class="wholesale-pill">Оперативна відправка по Україні</span>
+        </div>
+      </div>
+      <div class="wholesale-actions">
+        <a href="opt.html" class="btn btn-ghost" style="margin-bottom:6px;">
+          <i data-lucide="file-text"></i>
+          Деталі для оптових клієнтів
+        </a>
+        <br>
+        <button class="btn btn-primary js-consult">
+          <i data-lucide="send"></i>
+          Запит на оптову ціну
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="section-header" style="text-align:center;margin-bottom:14px;">
+      <h2 class="section-title">Поширені питання по самоклеючій екошкірі</h2>
+      <p class="section-sub" style="margin:0 auto;max-width:620px;">
+        Якщо не знайшли відповідь — просто напишіть менеджеру в Telegram, підкажемо по вашій ситуації та фото виробу.
+      </p>
+    </div>
+
+    <article class="faq-item">
+      <h3>На які поверхні можна клеїти екошкіру?</h3>
+      <p>Найкраще — на чисті, сухі, рівні та знежирені основи: МДФ, ДСП, дерево, пластик, метал, стару оббивку, фарбу,
+        ламіновані поверхні. Головне, щоб не було пилу, жиру та сильної пухкої основи.</p>
+    </article>
+
+    <article class="faq-item">
+      <h3>Чи підходить екошкіра для реставрації меблів з подряпинами від тварин?</h3>
+      <p>Так. Самоклеюча екошкіра підходить для маскування слідів від кігтів на диванах, кріслах, підлокітниках та інших
+        елементах. Важливо правильно підготувати основу та якісно приклеїти заплатку.</p>
+    </article>
+
+    <article class="faq-item">
+      <h3>Скільки тримається така екошкіра?</h3>
+      <p>За умови правильної підготовки поверхні та акуратної експлуатації матеріал служить довго. Він стійкий до зносу,
+        деформацій, вологи та більшості побутових забруднень.</p>
+    </article>
+
+    <article class="faq-item">
+      <h3>Чи можна використовувати для салону авто?</h3>
+      <p>Так, багато клієнтів застосовують самоклеючу екошкіру для оновлення окремих елементів салону:
+        дверні карти, підлокітники, декоративні вставки, панелі. Ми підкажемо, який тип матеріалу підійде краще.</p>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-col footer-brand">
+    <div class="footer-logo">Stroy Shop</div>
+    <p>Інтернет-магазин будівельних матеріалів. Підбір, консультація та відправка по всій Україні.</p>
+    <div class="footer-copy">© <span id="year"></span> Stroy Shop. Всі права захищені.</div>
+  </div>
+  
+  <div class="footer-col footer-nav-col">
+    <div class="footer-title">Навігація</div>
+    <nav class="footer-nav">
+      <a href="index.html">Головна / Каталог</a>
+      <a href="#productsSection">Екошкіра</a>
+      <a href="#top">Вгору сторінки</a>
+    </nav>
+  </div>
+
+  <div class="footer-col footer-coop">
+    <div class="footer-title">Співпраця</div>
+    <nav class="footer-nav">
+      <a href="opt.html">Оптовим клієнтам</a>
+      <a href="dropshipping.html">Дропшиперам</a>
+      <a href="partners.html">Партнерська програма</a>
+      <a href="jobs.html">Робота та вакансії</a>
+    </nav>
+  </div>
+  
+  <div class="footer-col footer-contacts">
+    <div class="footer-title">Контакти</div>
+    <a href="https://t.me/stroy_shop_ua" target="_blank" class="footer-link">
+      <i data-lucide="send"></i> Telegram-канал
+    </a>
+    <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" class="footer-link">
+      <i data-lucide="play-circle"></i> TikTok: @stroyshop_ua
+    </a>
+    <a href="tel:+380984927948" class="footer-phone">
+      <i data-lucide="phone"></i> +380&nbsp;98&nbsp;492&nbsp;79&nbsp;48
+    </a>
+  </div>
+
+  <div class="footer-col">
+    <div class="footer-title">Доставка</div>
+    <div class="delivery-footer-item">
+      <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="">
+      <span>Нова Пошта — оплата при отриманні або передплата</span>
+    </div>
+    <div class="delivery-footer-item">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="">
+      <span>Укрпошта — оплата при отриманні або передплата</span>
+    </div>
+  </div>
+  
+  <div class="footer-col footer-manager">
+    <div class="footer-title">Ваш менеджер</div>
+    <div class="footer-manager-box">
+      <div class="footer-manager-avatar">
+        <img src="https://i.ibb.co/xSSb5csr/unnamedda.jpg" alt="Менеджер магазину">
+      </div>
+      <div>
+        <div class="footer-manager-name">Менеджер Stroy Shop</div>
+        <a href="https://t.me/manager_stroyshop_ua" target="_blank" class="footer-link">
+          <i data-lucide="message-circle"></i> Написати в Telegram
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- PRODUCT MODAL -->
+<div id="productModalOverlay" class="modal-overlay hidden"></div>
+<div id="productModal" class="modal hidden">
+  <div class="modal-header">
+    <h3>Товар</h3>
+    <button class="modal-close" id="productModalClose"><i data-lucide="x"></i></button>
+  </div>
+  <div class="modal-body">
+    <img id="modalImage" src="" alt="">
+    <div class="modal-info">
+      <div class="filter-label" id="modalCategory"></div>
+      <h2 id="modalTitle"></h2>
+      <div>Артикул: <span id="modalSku"></span></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-desc" id="modalShort"></div>
+
+      <div class="modal-qty-row">
+        <span>Кількість:</span>
+        <div class="qty-control">
+          <input type="number" id="modalQtyInput" class="qty-input" min="1" value="1">
+          <div class="qty-arrows">
+            <button class="qty-arrow" id="modalQtyUp"><i data-lucide="chevron-up"></i></button>
+            <button class="qty-arrow" id="modalQtyDown"><i data-lucide="chevron-down"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="modalAddToCart">
+          <i data-lucide="shopping-cart"></i> Додати у кошик
+        </button>
+        <button class="btn btn-outline" id="modalToggleFull">
+          Детальний опис
+        </button>
+      </div>
+
+      <div class="modal-full" id="modalFull"></div>
+
+      <div class="modal-delivery-logos">
+        <div class="delivery-item">
+          <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="Нова Пошта">
+          <span>Нова Пошта</span>
+        </div>
+        <div class="delivery-item">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="Укрпошта">
+          <span>Укрпошта</span>
+        </div>
+      </div>
+
+      <div class="modal-help">
+        <div class="hero-info-row">
+          <i data-lucide="truck"></i>
+          <div>
+            <div class="hero-info-title">Доставка по Україні</div>
+            <div class="hero-info-text">Нова Пошта або Укрпошта, оплата при отриманні або передплата</div>
+          </div>
+        </div>
+        <div class="hero-info-row">
+          <i data-lucide="shield-check"></i>
+          <div>
+            <div class="hero-info-title">Гарантія якості</div>
+            <div class="hero-info-text">Перевірені матеріали та постачальники</div>
+          </div>
+        </div>
+        <div class="hero-info-row">
+          <i data-lucide="headphones"></i>
+          <div>
+            <div class="hero-info-title">Живий менеджер</div>
+            <div class="hero-info-text">Telegram-консультації щодо підбору екошкіри</div>
+          </div>
+        </div>
+        <div class="modal-help-card">
+          <div class="modal-help-avatar">
+            <img src="https://i.ibb.co/xSSb5csr/unnamedda.jpg" alt="Менеджер">
+          </div>
+          <div class="modal-help-content">
+            <div class="modal-help-title">Потрібна допомога з вибором екошкіри?</div>
+            <a href="https://t.me/manager_stroyshop_ua" target="_blank" class="btn btn-outline">
+              <i data-lucide="message-circle"></i> Зв'язатися з менеджером
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutOverlay" class="modal-overlay hidden"></div>
+<div id="checkoutModal" class="modal hidden">
+  <div class="modal-header">
+    <h3>Оформлення замовлення</h3>
+    <button class="modal-close" id="checkoutClose"><i data-lucide="x"></i></button>
+  </div>
+  <div class="modal-body">
+    <div class="modal-info">
+      <p class="modal-desc">
+        Заповніть контактні дані. Після натискання кнопки відкриється Telegram
+        з уже заповненим повідомленням. Ви просто натиснете «Відправити».
+      </p>
+      <form class="checkout-form" id="checkoutForm">
+        <label>Ім’я:<br><input id="checkoutName" required></label>
+        <label>Телефон:<br><input id="checkoutPhone" required></label>
+        <label>Місто:<br><input id="checkoutCity" required></label>
+        <label>Служба доставки:<br>
+          <select id="checkoutService" required>
+            <option value="Нова Пошта">Нова Пошта</option>
+            <option value="Укрпошта">Укрпошта</option>
+          </select>
+        </label>
+        <label>Відділення отримання:<br><input id="checkoutPost" required></label>
+        <button class="btn btn-primary" type="submit">Відправити в Telegram</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div id="cartOverlay" class="cart-overlay hidden"></div>
+<aside id="cartDrawer" class="cart-drawer">
+  <div class="cart-header">
+    <h3>Кошик</h3>
+    <button class="modal-close" id="cartClose"><i data-lucide="x"></i></button>
+  </div>
+  <div class="cart-body" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>Разом:</span><span id="cartTotal">0 грн</span>
+    </div>
+    <button class="btn btn-primary" id="cartCheckoutBtn">Оформити замовлення</button>
+    <button class="btn btn-outline" id="cartClearBtn">Очистити кошик</button>
+  </div>
+</aside>
+
+<!-- TOAST -->
+<div id="toast" class="toast">Повідомлення</div>
+
+<script>
+  /* ============================
+     ГЛОБАЛЬНІ НАЛАШТУВАННЯ
+  ============================= */
+  const TELEGRAM_USERNAME = 'manager_stroyshop_ua';
+  const XML_FEED_URL = 'products.xml';
+
+  /* Категорії по ключовим словам (як на головній) */
+  const CATEGORY_KEYWORDS = [
+    { name: '3D панелі', keywords: ['3D панель', 'Панель стеновая 3D'] },
+    { name: 'ПВХ панелі', keywords: ['ПВХ панель', 'ПВХ плита'] },
+    { name: 'Стенові панелі', keywords: ['Панель стеновая', 'Панель-рейка в рулоне', 'Панель-рейка', 'Панель рейка'] },
+    { name: 'Плитка', keywords: ['Виниловая плитка', 'ПВХ плитка', 'Полиуретановая плитка', 'Алюминиевая плитка', 'LVT плитка', 'Плитка под ковролин'] },
+    { name: 'PET плитка', keywords: ['PET мозаика', 'Стеновая PET плитка'] },
+    { name: 'Профілі та декор', keywords: ['Профиль', 'Рейка декоративная', 'Молдинг'] },
+    { name: 'Плінтуси', keywords: ['Плинтус РР', 'Плинтус виниловый', 'Плинтус', 'Плінтус'] },
+    { name: 'Самоклеюча плівка', keywords: ['Самоклеющаяся пленка', 'Пленка на самоклейке', 'Пленка оконная'] },
+    { name: 'Теплі та самоклейні шпалери', keywords: ['Тёплые обои', 'Самоклеющиеся обои'] },
+    { name: 'Мозаїка', keywords: ['Мозаика из декоративного стекла'] },
+    { name: 'Вінілові покриття', keywords: ['Покрытие виниловое', 'Напольное виниловое покрытие'] },
+    { name: 'Підлога-пазл', keywords: ['Пол пазл', 'Пол-пазл', 'Пол-пазл плюшевый'] },
+    { name: 'Килимки', keywords: ['Коврик детский', 'Детский термоковрик', 'Коврик', 'Влагопоглощающий коврик'] },
+    { name: 'Дзеркала', keywords: ['Зеркало', 'Зеркало акриловое', 'Зеркальный декор'] },
+    { name: 'Екошкіра', keywords: ['Самоклеющая экокожа'] },
+    { name: 'Манікюр', keywords: ['Маникюрный набор'] },
+    { name: 'Меблі й зберігання', keywords: [
+        'Контейнер для хранения','Пластиковая тумба','Садовый стол','Складной стул',
+        'Стеллаж','Этажерка','Полка-органайзер','Шкаф',
+        'Надувное кресло','Надувной диван',
+        'Набор мебели','Комплект надувной мебели'
+      ] }
+  ];
+
+  function getCategoryFromTitle(title) {
+    const lower = title.toLowerCase();
+    for (const group of CATEGORY_KEYWORDS) {
+      for (const key of group.keywords) {
+        if (lower.includes(key.toLowerCase())) {
+          return group.name;
+        }
+      }
+    }
+    return 'Інше';
+  }
+
+  /* ЕКОШКІРА — КЛЮЧОВІ СЛОВА ДЛЯ ФІЛЬТРА */
+  const EKO_KEYWORDS = [
+    'Самоклеющая экокожа',
+    'Самоклеюча екошкіра',
+    'Екошкіра самоклеюча'
+  ];
+
+  function isEkoProduct(title){
+    const t = title.toLowerCase();
+    return EKO_KEYWORDS.some(k => t.includes(k.toLowerCase()));
+  }
+
+  /* Дефолтні товари, якщо XML не завантажиться або немає екошкіри */
+  const DEFAULT_EKO_PRODUCTS = [
+    {
+      id: 9101,
+      title: 'Самоклеюча екошкіра в рулоні, чорна, 45 см × 2 м',
+      category: 'Екошкіра',
+      price: 399,
+      sku: 'EKO-ROLL-BLACK-45X200',
+      img: 'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      unit: 'рулон',
+      short: 'Самоклеюча екошкіра для реставрації меблів, дверей та салону авто. Чорний колір, рулон 45×200 см.',
+      full: 'Самоклеящаяся экокожа в рулоне поможет легко и быстро устранить дефекты изделий из натуральной кожи или её аналогов.\n\n' +
+            '- Подходит для мебели, дверей, полок, подлокотников, подголовников и элементов салона авто\n' +
+            '- Можно использовать в виде фигурных заплаток или длинных полос\n' +
+            '- Прочный материал, устойчив к износу, деформациям, влаге и загрязнениям\n' +
+            '- Позволяет продлить срок службы мебели и интерьера без дорогой перетяжки'
+    },
+    {
+      id: 9102,
+      title: 'Самоклеюча екошкіра в рулоні, бежева, 60 см × 1 м',
+      category: 'Екошкіра',
+      price: 349,
+      sku: 'EKO-ROLL-BEIGE-60X100',
+      img: 'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      unit: 'рулон',
+      short: 'Бежева самоклеюча екошкіра для оновлення м’яких меблів та декоративних панелей.',
+      full: 'Самоклеющая экокожа в рулоне подходит для аккуратной реставрации мягкой мебели, декоративных панелей и других поверхностей.\n\n' +
+            '- Обновление внешнего вида без замены изделия\n' +
+            '- Может применяться как в виде заплаток, так и цельных полос\n' +
+            '- Легко резать и клеить на ровную подготовленную основу\n' +
+            '- Сочетается с разными интерьерными решениями благодаря нейтральному бежевому цвету'
+    }
+  ];
+
+  let PRODUCTS = [];
+  let cart = JSON.parse(localStorage.getItem('stroy_shop_cart_v1') || '[]');
+
+  function saveCart(){
+    localStorage.setItem('stroy_shop_cart_v1', JSON.stringify(cart));
+  }
+  function money(n){ return n + ' грн'; }
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2000);
+  }
+  function openTelegram(msg){
+    const url = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  /* ЗАВАНТАЖЕННЯ ТОВАРІВ З XML */
+  async function loadProductsFromXML(){
+    try{
+      const res = await fetch(XML_FEED_URL, { cache: 'no-store' });
+      if(!res.ok) throw new Error('Bad status: ' + res.status);
+
+      const text = await res.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, 'application/xml');
+
+      const items = Array.from(xml.getElementsByTagName('item'));
+      if(!items.length){
+        console.warn('XML: не знайдено <item>. Використовую дефолтну екошкіру.');
+        PRODUCTS = [...DEFAULT_EKO_PRODUCTS];
+        return;
+      }
+
+      const get = (node, tagName) => {
+        const el = node.getElementsByTagName(tagName)[0];
+        return el ? (el.textContent || '').trim() : '';
+      };
+
+      const placeholderImg = 'https://via.placeholder.com/600x400?text=Товар';
+
+      let loaded = items
+        .map((node, index) => {
+          const rawId =
+            get(node, 'g:id') ||
+            get(node, 'id') ||
+            String(index + 1);
+
+          const numericId = Number((rawId || '').replace(/\D/g,'')) || (index + 1);
+
+          const title =
+            get(node, 'title') ||
+            get(node, 'g:title') ||
+            `Товар ${numericId}`;
+
+          const description =
+            get(node, 'description') ||
+            get(node, 'g:description') ||
+            '';
+
+          const priceText = get(node, 'g:price') || '0';
+          const price = parseFloat(
+            priceText
+              .replace(',', '.')
+              .replace(/[^\d.]/g, '')
+          ) || 0;
+
+          const img =
+            get(node, 'g:image_link') ||
+            get(node, 'g:additional_image_link') ||
+            placeholderImg;
+
+          const availability = (get(node, 'g:availability') || '').toLowerCase();
+
+          if(availability && availability !== 'in stock'){
+            return null;
+          }
+
+          return {
+            id: numericId,
+            title,
+            category: getCategoryFromTitle(title),
+            price,
+            sku: rawId,
+            img,
+            unit:'шт',
+            short: description ? description.slice(0,120) : 'Товар з XML-прайсу',
+            full: description || 'Детальний опис товару з XML-прайсу.'
+          };
+        })
+        .filter(Boolean);
+
+      /* Залишаємо тільки ЕКОШКІРУ за назвою */
+      loaded = loaded.filter(p => isEkoProduct(p.title));
+
+      if(!loaded.length){
+        console.warn('У XML не знайдено товарів Екошкіра. Використовую дефолтні товари.');
+        PRODUCTS = [...DEFAULT_EKO_PRODUCTS];
+      } else {
+        PRODUCTS = loaded;
+      }
+    }catch(err){
+      console.error('Помилка завантаження XML:', err);
+      PRODUCTS = [...DEFAULT_EKO_PRODUCTS];
+      showToast('Не вдалося прочитати products.xml, показуємо тестові товари Екошкіра.');
+    }
+  }
+
+  /* РЕНДЕР ТОВАРІВ */
+  const productsGrid = document.getElementById('productsGrid');
+  const noProductsEl = document.getElementById('noProducts');
+
+  function highlightSale(text){
+    if(!text) return text;
+    return text.replace(/Уценка/gi, '<span class="badge-sale">Уценка</span>');
+  }
+
+  function renderProducts(list){
+    productsGrid.innerHTML = '';
+
+    if(!list.length){
+      noProductsEl.classList.remove('hidden');
+      return;
+    }else{
+      noProductsEl.classList.add('hidden');
+    }
+
+    list.forEach((p, idx)=>{
+      const card = document.createElement('article');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-image-wrapper">
+          <img src="${p.img}" alt="${p.title}">
+          <button class="product-quick-btn js-quick-view" data-id="${p.id}">Швидкий перегляд</button>
+        </div>
+        <div class="product-tag">${p.category || 'Екошкіра'}</div>
+        <div class="product-title">${highlightSale(p.title)}</div>
+        <div class="product-meta">
+          <span>Артикул: ${p.sku}</span>
+          <span>${p.unit}</span>
+        </div>
+        <div class="product-bottom">
+          <div class="product-price">${money(p.price)}</div>
+          <div class="qty-control">
+            <input type="number" class="qty-input js-qty-input" data-id="${p.id}" min="1" value="1">
+            <div class="qty-arrows">
+              <button class="qty-arrow js-qty-up" data-id="${p.id}"><i data-lucide="chevron-up"></i></button>
+              <button class="qty-arrow js-qty-down" data-id="${p.id}"><i data-lucide="chevron-down"></i></button>
+            </div>
+          </div>
+          <button class="btn btn-primary product-add-btn js-add-to-cart" data-id="${p.id}">
+            <i data-lucide="shopping-cart"></i> У кошик
+          </button>
+        </div>
+      `;
+      productsGrid.appendChild(card);
+    });
+
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.product-card').forEach((card, idx) => {
+        setTimeout(() => card.classList.add('show'), 40 * idx);
+      });
+    });
+  }
+
+  /* ФІЛЬТР ТОВАРІВ (пошук, ціна, сортування) */
+  function filterProducts(){
+    let list = [...PRODUCTS];
+
+    const qEl = document.getElementById('searchInput');
+    const minEl = document.getElementById('minPrice');
+    const maxEl = document.getElementById('maxPrice');
+    const sortEl = document.getElementById('sortSelect');
+
+    const q = (qEl?.value || '').trim().toLowerCase();
+    if(q){
+      list = list.filter(p=>p.title.toLowerCase().includes(q));
+    }
+
+    const min = parseFloat(minEl?.value || '0');
+    const max = parseFloat(maxEl?.value || '0');
+    if(min>0) list = list.filter(p=>p.price >= min);
+    if(max>0) list = list.filter(p=>p.price <= max);
+
+    const sort = sortEl?.value || 'default';
+    if(sort === 'price-asc') list.sort((a,b)=>a.price-b.price);
+    if(sort === 'price-desc') list.sort((a,b)=>b.price-a.price);
+
+    renderProducts(list);
+  }
+
+  document.getElementById('searchInput').addEventListener('input', filterProducts);
+  document.getElementById('minPrice').addEventListener('input', filterProducts);
+  document.getElementById('maxPrice').addEventListener('input', filterProducts);
+  document.getElementById('sortSelect').addEventListener('change', filterProducts);
+
+  /* Делегування подій по товарах */
+  productsGrid.addEventListener('click', (e)=>{
+    const quick = e.target.closest('.js-quick-view');
+    if(quick){
+      const id = Number(quick.dataset.id);
+      openProductModal(id);
+      return;
+    }
+
+    const addBtn = e.target.closest('.js-add-to-cart');
+    if(addBtn){
+      const id = Number(addBtn.dataset.id);
+      addToCart(id);
+      return;
+    }
+
+    const up = e.target.closest('.js-qty-up');
+    if(up){
+      const id = Number(up.dataset.id);
+      changeQty(id, +1);
+      return;
+    }
+
+    const down = e.target.closest('.js-qty-down');
+    if(down){
+      const id = Number(down.dataset.id);
+      changeQty(id, -1);
+      return;
+    }
+  });
+
+  function changeQty(id, delta){
+    const input = document.querySelector(`.js-qty-input[data-id="${id}"]`);
+    if(!input) return;
+    let v = parseFloat(input.value || '1') + delta;
+    if(v < 1) v = 1;
+    input.value = v;
+  }
+
+  /* КОРЗИНА */
+  function addToCart(id, qtyFromModal){
+    const product = PRODUCTS.find(p=>p.id===id);
+    if(!product) return;
+
+    let qty;
+    if(typeof qtyFromModal === 'number'){
+      qty = qtyFromModal;
+    }else{
+      const input = document.querySelector(`.js-qty-input[data-id="${id}"]`);
+      qty = parseFloat(input?.value || '1');
+    }
+    if(qty < 1 || isNaN(qty)) qty = 1;
+
+    const existing = cart.find(it=>it.id===id);
+    if(existing) existing.qty += qty;
+    else cart.push({...product, qty});
+
+    saveCart();
+    updateCartUI();
+    showToast('Товар додано у кошик');
+  }
+
+  function updateCartUI(){
+    const box = document.getElementById('cartItems');
+    box.innerHTML = '';
+    let total = 0;
+
+    cart.forEach(item=>{
+      total += item.price * item.qty;
+
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <img src="${item.img}" 
+             alt="${item.title}" 
+             style="width:100%;border-radius:10px;margin-bottom:8px;">
+
+        <strong>${item.title}</strong><br>
+
+        ${item.qty} × ${item.price} грн = ${item.qty * item.price} грн
+
+        <button style="
+            float:right;
+            border:0;
+            background:none;
+            color:var(--danger);
+            cursor:pointer;
+            font-size:18px
+        " data-id="${item.id}" class="js-remove-cart">×</button>
+      `;
+      box.appendChild(div);
+    });
+
+    document.getElementById('cartTotal').textContent = money(total);
+    document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+
+    const cartBtn = document.querySelector('.cart-btn');
+    cartBtn.classList.remove('cart-added');
+    void cartBtn.offsetWidth;
+    cartBtn.classList.add('cart-added');
+
+    if (cart.length > 0) {
+      cartBtn.classList.add('cart-has-items');
+    } else {
+      cartBtn.classList.remove('cart-has-items');
+    }
+  }
+
+  document.getElementById('cartItems').addEventListener('click',(e)=>{
+    const btn = e.target.closest('.js-remove-cart');
+    if(!btn) return;
+    const id = Number(btn.dataset.id);
+    cart = cart.filter(i=>i.id!==id);
+    saveCart();
+    updateCartUI();
+  });
+
+  document.getElementById('cartClearBtn').addEventListener('click',()=>{
+    cart = [];
+    saveCart();
+    updateCartUI();
+  });
+
+  /* ВІДКРИТТЯ / ЗАКРИТТЯ КОРЗИНИ */
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartOverlay = document.getElementById('cartOverlay');
+
+  function toggleCart(open){
+    if(open){
+      cartDrawer.classList.add('open');
+      cartOverlay.classList.remove('hidden');
+    }else{
+      cartDrawer.classList.remove('open');
+      cartOverlay.classList.add('hidden');
+    }
+  }
+
+  document.getElementById('openCartBtn').addEventListener('click', ()=>toggleCart(true));
+  document.getElementById('cartClose').addEventListener('click', ()=>toggleCart(false));
+  cartOverlay.addEventListener('click', ()=>toggleCart(false));
+
+  /* МОДАЛКА ТОВАРУ */
+  const productModal = document.getElementById('productModal');
+  const productModalOverlay = document.getElementById('productModalOverlay');
+  let currentProductId = null;
+
+  const modalImage = document.getElementById('modalImage');
+  const modalCategory = document.getElementById('modalCategory');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalSku = document.getElementById('modalSku');
+  const modalPrice = document.getElementById('modalPrice');
+  const modalShort = document.getElementById('modalShort');
+  const modalFull = document.getElementById('modalFull');
+  const modalQtyInput = document.getElementById('modalQtyInput');
+
+  function formatDescription(text){
+    if (!text) return '';
+    text = text
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .replace(/\u00A0/g, ' ')
+      .trim();
+
+    const lines = text.split('\n');
+    const htmlParts = [];
+
+    let inUl = false;
+    let inOl = false;
+
+    const closeLists = () => {
+      if (inUl) { htmlParts.push('</ul>'); inUl = false; }
+      if (inOl) { htmlParts.push('</ol>'); inOl = false; }
+    };
+
+    for (let rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line) continue;
+
+      if (/^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ0-9].*:\s*$/.test(line)) {
+        closeLists();
+        const title = line.replace(/:\s*$/, '');
+        htmlParts.push(`<h3>${title}</h3>`);
+        continue;
+      }
+
+      const bulletMatch = line.match(/^[-–•*]\s+(.+)/);
+      if (bulletMatch) {
+        if (!inUl) {
+          closeLists();
+          htmlParts.push('<ul>');
+          inUl = true;
+        }
+        htmlParts.push(`<li>${bulletMatch[1]}</li>`);
+        continue;
+      }
+
+      const numMatch = line.match(/^(\d+)[\).\s]\s*(.+)/);
+      if (numMatch) {
+        if (!inOl) {
+          closeLists();
+          htmlParts.push('<ol>');
+          inOl = true;
+        }
+        htmlParts.push(`<li>${numMatch[2]}</li>`);
+        continue;
+      }
+
+      closeLists();
+      htmlParts.push(`<p>${line}</p>`);
+    }
+
+    closeLists();
+    return htmlParts.join('');
+  }
+
+  function openProductModal(id){
+    const p = PRODUCTS.find(x => x.id === id);
+    if (!p) return;
+    currentProductId = id;
+
+    modalImage.src = p.img;
+    modalCategory.textContent = p.category || 'Екошкіра';
+    modalTitle.innerHTML = highlightSale(p.title);
+    modalSku.textContent = p.sku;
+    modalPrice.textContent = money(p.price);
+    modalShort.innerHTML = p.short;
+    modalFull.innerHTML = formatDescription(p.full);
+
+    modalQtyInput.value = 1;
+    modalFull.style.display = 'none';
+
+    productModal.classList.remove('hidden');
+    productModalOverlay.classList.remove('hidden');
+
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  }
+
+  function closeProductModal(){
+    productModal.classList.add('hidden');
+    productModalOverlay.classList.add('hidden');
+  }
+
+  document.getElementById('productModalClose').addEventListener('click', closeProductModal);
+  productModalOverlay.addEventListener('click', closeProductModal);
+
+  document.getElementById('modalQtyUp').addEventListener('click', () => {
+    let v = parseFloat(modalQtyInput.value || '1') + 1;
+    if (v < 1) v = 1;
+    modalQtyInput.value = v;
+  });
+
+  document.getElementById('modalQtyDown').addEventListener('click', () => {
+    let v = parseFloat(modalQtyInput.value || '1') - 1;
+    if (v < 1) v = 1;
+    modalQtyInput.value = v;
+  });
+
+  document.getElementById('modalAddToCart').addEventListener('click', () => {
+    if (currentProductId == null) return;
+    const qty = parseFloat(modalQtyInput.value || '1');
+    addToCart(currentProductId, qty);
+    closeProductModal();
+  });
+
+  document.getElementById('modalToggleFull').addEventListener('click', () => {
+    modalFull.style.display = modalFull.style.display === 'block' ? 'none' : 'block';
+  });
+
+  const modalImg = document.getElementById('modalImage');
+  modalImg.addEventListener('click', () => {
+    modalImg.classList.toggle('zoomed');
+  });
+
+  /* CHECKOUT */
+  const checkoutModal = document.getElementById('checkoutModal');
+  const checkoutOverlay = document.getElementById('checkoutOverlay');
+
+  function openCheckout(){
+    if(cart.length===0){
+      alert('Кошик порожній');
+      return;
+    }
+    checkoutModal.classList.remove('hidden');
+    checkoutOverlay.classList.remove('hidden');
+  }
+  function closeCheckout(){
+    checkoutModal.classList.add('hidden');
+    checkoutOverlay.classList.add('hidden');
+  }
+
+  document.getElementById('cartCheckoutBtn').addEventListener('click', openCheckout);
+  document.getElementById('checkoutClose').addEventListener('click', closeCheckout);
+  checkoutOverlay.addEventListener('click', closeCheckout);
+
+  document.getElementById('checkoutForm').addEventListener('submit',(e)=>{
+    e.preventDefault();
+    if(cart.length===0){
+      alert('Кошик порожній');
+      return;
+    }
+    const name = document.getElementById('checkoutName').value;
+    const phone = document.getElementById('checkoutPhone').value;
+    const city = document.getElementById('checkoutCity').value;
+    const post = document.getElementById('checkoutPost').value;
+    const service = document.getElementById('checkoutService').value;
+
+    let text = '🧵 Замовлення екошкіри%0A';
+    text += `👤 Ім’я: ${name}%0A`;
+    text += `📞 Телефон: ${phone}%0A`;
+    text += `🏙 Місто: ${city}%0A`;
+    text += `🚚 Служба доставки: ${service}%0A`;
+    text += `📦 Відділення: ${post}%0A%0A`;
+    text += 'Товари:%0A';
+
+    let total = 0;
+    cart.forEach(item=>{
+      const line = `${item.title} — ${item.qty} ${item.unit} = ${item.qty*item.price} грн`;
+      total += item.qty*item.price;
+      text += encodeURIComponent(line) + '%0A';
+    });
+    text += `%0AРазом: ${total} грн`;
+
+    const url = `https://t.me/${TELEGRAM_USERNAME}?text=${text}`;
+    window.open(url,'_blank');
+
+    closeCheckout();
+  });
+
+  /* Кнопки консультації */
+  document.querySelectorAll('.js-consult').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      openTelegram('Потрібна консультація щодо самоклеючої екошкіри (реставрація меблів/авто/декор)');
+    });
+  });
+
+  /* Скрол до товарів */
+  document.querySelectorAll('.js-scroll-products').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.getElementById('productsSection').scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  /* INIT */
+  (async function init(){
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+    await loadProductsFromXML();
+    renderProducts(PRODUCTS);
+    updateCartUI();
+
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  })();
+</script>
+
+</body>
+</html>
