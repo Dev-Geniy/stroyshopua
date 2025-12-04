@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Партнерська програма — Stroy Shop</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg:#050509;
+      --bg2:#0c0d12;
+      --card:rgba(255,255,255,0.04);
+      --card2:rgba(255,255,255,0.06);
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --muted:#a4a9b7;
+      --text:#f1f1f4;
+      --radius:18px;
+      --border:rgba(255,255,255,0.1);
+      --shadow:0 20px 50px rgba(0,0,0,0.55);
+      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:"Inter",sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,122,26,0.16), transparent 55%),
+        var(--bg);
+      color:var(--text); line-height:1.45;
+    }
+    a{text-decoration:none;color:inherit;}
+
+    /* HEADER */
+    header{
+      position:sticky;
+      top:0;
+      backdrop-filter:blur(14px);
+      background:rgba(5,5,9,0.82);
+      border-bottom:1px solid var(--border);
+      padding:18px 24px;
+      display:flex;justify-content:space-between;align-items:center;
+      z-index:10;
+    }
+    .logo{
+      font-size:clamp(20px,3vw,28px);
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+    .btn{
+      display:flex;align-items:center;gap:8px;
+      padding:12px 20px;
+      background:var(--grad);
+      border:none;border-radius:var(--radius);
+      color:#000;font-weight:700;font-size:14px;
+      cursor:pointer;transition:.25s;
+      box-shadow:var(--shadow);
+    }
+    .btn:hover{transform:translateY(-3px);}
+    .btn-outline{
+      background:transparent;
+      border:1px solid var(--accent);
+      color:var(--accent2);
+      box-shadow:none;
+    }
+
+    main{
+      max-width:1100px;
+      margin:40px auto 60px;
+      padding:0 20px;
+    }
+
+    /* HERO */
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:32px;
+      align-items:center;
+      margin-bottom:40px;
+    }
+    .hero-title{
+      font-size:clamp(30px,4vw,46px);
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      line-height:1.1;
+      margin-bottom:14px;
+    }
+    .hero-sub{
+      color:var(--muted);
+      font-size:16px;
+      max-width:550px;
+      margin-bottom:18px;
+    }
+    .hero-tags{
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin-bottom:20px;
+    }
+    .hero-tag{
+      padding:6px 12px;
+      font-size:12px;
+      color:var(--muted);
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--border);
+    }
+    .hero-card{
+      background:var(--card2);
+      border-radius:22px;
+      padding:20px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+    .hero-card-title{
+      display:flex;align-items:center;gap:8px;
+      font-size:16px;font-weight:700;color:var(--text);
+      margin-bottom:10px;
+    }
+    .hero-card p{
+      font-size:14px;color:var(--muted);line-height:1.4;
+    }
+
+    /* FEATURES */
+    .section-title{
+      font-size:28px;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+    .section-sub{
+      color:var(--muted);
+      font-size:15px;
+      max-width:620px;
+      margin-bottom:24px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+    .feature-card{
+      background:var(--card);
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+    .feature-card h3{
+      font-size:16px;
+      display:flex;gap:8px;align-items:center;
+      color:var(--accent2);
+      margin-bottom:8px;
+    }
+    .feature-card p{
+      font-size:14px;color:var(--muted);
+    }
+
+    /* DEVELOPMENT NOTICE */
+    .dev-box{
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:26px;
+      box-shadow:var(--shadow);
+      text-align:center;
+      margin:50px 0;
+    }
+    .dev-box h2{
+      font-size:24px;font-weight:800;margin-bottom:6px;
+    }
+    .dev-box p{
+      font-size:15px;color:var(--muted);
+      max-width:600px;margin:0 auto;
+    }
+
+    /* FOOTER */
+    footer{
+      text-align:center;
+      padding:22px;
+      border-top:1px solid var(--border);
+      margin-top:40px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr;gap:20px;}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Stroy Shop</div>
+  <a href="index.html" class="btn btn-outline">
+    <i data-lucide="arrow-left"></i> Назад
+  </a>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <h1 class="hero-title">Партнерська програма Stroy Shop</h1>
+      <p class="hero-sub">
+        Ми створюємо систему, що дозволить кожному партнеру отримувати дохід за переходи та покупки клієнтів.
+        У майбутньому в кабінеті буде доступна статистика, унікальні посилання, UTM-генератор та рівні партнерства.
+      </p>
+
+      <div class="hero-tags">
+        <span class="hero-tag">Партнерські винагороди</span>
+        <span class="hero-tag">Баланс та статистика</span>
+        <span class="hero-tag">UTM-генератор</span>
+        <span class="hero-tag">Особистий кабінет</span>
+      </div>
+    </div>
+
+    <aside class="hero-card">
+      <div class="hero-card-title">
+        <i data-lucide="users"></i>
+        Програма для тих, хто хоче заробляти з нами
+      </div>
+      <p>
+        Партнерський кабінет відкриватиме доступ до вашого унікального реферального посилання,
+        статистики переходів, замовлень та доходу.
+      </p>
+    </aside>
+  </section>
+
+  <!-- FEATURES -->
+  <section>
+    <h2 class="section-title">Що буде доступно в партнерській програмі</h2>
+    <p class="section-sub">Ми розробляємо систему, яка стане зручною, зрозумілою і вигідною для кожного партнера.</p>
+
+    <div class="grid">
+      <div class="feature-card">
+        <h3><i data-lucide="link"></i> Унікальне партнерське посилання</h3>
+        <p>Отримайте свій персональний URL для соцмереж, сайтів або реклами.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3><i data-lucide="bar-chart-2"></i> Мінімальна статистика</h3>
+        <p>Кількість переходів, замовлень та ваш заробіток у реальному часі.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3><i data-lucide="wand-2"></i> UTM-генератор</h3>
+        <p>Легко створюйте UTM-посилання для відстеження джерел трафіку.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3><i data-lucide="trophy"></i> Рівні партнерів</h3>
+        <p>Чим більше переходів і замовлень — тим вищий рівень та вигідніші умови.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3><i data-lucide="wallet"></i> Нарахування винагород</h3>
+        <p>Прозора система розрахунку та можливість виводу коштів.</p>
+      </div>
+
+      <div class="feature-card">
+        <h3><i data-lucide="life-buoy"></i> Підтримка</h3>
+        <p>Менеджер допоможе з будь-якими питаннями та підключенням.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVELOPMENT NOTICE -->
+  <section class="dev-box">
+    <h2>Партнерська програма у розробці</h2>
+    <p>
+      Ми активно працюємо над запуском повноцінного партнерського кабінету.
+      Слідкуйте за оновленнями — зовсім скоро ви зможете зареєструватися та почати заробляти разом зі Stroy Shop.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> Stroy Shop — Партнерська програма
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
