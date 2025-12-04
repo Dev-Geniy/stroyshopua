@@ -732,6 +732,7 @@ document.getElementById('checkoutForm').addEventListener('submit',(e)=>{
   const phone = document.getElementById('checkoutPhone').value;
   const city = document.getElementById('checkoutCity').value;
   const post = document.getElementById('checkoutPost').value;
+  const service = document.getElementById('checkoutService').value;
 
   let text = '🛒 Нове замовлення%0A';
   text += `👤 Ім’я: ${name}%0A`;
@@ -739,6 +740,7 @@ document.getElementById('checkoutForm').addEventListener('submit',(e)=>{
   text += `🏙 Місто: ${city}%0A`;
   text += `📦 Відділення НП: ${post}%0A%0A`;
   text += 'Товари:%0A';
+  text += `🚚 Доставка: ${service}%0A`;
 
   let total = 0;
   cart.forEach(item=>{
