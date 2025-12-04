@@ -1240,3 +1240,55 @@ footer{
   0% { transform: translateY(10px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
+
+/* В КАРТОЧКЕ ТОВАРА ЛОГО ПОЧТЫ */
+.modal-delivery-logos {
+  display:flex;
+  gap:16px;
+  margin:14px 0 6px;
+}
+
+.modal-delivery-logos .delivery-item {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,0.04);
+  padding:6px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+}
+
+.modal-delivery-logos img {
+  width:32px;
+  height:32px;
+  object-fit:contain;
+}
+
+/* ЛОГО ПООЧТЫ В ФУТЕРЕ */
+.delivery-footer-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:6px;
+}
+
+.delivery-footer-item img {
+  width:26px;
+  height:26px;
+  object-fit:contain;
+}
+
+/* Выбор почты в форме */
+.checkout-form select {
+  width:100%;
+  padding:8px;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  background:var(--bg2);
+  color:var(--text);
+  font-size:14px;
+}
+
+.footer-coop .footer-nav a:hover {
+  color: var(--accent);
+}
