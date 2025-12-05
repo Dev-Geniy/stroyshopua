@@ -356,20 +356,89 @@
       flex-wrap:wrap;
     }
 
-    .cd-item{
-      min-width:70px;
-      padding:10px 14px;
-      border-radius:14px;
-      background:var(--card);
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
+/* базовий стиль (мобільний) */
+.cd-item{
+  min-width:70px;
+  padding:10px 14px;
+  border-radius:14px;
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+}
 
-    .cd-number{
-      font-size:22px;
-      font-weight:800;
-      color:var(--accent2);
-    }
+.cd-number{
+  font-size:24px;
+  font-weight:800;
+  color:var(--accent2);
+  line-height:1;
+}
+
+.cd-label{
+  font-size:11px;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+
+/* 📱 Телефони (дуже маленькі екрани) */
+@media (max-width:480px){
+  .cd-item{
+    min-width:55px;
+    padding:8px 10px;
+  }
+  .cd-number{
+    font-size:20px;
+  }
+  .cd-label{
+    font-size:9px;
+  }
+}
+
+
+/* 📲 Планшети */
+@media (min-width:481px) and (max-width:900px){
+  .cd-item{
+    min-width:80px;
+    padding:12px 16px;
+  }
+  .cd-number{
+    font-size:32px;
+  }
+  .cd-label{
+    font-size:12px;
+  }
+}
+
+
+/* 🖥 Великі екрани (ПК) */
+@media (min-width:901px){
+  .cd-item{
+    min-width:120px;
+    padding:20px 24px;
+  }
+  .cd-number{
+    font-size:56px;
+  }
+  .cd-label{
+    font-size:14px;
+  }
+}
+
+
+/* 🖥💎 Дуже широкі екрани (преміум вигляд) */
+@media (min-width:1400px){
+  .cd-item{
+    min-width:150px;
+    padding:26px 32px;
+  }
+  .cd-number{
+    font-size:72px;
+  }
+  .cd-label{
+    font-size:16px;
+  }
+}
+
 
     .cd-label{
       font-size:11px;
@@ -601,6 +670,61 @@
         justify-content:center;
       }
     }
+    
+    .big-pack-card{
+  width:100%;
+  margin-top:32px;
+  background:rgba(255,122,26,0.08);
+  border:1px solid var(--accent);
+  border-radius:22px;
+  padding:28px;
+  box-shadow:var(--shadow);
+  animation:fadeUp .7s ease both;
+}
+
+.big-pack-title{
+  font-size:24px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--accent2);
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.big-pack-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.big-pack-list li{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:16px;
+  color:var(--text);
+}
+
+.big-pack-list li i{
+  color:var(--accent2);
+  width:22px;
+  height:22px;
+}
+
+/* ПК — більший текст */
+@media(min-width:900px){
+  .big-pack-title{
+    font-size:28px;
+  }
+  .big-pack-list li{
+    font-size:18px;
+  }
+}
+
   </style>
 </head>
 
@@ -749,6 +873,7 @@
 </section>
 
 <!-- BENEFITS -->
+<!-- BENEFITS -->
 <section class="section">
   <h2 class="title">Що ти отримаєш</h2>
 
@@ -774,20 +899,23 @@
       <p>Ми супроводжуємо до перших результатів.</p>
     </div>
 
-    <!-- BIG CARD -->
-    <div class="card" style="border:1px solid var(--accent);background:rgba(255,122,26,0.08);">
-      <h3><i data-lucide="star"></i> Стартовий пакет «Перші продажі»</h3>
-      <ul style="margin-top:8px;">
-        <li>Надійний постачальник з вигідними цінами</li>
-        <li>Автоматична вигрузка 1000+ товарів у 1 клік</li>
-        <li>Список сайтів для безкоштовного розміщення товарів</li>
-        <li>Перші продажі під супроводом наставника</li>
-        <li>Професійні шаблони контенту для старту</li>
-      </ul>
-    </div>
-
   </div>
+
+  <!-- ⭐ ВЕЛИКА ПРЕМІАЛЬНА КАРТКА НА ВСЮ ШИРИНУ -->
+  <div class="big-pack-card">
+    <h3 class="big-pack-title"><i data-lucide="star"></i> Стартовий пакет «Перші продажі»</h3>
+
+    <ul class="big-pack-list">
+      <li><i data-lucide="factory"></i> Надійний постачальник з вигідними цінами</li>
+      <li><i data-lucide="download-cloud"></i> Автоматична вигрузка 1000+ товарів у 1 клік</li>
+      <li><i data-lucide="globe"></i> Список сайтів для безкоштовного розміщення товарів</li>
+      <li><i data-lucide="handshake"></i> Перші продажі під супроводом наставника</li>
+      <li><i data-lucide="file-stack"></i> Професійні шаблони контенту для старту</li>
+    </ul>
+  </div>
+
 </section>
+
 
 <!-- RESULTS -->
 <section class="section">
