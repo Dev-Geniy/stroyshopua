@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+  <title>Програма курсу — Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg:#050509;
+      --bg2:#0c0d12;
+      --card:rgba(255,255,255,0.05);
+      --card2:rgba(255,255,255,0.08);
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --muted:#a4a9b7;
+      --text:#f1f1f4;
+      --radius:20px;
+      --border:rgba(255,255,255,0.1);
+      --shadow:0 20px 50px rgba(0,0,0,0.55);
+      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      background:radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%), var(--bg);
+      color:var(--text);
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    /* HEADER */
+    header{
+      padding:16px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      backdrop-filter:blur(12px);
+      background:rgba(5,5,9,0.8);
+      border-bottom:1px solid var(--border);
+      position:sticky;
+      top:0;
+      z-index:30;
+    }
+
+    .logo{
+      font-size:24px;
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      letter-spacing:1px;
+    }
+
+    .btn{
+      padding:10px 18px;
+      border-radius:999px;
+      background:var(--grad);
+      color:#000;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:var(--shadow);
+      border:none;
+      cursor:pointer;
+      transition:0.25s;
+      font-size:14px;
+      white-space:nowrap;
+    }
+
+    .btn i{
+      width:18px;
+      height:18px;
+    }
+
+    .btn-outline{
+      background:transparent;
+      color:var(--accent2);
+      border:1px solid var(--accent);
+      box-shadow:none;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 24px 54px rgba(0,0,0,0.85);
+    }
+
+    .btn-outline:hover{
+      background:rgba(255,122,26,0.12);
+      box-shadow:var(--shadow);
+    }
+
+    /* LAYOUT BASE */
+    .section{
+      max-width:1100px;
+      margin:40px auto;
+      padding:0 20px;
+    }
+
+    .section-title{
+      font-size:30px;
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      margin-bottom:12px;
+    }
+
+    .section-sub{
+      color:var(--muted);
+      font-size:15px;
+      max-width:700px;
+      margin-bottom:24px;
+    }
+
+    /* HERO */
+    .hero{
+      max-width:1100px;
+      margin:32px auto 10px;
+      padding:0 20px 10px;
+      display:flex;
+      gap:30px;
+      align-items:center;
+    }
+
+    .hero-text{
+      flex:1.1;
+    }
+
+    .course-label{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.14);
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+
+    .course-title{
+      font-size:36px;
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      margin-bottom:10px;
+      line-height:1.1;
+    }
+
+    .course-sub{
+      font-size:16px;
+      color:var(--muted);
+      max-width:640px;
+      margin-bottom:16px;
+    }
+
+    .hero-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:18px;
+      font-size:12px;
+    }
+
+    .hero-tag{
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(255,255,255,0.05);
+      color:var(--muted);
+    }
+
+    .hero-buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .hero-buttons .btn-outline{
+      font-weight:600;
+      font-size:13px;
+    }
+
+    .hero-img{
+      flex:0 0 360px;
+      height:250px;
+      border-radius:22px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      background-size:cover;
+      background-position:center;
+      position:relative;
+      overflow:hidden;
+      /* >>> ТУТ ВЖЕ СТОЇТЬ ТВОЄ ФОТО ОБКЛАДИНКИ КУРСУ <<< */
+      background-image:url('https://i.ibb.co/v67Dq0Vg/unnamed-21.jpg');
+    }
+
+    .hero-img::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 0 0, rgba(255,122,26,0.3), transparent 55%);
+      mix-blend-mode:screen;
+      opacity:.75;
+    }
+
+    /* STATS / BENEFITS */
+    .stats-section{
+      max-width:1100px;
+      margin:10px auto 32px;
+      padding:0 20px;
+    }
+
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+    }
+
+    .stat-card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:14px 16px;
+      box-shadow:var(--shadow);
+      font-size:13px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .stat-label{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:11px;
+    }
+
+    .stat-value{
+      font-size:18px;
+      font-weight:700;
+      color:var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .stat-note{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .stat-card.emphasis{
+      background:rgba(255,122,26,0.1);
+      border-color:var(--accent);
+    }
+
+    .stat-value-big{
+      font-size:22px;
+      font-weight:800;
+    }
+
+    /* GLOBAL COUNTDOWN */
+    .global-countdown{
+      margin-top:26px;
+      background:var(--card2);
+      border-radius:20px;
+      border:1px solid var(--border);
+      padding:16px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      box-shadow:var(--shadow);
+    }
+
+    .gc-label{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .gc-highlight{
+      color:var(--accent2);
+      font-weight:600;
+    }
+
+    .gc-values{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .gc-item{
+      min-width:62px;
+      padding:6px 10px;
+      border-radius:14px;
+      background:var(--card);
+      border:1px solid var(--border);
+      text-align:center;
+    }
+
+    .gc-num{
+      font-size:18px;
+      font-weight:800;
+      color:var(--accent2);
+    }
+
+    .gc-txt{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.07em;
+      color:var(--muted);
+    }
+
+    /* MODULES */
+    .modules-section{
+      max-width:1100px;
+      margin:40px auto;
+      padding:0 20px 10px;
+    }
+
+    .modules-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+      margin-bottom:16px;
+      flex-wrap:wrap;
+    }
+
+    .modules-header .section-title{
+      margin-bottom:4px;
+    }
+
+    .modules-note{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .modules-note b{
+      color:var(--accent2);
+    }
+
+    .module-card{
+      background:var(--card2);
+      border-radius:24px;
+      border:1px solid var(--border);
+      margin-bottom:22px;
+      display:flex;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:0.25s;
+      position:relative;
+    }
+
+    .module-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 24px 52px rgba(0,0,0,0.85);
+    }
+
+    .module-card.locked{
+      opacity:0.55;
+    }
+
+    .module-img{
+      width:230px;
+      min-height:180px;
+      background-size:cover;
+      background-position:center;
+      filter:brightness(0.98);
+    }
+
+    /* >>> ВСТАВ СВОЇ ФОТО ДЛЯ МОДУЛІВ <<< */
+    .img-1{background-image:url('https://i.ibb.co/ksRxk0gz/Gemini-Generated-Image-gbmswbgbmswbgbms.png');}
+    .img-2{background-image:url('https://i.ibb.co/XfcD9tFF/unnamed-3.jpg');}
+    .img-3{background-image:url('https://i.ibb.co/d4f2j8qg/unnamed-12.jpg');}
+    .img-4{background-image:url('https://i.ibb.co/QF46xxt7/unnamed-13.jpg');}
+    .img-5{background-image:url('https://i.ibb.co/wNnhCWZy/unnamed-14.jpg');}
+    .img-6{background-image:url('https://i.ibb.co/p6sRKGZZ/unnamed-15.jpg');}
+    .img-7{background-image:url('https://i.ibb.co/6SY3WRR/unnamed-2.jpg');}
+
+    .module-content{
+      flex:1;
+      padding:20px 22px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .module-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:4px;
+    }
+
+    .module-content h3{
+      font-size:18px;
+      margin:0;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--accent2);
+    }
+
+    .module-pill{
+      font-size:11px;
+      padding:4px 9px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid var(--border);
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.07em;
+      white-space:nowrap;
+    }
+
+    .module-desc{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .module-status{
+      font-size:13px;
+      color:var(--accent2);
+      margin-top:4px;
+    }
+
+    .timer{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .module-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:0 18px 18px 18px;
+    }
+
+    .btn.locked-btn{
+      opacity:0.4;
+      pointer-events:none;
+      background:rgba(255,255,255,0.04);
+      color:var(--muted);
+      border:1px solid var(--border);
+      box-shadow:none;
+    }
+
+    /* EXTRA INFO SECTION */
+    .benefits-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+
+    .benefit-card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:16px 18px;
+      box-shadow:var(--shadow);
+      font-size:14px;
+    }
+
+    .benefit-card h3{
+      font-size:16px;
+      margin-bottom:6px;
+      color:var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .benefit-card ul{
+      margin:6px 0 0 18px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .benefit-card ul li{
+      margin-bottom:4px;
+    }
+
+    /* FOOTER */
+    footer{
+      margin-top:40px;
+      padding:18px 20px 26px;
+      border-top:1px solid var(--border);
+      background:rgba(5,5,9,0.9);
+    }
+
+    .footer-inner{
+      max-width:1100px;
+      margin:0 auto;
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .footer-line{
+      height:1px;
+      width:100%;
+      background:var(--grad);
+      opacity:0.8;
+      margin-bottom:10px;
+      border-radius:999px;
+    }
+
+    .footer-main{
+      font-size:13px;
+      margin-bottom:4px;
+    }
+
+    .footer-sub{
+      font-size:12px;
+      opacity:0.9;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .hero-img{
+        width:100%;
+        flex:none;
+        height:220px;
+      }
+      .global-countdown{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .module-card{
+        flex-direction:column;
+      }
+      .module-img{
+        width:100%;
+        height:180px;
+      }
+      .module-actions{
+        justify-content:flex-start;
+      }
+    }
+
+    @media(max-width:600px){
+      header{
+        padding:12px 16px;
+      }
+      .course-title{
+        font-size:30px;
+      }
+      .hero-buttons{
+        flex-direction:column;
+      }
+      .btn{
+        width:100%;
+        justify-content:center;
+      }
+      .stats-grid{
+        grid-template-columns:1fr;
+      }
+    }
+    
+    .final-section{
+  margin-top:60px;
+  margin-bottom:60px;
+  padding:40px 20px;
+
+  /* нове – блок не торкається країв */
+  padding-left: 30px;
+  padding-right: 30px;
+
+  background:linear-gradient(
+    135deg,
+    rgba(255,122,26,0.15),
+    rgba(255,179,71,0.1),
+    rgba(5,5,9,0.65)
+  );
+
+  border-radius:26px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+
+  display:flex;
+  justify-content:center;
+
+  /* блок завжди красивий, не широкий */
+  max-width: 820px; 
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.final-inner{
+  max-width:720px;
+  width:100%;
+  text-align:center;
+  margin:0 auto;
+}
+
+.final-icon{
+  width:90px;
+  height:90px;
+  border-radius:24px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 18px;
+  box-shadow:var(--shadow);
+}
+
+.final-icon i{
+  width:56px;
+  height:56px;
+  color:var(--accent2);
+}
+
+.final-title{
+  font-size:30px;
+  font-weight:800;
+  background:var(--grad);
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:16px;
+}
+
+.final-text{
+  font-size:16px;
+  line-height:1.65;
+  color:var(--muted);
+  margin-bottom:26px;
+}
+
+.final-btn{
+  font-size:15px;
+  padding:14px 28px;
+  border-radius:16px;
+}
+
+@media(max-width:600px){
+  .final-section{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .final-title{font-size:24px;}
+
+  .final-icon{
+    width:70px;
+    height:70px;
+  }
+
+  .final-icon i{
+    width:44px;
+    height:44px;
+  }
+}
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Samostroy Academy</div>
+  <a href="SamostroyAcademy.html" class="btn btn-outline">
+    <i data-lucide="arrow-left"></i> Назад до Академії
+  </a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="course-label">
+      <i data-lucide="sparkles"></i> Повна програма навчання
+    </div>
+    <h1 class="course-title">ПОВНИЙ КУРС ДРОПШИПІНГУ</h1>
+    <p class="course-sub">
+      7 днів — 7 модулів. Покрокова програма, яка допоможе створити
+      стабільний дропшипінг-бізнес і зробити перші кроки до цілі
+      в <b>1 000 000 грн</b> обороту.
+    </p>
+
+    <div class="hero-tags">
+      <span class="hero-tag">Старт: 10 січня 2026</span>
+      <span class="hero-tag">Щодня о 09:00 відкривається новий модуль</span>
+      <span class="hero-tag">Рівень: від повного нуля</span>
+    </div>
+
+    <div class="hero-buttons">
+      <a href="#modules" class="btn">
+        <i data-lucide="book-open-check"></i> Перейти до модулів
+      </a>
+      <a href="SamostroyAcademy.html#cta" class="btn btn-outline">
+        <i data-lucide="rocket"></i> Повернутись до опису курсу
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-img"></div>
+</section>
+
+<!-- STATS + GLOBAL COUNTDOWN -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Тривалість</div>
+      <div class="stat-value">
+        <i data-lucide="calendar-clock"></i>
+        7 днів інтенсиву
+      </div>
+      <div class="stat-note">Кожен день — один новий модуль з практичними завданнями.</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Формат</div>
+      <div class="stat-value">
+        <i data-lucide="monitor-play"></i>
+        Відео + конспекти
+      </div>
+      <div class="stat-note">Чіткі інструкції, чек-листи, приклади оголошень та воронок.</div>
+    </div>
+
+    <div class="stat-card emphasis">
+      <div class="stat-label">Учасники курсу</div>
+      <div class="stat-value">
+        <i data-lucide="users"></i>
+        <span class="stat-value-big" id="registeredCount">57</span>+
+      </div>
+      <div class="stat-note">
+        Вже зареєструвалися на старт. Кількість місць обмежена.
+      </div>
+    </div>
+  </div>
+
+  <div class="global-countdown">
+    <div class="gc-label">
+      До старту курсу залишилось: <span class="gc-highlight">Старт 10 січня 2026 о 09:00</span>
+    </div>
+    <div class="gc-values">
+      <div class="gc-item">
+        <div class="gc-num" id="gcdDays">00</div>
+        <div class="gc-txt">днів</div>
+      </div>
+      <div class="gc-item">
+        <div class="gc-num" id="gcdHours">00</div>
+        <div class="gc-txt">годин</div>
+      </div>
+      <div class="gc-item">
+        <div class="gc-num" id="gcdMinutes">00</div>
+        <div class="gc-txt">хвилин</div>
+      </div>
+      <div class="gc-item">
+        <div class="gc-num" id="gcdSeconds">00</div>
+        <div class="gc-txt">секунд</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="section">
+  <h2 class="section-title">Що дасть вам ця програма</h2>
+  <p class="section-sub">
+    Програма побудована так, щоб щодня ви робили один чіткий крок:
+    від розуміння моделі до перших замовлень і плану масштабування.
+  </p>
+
+  <div class="benefits-grid">
+    <div class="benefit-card">
+      <h3><i data-lucide="target"></i> Чіткий маршрут від А до Я</h3>
+      <ul>
+        <li>Зрозумієте, як реально працює дропшипінг в Україні у 2026 році.</li>
+        <li>Отримаєте структуру — що робити сьогодні, завтра і протягом тижня.</li>
+        <li>Перестанете хаотично “пробувати все підряд” і сфокусуєтесь.</li>
+      </ul>
+    </div>
+
+    <div class="benefit-card">
+      <h3><i data-lucide="hand-coins"></i> Практичні інструменти</h3>
+      <ul>
+        <li>Готові шаблони оголошень, текстів та сторінок продажу.</li>
+        <li>Список сайтів і площадок, де можна стартувати без бюджету.</li>
+        <li>Розуміння, як рахувати маржу, чистий прибуток і не зливати гроші.</li>
+      </ul>
+    </div>
+
+    <div class="benefit-card">
+      <h3><i data-lucide="line-chart"></i> Базу для росту до 1 000 000 грн</h3>
+      <ul>
+        <li>Сформуєте перший асортимент і зрозумієте, що дійсно продається.</li>
+        <li>Навчитеся системно отримувати замовлення, а не випадково.</li>
+        <li>Побачите, як виглядає план масштабування до 1 000 000 грн обороту.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="modules-section" id="modules">
+  <div class="modules-header">
+    <div>
+      <h2 class="section-title">Програма по днях</h2>
+      <p class="section-sub">
+        Кожен модуль відкривається о <b>09:00 ранку</b>. Після відкриття модуль залишається доступним і ви можете
+        переглядати матеріали у зручний час.
+      </p>
+    </div>
+    <div class="modules-note">
+      Старт: <b>10.01.2026</b> • Фініш: <b>16.01.2026</b><br>
+      Новий день — новий крок до вашого дропшипінг-бізнесу.
+    </div>
+  </div>
+
+  <div id="modulesList"></div>
+</section>
+  
+<!-- FINAL SECTION -->
+<section class="final-section">
+  <div class="final-inner">
+    <div class="final-icon">
+      <i data-lucide="trophy"></i>
+    </div>
+
+    <h2 class="final-title">Фініш курсу — лише початок твого шляху</h2>
+
+    <p class="final-text">
+      Через 7 днів навчання ти матимеш повну систему, інструменти, розуміння структури продажів 
+      та перші реальні результати. Це — фундамент, з якого ти зможеш будувати прибутковий 
+      онлайн-бізнес у 2026 році та далі.
+    </p>
+
+    <a href="SamostroyAcademy.html#cta" class="btn final-btn">
+      <i data-lucide="rocket"></i> Продовжити шлях у Академії
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-line"></div>
+    <div class="footer-main">© <span id="year"></span> Samostroy Academy</div>
+    <div class="footer-sub">
+      Створи свій дропшипінг-бізнес, зроби перші кроки до 1 000 000 грн і почни 2026 рік з розвитку, а не відкладання.
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Рік у футері
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Іконки
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+
+  // -------------------------------
+  // ДАНІ ПРО МОДУЛІ
+  // -------------------------------
+  const modules = [
+    {
+      title: "Модуль 1: Вступ у дропшипінг",
+      date: "2026-01-10T09:00:00",
+      url: "module1.html",
+      imgClass: "img-1",
+      day: 1,
+      desc: "Розберемо, що таке дропшипінг, як він працює в Україні, які міфи заважають старту і де насправді заробляють новачки."
+    },
+    {
+      title: "Модуль 2: Постачальники та стартовий пакет",
+      date: "2026-01-11T09:00:00",
+      url: "module2.html",
+      imgClass: "img-2",
+      day: 2,
+      desc: "Як знайти та перевірити постачальника, отримати стартовий пакет, працювати без складу та мінімізувати ризики."
+    },
+    {
+      title: "Модуль 3: Вигрузка 1000+ товарів",
+      date: "2026-01-12T09:00:00",
+      url: "module3.html",
+      imgClass: "img-3",
+      day: 3,
+      desc: "Налаштуємо вигрузку каталогу товарів, покажу логіку асортименту, ціноутворення та підготовки позицій до продажу."
+    },
+    {
+      title: "Модуль 4: Вітрина продажу + психологія",
+      date: "2026-01-13T09:00:00",
+      url: "module4.html",
+      imgClass: "img-4",
+      day: 4,
+      desc: "Створюємо вітрину: сторінку, яка перетворює перегляди в заявки. Дамо блоки довіри та тригери, які піднімають конверсію."
+    },
+    {
+      title: "Модуль 5: Контент і реклама",
+      date: "2026-01-14T09:00:00",
+      url: "module5.html",
+      imgClass: "img-5",
+      day: 5,
+      desc: "Розберемо TikTok, Reels, Telegram. Як знімати простий продаючий контент, який приводить замовлення без величезних бюджетів."
+    },
+    {
+      title: "Модуль 6: Замовлення та сервіс",
+      date: "2026-01-15T09:00:00",
+      url: "module6.html",
+      imgClass: "img-6",
+      day: 6,
+      desc: "Як обробляти заявки, не втрачати клієнтів, працювати з НП/Укрпоштою, що робити з відмовами та поверненнями."
+    },
+    {
+      title: "Модуль 7: Масштабування до 1 000 000 грн",
+      date: "2026-01-16T09:00:00",
+      url: "module7.html",
+      imgClass: "img-7",
+      day: 7,
+      desc: "Складаємо план росту: як збільшувати бюджети, додавати команди, розширювати асортимент і не “згоріти” по дорозі."
+    }
+  ];
+
+  const modulesContainer = document.getElementById("modulesList");
+
+  // Створення карток модулів (1 раз)
+  function renderModules() {
+    modulesContainer.innerHTML = "";
+
+    modules.forEach((m, index) => {
+      const openDate = new Date(m.date);
+      const dateLabel = openDate.toLocaleDateString("uk-UA", {
+        day: "2-digit",
+        month: "2-digit"
+      });
+
+      const card = document.createElement("div");
+      card.className = "module-card locked";
+      card.id = `module-${index}`;
+
+      card.innerHTML = `
+        <div class="module-img ${m.imgClass}"></div>
+        <div class="module-content">
+          <div class="module-top">
+            <h3>
+              <i data-lucide="book-open"></i>
+              ${m.title}
+            </h3>
+            <div class="module-pill">День ${m.day} • ${dateLabel}</div>
+          </div>
+          <p class="module-desc">${m.desc}</p>
+          <p class="module-status" id="status-${index}"></p>
+          <div class="timer" id="timer-${index}"></div>
+        </div>
+        <div class="module-actions">
+          <a class="btn locked-btn" id="btn-${index}">
+            <i data-lucide="lock"></i>
+            <span>Закрито</span>
+          </a>
+        </div>
+      `;
+
+      modulesContainer.appendChild(card);
+    });
+
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  }
+
+  renderModules();
+
+  // Оновлення стану модулів + таймерів
+  function updateModulesState() {
+    const now = new Date();
+
+    modules.forEach((m, index) => {
+      const openDate = new Date(m.date);
+      const card = document.getElementById(`module-${index}`);
+      const statusEl = document.getElementById(`status-${index}`);
+      const timerEl = document.getElementById(`timer-${index}`);
+      const btn = document.getElementById(`btn-${index}`);
+
+      if (!card || !statusEl || !timerEl || !btn) return;
+
+      if (now >= openDate) {
+        // Модуль відкритий
+        card.classList.remove("locked");
+        statusEl.textContent = "Модуль відкритий. Ви можете проходити його у зручний час.";
+        timerEl.textContent = "";
+        btn.classList.remove("locked-btn");
+        btn.innerHTML = `<i data-lucide="play"></i><span>Перейти до модуля</span>`;
+        btn.setAttribute("href", m.url);
+      } else {
+        // Модуль ще закритий
+        card.classList.add("locked");
+        btn.classList.add("locked-btn");
+        btn.removeAttribute("href");
+        btn.innerHTML = `<i data-lucide="lock"></i><span>Закрито</span>`;
+
+        const diff = openDate - now;
+        const totalSeconds = Math.floor(diff / 1000);
+
+        const days   = Math.floor(totalSeconds / (3600*24));
+        const hours  = Math.floor((totalSeconds % (3600*24)) / 3600);
+        const mins   = Math.floor((totalSeconds % 3600) / 60);
+        const secs   = totalSeconds % 60;
+
+        statusEl.textContent = `Дата відкриття: ${openDate.toLocaleDateString("uk-UA")} о 09:00`;
+        timerEl.textContent =
+          `Відкриється через: ${days} дн ${String(hours).padStart(2,'0')}г `
+          + `${String(mins).padStart(2,'0')}хв ${String(secs).padStart(2,'0')}с`;
+      }
+    });
+
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  }
+
+  updateModulesState();
+  setInterval(updateModulesState, 1000);
+
+  // -------------------------------
+  // ГЛОБАЛЬНИЙ ТАЙМЕР ДО СТАРТУ
+  // -------------------------------
+  const startDate = new Date("2026-01-10T09:00:00");
+  const gcdDays = document.getElementById("gcdDays");
+  const gcdHours = document.getElementById("gcdHours");
+  const gcdMinutes = document.getElementById("gcdMinutes");
+  const gcdSeconds = document.getElementById("gcdSeconds");
+
+  function updateGlobalCountdown() {
+    const now = new Date();
+    const diff = startDate - now;
+
+    if (diff <= 0) {
+      gcdDays.textContent = "00";
+      gcdHours.textContent = "00";
+      gcdMinutes.textContent = "00";
+      gcdSeconds.textContent = "00";
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days   = Math.floor(totalSeconds / (3600*24));
+    const hours  = Math.floor((totalSeconds % (3600*24)) / 3600);
+    const mins   = Math.floor((totalSeconds % 3600) / 60);
+    const secs   = totalSeconds % 60;
+
+    gcdDays.textContent    = String(days).padStart(2,"0");
+    gcdHours.textContent   = String(hours).padStart(2,"0");
+    gcdMinutes.textContent = String(mins).padStart(2,"0");
+    gcdSeconds.textContent = String(secs).padStart(2,"0");
+  }
+
+  updateGlobalCountdown();
+  setInterval(updateGlobalCountdown, 1000);
+
+  // -------------------------------
+  // ЛІЧИЛЬНИК ЗАРЕЄСТРОВАНИХ
+  // старт 57, щодня +2..7 до дати старту
+  // -------------------------------
+  const COUNTER_KEY = "sa_registered_counter";
+  const counterEl = document.getElementById("registeredCount");
+
+  function initOrUpdateCounter() {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    let data = null;
+    try {
+      data = JSON.parse(localStorage.getItem(COUNTER_KEY));
+    } catch (e) {
+      data = null;
+    }
+
+    if (!data) {
+      // Перше відвідування
+      data = {
+        count: 57,
+        lastDate: today.toISOString().slice(0,10) // YYYY-MM-DD
+      };
+      localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
+    }
+
+    let lastDate = new Date(data.lastDate + "T00:00:00");
+    const startLimit = new Date("2026-01-10T00:00:00");
+
+    // Якщо ми в майбутньому відносно lastDate — додаємо рандомні значення за кожен день до старту
+    while (lastDate < today && lastDate < startLimit) {
+      lastDate.setDate(lastDate.getDate() + 1);
+
+      if (lastDate <= startLimit) {
+        const inc = Math.floor(Math.random() * 6) + 2; // 2..7
+        data.count += inc;
+      }
+    }
+
+    data.lastDate = lastDate.toISOString().slice(0,10);
+    localStorage.setItem(COUNTER_KEY, JSON.stringify(data));
+
+    if (counterEl) {
+      counterEl.textContent = data.count;
+    }
+  }
+
+  initOrUpdateCounter();
+</script>
+
+</body>
+</html>
