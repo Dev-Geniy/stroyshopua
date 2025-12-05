@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>ПОВНИЙ КУРС ДРОПШИПІНГУ З НУЛЯ — Samostroy Shop Academy</title>
+
+  <!-- Фавікон -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Іконки -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- SEO -->
+  <meta name="keywords" content="дропшипінг курс, навчання дропшипінгу, бізнес з нуля, заробіток онлайн, маркетплейси, як почати дропшипінг, Samostroy Shop Academy">
+  <meta name="description" content="ПОВНИЙ КУРС ДРОПШИПІНГУ: побудуйте свою імперію продажів з нуля. Повна методологія, шаблони, матеріали, інструменти й покрокове навчання для новачків.">
+  <link rel="canonical" href="https://samostroy.shop/course-dropshipping.html">
+
+  <meta property="og:title" content="ПОВНИЙ КУРС ДРОПШИПІНГУ — Samostroy Shop Academy">
+  <meta property="og:description" content="Створіть свою імперію продажів з нуля. Повне навчання для новачків, покроковий курс і практичні матеріали.">
+  <meta property="og:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
+  <meta property="og:url" content="https://samostroy.shop/course-dropshipping.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="uk_UA">
+
+  <style>
+    :root {
+      --bg:#050509;
+      --bg2:#0c0d12;
+      --card:rgba(255,255,255,0.04);
+      --card2:rgba(255,255,255,0.06);
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --muted:#a4a9b7;
+      --text:#f1f1f4;
+      --radius:18px;
+      --border:rgba(255,255,255,0.1);
+      --shadow:0 20px 50px rgba(0,0,0,0.55);
+      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+      --trans:0.25s;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      background:radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%), var(--bg);
+      color:var(--text);
+      line-height:1.45;
+      margin:0;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none !important;
+    }
+
+    header{
+      position:sticky; top:0;
+      padding:18px 24px;
+      display:flex; justify-content:space-between; align-items:center;
+      backdrop-filter:blur(14px);
+      background:rgba(5,5,9,0.82);
+      border-bottom:1px solid var(--border);
+      z-index:20;
+    }
+
+    .logo{
+      font-size:clamp(20px,3vw,28px);
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      letter-spacing:1px;
+    }
+
+    .btn{
+      padding:12px 20px;
+      border-radius:var(--radius);
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--grad);
+      color:#000;
+      box-shadow:var(--shadow);
+      transition:
+        transform var(--trans),
+        box-shadow var(--trans),
+        opacity var(--trans),
+        background-position .35s;
+      background-size:200% 200%;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px) scale(1.02);
+      box-shadow:0 26px 55px rgba(0,0,0,0.8);
+      background-position:100% 0;
+    }
+
+    .btn-outline{
+      background:transparent;
+      color:var(--accent2);
+      border:1px solid var(--accent);
+      box-shadow:none;
+    }
+
+    .btn-outline:hover{
+      background:rgba(255,122,26,0.1);
+      box-shadow:var(--shadow);
+    }
+
+    .btn i{
+      width:20px;
+      height:20px;
+    }
+
+    .section{
+      max-width:1150px;
+      margin:50px auto;
+      padding:0 20px;
+    }
+
+    .title{
+      font-size:clamp(28px,4vw,42px);
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      margin-bottom:12px;
+    }
+
+    .sub{
+      font-size:16px;
+      color:var(--muted);
+      margin-bottom:24px;
+      max-width:700px;
+    }
+
+    /* HERO */
+    .hero{
+      max-width:1150px;
+      margin:40px auto 40px;
+      padding:0 20px;
+      display:grid;
+      grid-template-columns:1.1fr 1fr;
+      gap:32px;
+      align-items:center;
+    }
+
+    .hero h1{
+      animation:fadeUp .7s ease both;
+    }
+
+    .hero .sub{
+      animation:fadeUp .8s ease both;
+    }
+
+    .hero .btn{
+      margin-top:4px;
+      animation:fadeUp .9s ease both;
+    }
+
+    .hero-box{
+      background:var(--card2);
+      padding:26px;
+      border-radius:24px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      animation:fadeRight .8s ease both;
+    }
+
+    .side-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .side-row span{
+      opacity:.9;
+    }
+
+    .side-row strong{
+      color:var(--accent2);
+    }
+
+    /* GRID / MODULES / CARDS */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+    }
+
+    .module{
+      background:var(--card);
+      padding:22px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      margin-bottom:14px;
+      box-shadow:var(--shadow);
+      animation:fadeUp .6s ease both;
+    }
+
+    .module:nth-child(2){animation-delay:.05s;}
+    .module:nth-child(3){animation-delay:.1s;}
+    .module:nth-child(4){animation-delay:.15s;}
+    .module:nth-child(5){animation-delay:.2s;}
+    .module:nth-child(6){animation-delay:.25s;}
+
+    .module h3{
+      font-size:20px;
+      margin-bottom:8px;
+      color:var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .module ul{
+      margin-left:18px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .module ul li{
+      margin-bottom:4px;
+    }
+
+    .card{
+      background:var(--card2);
+      padding:20px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      animation:fadeUp .7s ease both;
+    }
+
+    .card h3{
+      font-size:18px;
+      margin-bottom:6px;
+      color:var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .card p{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .card ul{
+      margin-left:18px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .card ul li{
+      margin-bottom:4px;
+    }
+
+    .card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 26px 55px rgba(0,0,0,0.8);
+    }
+
+    /* FAQ */
+    .faq-item{
+      background:var(--card);
+      padding:20px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      margin-bottom:14px;
+      animation:fadeUp .6s ease both;
+    }
+
+    .faq-item h3{
+      font-size:16px;
+      margin-bottom:6px;
+      color:var(--accent2);
+    }
+
+    .faq-item p{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    /* COUNTDOWN */
+    .countdown-box{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+      text-align:center;
+      animation:fadeUp .8s ease both;
+    }
+
+    .countdown-grid{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .cd-item{
+      min-width:70px;
+      padding:10px 14px;
+      border-radius:14px;
+      background:var(--card);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    .cd-number{
+      font-size:22px;
+      font-weight:800;
+      color:var(--accent2);
+    }
+
+    .cd-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .countdown-sub{
+      font-size:14px;
+      color:var(--muted);
+      max-width:620px;
+      margin:0 auto;
+    }
+
+    .highlight-text{
+      font-weight:700;
+      color:var(--accent2);
+    }
+
+    /* RESULTS (СТУДЕНТИ) */
+    .results-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+    }
+
+    .result-card{
+      background:var(--card2);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:18px;
+      box-shadow:var(--shadow);
+      animation:fadeUp .8s ease both;
+    }
+
+    .result-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .result-name{
+      font-weight:700;
+      font-size:15px;
+    }
+
+    .result-tag{
+      font-size:11px;
+      padding:4px 9px;
+      border-radius:999px;
+      background:rgba(255,122,26,0.15);
+      color:var(--accent2);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+
+    .result-quote{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .result-stat{
+      font-size:13px;
+      color:var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    /* CTA */
+    .cta-wrap{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .cta-text{
+      max-width:520px;
+    }
+
+    .cta-text strong{
+      color:var(--accent2);
+    }
+
+    .cta-buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    /* MODAL */
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+    }
+
+    .modal-overlay.active{
+      display:flex;
+    }
+
+    .modal{
+      background:var(--bg2);
+      border-radius:20px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      max-width:480px;
+      width:95%;
+      padding:22px;
+      animation:fadeUp .3s ease both;
+    }
+
+    .modal-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .modal-title{
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .modal-close{
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+    }
+
+    .modal-body{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .modal-form{
+      margin-top:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .modal-form label{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .modal-form input,
+    .modal-form select{
+      width:100%;
+      margin-top:4px;
+      padding:9px 10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--bg2);
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+    }
+
+    .modal-form small{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    footer{
+      padding:20px;
+      text-align:center;
+      color:var(--muted);
+      border-top:1px solid var(--border);
+      margin-top:50px;
+      font-size:13px;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{
+      0%{opacity:0;transform:translateY(10px);}
+      100%{opacity:1;transform:translateY(0);}
+    }
+
+    @keyframes fadeRight{
+      0%{opacity:0;transform:translateX(12px);}
+      100%{opacity:1;transform:translateX(0);}
+    }
+
+    @keyframes float{
+      0%{transform:translateY(0);}
+      50%{transform:translateY(-6px);}
+      100%{transform:translateY(0);}
+    }
+
+    .hero-box.float{
+      animation:float 6s ease-in-out infinite;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero{
+        grid-template-columns:1fr;
+        margin-top:30px;
+      }
+      header{
+        padding:14px 16px;
+      }
+    }
+
+    @media(max-width:600px){
+      .cta-wrap{
+        align-items:flex-start;
+      }
+      .cta-buttons{
+        width:100%;
+      }
+      .btn{
+        width:100%;
+        justify-content:center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Samostroy Academy</div>
+
+  <a href="https://t.me/manager_samostroy_shop?text=Хочу%20пройти%20безкоштовний%20курс%20з%20дропшипінгу!" 
+     class="btn btn-outline">
+     <i data-lucide="rocket"></i> Почати зараз
+  </a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1 style="font-size:clamp(30px,4vw,50px);background:var(--grad);-webkit-background-clip:text;color:transparent;margin-bottom:14px;">
+      ПОВНИЙ КУРС ДРОПШИПІНГУ<br>З НУЛЯ ДО МІЛЬЙОНА
+    </h1>
+
+    <p class="sub">
+      Практичний курс, який дозволяє побудувати свою імперію онлайн-продажів, навіть якщо ви повний новачок. Покроково. Чітко. Без води.
+    </p>
+
+    <a href="#modules" class="btn"><i data-lucide="book"></i> Перейти до навчання</a>
+  </div>
+
+  <div class="hero-box float">
+    <div class="side-row"><span>Старт:</span> <strong>з нуля</strong></div>
+    <div class="side-row"><span>Формат:</span> <strong>покрокові модулі</strong></div>
+    <div class="side-row"><span>Для кого:</span> <strong>новачки та продавці</strong></div>
+    <div class="side-row"><span>Результат:</span> <strong>готовий магазин та перші продажі</strong></div>
+  </div>
+</section>
+
+<!-- INFOGRAPHIC BLOCK -->
+<section class="section">
+  <div class="hero-box" style="text-align:center;">
+    <h2 class="title" style="background:none;color:var(--accent2);">
+      У 2026 році онлайн-продажі виростуть удвічі
+    </h2>
+    <p class="sub">
+      Найкращий час почати — сьогодні. Найгірший — «коли-небудь».
+      Кожен день відкладання = втрачені клієнти, яких забирає хтось інший.
+    </p>
+
+    <img src="https://i.ibb.co/7tCLr27V/Gemini-Generated-Image-66ypo566ypo566yp.png" 
+         alt="E-commerce Growth Graph" 
+         style="max-width:560px;width:100%;border-radius:16px;opacity:0.92;margin-top:16px;">
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<section class="section">
+  <div class="hero-box countdown-box">
+    <h2 class="title" style="background:none;color:var(--accent2);">
+      Старт курсу — 10 січня 2026
+    </h2>
+    <p class="countdown-sub">
+      <span class="highlight-text">Почни 2026 рік з розвитку і успіху</span> — у бізнесі, дропшипінгу та саморозвитку на шляху
+      до своєї першої цілі в <span class="highlight-text">1 000 000 грн</span>.
+    </p>
+
+    <div class="countdown-grid">
+      <div class="cd-item">
+        <div class="cd-number" id="cdDays">00</div>
+        <div class="cd-label">днів</div>
+      </div>
+      <div class="cd-item">
+        <div class="cd-number" id="cdHours">00</div>
+        <div class="cd-label">годин</div>
+      </div>
+      <div class="cd-item">
+        <div class="cd-number" id="cdMinutes">00</div>
+        <div class="cd-label">хвилин</div>
+      </div>
+      <div class="cd-item">
+        <div class="cd-number" id="cdSeconds">00</div>
+        <div class="cd-label">секунд</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSE OUTLINE -->
+<section class="section" id="modules">
+  <h2 class="title">Структура курсу</h2>
+  <p class="sub">Повна дорожня карта — від створення першої вітрини до системного бізнесу.</p>
+
+  <div class="module">
+    <h3><i data-lucide="flag"></i> Модуль 1: Вступ. Що таке дропшипінг?</h3>
+    <ul>
+      <li>Як працює модель</li>
+      <li>Міфи та правда</li>
+      <li>Де заробляють новачки</li>
+      <li>Реальні цифри доходів</li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h3><i data-lucide="search"></i> Модуль 2: Пошук товарів-мільйонників</h3>
+    <ul>
+      <li>Товари з високою маржою</li>
+      <li>Як зрозуміти, що товар точно продається</li>
+      <li>Аналіз попиту</li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h3><i data-lucide="monitor"></i> Модуль 3: Вітрина продажу</h3>
+    <ul>
+      <li>Платформи</li>
+      <li>Сторінка продажу на GitHub Pages</li>
+      <li>Опис, фото, ціна</li>
+      <li>Психологія конверсії</li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h3><i data-lucide="announcement"></i> Модуль 4: Реклама</h3>
+    <ul>
+      <li>TikTok, Instagram, Telegram</li>
+      <li>Продаючий контент</li>
+      <li>Структура ролика</li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h3><i data-lucide="truck"></i> Модуль 5: Замовлення</h3>
+    <ul>
+      <li>Правильна комунікація</li>
+      <li>Швидкість реакції</li>
+      <li>Передача замовлення постачальнику</li>
+    </ul>
+  </div>
+
+  <div class="module">
+    <h3><i data-lucide="bar-chart"></i> Модуль 6: Масштабування</h3>
+    <ul>
+      <li>Перехід від 1 замовлення на 20+</li>
+      <li>Масштабування реклами</li>
+      <li>Створення команди</li>
+    </ul>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section">
+  <h2 class="title">Що ти отримаєш</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3><i data-lucide="layers"></i> Повний покроковий курс</h3>
+      <p>Створений спеціально для новачків і тих, хто хоче масштабуватися.</p>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="sparkles"></i> Готові шаблони</h3>
+      <p>Фото, відео, тексти, оголошення — бери й запускай за 1 день.</p>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="lightbulb"></i> Інструменти та аналітика</h3>
+      <p>Пошук товарів, формули ціноутворення, приклади реклам.</p>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="users"></i> Підтримка та наставництво</h3>
+      <p>Ми супроводжуємо до перших результатів.</p>
+    </div>
+
+    <!-- BIG CARD -->
+    <div class="card" style="border:1px solid var(--accent);background:rgba(255,122,26,0.08);">
+      <h3><i data-lucide="star"></i> Стартовий пакет «Перші продажі»</h3>
+      <ul style="margin-top:8px;">
+        <li>Надійний постачальник з вигідними цінами</li>
+        <li>Автоматична вигрузка 1000+ товарів у 1 клік</li>
+        <li>Список сайтів для безкоштовного розміщення товарів</li>
+        <li>Перші продажі під супроводом наставника</li>
+        <li>Професійні шаблони контенту для старту</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section">
+  <h2 class="title">Результати студентів</h2>
+  <p class="sub">Кілька прикладів тих, хто почав з нуля та зробив свої перші кроки до 1 000 000 грн.</p>
+
+  <div class="results-grid">
+    <div class="result-card">
+      <div class="result-header">
+        <div class="result-name">Олена, 27 років</div>
+        <div class="result-tag">Старт з нуля</div>
+      </div>
+      <p class="result-quote">
+        «До курсу я взагалі не розуміла, як працює дропшипінг. За перші 3 тижні вийшла на стабільні 18 000 грн чистого прибутку».
+      </p>
+      <div class="result-stat">
+        <i data-lucide="trending-up"></i>
+        0 → 18 000 грн за 3 тижні
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-header">
+        <div class="result-name">Ігор, 32 роки</div>
+        <div class="result-tag">Малий бізнес</div>
+      </div>
+      <p class="result-quote">
+        «У мене вже були поодинокі замовлення. Після впровадження системи з курсу замовлення пішли щодня, додав другий напрямок і помічника».
+      </p>
+      <div class="result-stat">
+        <i data-lucide="bar-chart-2"></i>
+        +320% зростання замовлень за 1 місяць
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-header">
+        <div class="result-name">Марія, 24 роки</div>
+        <div class="result-tag">Мама в декреті</div>
+      </div>
+      <p class="result-quote">
+        «Хотіла мати додатковий дохід, не виходячи з дому. Зробила перші продажі вже на 5-й день, зараз планую вийти на 50 000 грн на місяць».
+      </p>
+      <div class="result-stat">
+        <i data-lucide="target"></i>
+        Перші продажі на 5-й день навчання
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + APPLICATION BUTTON -->
+<section class="section">
+  <div class="hero-box cta-wrap">
+    <div class="cta-text">
+      <h2 class="title" style="background:none;color:var(--accent2);">Готові почати?</h2>
+      <p class="sub">
+        Напишіть менеджеру — він відкриє вам доступ до курсу безкоштовно
+        та допоможе зробити перші кроки. <strong>Не відкладайте 2026 рік «на потім».</strong>
+      </p>
+    </div>
+
+    <div class="cta-buttons">
+      <a href="https://t.me/manager_samostroy_shop?text=Хочу%20пройти%20безкоштовний%20курс%20з%20дропшипінгу!" 
+         class="btn">
+         <i data-lucide="send"></i> Отримати доступ
+      </a>
+
+      <button class="btn btn-outline" id="openApplicationBtn">
+        <i data-lucide="edit-3"></i> Подати заявку
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <h2 class="title">Поширені питання</h2>
+
+  <div class="faq-item">
+    <h3>Чи підійде новачку?</h3>
+    <p>Так! Курс створено саме для тих, хто починає з нуля — без досвіду, без свого магазину та без розуміння технічних деталей.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Скільки часу потрібно?</h3>
+    <p>У середньому 7–14 днів до перших результатів, якщо виконувати завдання й не відкладати на потім.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Який заробіток можливий?</h3>
+    <p>Учні виходять на 15 000 – 60 000 грн у перший місяць. Далі все залежить від масштабування, часу, реклами та бажання рости.</p>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Samostroy Academy
+</footer>
+
+<!-- MODAL APPLICATION FORM -->
+<div class="modal-overlay" id="applicationOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Подати заявку на безкоштовну участь</div>
+      <button class="modal-close" id="applicationClose">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Заповніть коротку анкету. Після натискання кнопки відкриється Telegram із готовим текстом заявки — вам залишиться лише натиснути «Відправити».</p>
+
+      <form class="modal-form" id="applicationForm">
+        <label>
+          Ім’я:
+          <input type="text" id="appName" required placeholder="Ваше ім’я">
+        </label>
+
+        <label>
+          Телефон (Viber/WhatsApp):
+          <input type="text" id="appPhone" required placeholder="+380...">
+        </label>
+
+        <label>
+          Telegram:
+          <input type="text" id="appTelegram" required placeholder="@ваш_нікнейм">
+        </label>
+
+        <label>
+          Досвід у дропшипінгу:
+          <select id="appExperience" required>
+            <option value="">Оберіть варіант</option>
+            <option value="Початківець — тільки починаю">Початківець — тільки починаю</option>
+            <option value="Вже є дропшипінг бізнес">Вже є дропшипінг бізнес</option>
+            <option value="Є інший онлайн-бізнес">Є інший онлайн-бізнес</option>
+          </select>
+        </label>
+
+        <small>Натискаючи «Надіслати заявку», ви погоджуєтесь на обробку контактних даних для звʼязку щодо навчання.</small>
+
+        <button type="submit" class="btn" style="margin-top:8px;">
+          <i data-lucide="send"></i> Надіслати заявку
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Рік у футері
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Lucide icons
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+
+  // =========================
+  // COUNTDOWN до 10.01.2026
+  // =========================
+  const targetDate = new Date('2026-01-10T00:00:00');
+  const cdDays    = document.getElementById('cdDays');
+  const cdHours   = document.getElementById('cdHours');
+  const cdMinutes = document.getElementById('cdMinutes');
+  const cdSeconds = document.getElementById('cdSeconds');
+
+  function updateCountdown(){
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0){
+      cdDays.textContent = '00';
+      cdHours.textContent = '00';
+      cdMinutes.textContent = '00';
+      cdSeconds.textContent = '00';
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const days   = Math.floor(totalSeconds / (3600*24));
+    const hours  = Math.floor((totalSeconds % (3600*24)) / 3600);
+    const mins   = Math.floor((totalSeconds % 3600) / 60);
+    const secs   = totalSeconds % 60;
+
+    cdDays.textContent    = String(days).padStart(2,'0');
+    cdHours.textContent   = String(hours).padStart(2,'0');
+    cdMinutes.textContent = String(mins).padStart(2,'0');
+    cdSeconds.textContent = String(secs).padStart(2,'0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // =========================
+  // MODAL: Application form
+  // =========================
+  const overlay       = document.getElementById('applicationOverlay');
+  const openBtn       = document.getElementById('openApplicationBtn');
+  const closeBtn      = document.getElementById('applicationClose');
+  const applicationForm = document.getElementById('applicationForm');
+
+  function openModal(){
+    overlay.classList.add('active');
+  }
+
+  function closeModal(){
+    overlay.classList.remove('active');
+  }
+
+  if (openBtn){
+    openBtn.addEventListener('click', openModal);
+  }
+  if (closeBtn){
+    closeBtn.addEventListener('click', closeModal);
+  }
+  overlay.addEventListener('click', (e)=>{
+    if (e.target === overlay){
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown',(e)=>{
+    if(e.key === 'Escape'){
+      closeModal();
+    }
+  });
+
+  applicationForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+
+    const name      = document.getElementById('appName').value.trim();
+    const phone     = document.getElementById('appPhone').value.trim();
+    const tg        = document.getElementById('appTelegram').value.trim();
+    const experience= document.getElementById('appExperience').value;
+
+    let text = 'Хочу подати заявку на безкоштовну участь у курсі з дропшипінгу!%0A%0A';
+    text += `Ім’я: ${encodeURIComponent(name)}%0A`;
+    text += `Телефон: ${encodeURIComponent(phone)}%0A`;
+    text += `Telegram: ${encodeURIComponent(tg)}%0A`;
+    text += `Досвід: ${encodeURIComponent(experience)}%0A`;
+
+    const url = `https://t.me/manager_samostroy_shop?text=${text}`;
+    window.open(url, '_blank');
+
+    closeModal();
+  });
+</script>
+
+</body>
+</html>
