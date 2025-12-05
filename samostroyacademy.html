@@ -1,1328 +1,294 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Samostroy Academy — Навчальний кабінет</title>
 
-  <title>Samostroy Academy — Твій шлях до результату</title>
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Іконки Lucide -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <style>
-    :root{
-      --bg:#050509;
-      --bg2:#0b0c11;
-      --card:rgba(255,255,255,0.05);
-      --card2:rgba(255,255,255,0.08);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --text:#f1f1f4;
-      --muted:#a8abb5;
-      --border:rgba(255,255,255,0.14);
-      --radius:22px;
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-    }
-
-    *{margin:0;padding:0;box-sizing:border-box;}
-    body{
-      font-family:"Inter",sans-serif;
-      background:radial-gradient(circle at 20% 10%, rgba(255,122,26,0.15), transparent 55%), var(--bg);
-      color:var(--text);
-    }
-    a{text-decoration:none;color:inherit;}
-
-    header{
-      padding:18px 24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      background:rgba(5,5,9,0.75);
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid var(--border);
-      position:sticky;top:0;z-index:50;
-    }
-    .logo-wrap{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .logo{
-      font-size:26px;
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      letter-spacing:1px;
-    }
-    .student-chip{
-      padding:6px 12px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:13px;
-      color:var(--accent2);
-    }
-    .student-chip i{
-      width:16px;
-      height:16px;
-    }
-
-    .btn{
-      padding:10px 18px;
-      background:var(--grad);
-      color:#000;
-      font-weight:700;
-      border-radius:14px;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      border:none;
-      cursor:pointer;
-      transition:0.25s;
-      text-align:center;
-      white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-2px);}
-    .btn-outline{
-      background:transparent;
-      color:var(--accent2);
-      border:1px solid var(--accent);
-      box-shadow:none;
-    }
-    .btn i{
-      width:16px;
-      height:16px;
-    }
-
-    .section{
-      max-width:1200px;
-      margin:40px auto;
-      padding:0 20px;
-    }
-
-    .title{
-      font-size:30px;
-      font-weight:800;
-      margin-bottom:10px;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-    }
-    .sub{
-      font-size:15px;
-      color:var(--muted);
-      margin-bottom:26px;
-      max-width:700px;
-    }
-
-    /* HERO */
-    .hero{
-      max-width:1200px;
-      margin:30px auto 10px;
-      padding:0 20px;
-      display:grid;
-      grid-template-columns:minmax(0,1.4fr) minmax(260px,1fr);
-      gap:28px;
-      align-items:center;
-    }
-    .hero-title{
-      font-size:clamp(28px,4vw,36px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      margin-bottom:10px;
-    }
-    .hero-text{
-      font-size:15px;
-      color:var(--muted);
-      margin-bottom:18px;
-      max-width:650px;
-    }
-    .hero-stats{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:10px;
-    }
-    .hero-stat{
-      padding:9px 12px;
-      border-radius:14px;
-      background:var(--card2);
-      border:1px solid var(--border);
-      min-width:150px;
-      font-size:13px;
-    }
-    .hero-stat strong{
-      display:block;
-      color:var(--accent2);
-      margin-bottom:2px;
-    }
-    .hero-img{
-      width:100%;
-      height:230px;
-      border-radius:22px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      background-size:cover;
-      background-position:center;
-      /* TODO: заміни на свій головний банер */
-      background-image:url('https://i.ibb.co/Pv544dsR/unnamed-27.jpg');
-    }
-
-    @media(max-width:900px){
-      .hero{
-        grid-template-columns:1fr;
-      }
-      .hero-img{
-        order:-1;
-        height:200px;
-      }
-    }
-
-    /* DASHBOARD */
-    .dash-card{
-      background:var(--card2);
-      border-radius:26px;
-      border:1px solid var(--border);
-      padding:26px;
-      box-shadow:var(--shadow);
-      display:grid;
-      grid-template-columns:1.2fr 1fr;
-      gap:26px;
-      margin-bottom:40px;
-    }
-    @media(max-width:900px){
-      .dash-card{
-        grid-template-columns:1fr;
-      }
-    }
-
-    .dash-title{
-      font-size:22px;
-      font-weight:700;
-      margin-bottom:6px;
-    }
-    .dash-username{
-      font-size:15px;
-      color:var(--accent2);
-      margin-bottom:14px;
-    }
-    .dash-row-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    }
-    .dash-row-top .btn-outline{
-      font-size:12px;
-      padding:7px 12px;
-      border-radius:999px;
-    }
-
-    /* PROGRESS */
-    .progress-top{
-      display:flex;
-      justify-content:space-between;
-      font-size:14px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .progress-track{
-      width:100%;
-      height:12px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.06);
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.1);
-    }
-    .progress-bar{
-      height:100%;
-      width:0%;
-      background:var(--grad);
-      border-radius:999px;
-      transition:0.35s ease;
-    }
-    .stats-row{
-      margin-top:12px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      font-size:14px;
-      color:var(--muted);
-    }
-    .dash-hint{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:10px;
-    }
-
-    /* ACHIEVEMENTS */
-    .ach-list{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:8px;
-    }
-    .ach-item{
-      padding:8px 12px;
-      background:rgba(255,255,255,0.06);
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      display:flex;
-      align-items:center;
-      gap:6px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .ach-item i{
-      width:14px;
-      height:14px;
-    }
-    .ach-earned{
-      background:rgba(255,179,71,0.14);
-      border-color:rgba(255,179,71,0.5);
-      color:var(--accent2);
-    }
-
-    /* COURSE LIST */
-    .course-list{
-      display:grid;
-      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-      gap:22px;
-    }
-    .course-card{
-      background:var(--card);
-      border-radius:22px;
-      border:1px solid var(--border);
-      padding:18px 18px 18px;
-      box-shadow:var(--shadow);
-      transition:0.25s;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      position:relative;
-    }
-    .course-card:hover{
-      transform:translateY(-3px);
-    }
-    .course-cover{
-      width:100%;
-      height:150px;
-      border-radius:18px;
-      background-size:cover;
-      background-position:center;
-      border:1px solid var(--border);
-      margin-bottom:6px;
-    }
-    .course-name{
-      font-size:18px;
-      font-weight:700;
-      margin-bottom:4px;
-      color:var(--accent2);
-    }
-    .course-status-line{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .course-meta{
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-    .course-progress-line{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:8px;
-    }
-    .course-badge{
-      position:absolute;
-      top:10px;
-      left:10px;
-      padding:5px 9px;
-      border-radius:999px;
-      font-size:11px;
-      background:rgba(5,5,9,0.8);
-      border:1px solid rgba(255,255,255,0.15);
-      color:var(--muted);
-    }
-    .course-badge-main{
-      color:#5ce3a0;
-      border-color:rgba(0,200,120,0.7);
-    }
-    .course-badge-locked{
-      color:#f97373;
-      border-color:rgba(248,113,113,0.8);
-    }
-    .course-actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:auto;
-    }
-    .btn-small{
-      padding:8px 14px;
-      font-size:13px;
-      border-radius:14px;
-    }
-    .btn-ghost{
-      background:transparent;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-    .btn-ghost:hover{
-      background:rgba(255,255,255,0.05);
-      color:var(--accent2);
-    }
-    .btn-disabled{
-      opacity:.45;
-      pointer-events:none;
-    }
-
-    /* EMPTY STATE */
-    .empty-box{
-      background:var(--card);
-      border-radius:22px;
-      border:1px solid var(--border);
-      padding:20px;
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    /* INFO CARD */
-    .info-card{
-      background:var(--card);
-      border-radius:22px;
-      border:1px solid var(--border);
-      padding:18px 18px;
-      box-shadow:var(--shadow);
-      max-width:700px;
-    }
-    .info-line{
-      font-size:14px;
-      color:var(--muted);
-      margin-bottom:4px;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .info-line i{
-      width:16px;
-      height:16px;
-    }
-
-    footer{
-      text-align:center;
-      padding:20px;
-      font-size:13px;
-      color:var(--muted);
-      border-top:1px solid var(--border);
-      margin-top:40px;
-    }
-
-    /* NAME MODAL */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.65);
-      backdrop-filter:blur(8px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index:100;
-    }
-    .overlay.hidden{
-      display:none;
-    }
-    .name-modal{
-      background:var(--bg2);
-      border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      max-width:420px;
-      width:92%;
-      padding:22px 20px 20px;
-      animation:fadeUp .3s ease both;
-    }
-    .name-modal-title{
-      font-size:18px;
-      font-weight:700;
-      margin-bottom:6px;
-    }
-    .name-modal-sub{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:14px;
-    }
-    .name-input-wrap{
-      margin-bottom:14px;
-    }
-    .name-input-wrap label{
-      font-size:13px;
-      color:var(--muted);
-      display:block;
-      margin-bottom:4px;
-    }
-    .name-input-wrap input{
-      width:100%;
-      padding:9px 10px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--bg2);
-      color:var(--text);
-      outline:none;
-      font-size:14px;
-    }
-
-    .avatar-grid{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:10px;
-      margin-bottom:14px;
-    }
-    .avatar-option{
-      border-radius:16px;
-      padding:10px;
-      border:1px solid rgba(255,255,255,0.1);
-      background:rgba(255,255,255,0.03);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:6px;
-      cursor:pointer;
-      transition:0.2s;
-    }
-    .avatar-icon{
-      width:34px;
-      height:34px;
-      border-radius:999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg,rgba(255,122,26,0.25),rgba(255,179,71,0.2));
-    }
-    .avatar-icon i{
-      width:20px;
-      height:20px;
-    }
-    .avatar-label{
-      font-size:11px;
-      color:var(--muted);
-      text-align:center;
-    }
-    .avatar-option.selected{
-      border-color:rgba(255,179,71,0.9);
-      box-shadow:0 0 0 1px rgba(255,179,71,0.6);
-      transform:translateY(-1px);
-    }
-    .name-modal-actions{
-      display:flex;
-      justify-content:flex-end;
-      gap:8px;
-      margin-top:4px;
-    }
-    .btn-secondary{
-      background:transparent;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-    .btn-secondary:hover{
-      background:rgba(255,255,255,0.04);
-      color:var(--accent2);
-    }
-
-    @media(max-width:600px){
-      header{
-        padding:14px 16px;
-      }
-      .dash-card{
-        padding:18px 16px;
-      }
-      .course-card{
-        padding:16px;
-      }
-      .btn{
-        font-size:13px;
-      }
-    }
-
-    @keyframes fadeUp{
-      0%{opacity:0;transform:translateY(10px);}
-      100%{opacity:1;transform:translateY(0);}
-    }
-  </style>
+  <!-- Стили академии -->
+  <link rel="stylesheet" href="academy.css">
 </head>
-
 <body>
 
-<header>
-  <div class="logo-wrap">
-    <div class="logo">Samostroy Academy</div>
-    <div class="student-chip">
-      <i data-lucide="user"></i>
-      <span id="chipName">Студент</span>
-    </div>
+<!-- ========= HEADER ========= -->
+<header class="ac-header">
+  <div class="ac-header-left">
+    <div class="ac-logo">Samostroy Academy</div>
+    <button class="ac-pill" id="scrollBadgesBtn">
+      <i data-lucide="medal"></i>
+      Зала досягнень
+    </button>
   </div>
 
-  <button class="btn btn-outline" id="changeProfileBtn">
-    <i data-lucide="user-pen"></i>
-    Змінити профіль
+  <button class="ac-profile-chip" id="openProfileBtn">
+    <div class="ac-avatar" id="headerAvatar">
+      <i data-lucide="user"></i>
+    </div>
+    <div class="ac-profile-chip-text">
+      <span class="ac-profile-name" id="headerName">Студент</span>
+      <span class="ac-profile-status" id="headerStatus">Новачок • lvl 1</span>
+    </div>
   </button>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div>
-    <h1 class="hero-title">Твій навчальний кабінет</h1>
-    <p class="hero-text">
-      Усі курси, прогрес, досягнення та рівень — в одному місці. Почни з базового курсу
-      <b>«Дропшипінг з нуля»</b>, а потім відкривай продвинуті програми, коли будеш готовий.
-    </p>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <strong>Старт першого курсу</strong>
-        10.01.2026 • 09:00
-      </div>
-      <div class="hero-stat">
-        <strong>Курсів в академії</strong>
-        8 програм
-      </div>
-      <div class="hero-stat">
-        <strong>Вже приєдналося</strong>
-        <span id="heroStudents">57+ студентів</span>
-      </div>
-    </div>
-  </div>
-  <div class="hero-img"></div>
-</section>
+<main class="ac-page">
 
-<section class="section">
-  <!-- DASHBOARD -->
-  <div class="dash-card">
-    <div>
-      <div class="dash-row-top">
-        <div>
-          <div class="dash-title">Привіт, <span id="dashName">Студент</span> 👋</div>
-          <div class="dash-username">Твій рівень: <b id="dashLevel">Новачок</b></div>
+  <!-- ========= HERO ========= -->
+  <section class="ac-hero">
+    <div class="ac-hero-text">
+      <h1 class="ac-hero-title">Твій навчальний кабінет</h1>
+      <p class="ac-hero-sub">
+        Всі програми Samostroy Academy в одному місці: від базового курсу
+        <b>«Дропшипінг з нуля»</b> до продвинутих модулів про масштабування,
+        продажі, лідерство та саморозвиток.
+      </p>
+      <div class="ac-hero-stats">
+        <div class="ac-hero-stat">
+          <span class="ac-hero-stat-label">Старт першого потоку</span>
+          <span class="ac-hero-stat-value">10.01.2026</span>
         </div>
-        <button class="btn btn-outline" id="resetProgressBtn">
-          <i data-lucide="rotate-ccw"></i>
-          Скинути прогрес
-        </button>
-      </div>
-
-      <div class="progress-top">
-        <span id="dashProgressTitle">Прогрес по курсу «Дропшипінг з нуля»</span>
-        <span id="dashProgress">0%</span>
-      </div>
-
-      <div class="progress-track">
-        <div class="progress-bar" id="dashProgressBar"></div>
-      </div>
-
-      <div class="stats-row">
-        <span id="openedCount">Відкрито: 0 модулів</span>
-        <span id="completedCount">Пройдено: 0 модулів</span>
-      </div>
-
-      <div class="dash-hint" id="dashHint">
-        Почни з базового курсу, пройди перший модуль і відкрий для себе наступні можливості.
+        <div class="ac-hero-stat">
+          <span class="ac-hero-stat-label">Курсів в академії</span>
+          <span class="ac-hero-stat-value">8 програм</span>
+        </div>
+        <div class="ac-hero-stat">
+          <span class="ac-hero-stat-label">Студентів</span>
+          <span class="ac-hero-stat-value" id="heroStudents">57+</span>
+        </div>
       </div>
     </div>
 
-    <div>
-      <div class="dash-title">Досягнення</div>
-      <div class="ach-list" id="achList"></div>
+    <div class="ac-hero-card">
+      <div class="ac-hero-card-label">Твій статус</div>
+      <div class="ac-hero-card-main">
+        <div class="ac-hero-level" id="heroLevelTitle">Новачок</div>
+        <div class="ac-hero-xp">
+          <span id="heroXpText">0 / 100 XP</span>
+          <div class="ac-xp-bar">
+            <div class="ac-xp-bar-fill" id="heroXpBar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ac-hero-card-footer">
+        <span id="heroLevelHint">Почни базовий курс і відкрий доступ до всієї академії.</span>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- MY COURSES -->
-  <h2 class="title">Твої курси</h2>
-  <p class="sub">Тут відображаються програми, які ти вже почав або завершив.</p>
-
-  <div id="myCoursesList" class="course-list"></div>
-  <div id="myCoursesEmpty" class="empty-box" style="display:none;">
-    У тебе поки немає активних курсів. Почни з <b>«Дропшипінг з нуля»</b> у розділі «Всі курси академії».
-  </div>
-</section>
-
-<!-- ALL COURSES -->
-<section class="section">
-  <h2 class="title">Всі курси академії</h2>
-  <p class="sub">Усі навчальні програми: активні, майбутні та в розробці.</p>
-
-  <div id="allCoursesList" class="course-list"></div>
-</section>
-
-<section class="section">
-  <h2 class="title">2026 — рік можливостей</h2>
-  <p class="sub">
-    Онлайн-продажі в Україні зростають щороку. Дропшипінг — один з найпростіших способів увійти 
-    в бізнес без великих ризиків і стартового капіталу. Але результат отримують тільки ті, хто діє.
-  </p>
-
-  <div class="info-card">
-    <div class="info-line">
-      <i data-lucide="trending-up"></i>
-      <span><b>Ринок e-commerce 2026</b> продовжує рости — все більше людей купують онлайн.</span>
+  <!-- ========= ПРОГРЕС ========= -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2 class="ac-section-title">Мій прогрес</h2>
+      <p class="ac-section-sub">
+        Панель показує активний курс та твій фактичний прогрес. Дані підтягуються з курсів автоматично.
+      </p>
     </div>
-    <div class="info-line">
-      <i data-lucide="shopping-bag"></i>
-      <span>Дропшипінг дозволяє продавати, не зберігаючи товар на складі.</span>
-    </div>
-    <div class="info-line">
-      <i data-lucide="rocket"></i>
-      <span><b>Твій старт</b> — це перший курс у цій академії. Далі все залежить від твоїх дій.</span>
-    </div>
-  </div>
-</section>
 
-<footer>
-  © <span id="year"></span> Samostroy Academy
+    <div class="ac-card">
+      <div id="progressEmpty" class="ac-progress-empty">
+        Ти ще не розпочав жоден курс. Почни з базового
+        <b>«Дропшипінг з нуля»</b> в блоці нижче.
+      </div>
+
+      <div id="progressPanel" class="ac-progress" style="display:none;">
+        <div class="ac-progress-header">
+          <div>
+            <div class="ac-progress-label">Активний курс</div>
+            <div class="ac-progress-title" id="activeCourseName">—</div>
+            <div class="ac-progress-sub" id="activeCourseHint">
+              Оновлюється автоматично.
+            </div>
+          </div>
+          <div class="ac-progress-value" id="activeCourseValue">0%</div>
+        </div>
+        <div class="ac-progress-bar-track">
+          <div class="ac-progress-bar-fill" id="activeCourseBar"></div>
+        </div>
+        <div class="ac-progress-footer" id="activeCourseFooter">
+          Один курс — один фокус. Коли завершиш цей курс, зможеш обрати наступний.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= МОЇ КУРСИ ========= -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2 class="ac-section-title">Мої курси</h2>
+      <p class="ac-section-sub">
+        Програми, які ти вже розпочав або завершив.
+      </p>
+    </div>
+
+    <div id="myCoursesEmpty" class="ac-empty-box">
+      Ти ще не почав жоден курс. Як тільки натиснеш «Почати курс», він зʼявиться тут.
+    </div>
+
+    <div id="myCoursesGrid" class="ac-courses-grid"></div>
+  </section>
+
+  <!-- ========= ВСІ КУРСИ ========= -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2 class="ac-section-title">Всі курси академії</h2>
+      <p class="ac-section-sub">
+        Спочатку пройди базовий курс, а потім обирай продвинуті програми. Під час проходження одного курсу інші блокуються — щоб ти сфокусувався.
+      </p>
+    </div>
+
+    <div id="allCoursesGrid" class="ac-courses-grid"></div>
+  </section>
+
+  <!-- ========= ЗАЛА ДОСЯГНЕНЬ ========= -->
+  <section class="ac-section" id="badgesSection">
+    <div class="ac-section-head">
+      <h2 class="ac-section-title">Зала досягнень</h2>
+      <p class="ac-section-sub">
+        Збирай бейджі за прогрес в курсах, активність та дисципліну. Чим більше бейджів — тим вищий твій статус в академії.
+      </p>
+    </div>
+
+    <div class="ac-badges-board">
+      <div class="ac-badges-board-header">
+        <div>
+          <div class="ac-badges-board-title">Дошка досягнень</div>
+          <div class="ac-badges-board-sub" id="badgesSummary">
+            0 / 0 бейджів. Почни навчання, щоб відкрити перший.
+          </div>
+        </div>
+        <div class="ac-badges-board-stats" id="badgesStats">
+          <!-- динамічно -->
+        </div>
+      </div>
+
+      <div id="badgesGrid" class="ac-badges-grid">
+        <!-- бейджі вставляються скриптом -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ac-footer">
+  © <span id="year"></span> Samostroy Academy. Усі права захищено.
 </footer>
 
-<!-- NAME MODAL -->
-<div class="overlay hidden" id="nameOverlay">
-  <div class="name-modal">
-    <div class="name-modal-title">Познайомимось перед стартом 👋</div>
-    <div class="name-modal-sub">
-      Це ім’я буде відображатися у твоєму кабінеті, курсах та досягненнях.
+<!-- ========= MODALS ========= -->
+
+<!-- Профіль / реєстрація -->
+<div class="ac-overlay ac-hidden" id="profileOverlay">
+  <div class="ac-modal ac-modal-profile">
+    <div class="ac-modal-header">
+      <h2>Ласкаво просимо в Samostroy Academy</h2>
+      <p>Вкажи ім’я та обери аватар. Це твій навчальний профіль.</p>
     </div>
 
-    <div class="name-input-wrap">
-      <label for="studentNameInput">Твоє ім’я:</label>
-      <input type="text" id="studentNameInput" placeholder="Наприклад: Євген" />
+    <div class="ac-modal-section">
+      <label class="ac-field-label" for="profileNameInput">Твоє ім’я</label>
+      <input id="profileNameInput" class="ac-input" type="text" placeholder="Наприклад, Євген" />
     </div>
 
-    <div class="name-modal-sub" style="margin-bottom:8px;">
-      Обери стиль свого профілю:
-    </div>
-
-    <div class="avatar-grid" id="avatarGrid">
-      <div class="avatar-option" data-avatar="1">
-        <div class="avatar-icon"><i data-lucide="flame"></i></div>
-        <div class="avatar-label">Амбіційний</div>
-      </div>
-      <div class="avatar-option" data-avatar="2">
-        <div class="avatar-icon"><i data-lucide="rocket"></i></div>
-        <div class="avatar-label">Швидкий старт</div>
-      </div>
-      <div class="avatar-option" data-avatar="3">
-        <div class="avatar-icon"><i data-lucide="target"></i></div>
-        <div class="avatar-label">Фокус на цілі</div>
-      </div>
-      <div class="avatar-option" data-avatar="4">
-        <div class="avatar-icon"><i data-lucide="shield-check"></i></div>
-        <div class="avatar-label">Стабільність</div>
-      </div>
-      <div class="avatar-option" data-avatar="5">
-        <div class="avatar-icon"><i data-lucide="star"></i></div>
-        <div class="avatar-label">Майбутній лідер</div>
-      </div>
-      <div class="avatar-option" data-avatar="6">
-        <div class="avatar-icon"><i data-lucide="coins"></i></div>
-        <div class="avatar-label">Фінансовий результат</div>
+    <div class="ac-modal-section">
+      <div class="ac-field-label">Обери аватар</div>
+      <div class="ac-avatar-grid" id="avatarGrid">
+        <button class="ac-avatar-option ac-avatar-selected" data-avatar="rocket">
+          <div class="ac-avatar-option-icon"><i data-lucide="rocket"></i></div>
+          <span>Ракета</span>
+        </button>
+        <button class="ac-avatar-option" data-avatar="ninja">
+          <div class="ac-avatar-option-icon"><i data-lucide="sword"></i></div>
+          <span>Ніндзя</span>
+        </button>
+        <button class="ac-avatar-option" data-avatar="lion">
+          <div class="ac-avatar-option-icon"><i data-lucide="flame"></i></div>
+          <span>Лев</span>
+        </button>
+        <button class="ac-avatar-option" data-avatar="owl">
+          <div class="ac-avatar-option-icon"><i data-lucide="moon-star"></i></div>
+          <span>Сова</span>
+        </button>
       </div>
     </div>
 
-    <div class="name-modal-actions">
-      <button class="btn btn-secondary" id="nameSkipBtn">Пізніше</button>
-      <button class="btn" id="nameSaveBtn">
-        <i data-lucide="check-circle-2"></i>
-        Зберегти профіль
+    <div class="ac-modal-section">
+      <div class="ac-field-label">Стиль інтерфейсу</div>
+      <div class="ac-style-grid" id="styleGrid">
+        <button class="ac-style-chip ac-style-selected" data-style="classic">
+          <span class="ac-style-dot ac-style-dot-classic"></span>
+          Класичний
+        </button>
+        <button class="ac-style-chip" data-style="neon">
+          <span class="ac-style-dot ac-style-dot-neon"></span>
+          Неоновий
+        </button>
+        <button class="ac-style-chip" data-style="sunset">
+          <span class="ac-style-dot ac-style-dot-sunset"></span>
+          Захід сонця
+        </button>
+      </div>
+    </div>
+
+    <div class="ac-modal-footer">
+      <button class="ac-btn ac-btn-ghost" id="profileSkipBtn">Пізніше</button>
+      <button class="ac-btn" id="profileSaveBtn">
+        <i data-lucide="check"></i>
+        Почати навчання
       </button>
     </div>
   </div>
 </div>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-  if (window.lucide) lucide.createIcons();
+<!-- Модал опису курсу -->
+<div class="ac-overlay ac-hidden" id="courseModal">
+  <div class="ac-modal ac-modal-course">
+    <button class="ac-modal-close" id="courseModalClose">
+      <i data-lucide="x"></i>
+    </button>
+    <div class="ac-modal-course-tag" id="courseModalTag">Курс</div>
+    <h2 id="courseModalTitle">Назва курсу</h2>
+    <p class="ac-modal-course-desc" id="courseModalDesc"></p>
 
-  const PROFILE_KEY  = "academy_student_profile_v1"; // той самий, що й у сторінки курсу
-  const PROGRESS_KEY = "academy_modules_completed_v1"; // модулі «Дропшипінг з нуля»
-  const MODULES_TOTAL = 7;
+    <ul class="ac-modal-course-list" id="courseModalBullets"></ul>
 
-  // Карту курсів робимо єдину
-  const COURSES = [
-    {
-      id:"ds_zero",
-      title:"Дропшипінг з нуля",
-      cover:"https://i.ibb.co/v67Dq0Vg/unnamed-21.jpg", // TODO: свій банер
-      level:"Базовий курс",
-      url:"SamostroyAcademyProgram.html",  // сторінка програми курсу
-      type:"main"
-    },
-    {
-      id:"scale_up",
-      title:"Масштабування",
-      cover:"course_scale_up.jpg", // TODO
-      level:"Продвинутий рівень",
-      url:"#",
-      type:"advanced"
-    },
-    {
-      id:"million100",
-      title:"Мільйон за 100",
-      cover:"course_million100.jpg", // TODO
-      level:"Фокус на результат",
-      url:"#",
-      type:"advanced"
-    },
-    {
-      id:"sales3",
-      title:"Продажі 3.0",
-      cover:"course_sales3.jpg", // TODO
-      level:"Продажі та скрипти",
-      url:"#",
-      type:"sales"
-    },
-    {
-      id:"leadership",
-      title:"Лідерство",
-      cover:"course_leadership.jpg", // TODO
-      level:"Особистий вплив",
-      url:"#",
-      type:"soft"
-    },
-    {
-      id:"selfgrowth",
-      title:"Саморозвиток",
-      cover:"course_selfgrowth.jpg", // TODO
-      level:"Внутрішня робота",
-      url:"#",
-      type:"soft"
-    },
-    {
-      id:"learn60",
-      title:"Навчись за 60 хвилин",
-      cover:"course_learn60.jpg", // TODO
-      level:"Експрес формат",
-      url:"#",
-      type:"mini"
-    },
-    {
-      id:"change_or_die",
-      title:"Змінись або помри",
-      cover:"course_change_or_die.jpg", // TODO
-      level:"Радикальні зміни",
-      url:"#",
-      type:"mindset"
-    }
-  ];
+    <div class="ac-modal-footer">
+      <button class="ac-btn ac-btn-ghost" id="courseModalCancel">Закрити</button>
+      <button class="ac-btn" id="courseModalStart">
+        <i data-lucide="play"></i>
+        Почати курс
+      </button>
+    </div>
+  </div>
+</div>
 
-  // ====== ПРОФІЛЬ / СТАН АКАДЕМІЇ  ======
+<!-- Модал нового бейджа -->
+<div class="ac-overlay ac-hidden" id="achModal">
+  <div class="ac-modal ac-modal-ach">
+    <div class="ac-ach-glow"></div>
+    <div class="ac-ach-icon-wrap" id="achModalIcon"></div>
+    <div class="ac-ach-label">Новий бейдж!</div>
+    <h2 class="ac-ach-title" id="achModalTitle">Назва бейджа</h2>
+    <p class="ac-ach-text" id="achModalText">
+      Опис досягнення.
+    </p>
+    <p class="ac-ach-user" id="achModalUser">
+      Вітаємо, Студент!
+    </p>
+    <div class="ac-modal-footer">
+      <button class="ac-btn" id="achModalOk">
+        <i data-lucide="check-circle-2"></i>
+        Продовжити
+      </button>
+    </div>
+  </div>
+</div>
 
-  function defaultCoursesState(){
-    const map = {};
-    COURSES.forEach(c => {
-      map[c.id] = {
-        started:false,
-        completed:false,
-        progress:0
-      };
-    });
-    return map;
-  }
-
-  function loadProfileState(){
-    try{
-      const raw = localStorage.getItem(PROFILE_KEY);
-      if(!raw) return null;
-      const p = JSON.parse(raw);
-      if(!p || typeof p !== "object") return null;
-
-      // Гарантуємо нові поля
-      if(!p.courses) p.courses = defaultCoursesState();
-      else{
-        // додати відсутні курси
-        const existing = p.courses;
-        COURSES.forEach(c=>{
-          if(!existing[c.id]){
-            existing[c.id] = {started:false,completed:false,progress:0};
-          }
-        });
-        p.courses = existing;
-      }
-      if(typeof p.currentCourseId === "undefined"){
-        p.currentCourseId = null;
-      }
-      if(!p.createdAt){
-        p.createdAt = new Date().toISOString();
-      }
-      if(!p.avatarId){
-        p.avatarId = "1";
-      }
-      if(!p.name){
-        p.name = "Студент";
-      }
-
-      return p;
-    }catch(e){
-      return null;
-    }
-  }
-
-  function saveProfileState(state){
-    localStorage.setItem(PROFILE_KEY, JSON.stringify(state));
-  }
-
-  function loadDsZeroCompletedModules(){
-    try{
-      const raw = localStorage.getItem(PROGRESS_KEY);
-      if(!raw) return [];
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) ? arr : [];
-    }catch(e){
-      return [];
-    }
-  }
-
-  // Синхронізація прогресу базового курсу з даними курсу
-  function syncDsZeroProgress(state){
-    const completedModules = loadDsZeroCompletedModules();
-    const count = completedModules.length;
-    const pct = Math.round((count / MODULES_TOTAL) * 100);
-
-    const courseState = state.courses["ds_zero"] || {started:false,completed:false,progress:0};
-
-    if(count > 0){
-      courseState.started = true;
-    }
-    courseState.progress = pct;
-    if(count >= MODULES_TOTAL){
-      courseState.completed = true;
-    }
-
-    state.courses["ds_zero"] = courseState;
-    return { count, pct };
-  }
-
-  function computeLevel(completedCoursesCount){
-    if(completedCoursesCount === 0) return "Новачок";
-    if(completedCoursesCount === 1) return "Активний учень";
-    if(completedCoursesCount <= 3) return "Практик";
-    if(completedCoursesCount <= 5) return "Підприємець";
-    return "На шляху до мільйона";
-  }
- 
-  function computeAchievements(completedModulesCount){
-    return [
-      {id:"first_module", name:"Перший крок", icon:"award", earned:completedModulesCount>=1},
-      {id:"three",        name:"Стабільний учень", icon:"star", earned:completedModulesCount>=3},
-      {id:"all",          name:"Фініш курсу", icon:"trophy", earned:completedModulesCount>=7},
-      {id:"start",        name:"Старт 2026", icon:"sparkles", earned:true}
-    ];
-  }
-
-  function getCourseById(id){
-    return COURSES.find(c => c.id === id);
-  }
-
-  // ====== UI ======
-
-  const chipNameEl      = document.getElementById("chipName");
-  const dashNameEl      = document.getElementById("dashName");
-  const dashLevelEl     = document.getElementById("dashLevel");
-  const dashProgressEl  = document.getElementById("dashProgress");
-  const dashProgressBar = document.getElementById("dashProgressBar");
-  const openedCountEl   = document.getElementById("openedCount");
-  const completedCountEl= document.getElementById("completedCount");
-  const achListEl       = document.getElementById("achList");
-  const dashHintEl      = document.getElementById("dashHint");
-  const heroStudentsEl  = document.getElementById("heroStudents");
-
-  const myCoursesListEl = document.getElementById("myCoursesList");
-  const myCoursesEmptyEl= document.getElementById("myCoursesEmpty");
-  const allCoursesListEl= document.getElementById("allCoursesList");
-
-  const changeProfileBtn  = document.getElementById("changeProfileBtn");
-  const resetProgressBtn  = document.getElementById("resetProgressBtn");
-
-  // Модал профілю
-  const nameOverlay       = document.getElementById("nameOverlay");
-  const studentNameInput  = document.getElementById("studentNameInput");
-  const avatarGrid        = document.getElementById("avatarGrid");
-  const nameSaveBtn       = document.getElementById("nameSaveBtn");
-  const nameSkipBtn       = document.getElementById("nameSkipBtn");
-  let selectedAvatar      = "1";
-
-  function highlightAvatar(id){
-    selectedAvatar = id;
-    const options = avatarGrid.querySelectorAll(".avatar-option");
-    options.forEach(o => {
-      o.classList.toggle("selected", o.dataset.avatar === id);
-    });
-  }
-
-  avatarGrid.addEventListener("click",(e)=>{
-    const opt = e.target.closest(".avatar-option");
-    if(!opt) return;
-    highlightAvatar(opt.dataset.avatar);
-  });
-
-  function openNameModal(isFirstTime){
-    if(isFirstTime){
-      nameSkipBtn.style.display = "inline-flex";
-    }else{
-      nameSkipBtn.style.display = "none";
-    }
-    nameOverlay.classList.remove("hidden");
-  }
-  function closeNameModal(){
-    nameOverlay.classList.add("hidden");
-  }
-
-  nameSaveBtn.addEventListener("click", ()=>{
-    const name = (studentNameInput.value || "").trim() || "Студент";
-    let state = loadProfileState();
-    if(!state){
-      state = {
-        name,
-        avatarId:selectedAvatar,
-        createdAt:new Date().toISOString(),
-        currentCourseId:null,
-        courses:defaultCoursesState()
-      };
-    }else{
-      state.name = name;
-      state.avatarId = selectedAvatar;
-    }
-    saveProfileState(state);
-    applyStateToUI(state);
-    closeNameModal();
-  });
-
-  nameSkipBtn.addEventListener("click", ()=>{
-    let state = loadProfileState();
-    if(!state){
-      state = {
-        name:"Студент",
-        avatarId:selectedAvatar,
-        createdAt:new Date().toISOString(),
-        currentCourseId:null,
-        courses:defaultCoursesState()
-      };
-      saveProfileState(state);
-      applyStateToUI(state);
-    }
-    closeNameModal();
-  });
-
-  if(changeProfileBtn){
-    changeProfileBtn.addEventListener("click", ()=>{
-      const state = loadProfileState();
-      if(state){
-        studentNameInput.value = state.name || "";
-        highlightAvatar(state.avatarId || "1");
-      }else{
-        studentNameInput.value = "";
-        highlightAvatar("1");
-      }
-      openNameModal(false);
-    });
-  }
-
-  if(resetProgressBtn){
-    resetProgressBtn.addEventListener("click", ()=>{
-      if(!confirm("Скинути весь прогрес по академії та курсу?")) return;
-      // чистимо модулі базового курсу
-      localStorage.removeItem(PROGRESS_KEY);
-      // чистимо профіль, але залишимо імʼя та аватар
-      const state = loadProfileState();
-      if(state){
-        const newState = {
-          name:state.name,
-          avatarId:state.avatarId,
-          createdAt:state.createdAt || new Date().toISOString(),
-          currentCourseId:null,
-          courses:defaultCoursesState()
-        };
-        saveProfileState(newState);
-        applyStateToUI(newState);
-      }else{
-        // просто повний ресет
-        localStorage.removeItem(PROFILE_KEY);
-        location.reload();
-      }
-    });
-  }
-
-  // Логіка старту/продовження курсу
-  window.startCourse = function(courseId){
-    let state = loadProfileState();
-    if(!state){
-      // якщо щось пішло не так — швидко створимо дефолт
-      state = {
-        name:"Студент",
-        avatarId:"1",
-        createdAt:new Date().toISOString(),
-        currentCourseId:null,
-        courses:defaultCoursesState()
-      };
-    }
-
-    const main = state.courses["ds_zero"];
-    const target = state.courses[courseId];
-    if(!target) return;
-
-    // Правила доступу
-    if(courseId !== "ds_zero" && !main.completed){
-      alert("Спочатку заверши курс «Дропшипінг з нуля».");
-      return;
-    }
-
-    if(state.currentCourseId && state.currentCourseId !== courseId){
-      const current = state.courses[state.currentCourseId];
-      if(current && !current.completed){
-        const cMeta = getCourseById(state.currentCourseId);
-        alert("Спочатку заверши поточний курс: «" + (cMeta?.title || "поточний курс") + "».");
-        return;
-      }
-    }
-
-    // Стартуємо курс
-    state.currentCourseId = courseId;
-    target.started = true;
-    saveProfileState(state);
-    applyStateToUI(state);
-
-    const meta = getCourseById(courseId);
-    if(meta && meta.url && meta.url !== "#"){
-      window.location.href = meta.url;
-    }
-  };
-
-  window.continueCourse = function(courseId){
-    const meta = getCourseById(courseId);
-    if(meta && meta.url && meta.url !== "#"){
-      window.location.href = meta.url;
-    }
-  };
-
-  function applyStateToUI(state){
-    // синхронізуємо прогрес базового курсу з модульною сторінкою
-    const dsInfo = syncDsZeroProgress(state);
-    saveProfileState(state);
-
-    const name = state.name || "Студент";
-    chipNameEl.textContent = name;
-    dashNameEl.textContent = name;
-
-    const completedCoursesCount = Object.values(state.courses).filter(c => c.completed).length;
-    dashLevelEl.textContent = computeLevel(completedCoursesCount);
-
-    // Прогрес по базовому курсу
-    const pct = dsInfo.pct;
-    const modulesCount = dsInfo.count;
-    dashProgressEl.textContent = pct + "%";
-    dashProgressBar.style.width = pct + "%";
-    openedCountEl.textContent    = `Відкрито: ${modulesCount} модулів`;
-    completedCountEl.textContent = `Пройдено: ${modulesCount} модулів`;
-
-    // Хінт
-    if(modulesCount === 0){
-      dashHintEl.textContent = "Почни з першого модуля базового курсу — це відкриє для тебе наступні програми.";
-    }else if(modulesCount < MODULES_TOTAL){
-      dashHintEl.textContent = "Рухайся далі по модулях. Після завершення курсу відкриються нові програми.";
-    }else{
-      dashHintEl.textContent = "Базовий курс завершено. Ти можеш обрати наступний курс у розділі «Всі курси академії».";
-    }
-
-    // Досягнення
-    const ach = computeAchievements(modulesCount);
-    achListEl.innerHTML = "";
-    ach.forEach(a=>{
-      const el = document.createElement("div");
-      el.className = "ach-item " + (a.earned ? "ach-earned" : "");
-      el.innerHTML = `<i data-lucide="${a.icon}"></i><span>${a.name}</span>`;
-      achListEl.appendChild(el);
-    });
-
-    // Оновимо приблизну кількість студентів (по приколу): 57 + completedCoursesCount
-    const totalStudents = 57 + completedCoursesCount;
-    heroStudentsEl.textContent = totalStudents + "+ студентів";
-
-    renderMyCourses(state);
-    renderAllCourses(state);
-
-    if(window.lucide) lucide.createIcons();
-  }
-
-  function renderMyCourses(state){
-    myCoursesListEl.innerHTML = "";
-    const myCourses = COURSES.filter(c=>{
-      const st = state.courses[c.id];
-      return st && (st.started || st.completed);
-    });
-
-    if(myCourses.length === 0){
-      myCoursesEmptyEl.style.display = "block";
-      return;
-    }
-    myCoursesEmptyEl.style.display = "none";
-
-    const mainState = state.courses["ds_zero"];
-    const currentId = state.currentCourseId;
-
-    myCourses.forEach(c=>{
-      const st = state.courses[c.id];
-      const pct = c.id === "ds_zero" ? st.progress : (st.progress || 0);
-
-      const isCurrent = currentId === c.id && !st.completed;
-      const badgeText = st.completed
-        ? "Завершено"
-        : (isCurrent ? "Поточний курс" : "У процесі");
-
-      const card = document.createElement("div");
-      card.className = "course-card";
-      card.innerHTML = `
-        <div class="course-cover" style="background-image:url('${c.cover}');"></div>
-        <div class="course-badge ${isCurrent ? "course-badge-main" : ""}">
-          ${badgeText}
-        </div>
-        <div class="course-name">${c.title}</div>
-        <div class="course-status-line">
-          ${c.id === "ds_zero" ? "Базова стартова програма" : "Рівень: " + (c.level || "")}
-        </div>
-        <div class="course-progress-line">Прогрес: ${pct}%</div>
-        <div class="course-actions"></div>
-      `;
-
-      const actions = card.querySelector(".course-actions");
-
-      if(st.completed){
-        const btnReview = document.createElement("button");
-        btnReview.className = "btn btn-small";
-        btnReview.innerHTML = `<i data-lucide="play-circle"></i> Переглянути матеріали`;
-        btnReview.onclick = ()=>continueCourse(c.id);
-        actions.appendChild(btnReview);
-      }else{
-        const btnContinue = document.createElement("button");
-        btnContinue.className = "btn btn-small";
-        btnContinue.innerHTML = `<i data-lucide="play"></i> Продовжити курс`;
-        btnContinue.onclick = ()=>continueCourse(c.id);
-        actions.appendChild(btnContinue);
-      }
-
-      myCoursesListEl.appendChild(card);
-    });
-  }
-
-  function renderAllCourses(state){
-    allCoursesListEl.innerHTML = "";
-    const mainState = state.courses["ds_zero"];
-    const currentId = state.currentCourseId;
-
-    COURSES.forEach(c=>{
-      const st = state.courses[c.id];
-      const card = document.createElement("div");
-      card.className = "course-card";
-
-      const pct = c.id === "ds_zero" ? (st.progress || 0) : (st.progress || 0);
-
-      // Логіка блокування
-      let locked = false;
-      let lockedReason = "";
-      let badgeClass = "";
-      let badgeText = "";
-
-      if(c.id === "ds_zero"){
-        badgeClass = "course-badge-main";
-        badgeText = st.completed ? "Завершено" : "Базовий курс";
-      }else{
-        if(!mainState.completed){
-          locked = true;
-          lockedReason = "Спочатку заверши «Дропшипінг з нуля».";
-          badgeClass = "course-badge-locked";
-          badgeText = "Заблоковано";
-        }else if(currentId && currentId !== c.id && !state.courses[currentId].completed){
-          locked = true;
-          const curMeta = getCourseById(currentId);
-          lockedReason = "Заверши поточний курс: «" + (curMeta?.title || "поточний курс") + "».";
-          badgeClass = "course-badge-locked";
-          badgeText = "Заблоковано";
-        }else{
-          badgeClass = st.completed ? "course-badge-main" : "";
-          badgeText = st.completed ? "Завершено" : "Доступний";
-        }
-      }
-
-      card.innerHTML = `
-        <div class="course-cover" style="background-image:url('${c.cover}');"></div>
-        <div class="course-badge ${badgeClass}">${badgeText}</div>
-        <div class="course-name">${c.title}</div>
-        <div class="course-status-line">
-          ${
-            c.id === "ds_zero"
-              ? "Стартова програма для входу у дропшипінг."
-              : (c.level || "")
-          }
-        </div>
-        <div class="course-meta">
-          ${
-            locked
-              ? lockedReason
-              : (st.completed ? "Курс пройдено." : (st.started ? "Курс вже розпочато." : "Можна почати у будь-який час."))
-          }
-        </div>
-        <div class="course-progress-line">Прогрес: ${pct}%</div>
-        <div class="course-actions"></div>
-      `;
-
-      const actions = card.querySelector(".course-actions");
-
-      if(locked){
-        const btn = document.createElement("button");
-        btn.className = "btn btn-small btn-disabled";
-        btn.innerHTML = `<i data-lucide="lock"></i> Заблоковано`;
-        actions.appendChild(btn);
-      }else{
-        if(st.completed){
-          const btn = document.createElement("button");
-          btn.className = "btn btn-small";
-          btn.innerHTML = `<i data-lucide="play-circle"></i> Переглянути`;
-          btn.onclick = ()=>continueCourse(c.id);
-          actions.appendChild(btn);
-        }else if(st.started){
-          const btn = document.createElement("button");
-          btn.className = "btn btn-small";
-          btn.innerHTML = `<i data-lucide="play"></i> Продовжити`;
-          btn.onclick = ()=>continueCourse(c.id);
-          actions.appendChild(btn);
-        }else{
-          const btn = document.createElement("button");
-          btn.className = "btn btn-small";
-          btn.innerHTML = `<i data-lucide="rocket"></i> Почати курс`;
-          btn.onclick = ()=>startCourse(c.id);
-          actions.appendChild(btn);
-        }
-      }
-
-      allCoursesListEl.appendChild(card);
-    });
-  }
-
-  // Ініціалізація при вході
-  (function init(){
-    // перший вхід?
-    let state = loadProfileState();
-    if(!state){
-      highlightAvatar("1");
-      openNameModal(true);
-    }else{
-      highlightAvatar(state.avatarId || "1");
-      applyStateToUI(state);
-    }
-  })();
-</script>
-
+<!-- JS академии -->
+<script src="academy.js"></script>
 </body>
 </html>
