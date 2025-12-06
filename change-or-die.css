@@ -562,3 +562,29 @@ body{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+
+/* === GLOW CURSOR === */
+body {
+  cursor: none; /* прибираємо стандартний курсор */
+}
+
+.glow-cursor {
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  background: radial-gradient(circle, rgba(255,179,71,0.55) 0%, rgba(255,179,71,0) 70%);
+  transform: translate(-50%, -50%);
+  transition: width .2s ease, height .2s ease, background .2s ease;
+}
+
+/* === БЕЙДЖ ПРИ НАВЕДЕННІ === */
+.ac-badge-card {
+  transition: transform .22s ease;
+}
+
+.ac-badge-card:hover {
+  transform: scale(1.03);
+}
