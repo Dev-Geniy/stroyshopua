@@ -524,27 +524,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-// === Glow Cursor ===
-document.addEventListener("mousemove", (e) => {
-  const c = document.getElementById("glowCursor");
-  c.style.left = e.clientX + "px";
-  c.style.top = e.clientY + "px";
-});
 
-// збільшення світіння при наведенні на бейдж
-document.querySelectorAll(".ac-badge-card").forEach(badge => {
-  badge.addEventListener("mouseenter", () => {
-    const c = document.getElementById("glowCursor");
-    c.style.width = "48px";
-    c.style.height = "48px";
-    c.style.background = "radial-gradient(circle, rgba(255,179,71,0.8) 0%, rgba(255,179,71,0) 75%)";
-  });
-
-  badge.addEventListener("mouseleave", () => {
-    const c = document.getElementById("glowCursor");
-    c.style.width = "28px";
-    c.style.height = "28px";
-    c.style.background = "radial-gradient(circle, rgba(255,179,71,0.55) 0%, rgba(255,179,71,0) 70%)";
-  });
-});
 
