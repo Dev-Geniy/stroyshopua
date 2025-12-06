@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Продвинутий рівень",
       type: "advanced",
       cover: "course_scale_up.jpg",
-      url: "course-scale-up.html",       // УБРАНО #
+      url: "scale.html",       // УБРАНО #
       lessons: 12,
       short: "Як вирости з перших продажів до стабільного обороту.",
       bullets: [
