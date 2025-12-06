@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Саморозвиток — Samostroy Academy</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  
+  <!-- Фавікон -->
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <link rel="stylesheet" href="selfgrowth.css">
+</head>
+<body>
+
+<header class="ac-header">
+  <div class="ac-header-left">
+    <div class="ac-logo">Samostroy Academy</div>
+
+    <a href="academy.html" class="cd-pill-back">
+      <i data-lucide="arrow-left"></i>
+      До академії
+    </a>
+  </div>
+
+  <button class="ac-profile-chip" id="scProfileBtn">
+    <div class="ac-avatar" id="scHeaderAvatar">
+      <i data-lucide="rocket"></i>
+    </div>
+    <div class="ac-profile-chip-text">
+      <span class="ac-profile-name" id="scHeaderName">Студент</span>
+      <span class="ac-profile-status" id="scHeaderStatus">Новачок • lvl 1</span>
+    </div>
+  </button>
+</header>
+
+<main class="cd-page">
+
+  <!-- HERO -->
+  <section class="cd-hero">
+    <div>
+      <h1 class="cd-hero-title">Саморозвиток</h1>
+
+      <p class="cd-hero-sub">
+        Внутрішні зміни, щоб витримувати зовнішнє навантаження.
+        Курс про дисципліну, фокус, мислення та внутрішню опору особистості.
+      </p>
+
+      <div class="cd-hero-stats">
+        <div class="cd-hero-stat">
+          <span class="cd-hero-stat-label">Рівень</span>
+          <span class="cd-hero-stat-value" id="scHeroLevel">Новачок</span>
+        </div>
+
+        <div class="cd-hero-stat">
+          <span class="cd-hero-stat-label">Твій XP</span>
+          <span class="cd-hero-stat-value" id="scHeroXp">0 / 100 XP</span>
+        </div>
+
+        <div class="cd-hero-stat">
+          <span class="cd-hero-stat-label">Уроків у курсі</span>
+          <span class="cd-hero-stat-value" id="scHeroLessons">10 уроків</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cd-hero-banner">
+      <div class="cd-hero-badge-main">Внутрішня сила</div>
+
+      <div class="cd-hero-banner-bottom">
+        <div class="cd-hero-banner-label">Курс «Саморозвиток»</div>
+        <div class="cd-hero-banner-hint">
+          Формуй фундамент, який витримає будь-який тиск.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="cd-section">
+    <div class="cd-section-head">
+      <h2 class="cd-section-title">Прогрес по курсу</h2>
+      <p class="cd-section-sub">Відмічай уроки — прогрес зберігається автоматично.</p>
+    </div>
+
+    <div class="cd-card cd-progress-card">
+      <div class="cd-progress-header">
+        <div>
+          <div class="cd-progress-label">Курс</div>
+          <div class="cd-progress-title">Саморозвиток</div>
+          <div class="cd-progress-sub" id="scProgressSub">Почни з першого уроку.</div>
+        </div>
+
+        <div class="cd-progress-value" id="scProgressValue">0%</div>
+      </div>
+
+      <div class="cd-progress-bar-track">
+        <div class="cd-progress-bar-fill" id="scProgressBar"></div>
+      </div>
+
+      <div class="cd-progress-footer">
+        <span id="scProgressDetails">0 / 10 уроків</span>
+        <span class="cd-progress-footer-sep">•</span>
+        <span id="scProgressHint">Кожен урок зміцнює твою внутрішню опору.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGES -->
+  <section class="cd-section">
+    <div class="cd-section-head cd-section-head-row">
+      <div>
+        <h2 class="cd-section-title">Досягнення</h2>
+        <p class="cd-section-sub">Ставай сильнішим — крок за кроком.</p>
+      </div>
+
+      <div class="cd-badges-count" id="scBadgesCount">0 / 5 бейджів</div>
+    </div>
+
+    <div class="cd-badges-grid" id="scBadgesGrid"></div>
+  </section>
+
+  <!-- MODULES -->
+  <section class="cd-section">
+    <div class="cd-section-head">
+      <h2 class="cd-section-title">Структура курсу</h2>
+      <p class="cd-section-sub">Натискай на урок — відкриється сторінка уроку.</p>
+    </div>
+
+    <div class="cd-modules-list" id="scModulesList"></div>
+  </section>
+
+</main>
+
+<footer class="ac-footer">
+  © <span id="scYear"></span> Samostroy Academy
+</footer>
+
+<script src="selfgrowth.js"></script>
+
+</body>
+</html>
