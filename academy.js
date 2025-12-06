@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { id:"ds_75",           name:"75% базового курсу",     icon:"gauge",        type:"дропшипінг", desc:"Фінішна пряма базового курсу." },
     { id:"ds_complete",     name:"База закінчена",         icon:"trophy",       type:"дропшипінг", desc:"Ти завершив(ла) «Дропшипінг з нуля»." },
     { id:"two_courses",     name:"2 курси",                icon:"stars",        type:"курси",      desc:"Завершено 2 різні курси." },
-    { id:"three_courses",   name:"3+ курси",               icon:"laurel",       type:"курси",      desc:"Ти пройшов(ла) щонайменше 3 курси." },
+    { id:"three_courses",   name:"3+ курси",               icon:"badge-check",       type:"курси",      desc:"Ти пройшов(ла) щонайменше 3 курси." },
     { id:"viewer",          name:"Цікавий студент",        icon:"info",         type:"академія",   desc:"Ти переглянув(ла) опис курсу." },
     { id:"selector",        name:"Сміливий вибір",         icon:"target",       type:"академія",   desc:"Ти обрав(ла) новий курс для старту." },
     { id:"focus",           name:"Фокус 1 курс",           icon:"focus",        type:"дисципліна", desc:"Ти дотримуєшся правила — один курс за раз." },
