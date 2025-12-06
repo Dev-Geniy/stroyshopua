@@ -562,3 +562,14 @@ body{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
+
+/* Плавне збільшення бейджів у курсах */
+.cd-badge-card {
+  transition: transform .25s ease, box-shadow .25s ease;
+  cursor: pointer;
+}
+
+.cd-badge-card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+}
