@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Продажі 3.0 — Samostroy Academy</title>
-  
-  <link rel="icon" type="image/png" href="favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Масштабування — Samostroy Academy</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Фавікон -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  
-  <link rel="stylesheet" href="course-sales3.css">
+
+  <link rel="stylesheet" href="scale.css">
 </head>
 <body>
 
@@ -26,13 +22,13 @@
     </a>
   </div>
 
-  <button class="ac-profile-chip" id="csProfileBtn">
-    <div class="ac-avatar" id="csHeaderAvatar">
-      <i data-lucide="user"></i>
+  <button class="ac-profile-chip" id="scProfileBtn">
+    <div class="ac-avatar" id="scHeaderAvatar">
+      <i data-lucide="rocket"></i>
     </div>
     <div class="ac-profile-chip-text">
-      <span class="ac-profile-name" id="csHeaderName">Студент</span>
-      <span class="ac-profile-status" id="csHeaderStatus">Новачок • lvl 1</span>
+      <span class="ac-profile-name" id="scHeaderName">Студент</span>
+      <span class="ac-profile-status" id="scHeaderStatus">Новачок • lvl 1</span>
     </div>
   </button>
 </header>
@@ -42,38 +38,38 @@
   <!-- HERO -->
   <section class="cd-hero">
     <div>
-      <h1 class="cd-hero-title">Продажі 3.0</h1>
+      <h1 class="cd-hero-title">Масштабування</h1>
 
       <p class="cd-hero-sub">
-        Сучасні техніки продажів у чатах та по телефону.  
-        Практичні сценарії, спілкування, робота з запереченнями та завершення угод.
+        Як вирости з перших продажів до стабільного обороту.
+        Курс про системи, процеси, команду, трафік і фінанси — повний шлях підприємця.
       </p>
 
       <div class="cd-hero-stats">
         <div class="cd-hero-stat">
           <span class="cd-hero-stat-label">Рівень</span>
-          <span class="cd-hero-stat-value" id="csHeroLevel">Новачок</span>
+          <span class="cd-hero-stat-value" id="scHeroLevel">Новачок</span>
         </div>
 
         <div class="cd-hero-stat">
           <span class="cd-hero-stat-label">Твій XP</span>
-          <span class="cd-hero-stat-value" id="csHeroXp">0 / 100 XP</span>
+          <span class="cd-hero-stat-value" id="scHeroXp">0 / 100 XP</span>
         </div>
 
         <div class="cd-hero-stat">
           <span class="cd-hero-stat-label">Уроків у курсі</span>
-          <span class="cd-hero-stat-value" id="csHeroLessons">14 уроків</span>
+          <span class="cd-hero-stat-value" id="scHeroLessons">12 уроків</span>
         </div>
       </div>
     </div>
 
     <div class="cd-hero-banner">
-      <div class="cd-hero-badge-main">Продвинутий курс</div>
+      <div class="cd-hero-badge-main">Продвинутий рівень</div>
 
       <div class="cd-hero-banner-bottom">
-        <div class="cd-hero-banner-label">Курс «Продажі 3.0»</div>
+        <div class="cd-hero-banner-label">Курс «Масштабування»</div>
         <div class="cd-hero-banner-hint">
-          Стань спеціалістом, який закриває угоди в будь-якому каналі комунікації.
+          Навчись вирощувати бізнес без хаосу та вигоряння.
         </div>
       </div>
     </div>
@@ -83,32 +79,28 @@
   <section class="cd-section">
     <div class="cd-section-head">
       <h2 class="cd-section-title">Прогрес по курсу</h2>
-      <p class="cd-section-sub">
-        Відмічай уроки як пройдені — прогрес синхронізується з акаунтом та відкриває нові бейджі.
-      </p>
+      <p class="cd-section-sub">Відмічай уроки — прогрес зберігається автоматично.</p>
     </div>
 
     <div class="cd-card cd-progress-card">
       <div class="cd-progress-header">
         <div>
           <div class="cd-progress-label">Курс</div>
-          <div class="cd-progress-title">Продажі 3.0</div>
-          <div class="cd-progress-sub" id="csProgressSub">
-            Почни з першого уроку.
-          </div>
+          <div class="cd-progress-title">Масштабування</div>
+          <div class="cd-progress-sub" id="scProgressSub">Почни з першого уроку.</div>
         </div>
 
-        <div class="cd-progress-value" id="csProgressValue">0%</div>
+        <div class="cd-progress-value" id="scProgressValue">0%</div>
       </div>
 
       <div class="cd-progress-bar-track">
-        <div class="cd-progress-bar-fill" id="csProgressBar"></div>
+        <div class="cd-progress-bar-fill" id="scProgressBar"></div>
       </div>
 
       <div class="cd-progress-footer">
-        <span id="csProgressDetails">0 / 14 уроків</span>
+        <span id="scProgressDetails">0 / 12 уроків</span>
         <span class="cd-progress-footer-sep">•</span>
-        <span id="csProgressHint">Кожен урок — це XP + нові знання.</span>
+        <span id="scProgressHint">Кожен урок відкриває нову навичку для росту.</span>
       </div>
     </div>
   </section>
@@ -118,34 +110,33 @@
     <div class="cd-section-head cd-section-head-row">
       <div>
         <h2 class="cd-section-title">Досягнення</h2>
-        <p class="cd-section-sub">
-          Бейджі автоматично відкриваються по мірі твого прогресу.
-        </p>
+        <p class="cd-section-sub">Збирай бейджі та переходь на нові рівні.</p>
       </div>
 
-      <div class="cd-badges-count" id="csBadgesCount">0 / 5 бейджів</div>
+      <div class="cd-badges-count" id="scBadgesCount">0 / 5 бейджів</div>
     </div>
 
-    <div class="cd-badges-grid" id="csBadgesGrid"></div>
+    <div class="cd-badges-grid" id="scBadgesGrid"></div>
   </section>
 
   <!-- MODULES -->
   <section class="cd-section">
     <div class="cd-section-head">
       <h2 class="cd-section-title">Структура курсу</h2>
-      <p class="cd-section-sub">Клік по уроку відкриває сторінку з матеріалом.</p>
+      <p class="cd-section-sub">Натискай на урок — відкриється сторінка уроку.</p>
     </div>
 
-    <div class="cd-modules-list" id="csModulesList"></div>
+    <div class="cd-modules-list" id="scModulesList"></div>
   </section>
 
 </main>
 
 <footer class="ac-footer">
-  © <span id="csYear"></span> Samostroy Academy
+  © <span id="scYear"></span>  Samostroy Academy
 </footer>
 
-<script src="course-sales3.js"></script>
+<script src="scale.js"></script>
 
 </body>
-</html> 
+</html>
+
