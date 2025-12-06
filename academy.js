@@ -1,8 +1,9 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
+
   const STATE_KEY = "samostroy_academy_state_v1";
-  const DS_KEY = "sa_ds_zero_v1";          // прогрес сторінки курсу «Дропшипінг з нуля»
+  const DS_KEY = "sa_ds_zero_v1";
   const DS_TOTAL_LESSONS = 24;
 
   // ===== КУРСИ =====
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Продвинутий рівень",
       type: "advanced",
       cover: "course_scale_up.jpg",
-      url: "#",
+      url: "course-scale-up.html",       // УБРАНО #
       lessons: 12,
       short: "Як вирости з перших продажів до стабільного обороту.",
       bullets: [
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Фокус на результат",
       type: "advanced",
       cover: "course_million100.jpg",
-      url: "#",
+      url: "course-million100.html",
       lessons: 10,
       short: "Стратегія до обороту 1 000 000 грн за 100 днів.",
       bullets: [
@@ -58,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Продажі та скрипти",
       type: "sales",
       cover: "course_sales3.jpg",
-      url: "#",
+      url: "course-sales3.html",
       lessons: 14,
       short: "Сучасні техніки продажів у чаті та по телефону.",
       bullets: [
@@ -73,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Особистий вплив",
       type: "soft",
       cover: "course_leadership.jpg",
-      url: "#",
+      url: "course-leadership.html",
       lessons: 10,
       short: "Як стати лідером для своєї команди та клієнтів.",
       bullets: [
@@ -88,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Внутрішня робота",
       type: "soft",
       cover: "course_selfgrowth.jpg",
-      url: "#",
+      url: "course-selfgrowth.html",
       lessons: 10,
       short: "Внутрішні зміни, щоб витримувати зовнішнє навантаження.",
       bullets: [
@@ -103,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Експрес-формат",
       type: "mini",
       cover: "course_learn60.jpg",
-      url: "#",
+      url: "course-learn60.html",
       lessons: 4,
       short: "Міні-курси по ключових навичках за 60 хвилин.",
       bullets: [
@@ -118,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Радикальні зміни",
       type: "mindset",
       cover: "course_change_or_die.jpg",
-      url: "#",
+      url: "course-change-or-die.html",
       lessons: 8,
       short: "Курс про радикальні рішення для життя та бізнесу.",
       bullets: [
@@ -693,10 +694,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const isActive = state.activeCourseId === c.id && !st.completed;
 
-      const tagClass = c.id === "ds_zero" ? "ac-course-tag ac-course-tag-main" : "ac-course-tag";
-      const tagText = st.completed
-        ? "Завершено"
-        : (isActive ? "Активний курс" : c.tag);
+      let tagClass = "ac-course-tag";
+let tagText = c.tag;
+
+// Активный курс — ЗЕЛЁНЫЙ
+if (isActive && !st.completed) {
+  tagClass = "ac-course-tag ac-course-tag-main";
+  tagText = "Активний курс";
+}
+// Завершено — СЕРЫЙ
+else if (st.completed) {
+  tagClass = "ac-course-tag";  // серый
+  tagText = "Завершено";
+}
+
+
 
       const statusText = st.completed
         ? "Курс завершено."
@@ -851,53 +863,54 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===== КУРСИ: ДІЇ =====
+function startCourse(courseId) {
+  const meta = getCourseMeta(courseId);
+  if (!meta) return;
 
-  function startCourse(courseId) {
-    const meta = getCourseMeta(courseId);
-    if (!meta) return;
+  const st = state.courses[courseId];
 
-    const st = state.courses[courseId];
-
-    // якщо вже завершено — просто відкриваємо (переглянути)
-    if (st.completed && meta.url && meta.url !== "#") {
-      window.location.href = meta.url;
-      return;
-    }
-
-    // обмеження: базовий курс перед іншими
-    const base = state.courses["ds_zero"];
-    if (courseId !== "ds_zero" && !base.completed) {
-      alert("Спочатку заверши базовий курс «Дропшипінг з нуля».");
-      return;
-    }
-
-    // обмеження: один курс одночасно
-    if (state.activeCourseId &&
-        state.activeCourseId !== courseId &&
-        !state.courses[state.activeCourseId].completed) {
-      const activeMeta = getCourseMeta(state.activeCourseId);
-      alert("Заверши поточний курс: «" + (activeMeta ? activeMeta.title : "активний курс") + "».");
-      return;
-    }
-
-    st.started = true;
-    state.activeCourseId = courseId;
-    saveState(state);
-
-    unlockAchievement("selector");
-    unlockAchievement("focus");
-    if (!state.achievements["first_course_start"]) {
-      unlockAchievement("first_course_start");
-    }
-
-    renderAll();
-
-    if (courseId === "ds_zero" && meta.url && meta.url !== "#") {
-      window.location.href = meta.url;
-    } else if (meta.url === "#") {
-      alert("Цей курс буде доступний після розробки його програми 🙂");
-    }
+  // якщо вже завершено — просто відкриваємо
+  if (st.completed && meta.url && meta.url !== "#") {
+    window.location.href = meta.url;
+    return;
   }
+
+  // обмеження: базовий курс перед іншими
+  const base = state.courses["ds_zero"];
+  if (courseId !== "ds_zero" && !base.completed) {
+    alert("Спочатку заверши базовий курс «Дропшипінг з нуля».");
+    return;
+  }
+
+  // обмеження: один курс одночасно
+  if (state.activeCourseId &&
+      state.activeCourseId !== courseId &&
+      !state.courses[state.activeCourseId].completed) {
+    const activeMeta = getCourseMeta(state.activeCourseId);
+    alert("Заверши поточний курс: «" + (activeMeta ? activeMeta.title : "активний курс") + "».");
+    return;
+  }
+
+  st.started = true;
+  state.activeCourseId = courseId;
+  saveState(state);
+
+  unlockAchievement("selector");
+  unlockAchievement("focus");
+  if (!state.achievements["first_course_start"]) {
+    unlockAchievement("first_course_start");
+  }
+
+  renderAll();
+
+  // 🔥 Здесь исправлено — переход для ЛЮБОГО курса
+  if (meta.url && meta.url !== "#") {
+    window.location.href = meta.url;
+  } else {
+    alert("Цей курс буде доступний після розробки його програми 🙂");
+  }
+}
+
 
   // ===== МОДАЛ КУРСУ =====
 
