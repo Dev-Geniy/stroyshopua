@@ -562,12 +562,3 @@ body{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
-
-/* === БЕЙДЖ ПРИ НАВЕДЕННІ === */
-.ac-badge-card {
-  transition: transform .22s ease;
-}
-
-.ac-badge-card:hover {
-  transform: scale(1.03);
-}
