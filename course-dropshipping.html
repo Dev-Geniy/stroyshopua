@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Дропшипінг з нуля — Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Стили страницы курса -->
+  <link rel="stylesheet" href="course-dropshipping.css">
+</head>
+<body>
+
+<!-- ========= HEADER ========= -->
+<header class="ac-header">
+  <div class="ac-header-left">
+    <div class="ac-logo">Samostroy Academy</div>
+    <a href="academy.html" class="cd-pill-back">
+      <i data-lucide="arrow-left"></i>
+      До академії
+    </a>
+  </div>
+
+  <button class="ac-profile-chip" id="cdProfileBtn">
+    <div class="ac-avatar" id="cdHeaderAvatar">
+      <i data-lucide="user"></i>
+    </div>
+    <div class="ac-profile-chip-text">
+      <span class="ac-profile-name" id="cdHeaderName">Студент</span>
+      <span class="ac-profile-status" id="cdHeaderStatus">Новачок • lvl 1</span>
+    </div>
+  </button>
+</header>
+
+<main class="cd-page">
+
+  <!-- ========= HERO КУРСА ========= -->
+  <section class="cd-hero">
+    <div class="cd-hero-text">
+      <h1 class="cd-hero-title">Дропшипінг з нуля</h1>
+      <p class="cd-hero-sub">
+        Базовий курс Samostroy Academy: від повного нуля до перших замовлень.
+        Структуровані модулі, реальні приклади, фокус на <b>практику та результат</b>.
+      </p>
+
+      <div class="cd-hero-stats">
+        <div class="cd-hero-stat">
+          <span class="cd-hero-stat-label">Рівень</span>
+          <span class="cd-hero-stat-value" id="cdHeroLevel">Новачок</span>
+        </div>
+        <div class="cd-hero-stat">
+          <span class="cd-hero-stat-label">Твій XP</span>
+          <span class="cd-hero-stat-value" id="cdHeroXp">0 / 100 XP</span>
+        </div>
+        <div class="cd-hero-stat">
+          <span class="cd-hero-stat-label">Уроків у курсі</span>
+          <span class="cd-hero-stat-value" id="cdHeroLessons">24 уроки</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cd-hero-banner">
+      <div class="cd-hero-badge-main">Базовий курс</div>
+      <div class="cd-hero-banner-bottom">
+        <div class="cd-hero-banner-label">Активний курс Samostroy Academy</div>
+        <div class="cd-hero-banner-hint">
+          Почни з бази — відкрий доступ до всіх продвинутих програм.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= ПРОГРЕС ПО КУРСУ ========= -->
+  <section class="cd-section">
+    <div class="cd-section-head">
+      <h2 class="cd-section-title">Прогрес по курсу</h2>
+      <p class="cd-section-sub">
+        Відмічай уроки як пройдені. Прогрес автоматично синхронізується з академією
+        та впливає на твій рівень, XP і бейджі.
+      </p>
+    </div>
+
+    <div class="cd-card cd-progress-card">
+      <div class="cd-progress-header">
+        <div>
+          <div class="cd-progress-label">Курс</div>
+          <div class="cd-progress-title">Дропшипінг з нуля</div>
+          <div class="cd-progress-sub" id="cdProgressSub">
+            Почни з першого уроку — і тут зʼявиться реальний прогрес.
+          </div>
+        </div>
+        <div class="cd-progress-value" id="cdProgressValue">0%</div>
+      </div>
+
+      <div class="cd-progress-bar-track">
+        <div class="cd-progress-bar-fill" id="cdProgressBar"></div>
+      </div>
+
+      <div class="cd-progress-footer">
+        <span id="cdProgressDetails">0 / 24 уроків</span>
+        <span class="cd-progress-footer-sep">•</span>
+        <span id="cdProgressHint">Базовий курс відкриває доступ до інших програм академії.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========= БЕЙДЖІ КУРСУ ========= -->
+  <section class="cd-section">
+    <div class="cd-section-head cd-section-head-row">
+      <div>
+        <h2 class="cd-section-title">Досягнення в цьому курсі</h2>
+        <p class="cd-section-sub">
+          Бейджі відкриваються автоматично по мірі проходження. Вони також
+          зʼявляються в твоїй залі досягнень в академії.
+        </p>
+      </div>
+      <div class="cd-badges-count" id="cdBadgesCount">0 / 5 бейджів</div>
+    </div>
+
+    <div class="cd-badges-grid" id="cdBadgesGrid">
+      <!-- заповнюється скриптом -->
+    </div>
+  </section>
+
+  <!-- ========= МОДУЛІ ТА УРОКИ ========= -->
+  <section class="cd-section">
+    <div class="cd-section-head">
+      <h2 class="cd-section-title">Структура курсу</h2>
+      <p class="cd-section-sub">
+        Проходь модулі послідовно. Клік по уроку відкриває сторінку з матеріалом,
+        а кнопка відмітки фіксує, що урок пройдено.
+      </p>
+    </div>
+
+    <div class="cd-modules-list" id="cdModulesList">
+      <!-- модулі та уроки малюються скриптом -->
+    </div>
+  </section>
+
+</main>
+
+<footer class="ac-footer">
+  © <span id="cdYear"></span> Samostroy Academy. Усі права захищено.
+</footer>
+
+<script src="course-dropshipping.js"></script>
+</body>
+</html>  
