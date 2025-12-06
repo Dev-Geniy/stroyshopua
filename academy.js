@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tag: "Продвинутий рівень",
       type: "advanced",
       cover: "course_scale_up.jpg",
-      url: "scale.html",       // УБРАНО #
+      url: "course-scale-up.html",
       lessons: 12,
       short: "Як вирости з перших продажів до стабільного обороту.",
       bullets: [
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       cover: "course_learn60.jpg",
       url: "course-learn60.html",
       lessons: 4,
-      short: "Міні-курси по ключових навичках за 60 хвилин.",
+      short: "Як навчитись будь-чому за 60 хвилин на день.",
       bullets: [
         "Один урок — одна навичка.",
         "Тільки суть без води.",
@@ -132,26 +132,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== БЕЙДЖІ =====
   const BADGES = [
-    { id:"first_login",     name:"Перший вхід",            icon:"sparkles",     type:"академія", desc:"Твій перший вхід у Samostroy Academy." },
-    { id:"profile_filled",  name:"Оформлений профіль",     icon:"user-check",   type:"академія", desc:"Ти заповнив імʼя та обрав аватар." },
-    { id:"academy_member",  name:"Член академії",          icon:"shield",       type:"академія", desc:"Офіційно став(ла) частиною академії." },
-    { id:"first_course_start", name:"Перший старт",        icon:"rocket",       type:"курси",    desc:"Ти запустив(ла) свій перший курс." },
+    { id:"first_login",     name:"Перший вхід",            icon:"sparkles",     type:"академія",   desc:"Твій перший вхід у Samostroy Academy." },
+    { id:"profile_filled",  name:"Оформлений профіль",     icon:"user-check",   type:"академія",   desc:"Ти заповнив імʼя та обрав аватар." },
+    { id:"academy_member",  name:"Член академії",          icon:"shield",       type:"академія",   desc:"Офіційно став(ла) частиною академії." },
+    { id:"first_course_start", name:"Перший старт",        icon:"rocket",       type:"курси",      desc:"Ти запустив(ла) свій перший курс." },
     { id:"ds_first_step",   name:"Перший урок",            icon:"award",        type:"дропшипінг", desc:"Перший крок у курсі «Дропшипінг з нуля»." },
     { id:"ds_25",           name:"25% базового курсу",     icon:"gauge",        type:"дропшипінг", desc:"Пройдено 25% курсу «Дропшипінг з нуля»." },
     { id:"ds_50",           name:"50% базового курсу",     icon:"gauge",        type:"дропшипінг", desc:"Середина шляху в базовому курсі." },
     { id:"ds_75",           name:"75% базового курсу",     icon:"gauge",        type:"дропшипінг", desc:"Фінішна пряма базового курсу." },
     { id:"ds_complete",     name:"База закінчена",         icon:"trophy",       type:"дропшипінг", desc:"Ти завершив(ла) «Дропшипінг з нуля»." },
-    { id:"two_courses",     name:"2 курси",                icon:"stars",        type:"курси",    desc:"Завершено 2 різні курси." },
-    { id:"three_courses",   name:"3+ курси",               icon:"laurel",       type:"курси",    desc:"Ти пройшов(ла) щонайменше 3 курси." },
-    { id:"viewer",          name:"Цікавий студент",        icon:"info",         type:"академія", desc:"Ти переглянув(ла) опис курсу." },
-    { id:"selector",        name:"Сміливий вибір",         icon:"target",       type:"академія", desc:"Ти обрав(ла) новий курс для старту." },
+    { id:"two_courses",     name:"2 курси",                icon:"stars",        type:"курси",      desc:"Завершено 2 різні курси." },
+    { id:"three_courses",   name:"3+ курси",               icon:"laurel",       type:"курси",      desc:"Ти пройшов(ла) щонайменше 3 курси." },
+    { id:"viewer",          name:"Цікавий студент",        icon:"info",         type:"академія",   desc:"Ти переглянув(ла) опис курсу." },
+    { id:"selector",        name:"Сміливий вибір",         icon:"target",       type:"академія",   desc:"Ти обрав(ла) новий курс для старту." },
     { id:"focus",           name:"Фокус 1 курс",           icon:"focus",        type:"дисципліна", desc:"Ти дотримуєшся правила — один курс за раз." },
     { id:"return_day",      name:"Повернення",             icon:"clock",        type:"дисципліна", desc:"Ти повернувся(лася) в академію наступного дня." },
     { id:"week_streak",     name:"7 днів підряд",          icon:"calendar",     type:"дисципліна", desc:"7 днів поспіль у фокусі на навчанні." },
-    { id:"xp_100",          name:"100 XP",                 icon:"flame",        type:"академія", desc:"Накопичено щонайменше 100 XP." },
-    { id:"xp_250",          name:"250 XP",                 icon:"flame",        type:"академія", desc:"Серйозний прогрес — 250 XP." },
-    { id:"ach_collector",   name:"Колекціонер",            icon:"medal",        type:"бейджі",   desc:"Ти зібрав(ла) 10 бейджів." },
-    { id:"super_collector", name:"Легенда академії",       icon:"crown",        type:"бейджі",   desc:"20 бейджів і більше. Це вже легендарний рівень." }
+    { id:"xp_100",          name:"100 XP",                 icon:"flame",        type:"академія",   desc:"Накопичено щонайменше 100 XP." },
+    { id:"xp_250",          name:"250 XP",                 icon:"flame",        type:"академія",   desc:"Серйозний прогрес — 250 XP." },
+    { id:"ach_collector",   name:"Колекціонер",            icon:"medal",        type:"бейджі",     desc:"Ти зібрав(ла) 10 бейджів." },
+    { id:"super_collector", name:"Легенда академії",       icon:"crown",        type:"бейджі",     desc:"20 бейджів і більше. Це вже легендарний рівень." }
   ];
 
   // ===== DOM елементи =====
@@ -245,6 +245,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // рендер всього
   renderAll();
+  // перевірка мета-бейджів (курси, XP, колекціонер)
+  checkMetaAchievements();
 
   if (window.lucide) {
     lucide.createIcons();
@@ -289,6 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
     closeProfileModal();
 
     unlockAchievement("profile_filled");
+    checkMetaAchievements();
   });
 
   profileSkipBtnEl.addEventListener("click", () => {
@@ -513,6 +516,36 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Новачок";
   }
 
+  // ===== АВТО-БЕЙДЖІ ПО СТАТИСТИЦІ (КУРСИ / XP / КОЛЕКЦІОНЕР) =====
+  function checkMetaAchievements() {
+    const stats = getStats();
+
+    // курси
+    if (stats.completedCourses >= 2) {
+      unlockAchievement("two_courses");
+    }
+    if (stats.completedCourses >= 3) {
+      unlockAchievement("three_courses");
+    }
+
+    // XP
+    if (stats.xp >= 100) {
+      unlockAchievement("xp_100");
+    }
+    if (stats.xp >= 250) {
+      unlockAchievement("xp_250");
+    }
+
+    // колекціонер
+    const earned = Object.keys(state.achievements).length;
+    if (earned >= 10) {
+      unlockAchievement("ach_collector");
+    }
+    if (earned >= 20) {
+      unlockAchievement("super_collector");
+    }
+  }
+
   // ===== ТЕМА / АВАТАР =====
 
   function applyTheme(style) {
@@ -695,20 +728,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const isActive = state.activeCourseId === c.id && !st.completed;
 
       let tagClass = "ac-course-tag";
-let tagText = c.tag;
+      let tagText = c.tag;
 
-// Активный курс — ЗЕЛЁНЫЙ
-if (isActive && !st.completed) {
-  tagClass = "ac-course-tag ac-course-tag-main";
-  tagText = "Активний курс";
-}
-// Завершено — СЕРЫЙ
-else if (st.completed) {
-  tagClass = "ac-course-tag";  // серый
-  tagText = "Завершено";
-}
-
-
+      // Активний курс — зелений
+      if (isActive && !st.completed) {
+        tagClass = "ac-course-tag ac-course-tag-main";
+        tagText = "Активний курс";
+      }
+      // Завершено — сірий
+      else if (st.completed) {
+        tagClass = "ac-course-tag";
+        tagText = "Завершено";
+      }
 
       const statusText = st.completed
         ? "Курс завершено."
@@ -863,54 +894,54 @@ else if (st.completed) {
   }
 
   // ===== КУРСИ: ДІЇ =====
-function startCourse(courseId) {
-  const meta = getCourseMeta(courseId);
-  if (!meta) return;
+  function startCourse(courseId) {
+    const meta = getCourseMeta(courseId);
+    if (!meta) return;
 
-  const st = state.courses[courseId];
+    const st = state.courses[courseId];
 
-  // якщо вже завершено — просто відкриваємо
-  if (st.completed && meta.url && meta.url !== "#") {
-    window.location.href = meta.url;
-    return;
+    // якщо вже завершено — просто відкриваємо
+    if (st.completed && meta.url && meta.url !== "#") {
+      window.location.href = meta.url;
+      return;
+    }
+
+    // обмеження: базовий курс перед іншими
+    const base = state.courses["ds_zero"];
+    if (courseId !== "ds_zero" && !base.completed) {
+      alert("Спочатку заверши базовий курс «Дропшипінг з нуля».");
+      return;
+    }
+
+    // обмеження: один курс одночасно
+    if (state.activeCourseId &&
+        state.activeCourseId !== courseId &&
+        !state.courses[state.activeCourseId].completed) {
+      const activeMeta = getCourseMeta(state.activeCourseId);
+      alert("Заверши поточний курс: «" + (activeMeta ? activeMeta.title : "активний курс") + "».");
+      return;
+    }
+
+    st.started = true;
+    state.activeCourseId = courseId;
+    saveState(state);
+
+    unlockAchievement("selector");
+    unlockAchievement("focus");
+    if (!state.achievements["first_course_start"]) {
+      unlockAchievement("first_course_start");
+    }
+
+    renderAll();
+    checkMetaAchievements();
+
+    // перехід на сторінку курсу
+    if (meta.url && meta.url !== "#") {
+      window.location.href = meta.url;
+    } else {
+      alert("Цей курс буде доступний після розробки його програми 🙂");
+    }
   }
-
-  // обмеження: базовий курс перед іншими
-  const base = state.courses["ds_zero"];
-  if (courseId !== "ds_zero" && !base.completed) {
-    alert("Спочатку заверши базовий курс «Дропшипінг з нуля».");
-    return;
-  }
-
-  // обмеження: один курс одночасно
-  if (state.activeCourseId &&
-      state.activeCourseId !== courseId &&
-      !state.courses[state.activeCourseId].completed) {
-    const activeMeta = getCourseMeta(state.activeCourseId);
-    alert("Заверши поточний курс: «" + (activeMeta ? activeMeta.title : "активний курс") + "».");
-    return;
-  }
-
-  st.started = true;
-  state.activeCourseId = courseId;
-  saveState(state);
-
-  unlockAchievement("selector");
-  unlockAchievement("focus");
-  if (!state.achievements["first_course_start"]) {
-    unlockAchievement("first_course_start");
-  }
-
-  renderAll();
-
-  // 🔥 Здесь исправлено — переход для ЛЮБОГО курса
-  if (meta.url && meta.url !== "#") {
-    window.location.href = meta.url;
-  } else {
-    alert("Цей курс буде доступний після розробки його програми 🙂");
-  }
-}
-
 
   // ===== МОДАЛ КУРСУ =====
 
@@ -932,6 +963,7 @@ function startCourse(courseId) {
 
     courseModalEl.classList.remove("ac-hidden");
     unlockAchievement("viewer");
+    checkMetaAchievements();
 
     if (window.lucide) lucide.createIcons();
   }
