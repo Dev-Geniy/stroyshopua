@@ -853,8 +853,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderBadgesBoard() {
-    badgesGridEl.innerHTML = "";
-
+    badgesGridEl.innerHTML = "";  
+    
     const earnedIds = Object.keys(state.achievements);
     const earnedSet = new Set(earnedIds);
 
@@ -873,6 +873,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
       badgesGridEl.appendChild(card);
     });
+
+// ===== BADGE FULLSCREEN INFO =====
+const badgeOverlay = document.getElementById("badgeInfoOverlay");
+const badgeInfoIcon = document.getElementById("badgeInfoIcon");
+const badgeInfoTitle = document.getElementById("badgeInfoTitle");
+const badgeInfoStatus = document.getElementById("badgeInfoStatus");
+const badgeInfoDesc = document.getElementById("badgeInfoDesc");
+
+// клік по бейджу
+badgesGridEl.addEventListener("click", (e) => {
+  const card = e.target.closest(".ac-badge-card");
+  if (!card) return;
+
+  const icon = card.querySelector("i")?.getAttribute("data-lucide");
+  const title = card.querySelector(".ac-badge-name")?.textContent;
+  const desc = card.querySelector(".ac-badge-desc")?.textContent;
+  const earned = card.classList.contains("ac-badge-earned");
+
+  // встановлення
+  badgeInfoIcon.innerHTML = `<i data-lucide="${icon}"></i>`;
+  badgeInfoTitle.textContent = title;
+
+  if (earned) {
+    badgeInfoStatus.textContent = "Досягнуто ✓";
+    badgeInfoStatus.className = "badge-info-status ok";
+  } else {
+    badgeInfoStatus.textContent = "Ще не досягнуто";
+    badgeInfoStatus.className = "badge-info-status fail";
+  }
+
+  badgeInfoDesc.textContent = desc;
+
+  badgeOverlay.classList.remove("ac-hidden");
+
+  if (window.lucide) lucide.createIcons();
+});
+
+// закриття по кліку будь-де
+badgeOverlay.addEventListener("click", () => {
+  badgeOverlay.classList.add("ac-hidden");
+});
+
+    
+    
+    
+    
 
     const stats = getStats();
     const totalBadges = BADGES.length;
