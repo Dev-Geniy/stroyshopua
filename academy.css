@@ -1,913 +1,1040 @@
-:root{
-  --bg:#050509;
-  --bg2:#080913;
-  --card:#11131c;
-  --card2:#151822;
-  --accent:#ff7a1a;
-  --accent2:#ffb347;
-  --text:#f5f5f7;
-  --muted:#9aa0b3;
-  --border:rgba(255,255,255,0.14);
-  --radius:18px;
-  --shadow:0 18px 40px rgba(0,0,0,0.6);
-  --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
-}
+"use strict";
 
-/* ТЕМА: неон */
-[data-theme="neon"]{
-  --accent:#38bdf8;
-  --accent2:#a855f7;
-  --grad:linear-gradient(135deg,#38bdf8,#a855f7);
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-/* ТЕМА: захід сонця */
-[data-theme="sunset"]{
-  --accent:#f97316;
-  --accent2:#fb7185;
-  --grad:linear-gradient(135deg,#f97316,#fb7185);
-}
+  const STATE_KEY = "samostroy_academy_state_v1";
+  const DS_KEY = "sa_ds_zero_v1";
+  const DS_TOTAL_LESSONS = 24;
 
-*,
-*::before,
-*::after{
-  box-sizing:border-box;
-}
+  // ===== КУРСИ =====
+  const COURSES = [
+    {
+      id: "ds_zero",
+      title: "Дропшипінг з нуля",
+      tag: "Базовий курс",
+      type: "main",
+      cover: "https://i.ibb.co/v67Dq0Vg/unnamed-21.jpg",
+      url: "course-dropshipping.html",
+      lessons: 24,
+      short: "Швидкий старт у дропшипінг-бізнесі від нуля до перших продажів.",
+      bullets: [
+        "7 модулів, 24 практичні уроки.",
+        "Фокус на перших реальних продажах, а не просто теорії.",
+        "Шаблони, скрипти, чеклісти та приклади оголошень."
+      ]
+    },
+    {
+      id: "scale_up",
+      title: "Масштабування",
+      tag: "Продвинутий рівень",
+      type: "advanced",
+      cover: "course_scale_up.jpg",
+      url: "course-scale-up.html",
+      lessons: 12,
+      short: "Як вирости з перших продажів до стабільного обороту.",
+      bullets: [
+        "Побудова системи та процесів.",
+        "Робота з командою, делегування.",
+        "Масштабування каналів трафіку."
+      ]
+    },
+    {
+      id: "million100",
+      title: "Мільйон за 100",
+      tag: "Фокус на результат",
+      type: "advanced",
+      cover: "course_million100.jpg",
+      url: "course-million100.html",
+      lessons: 10,
+      short: "Стратегія до обороту 1 000 000 грн за 100 днів.",
+      bullets: [
+        "Фінансова модель, KPI та контроль.",
+        "Мультиплікатори прибутку.",
+        "План дій по тижнях."
+      ]
+    },
+    {
+      id: "sales3",
+      title: "Продажі 3.0",
+      tag: "Продажі та скрипти",
+      type: "sales",
+      cover: "course_sales3.jpg",
+      url: "course-sales3.html",
+      lessons: 14,
+      short: "Сучасні техніки продажів у чаті та по телефону.",
+      bullets: [
+        "Структура діалогу: від привітання до оплати.",
+        "Робота з запереченнями та знижками.",
+        "Скрипти, які не звучать як скрипти."
+      ]
+    },
+    {
+      id: "leadership",
+      title: "Лідерство",
+      tag: "Особистий вплив",
+      type: "soft",
+      cover: "course_leadership.jpg",
+      url: "course-leadership.html",
+      lessons: 10,
+      short: "Як стати лідером для своєї команди та клієнтів.",
+      bullets: [
+        "Мислення лідера.",
+        "Комунікація і довіра.",
+        "Особисті кордони та цінності."
+      ]
+    },
+    {
+      id: "selfgrowth",
+      title: "Саморозвиток",
+      tag: "Внутрішня робота",
+      type: "soft",
+      cover: "course_selfgrowth.jpg",
+      url: "course-selfgrowth.html",
+      lessons: 10,
+      short: "Внутрішні зміни, щоб витримувати зовнішнє навантаження.",
+      bullets: [
+        "Привички та дисципліна.",
+        "Робота зі страхами та сумнівами.",
+        "План розвитку на 90 днів."
+      ]
+    },
+    {
+      id: "learn60",
+      title: "Навчись за 60 хвилин",
+      tag: "Експрес-формат",
+      type: "mini",
+      cover: "course_learn60.jpg",
+      url: "course-learn60.html",
+      lessons: 4,
+      short: "Як навчитись будь-чому за 60 хвилин на день.",
+      bullets: [
+        "Один урок — одна навичка.",
+        "Тільки суть без води.",
+        "Домашка, яку реально зробити."
+      ]
+    },
+    {
+      id: "change_or_die",
+      title: "Змінись або помри",
+      tag: "Радикальні зміни",
+      type: "mindset",
+      cover: "course_change_or_die.jpg",
+      url: "course-change-or-die.html",
+      lessons: 8,
+      short: "Курс про радикальні рішення для життя та бізнесу.",
+      bullets: [
+        "Ревізія життя: що працює, а що ні.",
+        "Сміливі кроки та відповідальність.",
+        "План радикальних змін."
+      ]
+    }
+  ];
 
-body{
-  margin:0;
-  font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:
-    radial-gradient(circle at 0 0,rgba(255,122,26,0.18),transparent 55%),
-    radial-gradient(circle at 100% 0,rgba(168,85,247,0.18),transparent 55%),
-    var(--bg);
-  color:var(--text);
-  min-height:100vh;
-}
+  // ===== БЕЙДЖІ =====
+  const BADGES = [
+    { id:"first_login",     name:"Перший вхід",            icon:"sparkles",     type:"академія",   desc:"Твій перший вхід у Samostroy Academy." },
+    { id:"profile_filled",  name:"Оформлений профіль",     icon:"user-check",   type:"академія",   desc:"Ти заповнив імʼя та обрав аватар." },
+    { id:"academy_member",  name:"Член академії",          icon:"shield",       type:"академія",   desc:"Офіційно став(ла) частиною академії." },
+    { id:"first_course_start", name:"Перший старт",        icon:"rocket",       type:"курси",      desc:"Ти запустив(ла) свій перший курс." },
+    { id:"ds_first_step",   name:"Перший урок",            icon:"award",        type:"дропшипінг", desc:"Перший крок у курсі «Дропшипінг з нуля»." },
+    { id:"ds_25",           name:"25% базового курсу",     icon:"gauge",        type:"дропшипінг", desc:"Пройдено 25% курсу «Дропшипінг з нуля»." },
+    { id:"ds_50",           name:"50% базового курсу",     icon:"gauge",        type:"дропшипінг", desc:"Середина шляху в базовому курсі." },
+    { id:"ds_75",           name:"75% базового курсу",     icon:"gauge",        type:"дропшипінг", desc:"Фінішна пряма базового курсу." },
+    { id:"ds_complete",     name:"База закінчена",         icon:"trophy",       type:"дропшипінг", desc:"Ти завершив(ла) «Дропшипінг з нуля»." },
+    { id:"two_courses",     name:"2 курси",                icon:"stars",        type:"курси",      desc:"Завершено 2 різні курси." },
+    { id:"three_courses",   name:"3+ курси",               icon:"badge-check",       type:"курси",      desc:"Ти пройшов(ла) щонайменше 3 курси." },
+    { id:"viewer",          name:"Цікавий студент",        icon:"info",         type:"академія",   desc:"Ти переглянув(ла) опис курсу." },
+    { id:"selector",        name:"Сміливий вибір",         icon:"target",       type:"академія",   desc:"Ти обрав(ла) новий курс для старту." },
+    { id:"focus",           name:"Фокус 1 курс",           icon:"focus",        type:"дисципліна", desc:"Ти дотримуєшся правила — один курс за раз." },
+    { id:"return_day",      name:"Повернення",             icon:"clock",        type:"дисципліна", desc:"Ти повернувся(лася) в академію наступного дня." },
+    { id:"week_streak",     name:"7 днів підряд",          icon:"calendar",     type:"дисципліна", desc:"7 днів поспіль у фокусі на навчанні." },
+    { id:"xp_100",          name:"100 XP",                 icon:"flame",        type:"академія",   desc:"Накопичено щонайменше 100 XP." },
+    { id:"xp_250",          name:"250 XP",                 icon:"flame",        type:"академія",   desc:"Серйозний прогрес — 250 XP." },
+    { id:"ach_collector",   name:"Колекціонер",            icon:"medal",        type:"бейджі",     desc:"Ти зібрав(ла) 10 бейджів." },
+    { id:"super_collector", name:"Легенда академії",       icon:"crown",        type:"бейджі",     desc:"20 бейджів і більше. Це вже легендарний рівень." }
+  ];
 
-/* ===== HEADER ===== */
-.ac-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  padding:14px 20px;
-  background:rgba(5,5,9,0.9);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+  // ===== DOM елементи =====
+  const yearEl           = document.getElementById("year");
+  const scrollBadgesBtn  = document.getElementById("scrollBadgesBtn");
+  const headerNameEl     = document.getElementById("headerName");
+  const headerStatusEl   = document.getElementById("headerStatus");
+  const headerAvatarEl   = document.getElementById("headerAvatar");
+  const openProfileBtn   = document.getElementById("openProfileBtn");
 
-.ac-header-left{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
+  const heroStudentsEl   = document.getElementById("heroStudents");
+  const heroLevelTitleEl = document.getElementById("heroLevelTitle");
+  const heroXpTextEl     = document.getElementById("heroXpText");
+  const heroXpBarEl      = document.getElementById("heroXpBar");
+  const heroLevelHintEl  = document.getElementById("heroLevelHint");
 
-.ac-logo{
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  background:var(--grad);
-  -webkit-background-clip:text;
-  color:transparent;
-}
+  const progressEmptyEl  = document.getElementById("progressEmpty");
+  const progressPanelEl  = document.getElementById("progressPanel");
+  const activeCourseNameEl   = document.getElementById("activeCourseName");
+  const activeCourseHintEl   = document.getElementById("activeCourseHint");
+  const activeCourseValueEl  = document.getElementById("activeCourseValue");
+  const activeCourseBarEl    = document.getElementById("activeCourseBar");
+  const activeCourseFooterEl = document.getElementById("activeCourseFooter");
 
-.ac-pill{
-  border-radius:999px;
-  padding:6px 10px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.02);
-  color:var(--muted);
-  font-size:12px;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  cursor:pointer;
-}
-.ac-pill i{
-  width:14px;height:14px;
-}
-.ac-pill:hover{
-  background:rgba(255,255,255,0.06);
-  color:var(--accent2);
-}
+  const myCoursesEmptyEl = document.getElementById("myCoursesEmpty");
+  const myCoursesGridEl  = document.getElementById("myCoursesGrid");
+  const allCoursesGridEl = document.getElementById("allCoursesGrid");
 
-/* PROFILE CHIP */
-.ac-profile-chip{
-  border:none;
-  background:transparent;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  cursor:pointer;
-}
+  const badgesSectionEl  = document.getElementById("badgesSection");
+  const badgesGridEl     = document.getElementById("badgesGrid");
+  const badgesSummaryEl  = document.getElementById("badgesSummary");
+  const badgesStatsEl    = document.getElementById("badgesStats");
 
-.ac-avatar{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  border:1px solid var(--border);
-  background:radial-gradient(circle at 30% 0,rgba(255,255,255,0.16),transparent 55%),var(--card);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 12px 28px rgba(0,0,0,0.65);
-}
-.ac-avatar i{
-  width:20px;height:20px;
-  color:var(--accent2);
-}
+  // Модали
+  const profileOverlayEl   = document.getElementById("profileOverlay");
+  const profileNameInputEl = document.getElementById("profileNameInput");
+  const avatarGridEl       = document.getElementById("avatarGrid");
+  const styleGridEl        = document.getElementById("styleGrid");
+  const profileSaveBtnEl   = document.getElementById("profileSaveBtn");
+  const profileSkipBtnEl   = document.getElementById("profileSkipBtn");
 
-.ac-profile-chip-text{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-}
-.ac-profile-name{
-  font-size:13px;
-  font-weight:600;
-}
-.ac-profile-status{
-  font-size:11px;
-  color:var(--muted);
-}
+  const courseModalEl      = document.getElementById("courseModal");
+  const courseModalTitleEl = document.getElementById("courseModalTitle");
+  const courseModalDescEl  = document.getElementById("courseModalDesc");
+  const courseModalBulletsEl = document.getElementById("courseModalBullets");
+  const courseModalTagEl   = document.getElementById("courseModalTag");
+  const courseModalStartEl = document.getElementById("courseModalStart");
+  const courseModalCancelEl= document.getElementById("courseModalCancel");
+  const courseModalCloseEl = document.getElementById("courseModalClose");
 
-/* ===== PAGE LAYOUT ===== */
-.ac-page{
-  max-width:1100px;
-  margin:22px auto 40px;
-  padding:0 18px;
-}
+  const achModalEl         = document.getElementById("achModal");
+  const achModalIconEl     = document.getElementById("achModalIcon");
+  const achModalTitleEl    = document.getElementById("achModalTitle");
+  const achModalTextEl     = document.getElementById("achModalText");
+  const achModalUserEl     = document.getElementById("achModalUser");
+  const achModalOkEl       = document.getElementById("achModalOk");
 
-/* ===== HERO ===== */
-.ac-hero{
-  display:grid;
-  grid-template-columns:minmax(0,1.6fr) minmax(260px,0.9fr);
-  gap:24px;
-  margin-bottom:26px;
-}
+  // ===== СТАН =====
+  let state = loadState();
 
-.ac-hero-title{
-  font-size:clamp(26px,3vw,32px);
-  font-weight:900;
-  background:var(--grad);
-  -webkit-background-clip:text;
-  color:transparent;
-  margin-bottom:8px;
-}
+  // черга бейджів для показу
+  const achQueue = [];
+  let achShowing = false;
+  // останній курс, відкритий в модалці
+  let courseModalCurrentId = null;
 
-.ac-hero-sub{
-  font-size:14px;
-  color:var(--muted);
-  line-height:1.6;
-  max-width:640px;
-}
+  // ===== ІНІТ =====
+  yearEl.textContent = new Date().getFullYear();
 
-.ac-hero-stats{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:16px;
-}
+  // синхронізуємо прогрес базового курсу з окремої сторінки
+  syncDropshippingProgress(state);
 
-.ac-hero-stat{
-  min-width:150px;
-  padding:8px 10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:rgba(16,18,27,0.85);
-  font-size:12px;
-}
-.ac-hero-stat-label{
-  color:var(--muted);
-  display:block;
-}
-.ac-hero-stat-value{
-  font-weight:600;
-  color:var(--accent2);
-}
+  // оновлюємо візити / streak
+  updateVisitStats(state);
 
-/* HERO CARD */
-.ac-hero-card{
-  background:radial-gradient(circle at 0 0,rgba(255,255,255,0.18),transparent 55%),var(--card2);
-  border-radius:20px;
-  border:1px solid var(--border);
-  padding:16px 16px 14px;
-  box-shadow:var(--shadow);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.ac-hero-card-label{
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  color:var(--muted);
-}
-.ac-hero-card-main{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.ac-hero-level{
-  font-size:16px;
-  font-weight:700;
-}
-.ac-hero-xp{
-  font-size:12px;
-  color:var(--muted);
-}
-.ac-xp-bar{
-  width:100%;
-  height:8px;
-  background:rgba(255,255,255,0.06);
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,0.1);
-  overflow:hidden;
-  margin-top:4px;
-}
-.ac-xp-bar-fill{
-  height:100%;
-  width:0%;
-  background:var(--grad);
-  border-radius:999px;
-  transition:width .3s ease;
-}
-.ac-hero-card-footer{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* ===== SECTION ===== */
-.ac-section{
-  margin-top:24px;
-}
-.ac-section-head{
-  margin-bottom:10px;
-}
-.ac-section-title{
-  font-size:18px;
-  font-weight:700;
-}
-.ac-section-sub{
-  font-size:13px;
-  color:var(--muted);
-  max-width:680px;
-}
-
-/* ===== CARD ===== */
-.ac-card{
-  background:var(--card2);
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  box-shadow:var(--shadow);
-  padding:16px 16px 14px;
-}
-
-/* ===== PROGRESS ===== */
-.ac-progress-empty{
-  font-size:13px;
-  color:var(--muted);
-}
-.ac-progress{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.ac-progress-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-}
-.ac-progress-label{
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-  color:var(--muted);
-}
-.ac-progress-title{
-  font-size:15px;
-  font-weight:600;
-}
-.ac-progress-sub{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:2px;
-}
-.ac-progress-value{
-  font-size:18px;
-  font-weight:700;
-  color:var(--accent2);
-}
-.ac-progress-bar-track{
-  width:100%;
-  height:10px;
-  border-radius:999px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.1);
-  overflow:hidden;
-}
-.ac-progress-bar-fill{
-  height:100%;
-  width:0%;
-  border-radius:999px;
-  background:var(--grad);
-  transition:width .3s ease;
-}
-.ac-progress-footer{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* ===== COURSES ===== */
-.ac-empty-box{
-  font-size:13px;
-  color:var(--muted);
-  padding:12px 12px;
-  border-radius:var(--radius);
-  border:1px dashed var(--border);
-  background:rgba(255,255,255,0.02);
-  margin-bottom:12px;
-}
-
-.ac-courses-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:16px;
-}
-
-.ac-course-card{
-  background:var(--card);
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  padding:12px 12px 10px;
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.ac-course-tag{
-  position:absolute;
-  top:8px;
-  left:8px;
-  padding:4px 8px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,0.2);
-  background:rgba(5,5,9,0.9);
-  font-size:11px;
-  color:var(--muted);
-}
-.ac-course-tag-main{
-  border-color:rgba(0,200,120,0.8);
-  color:#5ce3a0;
-}
-
-.ac-course-cover{
-  width:100%;
-  height:120px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background-size:cover;
-  background-position:center;
-  background-color:#050509;
-}
-
-.ac-course-title{
-  font-size:15px;
-  font-weight:600;
-  color:var(--accent2);
-}
-.ac-course-sub{
-  font-size:12px;
-  color:var(--muted);
-}
-.ac-course-status{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:auto;
-}
-
-.ac-course-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:6px;
-}
-
-/* BUTTONS */
-.ac-btn,
-.ac-btn-ghost{
-  border-radius:999px;
-  padding:7px 12px;
-  font-size:12px;
-  font-weight:600;
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  border:none;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.ac-btn{
-  background:var(--grad);
-  color:#000;
-  box-shadow:var(--shadow);
-}
-.ac-btn i{
-  width:14px;height:14px;
-}
-.ac-btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 22px 48px rgba(0,0,0,0.75);
-}
-.ac-btn-ghost{
-  background:transparent;
-  color:var(--muted);
-  border:1px solid var(--border);
-}
-.ac-btn-ghost:hover{
-  background:rgba(255,255,255,0.06);
-  color:var(--accent2);
-}
-.ac-btn-small{
-  padding:6px 10px;
-  font-size:11px;
-}
-.ac-btn-disabled{
-  opacity:.4;
-  pointer-events:none;
-}
-
-/* ===== BADGES BOARD ===== */
-.ac-badges-board{
-  background:var(--card2);
-  border-radius:20px;
-  border:1px solid var(--border);
-  box-shadow:var(--shadow);
-  padding:16px 16px 14px;
-}
-.ac-badges-board-header{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:flex-start;
-  margin-bottom:10px;
-}
-.ac-badges-board-title{
-  font-size:15px;
-  font-weight:600;
-}
-.ac-badges-board-sub{
-  font-size:12px;
-  color:var(--muted);
-}
-.ac-badges-board-stats{
-  font-size:11px;
-  color:var(--muted);
-  text-align:right;
-}
-.ac-badges-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
-  gap:10px;
-  margin-top:10px;
-}
-.ac-badge-card{
-  position:relative;
-  padding:10px 9px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.03);
-  font-size:11px;
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.ac-badge-icon{
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:3px;
-}
-.ac-badge-icon i{
-  width:14px;height:14px;
-  color:var(--accent2);
-}
-.ac-badge-name{
-  font-weight:600;
-}
-.ac-badge-desc{
-  color:var(--muted);
-}
-.ac-badge-tag{
-  position:absolute;
-  top:6px;
-  right:6px;
-  font-size:9px;
-  padding:2px 5px;
-  border-radius:999px;
-  background:rgba(0,0,0,0.5);
-  color:var(--muted);
-}
-.ac-badge-earned{
-  border-color:rgba(255,179,71,0.9);
-  background:rgba(255,179,71,0.16);
-}
-.ac-badge-earned .ac-badge-icon{
-  box-shadow:0 0 18px rgba(255,179,71,0.7);
-}
-
-/* ===== FOOTER ===== */
-.ac-footer{
-  border-top:1px solid var(--border);
-  padding:14px 18px 20px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* ===== OVERLAYS & MODALS ===== */
-.ac-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.65);
-  backdrop-filter:blur(10px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:60;
-}
-.ac-hidden{
-  display:none!important;
-}
-.ac-modal{
-  max-width:440px;
-  width:92%;
-  background:var(--bg2);
-  border-radius:22px;
-  border:1px solid var(--border);
-  box-shadow:var(--shadow);
-  padding:18px 18px 16px;
-  position:relative;
-}
-
-/* Profile modal */
-.ac-modal-profile .ac-modal-header h2{
-  font-size:18px;
-  font-weight:700;
-  margin-bottom:4px;
-}
-.ac-modal-profile .ac-modal-header p{
-  font-size:13px;
-  color:var(--muted);
-}
-.ac-modal-section{
-  margin-top:12px;
-}
-.ac-field-label{
-  font-size:12px;
-  margin-bottom:4px;
-  display:block;
-}
-.ac-input{
-  width:100%;
-  padding:8px 10px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:rgba(7,7,12,0.9);
-  color:var(--text);
-  font-size:13px;
-}
-.ac-input:focus{
-  outline:none;
-  border-color:var(--accent2);
-}
-.ac-avatar-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:8px;
-}
-.ac-avatar-option{
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,0.03);
-  padding:7px 6px;
-  font-size:11px;
-  color:var(--muted);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  cursor:pointer;
-}
-.ac-avatar-option-icon{
-  width:28px;
-  height:28px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.ac-avatar-option-icon i{
-  width:16px;height:16px;
-  color:var(--accent2);
-}
-.ac-avatar-selected{
-  border-color:var(--accent2);
-  background:rgba(255,179,71,0.15);
-}
-
-.ac-style-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-.ac-style-chip{
-  border-radius:999px;
-  border:1px solid var(--border);
-  padding:5px 10px;
-  font-size:11px;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  background:rgba(255,255,255,0.02);
-  cursor:pointer;
-  color:var(--muted);
-}
-.ac-style-dot{
-  width:10px;
-  height:10px;
-  border-radius:999px;
-  display:block;
-}
-.ac-style-dot-classic{
-  background:linear-gradient(135deg,#ff7a1a,#ffb347);
-}
-.ac-style-dot-neon{
-  background:linear-gradient(135deg,#22d3ee,#a855f7);
-}
-.ac-style-dot-sunset{
-  background:linear-gradient(135deg,#fb923c,#fb7185);
-}
-.ac-style-selected{
-  border-color:var(--accent2);
-  color:var(--accent2);
-}
-
-/* Modal footer */
-.ac-modal-footer{
-  margin-top:16px;
-  display:flex;
-  justify-content:flex-end;
-  gap:8px;
-}
-
-/* Course modal */
-.ac-modal-course{
-  padding-top:22px;
-}
-.ac-modal-close{
-  position:absolute;
-  top:10px;
-  right:10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  width:28px;
-  height:28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(10,10,18,0.9);
-  cursor:pointer;
-}
-.ac-modal-close i{
-  width:16px;height:16px;
-  color:var(--muted);
-}
-.ac-modal-course-tag{
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  color:var(--muted);
-  margin-bottom:4px;
-}
-.ac-modal-course h2{
-  font-size:18px;
-  margin-bottom:8px;
-}
-.ac-modal-course-desc{
-  font-size:13px;
-  color:var(--muted);
-}
-.ac-modal-course-list{
-  margin:10px 0 4px;
-  padding-left:18px;
-  font-size:12px;
-  color:var(--muted);
-}
-.ac-modal-course-list li{
-  margin-bottom:4px;
-}
-
-/* Achievements modal */
-.ac-modal-ach{
-  overflow:hidden;
-  text-align:center;
-  padding-top:22px;
-}
-.ac-ach-glow{
-  position:absolute;
-  inset:-40px;
-  background:radial-gradient(circle at 50% 0,rgba(255,179,71,0.45),transparent 60%);
-  opacity:.7;
-  pointer-events:none;
-}
-.ac-ach-icon-wrap{
-  position:relative;
-  z-index:1;
-  width:76px;
-  height:76px;
-  border-radius:24px;
-  border:1px solid var(--border);
-  background:rgba(7,7,12,0.9);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 10px;
-  box-shadow:0 0 26px rgba(255,179,71,0.7);
-}
-.ac-ach-icon-wrap i{
-  width:40px;height:40px;
-  color:var(--accent2);
-}
-.ac-ach-label{
-  position:relative;
-  z-index:1;
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.18em;
-  color:var(--muted);
-}
-.ac-ach-title{
-  position:relative;
-  z-index:1;
-  margin-top:4px;
-  font-size:18px;
-  font-weight:800;
-}
-.ac-ach-text{
-  position:relative;
-  z-index:1;
-  font-size:13px;
-  color:var(--muted);
-  margin-top:4px;
-}
-.ac-ach-user{
-  position:relative;
-  z-index:1;
-  font-size:12px;
-  margin-top:6px;
-  color:var(--accent2);
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width:820px){
-  .ac-hero{
-    grid-template-columns:1fr;
+  // перші досягнення
+  if (!state.achievements["first_login"]) {
+    unlockAchievement("first_login");
   }
-}
-@media (max-width:640px){
-  .ac-header{
-    padding-inline:14px;
+  if (!state.achievements["academy_member"]) {
+    unlockAchievement("academy_member");
   }
-  .ac-logo{
-    font-size:19px;
+
+  // збережемо стан після ініта
+  saveState(state);
+
+  // відкриваємо модал профілю, якщо ще не налаштований
+  if (!state.profile.initialized) {
+    openProfileModal(true);
   }
-  .ac-page{
-    padding-inline:14px;
+
+  // рендер всього
+  renderAll();
+  // перевірка мета-бейджів (курси, XP, колекціонер)
+  checkMetaAchievements();
+
+  if (window.lucide) {
+    lucide.createIcons();
   }
-  .ac-courses-grid{
-    grid-template-columns:1fr;
+
+  // ====== ОБРОБНИКИ ======
+
+  scrollBadgesBtn.addEventListener("click", () => {
+    badgesSectionEl.scrollIntoView({ behavior:"smooth", block:"start" });
+  });
+
+  openProfileBtn.addEventListener("click", () => {
+    openProfileModal(false);
+  });
+
+  avatarGridEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".ac-avatar-option");
+    if (!btn) return;
+    const id = btn.dataset.avatar;
+    selectAvatarOption(id);
+  });
+
+  styleGridEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".ac-style-chip");
+    if (!btn) return;
+    const style = btn.dataset.style;
+    selectStyleOption(style);
+  });
+
+  profileSaveBtnEl.addEventListener("click", () => {
+    const name = (profileNameInputEl.value || "").trim() || "Студент";
+    const avatar = getSelectedAvatarId();
+    const style = getSelectedStyleId();
+    state.profile.name = name;
+    state.profile.avatarId = avatar;
+    state.profile.style = style;
+    state.profile.initialized = true;
+    saveState(state);
+
+    applyTheme(style);
+    renderHeader();
+    closeProfileModal();
+
+    unlockAchievement("profile_filled");
+    checkMetaAchievements();
+  });
+
+  profileSkipBtnEl.addEventListener("click", () => {
+    state.profile.initialized = true;
+    saveState(state);
+    closeProfileModal();
+  });
+
+  // закриття модалей по кліку фону
+  profileOverlayEl.addEventListener("click", (e) => {
+    if (e.target === profileOverlayEl) {
+      closeProfileModal();
+    }
+  });
+
+  courseModalEl.addEventListener("click", (e) => {
+    if (e.target === courseModalEl) {
+      closeCourseModal();
+    }
+  });
+
+  courseModalCloseEl.addEventListener("click", closeCourseModal);
+  courseModalCancelEl.addEventListener("click", closeCourseModal);
+
+  courseModalStartEl.addEventListener("click", () => {
+    if (!courseModalCurrentId) return;
+    startCourse(courseModalCurrentId);
+    closeCourseModal();
+  });
+
+  achModalEl.addEventListener("click", (e) => {
+    if (e.target === achModalEl) {
+      closeAchModal();
+    }
+  });
+  achModalOkEl.addEventListener("click", closeAchModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (!profileOverlayEl.classList.contains("ac-hidden")) closeProfileModal();
+      if (!courseModalEl.classList.contains("ac-hidden")) closeCourseModal();
+      if (!achModalEl.classList.contains("ac-hidden")) closeAchModal(true);
+    }
+  });
+
+  // ===== ФУНКЦІЇ СТАНУ =====
+
+  function defaultState() {
+    const coursesMap = {};
+    COURSES.forEach(c => {
+      coursesMap[c.id] = {
+        id: c.id,
+        started: false,
+        completed: false,
+        progress: 0,      // 0–100
+        lessonsDone: 0,
+        lessonsTotal: c.lessons || 0
+      };
+    });
+
+    return {
+      profile: {
+        name: "Студент",
+        avatarId: "rocket",
+        style: "classic",
+        initialized: false,
+        createdAt: Date.now(),
+        lastVisit: Date.now(),
+        streakDays: 1,
+        sessions: 1
+      },
+      courses: coursesMap,
+      achievements: {},
+      activeCourseId: null
+    };
   }
-  .ac-badges-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if (!raw) return defaultState();
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return defaultState();
+
+      // профіль
+      if (!parsed.profile) {
+        parsed.profile = defaultState().profile;
+      }
+
+      // курси
+      const def = defaultState();
+      if (!parsed.courses || typeof parsed.courses !== "object") {
+        parsed.courses = def.courses;
+      } else {
+        // дозаповнюємо відсутні курси
+        COURSES.forEach(c => {
+          if (!parsed.courses[c.id]) {
+            parsed.courses[c.id] = def.courses[c.id];
+          } else {
+            if (typeof parsed.courses[c.id].lessonsTotal === "undefined") {
+              parsed.courses[c.id].lessonsTotal = c.lessons || 0;
+            }
+          }
+        });
+      }
+
+      if (typeof parsed.activeCourseId === "undefined") {
+        parsed.activeCourseId = null;
+      }
+      if (!parsed.achievements || typeof parsed.achievements !== "object") {
+        parsed.achievements = {};
+      }
+
+      return parsed;
+    } catch (e) {
+      return defaultState();
+    }
   }
-  .ac-avatar-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
+
+  function saveState(st) {
+    localStorage.setItem(STATE_KEY, JSON.stringify(st));
   }
-}
 
-/* Плавне збільшення бейджів на академії */
-.ac-badge-card {
-  transition: transform .25s ease, box-shadow .25s ease;
-  cursor: pointer;
-}
+  function syncDropshippingProgress(st) {
+    try {
+      const raw = localStorage.getItem(DS_KEY);
+      if (!raw) return;
+      const ds = JSON.parse(raw);
+      if (!ds || !Array.isArray(ds.completedLessons)) return;
 
-.ac-badge-card:hover {
-  transform: scale(1.08);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-}
+      const done = ds.completedLessons.length;
+      const pct = Math.min(100, Math.round((done / DS_TOTAL_LESSONS) * 100));
 
+      const courseState = st.courses["ds_zero"];
+      if (!courseState) return;
 
-/* Плавне збільшення бейджів у курсах */
-.cd-badge-card {
-  transition: transform .25s ease, box-shadow .25s ease;
-  cursor: pointer;
-}
+      if (done > 0) {
+        courseState.started = true;
+      }
+      if (pct > courseState.progress) {
+        courseState.progress = pct;
+      }
+      courseState.lessonsDone = Math.max(courseState.lessonsDone || 0, done);
+      if (done >= DS_TOTAL_LESSONS) {
+        courseState.completed = true;
+      }
 
-.cd-badge-card:hover {
-  transform: scale(1.08);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-}
+      // авто-бейджі по прогресу
+      if (done >= 1)   unlockAchievement("ds_first_step");
+      if (pct >= 25)   unlockAchievement("ds_25");
+      if (pct >= 50)   unlockAchievement("ds_50");
+      if (pct >= 75)   unlockAchievement("ds_75");
+      if (pct >= 100)  unlockAchievement("ds_complete");
 
-/* ===== BADGE FULLSCREEN OVERLAY ===== */
-.badge-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(4px);
-  z-index: 3000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
+      // якщо базовий курс активний і ще не завершений
+      if (!st.activeCourseId && done > 0 && !courseState.completed) {
+        st.activeCourseId = "ds_zero";
+      }
 
-.badge-overlay.ac-hidden {
-  display: none;
-}
+    } catch (e) {
+      // нічого
+    }
+  }
 
-.badge-info-content {
-  text-align: center;
-  color: var(--text);
-  animation: badgeZoom .25s ease;
-}
+  function updateVisitStats(st) {
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
 
-@keyframes badgeZoom {
-  from { transform: scale(0.85); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
+    const diff = now - (st.profile.lastVisit || now);
+    if (diff >= oneDay * 2) {
+      // пропускали більше дня — обнуляємо streak
+      st.profile.streakDays = 1;
+    } else if (diff >= oneDay * 1) {
+      // повернення на наступний день
+      st.profile.streakDays = (st.profile.streakDays || 1) + 1;
+      unlockAchievement("return_day");
+      if (st.profile.streakDays >= 7) {
+        unlockAchievement("week_streak");
+      }
+    }
 
-.badge-info-icon {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    st.profile.lastVisit = now;
+    st.profile.sessions = (st.profile.sessions || 0) + 1;
+  }
 
-.badge-info-icon i {
-  width: 70px;
-  height: 70px;
-  color: var(--accent2);
-}
+  function getCourseMeta(id) {
+    return COURSES.find(c => c.id === id);
+  }
 
-.badge-info-title {
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 8px;
-}
+  function getStats() {
+    const coursesArr = Object.values(state.courses);
+    const totalCourses = COURSES.length;
+    let completedCourses = 0;
+    let startedCourses = 0;
+    let xp = 0;
 
-.badge-info-status {
-  font-size: 16px;
-  margin-bottom: 8px;
-  font-weight: 600;
-}
+    coursesArr.forEach(c => {
+      if (c.completed) completedCourses++;
+      if (c.started || c.completed) startedCourses++;
+      xp += Math.round(c.progress); // 1% = 1 XP
+    });
 
-.badge-info-status.ok {
-  color: #5ce3a0;
-}
+    const maxXp = totalCourses * 100;
+    const earnedBadges = Object.keys(state.achievements).length;
 
-.badge-info-status.fail {
-  color: #ff6b6b;
-}
+    return {
+      totalCourses,
+      completedCourses,
+      startedCourses,
+      xp,
+      maxXp,
+      earnedBadges
+    };
+  }
 
-.badge-info-desc {
-  font-size: 14px;
-  color: var(--muted);
-  max-width: 340px;
-  margin: 0 auto 22px;
-  line-height: 1.5;
-}
+  function getLevelTitle(stats) {
+    const { completedCourses, xp } = stats;
+    if (completedCourses >= 3 || xp >= 250) return "На шляху до мільйона";
+    if (completedCourses >= 2 || xp >= 150) return "Підприємець";
+    if (completedCourses >= 1 || xp >= 80)  return "Практик";
+    if (xp >= 20)                            return "Активний студент";
+    return "Новачок";
+  }
 
-.badge-info-ok {
-  margin-top: 10px;
-  opacity: 0.7;
-}
+  // ===== АВТО-БЕЙДЖІ ПО СТАТИСТИЦІ (КУРСИ / XP / КОЛЕКЦІОНЕР) =====
+  function checkMetaAchievements() {
+    const stats = getStats();
 
-.badge-info-ok i {
-  width: 36px;
-  height: 36px;
-  color: var(--text);
-}
+    // курси
+    if (stats.completedCourses >= 2) {
+      unlockAchievement("two_courses");
+    }
+    if (stats.completedCourses >= 3) {
+      unlockAchievement("three_courses");
+    }
+
+    // XP
+    if (stats.xp >= 100) {
+      unlockAchievement("xp_100");
+    }
+    if (stats.xp >= 250) {
+      unlockAchievement("xp_250");
+    }
+
+    // колекціонер
+    const earned = Object.keys(state.achievements).length;
+    if (earned >= 10) {
+      unlockAchievement("ach_collector");
+    }
+    if (earned >= 20) {
+      unlockAchievement("super_collector");
+    }
+  }
+
+  // ===== ТЕМА / АВАТАР =====
+
+  function applyTheme(style) {
+    const root = document.documentElement;
+    root.setAttribute("data-theme", style || "classic");
+  }
+
+  function avatarIconFor(id) {
+    switch (id) {
+      case "ninja": return "sword";
+      case "lion":  return "flame";
+      case "owl":   return "moon-star";
+      default:      return "rocket";
+    }
+  }
+
+  function selectAvatarOption(id) {
+    const options = avatarGridEl.querySelectorAll(".ac-avatar-option");
+    options.forEach(o => {
+      o.classList.toggle("ac-avatar-selected", o.dataset.avatar === id);
+    });
+  }
+  function getSelectedAvatarId() {
+    const sel = avatarGridEl.querySelector(".ac-avatar-selected");
+    return sel ? sel.dataset.avatar : "rocket";
+  }
+
+  function selectStyleOption(style) {
+    const chips = styleGridEl.querySelectorAll(".ac-style-chip");
+    chips.forEach(c => {
+      c.classList.toggle("ac-style-selected", c.dataset.style === style);
+    });
+  }
+  function getSelectedStyleId() {
+    const sel = styleGridEl.querySelector(".ac-style-selected");
+    return sel ? sel.dataset.style : "classic";
+  }
+
+  // ===== БЕЙДЖІ =====
+
+  function unlockAchievement(id) {
+    if (!id) return;
+    if (state.achievements[id]) return; // вже є
+
+    const def = BADGES.find(b => b.id === id);
+    if (!def) return;
+
+    state.achievements[id] = true;
+    saveState(state);
+    renderBadgesBoard(); // оновимо
+
+    // у чергу на показ модалки
+    achQueue.push(def);
+    showNextAchievement();
+  }
+
+  function showNextAchievement() {
+    if (achShowing) return;
+    const next = achQueue.shift();
+    if (!next) return;
+
+    achShowing = true;
+
+    achModalTitleEl.textContent = next.name;
+    achModalTextEl.textContent = next.desc;
+
+    const userName = state.profile.name || "Студент";
+    achModalUserEl.textContent = userName + ", так тримати!";
+
+    achModalIconEl.innerHTML = `<i data-lucide="${next.icon}"></i>`;
+    achModalEl.classList.remove("ac-hidden");
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function closeAchModal(skipQueue) {
+    achModalEl.classList.add("ac-hidden");
+    achShowing = false;
+    if (!skipQueue && achQueue.length > 0) {
+      setTimeout(showNextAchievement, 200);
+    }
+  }
+
+  // ===== РЕНДЕР =====
+
+  function renderHeader() {
+    const stats = getStats();
+    const levelTitle = getLevelTitle(stats);
+    const levelText = levelTitle;
+
+    const xpNow = stats.xp;
+    const xpCap = Math.max(stats.maxXp, 100);
+    const xpPercent = xpCap ? Math.min(100, Math.round((xpNow / xpCap) * 100)) : 0;
+
+    const name = state.profile.name || "Студент";
+    headerNameEl.textContent = name;
+    headerStatusEl.textContent = `${levelTitle} • lvl ${Math.max(1, Math.floor(xpNow / 100) + 1)}`;
+
+    // аватар
+    const icon = avatarIconFor(state.profile.avatarId || "rocket");
+    headerAvatarEl.innerHTML = `<i data-lucide="${icon}"></i>`;
+
+    heroLevelTitleEl.textContent = levelText;
+    heroXpTextEl.textContent = `${xpNow} / ${xpCap} XP`;
+    heroXpBarEl.style.width = xpPercent + "%";
+
+    if (stats.completedCourses === 0 && stats.startedCourses === 0) {
+      heroLevelHintEl.textContent = "Почни базовий курс і відкрий для себе всю академію.";
+    } else if (stats.completedCourses === 0) {
+      heroLevelHintEl.textContent = "Продовжуй базовий курс — після завершення відкриються всі інші програми.";
+    } else {
+      heroLevelHintEl.textContent = "Обирай наступний курс і рухайся до свого фінансового результату.";
+    }
+
+    // студенти (трохи «живої» цифри)
+    heroStudentsEl.textContent = (57 + stats.completedCourses * 3 + stats.startedCourses) + "+";
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function renderProgress() {
+    const anyStarted = Object.values(state.courses).some(c => c.started || c.completed);
+    if (!anyStarted) {
+      progressEmptyEl.style.display = "block";
+      progressPanelEl.style.display = "none";
+      return;
+    }
+    progressEmptyEl.style.display = "none";
+    progressPanelEl.style.display = "flex";
+
+    const id = state.activeCourseId;
+    const courseState = id ? state.courses[id] : null;
+    const meta = id ? getCourseMeta(id) : null;
+
+    const title = meta ? meta.title : "Курс";
+    const pct = courseState ? (courseState.progress || 0) : 0;
+
+    activeCourseNameEl.textContent = title;
+    activeCourseValueEl.textContent = pct + "%";
+    activeCourseBarEl.style.width = pct + "%";
+
+    if (!courseState || !courseState.started) {
+      activeCourseHintEl.textContent = "Почни перший урок — і тут зʼявиться прогрес по курсу.";
+    } else if (!courseState.completed) {
+      activeCourseHintEl.textContent = "Рухайся модуль за модулем. Система рахує все автоматично.";
+    } else {
+      activeCourseHintEl.textContent = "Курс завершено. Можеш обрати нову програму.";
+    }
+
+    if (id === "ds_zero") {
+      if (!courseState || !courseState.completed) {
+        activeCourseFooterEl.textContent = "Після завершення базового курсу відкриються всі інші програми академії.";
+      } else {
+        activeCourseFooterEl.textContent = "Базовий курс пройдено. Обери наступний курс вище.";
+      }
+    } else {
+      activeCourseFooterEl.textContent = "Один курс — один фокус. Коли завершиш, можеш запустити новий.";
+    }
+  }
+
+  function renderMyCourses() {
+    myCoursesGridEl.innerHTML = "";
+
+    const my = COURSES.filter(c => {
+      const st = state.courses[c.id];
+      return st && (st.started || st.completed);
+    });
+
+    if (my.length === 0) {
+      myCoursesEmptyEl.style.display = "block";
+      return;
+    }
+    myCoursesEmptyEl.style.display = "none";
+
+    my.forEach(c => {
+      const st = state.courses[c.id];
+      const card = document.createElement("div");
+      card.className = "ac-course-card";
+
+      const isActive = state.activeCourseId === c.id && !st.completed;
+
+      let tagClass = "ac-course-tag";
+      let tagText = c.tag;
+
+      // Активний курс — зелений
+      if (isActive && !st.completed) {
+        tagClass = "ac-course-tag ac-course-tag-main";
+        tagText = "Активний курс";
+      }
+      // Завершено — сірий
+      else if (st.completed) {
+        tagClass = "ac-course-tag";
+        tagText = "Завершено";
+      }
+
+      const statusText = st.completed
+        ? "Курс завершено."
+        : (st.started ? `Прогрес: ${st.progress || 0}%` : "Ще не розпочато.");
+
+      card.innerHTML = `
+        <div class="${tagClass}">${tagText}</div>
+        <div class="ac-course-cover" style="background-image:url('${c.cover}')"></div>
+        <div class="ac-course-title">${c.title}</div>
+        <div class="ac-course-sub">${c.short}</div>
+        <div class="ac-course-status">${statusText}</div>
+        <div class="ac-course-actions"></div>
+      `;
+
+      const actions = card.querySelector(".ac-course-actions");
+
+      const btnMain = document.createElement("button");
+      btnMain.className = "ac-btn ac-btn-small";
+      if (st.completed) {
+        btnMain.innerHTML = `<i data-lucide="play-circle"></i>Переглянути`;
+      } else {
+        btnMain.innerHTML = `<i data-lucide="play"></i>Продовжити`;
+      }
+      btnMain.addEventListener("click", () => startCourse(c.id));
+      actions.appendChild(btnMain);
+
+      const btnInfo = document.createElement("button");
+      btnInfo.className = "ac-btn-ghost ac-btn-small";
+      btnInfo.innerHTML = `<i data-lucide="info"></i>Детальніше`;
+      btnInfo.addEventListener("click", () => openCourseModal(c.id));
+      actions.appendChild(btnInfo);
+
+      myCoursesGridEl.appendChild(card);
+    });
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function renderAllCourses() {
+    allCoursesGridEl.innerHTML = "";
+
+    const mainState = state.courses["ds_zero"];
+    const currentId = state.activeCourseId;
+
+    COURSES.forEach(c => {
+      const st = state.courses[c.id];
+
+      // не показуємо курс, якщо він уже в "Мої курси"
+      if (st && (st.started || st.completed)) return;
+
+      let locked = false;
+      let lockedReason = "";
+
+      // логіка блокування
+      if (c.id !== "ds_zero") {
+        if (!mainState.completed) {
+          locked = true;
+          lockedReason = "Спочатку заверши базовий курс «Дропшипінг з нуля».";
+        } else if (currentId && currentId !== c.id && !state.courses[currentId].completed) {
+          locked = true;
+          const meta = getCourseMeta(currentId);
+          lockedReason = "Заверш спочатку поточний курс: «" + (meta ? meta.title : "активний курс") + "».";
+        }
+      }
+
+      const card = document.createElement("div");
+      card.className = "ac-course-card";
+
+      const tagClass = c.id === "ds_zero" ? "ac-course-tag ac-course-tag-main" : "ac-course-tag";
+
+      card.innerHTML = `
+        <div class="${tagClass}">
+          ${c.id === "ds_zero" ? "Стартовий курс" : c.tag}
+        </div>
+        <div class="ac-course-cover" style="background-image:url('${c.cover}')"></div>
+        <div class="ac-course-title">${c.title}</div>
+        <div class="ac-course-sub">${c.short}</div>
+        <div class="ac-course-status">
+          ${
+            locked
+              ? lockedReason
+              : "Можна почати у будь-який час."
+          }
+        </div>
+        <div class="ac-course-actions"></div>
+      `;
+
+      const actions = card.querySelector(".ac-course-actions");
+
+      const btnInfo = document.createElement("button");
+      btnInfo.className = "ac-btn-ghost ac-btn-small";
+      btnInfo.innerHTML = `<i data-lucide="info"></i>Детальніше`;
+      btnInfo.addEventListener("click", () => openCourseModal(c.id));
+      actions.appendChild(btnInfo);
+
+      const btnStart = document.createElement("button");
+      btnStart.className = "ac-btn ac-btn-small";
+      if (locked) {
+        btnStart.classList.add("ac-btn-disabled");
+        btnStart.innerHTML = `<i data-lucide="lock"></i>Заблоковано`;
+      } else {
+        btnStart.innerHTML = `<i data-lucide="${c.id === "ds_zero" ? "rocket" : "play"}"></i>Почати курс`;
+        btnStart.addEventListener("click", () => startCourse(c.id));
+      }
+      actions.appendChild(btnStart);
+
+      allCoursesGridEl.appendChild(card);
+    });
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function renderBadgesBoard() {
+    badgesGridEl.innerHTML = "";  
+    
+    const earnedIds = Object.keys(state.achievements);
+    const earnedSet = new Set(earnedIds);
+
+    BADGES.forEach(b => {
+      const card = document.createElement("div");
+      card.className = "ac-badge-card" + (earnedSet.has(b.id) ? " ac-badge-earned" : "");
+
+      card.innerHTML = `
+        <div class="ac-badge-icon">
+          <i data-lucide="${b.icon}"></i>
+        </div>
+        <div class="ac-badge-name">${b.name}</div>
+        <div class="ac-badge-desc">${b.desc}</div>
+        <div class="ac-badge-tag">${b.type}</div>
+      `;
+
+      badgesGridEl.appendChild(card);
+    });
+
+// ===== BADGE FULLSCREEN INFO =====
+const badgeOverlay = document.getElementById("badgeInfoOverlay");
+const badgeInfoIcon = document.getElementById("badgeInfoIcon");
+const badgeInfoTitle = document.getElementById("badgeInfoTitle");
+const badgeInfoStatus = document.getElementById("badgeInfoStatus");
+const badgeInfoDesc = document.getElementById("badgeInfoDesc");
+
+// клік по бейджу
+badgesGridEl.addEventListener("click", (e) => {
+  const card = e.target.closest(".ac-badge-card");
+  if (!card) return;
+
+  const icon = card.querySelector("i")?.getAttribute("data-lucide");
+  const title = card.querySelector(".ac-badge-name")?.textContent;
+  const desc = card.querySelector(".ac-badge-desc")?.textContent;
+  const earned = card.classList.contains("ac-badge-earned");
+
+  // встановлення
+  badgeInfoIcon.innerHTML = `<i data-lucide="${icon}"></i>`;
+  badgeInfoTitle.textContent = title;
+
+  if (earned) {
+    badgeInfoStatus.textContent = "Досягнуто ✓";
+    badgeInfoStatus.className = "badge-info-status ok";
+  } else {
+    badgeInfoStatus.textContent = "Ще не досягнуто";
+    badgeInfoStatus.className = "badge-info-status fail";
+  }
+
+  badgeInfoDesc.textContent = desc;
+
+  badgeOverlay.classList.remove("ac-hidden");
+
+  if (window.lucide) lucide.createIcons();
+});
+
+// закриття по кліку будь-де
+badgeOverlay.addEventListener("click", () => {
+  badgeOverlay.classList.add("ac-hidden");
+});
+
+    
+    
+    
+    
+
+    const stats = getStats();
+    const totalBadges = BADGES.length;
+    const earnedBadges = stats.earnedBadges;
+
+    badgesSummaryEl.textContent = `${earnedBadges} / ${totalBadges} бейджів відкрито.`;
+    badgesStatsEl.textContent = `Завершено курсів: ${stats.completedCourses} • XP: ${stats.xp}`;
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function renderAll() {
+    applyTheme(state.profile.style || "classic");
+    renderHeader();
+    renderProgress();
+    renderMyCourses();
+    renderAllCourses();
+    renderBadgesBoard();
+  }
+
+  // ===== КУРСИ: ДІЇ =====
+  function startCourse(courseId) {
+    const meta = getCourseMeta(courseId);
+    if (!meta) return;
+
+    const st = state.courses[courseId];
+
+    // якщо вже завершено — просто відкриваємо
+    if (st.completed && meta.url && meta.url !== "#") {
+      window.location.href = meta.url;
+      return;
+    }
+
+    // обмеження: базовий курс перед іншими
+    const base = state.courses["ds_zero"];
+    if (courseId !== "ds_zero" && !base.completed) {
+      alert("Спочатку заверши базовий курс «Дропшипінг з нуля».");
+      return;
+    }
+
+    // обмеження: один курс одночасно
+    if (state.activeCourseId &&
+        state.activeCourseId !== courseId &&
+        !state.courses[state.activeCourseId].completed) {
+      const activeMeta = getCourseMeta(state.activeCourseId);
+      alert("Заверши поточний курс: «" + (activeMeta ? activeMeta.title : "активний курс") + "».");
+      return;
+    }
+
+    st.started = true;
+    state.activeCourseId = courseId;
+    saveState(state);
+
+    unlockAchievement("selector");
+    unlockAchievement("focus");
+    if (!state.achievements["first_course_start"]) {
+      unlockAchievement("first_course_start");
+    }
+
+    renderAll();
+    checkMetaAchievements();
+
+    // перехід на сторінку курсу
+    if (meta.url && meta.url !== "#") {
+      window.location.href = meta.url;
+    } else {
+      alert("Цей курс буде доступний після розробки його програми 🙂");
+    }
+  }
+
+  // ===== МОДАЛ КУРСУ =====
+
+  function openCourseModal(courseId) {
+    const meta = getCourseMeta(courseId);
+    if (!meta) return;
+    courseModalCurrentId = courseId;
+
+    courseModalTitleEl.textContent = meta.title;
+    courseModalTagEl.textContent = meta.tag;
+    courseModalDescEl.textContent = meta.short;
+    courseModalBulletsEl.innerHTML = "";
+
+    (meta.bullets || []).forEach(b => {
+      const li = document.createElement("li");
+      li.textContent = b;
+      courseModalBulletsEl.appendChild(li);
+    });
+
+    courseModalEl.classList.remove("ac-hidden");
+    unlockAchievement("viewer");
+    checkMetaAchievements();
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function closeCourseModal() {
+    courseModalEl.classList.add("ac-hidden");
+    courseModalCurrentId = null;
+  }
+
+  // ===== МОДАЛ ПРОФІЛЮ =====
+
+  function openProfileModal(firstTime) {
+    profileOverlayEl.classList.remove("ac-hidden");
+
+    profileNameInputEl.value = state.profile.name || "";
+    selectAvatarOption(state.profile.avatarId || "rocket");
+    selectStyleOption(state.profile.style || "classic");
+
+    profileSkipBtnEl.style.display = firstTime ? "inline-flex" : "none";
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function closeProfileModal() {
+    profileOverlayEl.classList.add("ac-hidden");
+  }
+
+});
