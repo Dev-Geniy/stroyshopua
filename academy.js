@@ -7,128 +7,105 @@ document.addEventListener("DOMContentLoaded", () => {
   const DS_TOTAL_LESSONS = 24;
 
   // ===== КУРСИ =====
-  const COURSES = [
-    {
-      id: "ds_zero",
-      title: "Дропшипінг з нуля",
-      tag: "Базовий курс",
-      type: "main",
-      cover: "https://i.ibb.co/C3K0HFr4/unnamed-11.jpg",
-      url: "course-dropshipping.html",
-      lessons: 24,
-      short: "Швидкий старт у дропшипінг-бізнесі від нуля до перших продажів.",
-      bullets: [
-        "7 модулів, 24 практичні уроки.",
-        "Фокус на перших реальних продажах, а не просто теорії.",
-        "Шаблони, скрипти, чеклісти та приклади оголошень."
-      ]
-    },
-    {
-      id: "scale_up",
-      title: "Масштабування",
-      tag: "Продвинутий рівень",
-      type: "advanced",
-      cover: "https://i.ibb.co/KjWYgDhW/unnamed-12.jpg",
-      url: "course-scale-up.html",
-      lessons: 12,
-      short: "Як вирости з перших продажів до стабільного обороту.",
-      bullets: [
-        "Побудова системи та процесів.",
-        "Робота з командою, делегування.",
-        "Масштабування каналів трафіку."
-      ]
-    },
-    {
-      id: "million100",
-      title: "Мільйон за 100",
-      tag: "Фокус на результат",
-      type: "advanced",
-      cover: "https://i.ibb.co/TBGmS8XC/unnamed-5.jpg",
-      url: "course-million100.html",
-      lessons: 10,
-      short: "Стратегія до обороту 1 000 000 грн за 100 днів.",
-      bullets: [
-        "Фінансова модель, KPI та контроль.",
-        "Мультиплікатори прибутку.",
-        "План дій по тижнях."
-      ]
-    },
-    {
-      id: "sales3",
-      title: "Продажі 3.0",
-      tag: "Продажі та скрипти",
-      type: "sales",
-      cover: "https://i.ibb.co/pvytPnBR/unnamed-13.jpg",
-      url: "course-sales3.html",
-      lessons: 14,
-      short: "Сучасні техніки продажів у чаті та по телефону.",
-      bullets: [
-        "Структура діалогу: від привітання до оплати.",
-        "Робота з запереченнями та знижками.",
-        "Скрипти, які не звучать як скрипти."
-      ]
-    },
-    {
-      id: "leadership",
-      title: "Лідерство",
-      tag: "Особистий вплив",
-      type: "soft",
-      cover: "https://i.ibb.co/1Yq1GHWr/unnamed-45.jpg",
-      url: "course-leadership.html",
-      lessons: 10,
-      short: "Як стати лідером для своєї команди та клієнтів.",
-      bullets: [
-        "Мислення лідера.",
-        "Комунікація і довіра.",
-        "Особисті кордони та цінності."
-      ]
-    },
-    {
-      id: "selfgrowth",
-      title: "Саморозвиток",
-      tag: "Внутрішня робота",
-      type: "soft",
-      cover: "https://i.ibb.co/WNjy8nJB/unnamed-46.jpg",
-      url: "course-selfgrowth.html",
-      lessons: 10,
-      short: "Внутрішні зміни, щоб витримувати зовнішнє навантаження.",
-      bullets: [
-        "Привички та дисципліна.",
-        "Робота зі страхами та сумнівами.",
-        "План розвитку на 90 днів."
-      ]
-    },
-    {
-      id: "learn60",
-      title: "Навчись за 60 хвилин",
-      tag: "Експрес-формат",
-      type: "mini",
-      cover: "https://i.ibb.co/N29GQHQN/unnamed-49.jpg",
-      url: "course-learn60.html",
-      lessons: 4,
-      short: "Як навчитись будь-чому за 60 хвилин на день.",
-      bullets: [
-        "Один урок — одна навичка.",
-        "Тільки суть без води.",
-        "Домашка, яку реально зробити."
-      ]
-    },
-    {
-      id: "change_or_die",
-      title: "Змінись або помри",
-      tag: "Радикальні зміни",
-      type: "mindset",
-      cover: "https://i.ibb.co/nskbgqzd/unnamed-27.jpg",
-      url: "course-change-or-die.html",
-      lessons: 8,
-      short: "Курс про радикальні рішення для життя та бізнесу.",
-      bullets: [
-        "Ревізія життя: що працює, а що ні.",
-        "Сміливі кроки та відповідальність.",
-        "План радикальних змін."
-      ]
-    }
-  ];
+const COURSES = [
+  {
+    id: "ds_zero",
+    title: "Дропшипінг з нуля",
+    tag: "Базовий курс",
+    type: "main",
+    cover: "https://i.ibb.co/C3K0HFr4/unnamed-11.jpg",
+    url: "course-dropshipping.html",
+    lessons: 24,
+    price: 4900,
+    short: "Швидкий старт у дропшипінг-бізнесі від нуля до перших продажів.",
+    bullets: [ "7 модулів, 24 практичні уроки.", "Фокус на перших реальних продажах, а не просто теорії.", "Шаблони, скрипти, чеклісти та приклади оголошень." ]
+  },
+  {
+    id: "scale_up",
+    title: "Масштабування",
+    tag: "Продвинутий рівень",
+    type: "advanced",
+    cover: "https://i.ibb.co/KjWYgDhW/unnamed-12.jpg",
+    url: "course-scale-up.html",
+    lessons: 12,
+    price: 5900,
+    short: "Як вирости з перших продажів до стабільного обороту.",
+    bullets: [ "Фінансова модель, KPI та контроль.", "Мультиплікатори прибутку.", "План дій по тижнях." ]
+  },
+  {
+    id: "million100",
+    title: "Мільйон за 100",
+    tag: "Фокус на результат",
+    type: "advanced",
+    cover: "https://i.ibb.co/TBGmS8XC/unnamed-5.jpg",
+    url: "course-million100.html",
+    lessons: 10,
+    price: 7500,
+    short: "Стратегія до обороту 1 000 000 грн за 100 днів.",
+    bullets: [ "Структура діалогу: від привітання до оплати.", "Робота з запереченнями та знижками.", "Скрипти, які не звучать як скрипти." ]
+  },
+  {
+    id: "sales3",
+    title: "Продажі 3.0",
+    tag: "Продажі та скрипти",
+    type: "sales",
+    cover: "https://i.ibb.co/pvytPnBR/unnamed-13.jpg",
+    url: "course-sales3.html",
+    lessons: 14,
+    price: 4200,
+    short: "Сучасні техніки продажів у чаті та по телефону.",
+    bullets: [ "Структура діалогу: від привітання до оплати.", "Робота з запереченнями та знижками.", "Скрипти, які не звучать як скрипти." ]
+  },
+  {
+    id: "leadership",
+    title: "Лідерство",
+    tag: "Особистий вплив",
+    type: "soft",
+    cover: "https://i.ibb.co/1Yq1GHWr/unnamed-45.jpg",
+    url: "course-leadership.html",
+    lessons: 10,
+    price: 3800,
+    short: "Як стати лідером для своєї команди.",
+    bullets: [ "Мислення лідера.", "Комунікація і довіра.", "Особисті кордони та цінності." ]
+  },
+  {
+    id: "selfgrowth",
+    title: "Саморозвиток",
+    tag: "Внутрішня робота",
+    type: "soft",
+    cover: "https://i.ibb.co/WNjy8nJB/unnamed-46.jpg",
+    url: "course-selfgrowth.html",
+    lessons: 10,
+    price: 3600,
+    short: "Внутрішні зміни для стійкості.",
+    bullets: [ "Привички та дисципліна.", "Робота зі страхами та сумнівами.", "План розвитку на 90 днів." ]
+  },
+  {
+    id: "learn60",
+    title: "Навчись за 60 хвилин",
+    tag: "Експрес-формат",
+    type: "mini",
+    cover: "https://i.ibb.co/N29GQHQN/unnamed-49.jpg",
+    url: "course-learn60.html",
+    lessons: 4,
+    price: 2900,
+    short: "Як навчитись будь-чому за 60 хвилин на день.",
+    bullets: [ "Один урок — одна навичка.", "Тільки суть без води.", "Домашка, яку реально зробити." ]
+  },
+  {
+    id: "change_or_die",
+    title: "Змінись або помри",
+    tag: "Радикальні зміни",
+    type: "mindset",
+    cover: "https://i.ibb.co/nskbgqzd/unnamed-27.jpg",
+    url: "course-change-or-die.html",
+    lessons: 8,
+    price: 5100,
+    short: "Курс про радикальні рішення.",
+    bullets: [ "Ревізія життя: що працює, а що ні.", "Сміливі кроки та відповідальність.", "План радикальних змін." ]
+  }
+];
+
 
   // ===== БЕЙДЖІ =====
   const BADGES = [
@@ -750,6 +727,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="ac-course-cover" style="background-image:url('${c.cover}')"></div>
         <div class="ac-course-title">${c.title}</div>
         <div class="ac-course-sub">${c.short}</div>
+        
+        <div class="ac-course-price-box">
+        <div class="ac-price-old">${c.price?.toLocaleString("uk-UA") || "3 900"} грн</div>
+        <div class="ac-price-free">Безкоштовно</div></div>
+
         <div class="ac-course-status">${statusText}</div>
         <div class="ac-course-actions"></div>
       `;
@@ -817,6 +799,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="ac-course-cover" style="background-image:url('${c.cover}')"></div>
         <div class="ac-course-title">${c.title}</div>
         <div class="ac-course-sub">${c.short}</div>
+        
+        <div class="ac-course-price-box">
+        <div class="ac-price-old">${c.price?.toLocaleString("uk-UA") || "3 900"} грн</div>
+        <div class="ac-price-free">Безкоштовно</div></div>
+
         <div class="ac-course-status">
           ${
             locked
