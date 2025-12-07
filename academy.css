@@ -911,3 +911,84 @@ body{
   height: 36px;
   color: var(--text);
 }
+
+/* секция ценообразования и Бесплатности */
+.ac-price-card{
+  margin-top:20px;
+  padding:20px 22px;
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+
+.ac-market-prices{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+  gap:16px;
+}
+
+.ac-mp-item{
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  text-align:center;
+}
+
+.ac-mp-label{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.ac-mp-old{
+  font-size:16px;
+  color:#b85454;
+  text-decoration:line-through;
+  margin-bottom:2px;
+}
+
+.ac-mp-free{
+  font-size:22px;
+  font-weight:900;
+  color:#5ce3a0;
+  text-shadow:0 0 18px rgba(92,227,160,0.45);
+}
+
+.ac-price-bottom{
+  text-align:center;
+  margin-top:22px;
+  font-size:15px;
+  font-weight:600;
+  color:var(--accent2);
+}
+
+.ac-price-bottom span{
+  color:#5ce3a0;
+  font-weight:900;
+}
+
+.ac-course-price-box{
+  margin-top:4px;
+  margin-bottom:6px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.ac-price-old{
+  font-size:12px;
+  color:#b85454;
+  text-decoration:line-through;
+  opacity:0.8;
+}
+
+.ac-price-free{
+  font-size:16px;
+  font-weight:600;
+  color:#67d2a2;
+  opacity:0.65;
+  text-shadow:none;
+}
