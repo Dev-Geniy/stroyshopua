@@ -196,7 +196,7 @@
 
   
   <section class="sale-section">
-    <h2 class="section-title">Акція товари з уцінкою</h2>
+    <h2 class="section-title">Акція товари з уцінкою:</h2>
     <div class="sale-slider" id="saleSlider"></div>
   </section>
 
@@ -228,30 +228,253 @@
 
   <!-- PRODUCTS -->
   <section class="products-section" id="productsSection">
-    <h2 class="section-title">Популярні товари</h2>
+    <h2 class="section-title">Товари:</h2>
     <div class="products-grid" id="productsGrid">
       <!-- Карточки товаров JS рендерит сюда -->
     </div>
   </section>
 
   <!-- INFO -->
-  <section class="info-section" id="howToOrder">
-    <h2 class="section-title">Як відбувається замовлення</h2>
-    <div class="info-grid">
-      <div class="info-card">
-        <h3>1. Обираєте товари</h3>
-        <p>Додаєте в кошик позиції та потрібну кількість. Можна комбінувати різні категорії.</p>
-      </div>
-      <div class="info-card">
-        <h3>2. Заповнюєте дані</h3>
-        <p>Натискаєте «Оформити замовлення» — ми згенеруємо текст заявки в Telegram.</p>
-      </div>
-      <div class="info-card">
-        <h3>3. Відправка Новою Поштою</h3>
-        <p>Уточнюємо з вами деталі, відправляємо посилку. Оплата при отриманні.</p>
-      </div>
+  <section class="info-section improved-order" id="howToOrder">
+  <h2 class="section-title">Як відбувається замовлення:</h2>
+
+  <div class="order-steps">
+    <div class="order-step">
+      <div class="step-icon"><i data-lucide="search"></i></div>
+      <h3>1. Обираєте товари</h3>
+      <p>Перегляньте каталог або перейдіть у розділ <strong>«Уцінка»</strong>, де є найвигідніші пропозиції.</p>
+      <a href="#saleSlider" class="step-link">Перейти до уцінки →</a>
     </div>
-  </section>
+
+    <div class="order-step">
+      <div class="step-icon"><i data-lucide="shopping-cart"></i></div>
+      <h3>2. Додаєте в кошик</h3>
+      <p>Вкажіть кількість та натисніть «У кошик». Ви можете комбінувати будь-які категорії.</p>
+    </div>
+
+    <div class="order-step">
+      <div class="step-icon"><i data-lucide="edit-3"></i></div>
+      <h3>3. Заповнюєте дані</h3>
+      <p>Натисніть «Оформити замовлення», введіть свої дані — ми сформуємо готове повідомлення у Telegram.</p>
+    </div>
+
+    <div class="order-step">
+      <div class="step-icon"><i data-lucide="truck"></i></div>
+      <h3>4. Відправка та оплата</h3>
+      <p>Ми уточнюємо деталі та відправляємо через Нову Пошту або Укрпошту. Оплата при отриманні.</p>
+    </div>
+  </div>
+
+  <div class="order-cta">
+    <h3>Готові зробити замовлення?</h3>
+    <p>Менеджер допоможе підібрати матеріали та підкаже, які позиції зараз у наявності.</p>
+    <button class="btn btn-primary js-consult">
+      <i data-lucide="message-circle"></i> Отримати консультацію
+    </button>
+
+    <a href="#saleSlider" class="order-sale-reminder">
+      Не пропустіть! У розділі «Уцінка» зараз діють знижки →
+    </a>
+  </div>
+</section>
+
+  <section class="logistics-network" id="supplierWarehouses">
+  <h2 class="section-title">Логістична мережа наших постачальників:</h2>
+
+  <p class="ln-intro">
+    Ми співпрацюємо з перевіреними постачальниками, які мають сучасні склади 
+    та логістичні бази в різних містах України.  
+    Завдяки цьому популярні товари завжди в наявності, а доставка здійснюється максимально швидко.
+  </p>
+
+  <div class="ln-grid">
+
+    <!-- ДНІПРО -->
+    <div class="ln-card">
+      <div class="ln-icon"><i data-lucide="package"></i></div>
+      <h3>Дніпро</h3>
+      <p>
+        Один із ключових складів постачальника.  
+        Забезпечує швидкі відправки по центральній, східній та південній Україні.
+      </p>
+    </div>
+
+    <!-- ВІННИЦЯ -->
+    <div class="ln-card">
+      <div class="ln-icon"><i data-lucide="package"></i></div>
+      <h3>Вінниця</h3>
+      <p>
+        Регіональний склад для оперативної логістики у центральних та західних областях.  
+        Ходові товари завжди в наявності.
+      </p>
+    </div>
+
+    <!-- ІНШІ МІСТА -->
+    <div class="ln-card">
+      <div class="ln-icon"><i data-lucide="truck"></i></div>
+      <h3>Інші міста</h3>
+      <p>
+        Наші партнери та постачальники додаткових матеріалів здійснюють відправки 
+        і з інших міст України залежно від наявності та категорії товару.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ГОЛОВНИЙ НИЖНІЙ ІНФО-БЛОК -->
+  <div class="ln-bottom-info">
+    <p>
+      Якщо оформити замовлення <strong>з 9:00 до 14:00 у будні</strong>,  
+      відправка буде здійснена <strong>в той же день</strong>.
+    </p>
+    <p>
+      Для уточнення строків та способів доставки  
+      зв’яжіться з нашим менеджером.
+    </p>
+  </div>
+
+</section>
+
+<section class="interior-showcase" id="interiors">
+  <h2 class="section-title">Інтер’єри з нашими товарами</h2>
+
+  <p class="interiors-subtitle">
+    Наші дизайнери створили добірку інтер’єрів, де використані матеріали Samostroy Shop.  
+    Подивіться, як виглядають наші товари у реальних проєктах.
+  </p>
+
+  <div class="interiors-grid">
+
+    <!-- Фото 1 -->
+    <div class="interior-item tall">
+      <img src="https://i.ibb.co/hJV0GSD0/1.jpg" alt="Інтер’єр 1">
+    </div>
+
+    <!-- Фото 2 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/gZnGqZPJ/2.jpg" alt="Інтер’єр 2">
+    </div>
+
+    <!-- Фото 3 -->
+    <div class="interior-item wide">
+      <img src="https://i.ibb.co/tMr3VnRW/unnamed-34.jpg" alt="Інтер’єр 3">
+    </div>
+
+    <!-- Фото 4 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/84nxy5jZ/4.jpg" alt="Інтер’єр 4">
+    </div>
+
+    <!-- Фото 5 -->
+    <div class="interior-item tall">
+      <img src="https://i.ibb.co/BHnXkCSB/5.jpg" alt="Інтер’єр 5">
+    </div>
+
+    <!-- Фото 6 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/X69hpbn/6.jpg" alt="Інтер’єр 6">
+    </div>
+
+    <!-- Фото 7 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/Wv03pMLY/7.jpg" alt="Інтер’єр 7">
+    </div>
+
+    <!-- Фото 8 -->
+    <div class="interior-item wide">
+      <img src="https://i.ibb.co/7Dpc5VX/8.jpg" alt="Інтер’єр 8">
+    </div>
+
+    <!-- Фото 9 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/y2p38nx/9.jpg" alt="Інтер’єр 9">
+    </div>
+
+    <!-- Фото 10 -->
+    <div class="interior-item tall">
+      <img src="https://i.ibb.co/HDZ8Nxng/10.jpg" alt="Інтер’єр 10">
+    </div>
+
+    <!-- Фото 11 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/0jj2hh0r/11.jpg" alt="Інтер’єр 11">
+    </div>
+
+    <!-- Фото 12 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/9RyWSxX/12.jpg" alt="Інтер’єр 12">
+    </div>
+
+  </div>
+</section>
+
+  
+   <!-- TEAMS -->
+   <section class="team-section" id="team">
+  <h2 class="section-title">Наша команда</h2>
+
+  <p class="team-intro">
+    У Samostroy Shop працює <strong>більше 20 спеціалістів</strong> —
+    як у штаті, так і на аутсорсингу.  
+    Ми — амбітна команда, яка швидко зростає та щодня працює над тим,
+    щоб ваш досвід покупки будматеріалів був простим, надійним і комфортним.
+  </p>
+
+  <div class="team-grid">
+
+    <!-- ЄВГЕНІЙ -->
+    <div class="team-card">
+      <div class="team-photo">
+        <img src="https://i.ibb.co/HLPJbkmg/unnamed-52.jpg" alt="Євгеній">
+      </div>
+      <h3 class="team-name">Євгеній</h3>
+      <p class="team-role">Засновник Samostroy Shop</p>
+      <p class="team-desc">
+        Ідейний натхненник та стратег розвитку компанії. Відповідає за якість сервісу,
+        партнерства та масштабування напрямків магазину.
+      </p>
+    </div>
+
+    <!-- НИКИТА -->
+    <div class="team-card">
+      <div class="team-photo">
+        <img src="https://i.ibb.co/pvsZHd2Z/unnamed-51.jpg" alt="Никита">
+      </div>
+      <h3 class="team-name">Никита</h3>
+      <p class="team-role">Директор відділу продажів</p>
+      <p class="team-desc">
+        Відповідає за роботу менеджерів, консультації клієнтів та побудову довгострокових
+        відносин із покупцями. Забезпечує високий рівень сервісу.
+      </p>
+    </div>
+
+    <!-- АНТОН -->
+    <div class="team-card">
+      <div class="team-photo">
+        <img src="https://i.ibb.co/ZR3z5tmV/unnamed-53.jpg" alt="Антон">
+      </div>
+      <h3 class="team-name">Антон</h3>
+      <p class="team-role">Менеджер по роботі з ключовими клієнтами</p>
+      <p class="team-desc">
+        Працює з великими замовниками, дизайнерами та оптовими партнерами.
+        Допомагає підібрати рішення саме під ваші задачі.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ДОДАТКОВИЙ ТЕКСТ ПРО КОМАНДУ -->
+  <div class="team-extra">
+    <p>
+      Нас також підтримує команда <strong>технічної підтримки</strong>,
+      <strong>контент-менеджерів</strong>,  
+      <strong>логістів</strong> та <strong>продавців-консультантів</strong>,  
+      які щодня працюють над тим, щоб замовлення оброблялися швидко,
+      а доставка була безпечною та своєчасною.
+    </p>
+  </div>
+</section>
+
 </main>
 
 <footer>
