@@ -26,7 +26,7 @@ const COURSES = [
     tag: "Продвинутий рівень",
     type: "advanced",
     cover: "https://i.ibb.co/KjWYgDhW/unnamed-12.jpg",
-    url: "course-scale-up.html",
+    url: "course-scale.html",
     lessons: 12,
     price: 5900,
     short: "Як вирости з перших продажів до стабільного обороту.",
