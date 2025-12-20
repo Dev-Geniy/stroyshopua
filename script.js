@@ -64,6 +64,94 @@ const DEFAULT_PRODUCTS = [
     short:'М’який і зносостійкий ковролін для житлових кімнат.',
     full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
   },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
+    {
+    id:1,
+    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+    price:279,
+    sku:14417,
+    img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+    unit:'м',
+    short:'М’який і зносостійкий ковролін для житлових кімнат.',
+    full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+  },
   {
     id:2,
     title:'Уценка Плівка біла матова 0.45м',
@@ -363,18 +451,6 @@ function filterProducts(){
   if(q){
     list = list.filter(p=>p.title.toLowerCase().includes(q));
   }
-
-  // ---- Цена ----
-  const min = parseFloat(document.getElementById('minPrice').value || '0');
-  const max = parseFloat(document.getElementById('maxPrice').value || '0');
-  if(min>0) list = list.filter(p=>p.price >= min);
-  if(max>0) list = list.filter(p=>p.price <= max);
-
-  // ---- Сортировка ----
-  const sort = document.getElementById('sortSelect').value;
-  if(sort === 'price-asc') list.sort((a,b)=>a.price-b.price);
-  if(sort === 'price-desc') list.sort((a,b)=>b.price-a.price);
-
   renderProducts(list);
 }
 
@@ -382,9 +458,6 @@ function filterProducts(){
    🟧 10. СОБЫТИЯ ФИЛЬТРОВ
 ============================================================ */
 document.getElementById('searchInput').addEventListener('input', filterProducts);
-document.getElementById('minPrice').addEventListener('input', filterProducts);
-document.getElementById('maxPrice').addEventListener('input', filterProducts);
-document.getElementById('sortSelect').addEventListener('change', filterProducts);
 
 /* ============================================================
    🟧 11. СОБЫТИЯ В ГРИДЕ ТОВАРОВ (делегирование)
@@ -819,31 +892,86 @@ if (scrollBtn) {
 /* ============================================================
    🟧 19. СКРОЛИНГ УЦЕНЁННЫХ ТОВАРОВ
 ============================================================ */
-const saleSlider = document.getElementById('saleSlider');
-if (saleSlider) {
-  saleSlider.addEventListener('wheel', (e) => {
+const burgerBtn = document.getElementById("burgerBtn");
+const mobileMenu = document.getElementById("mobileMenu");
+
+// Открыть / закрыть
+burgerBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  mobileMenu.classList.toggle("show");
+});
+
+// Закрытие при клике на ссылку
+document.querySelectorAll(".mobile-menu a").forEach(link => {
+  link.addEventListener("click", () => {
+    mobileMenu.classList.remove("show");
+  });
+});
+
+// Закрытие при клике вне меню
+document.addEventListener("click", (e) => {
+  if (!mobileMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+    mobileMenu.classList.remove("show");
+  }
+});
+
+// ESC
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") mobileMenu.classList.remove("show");
+});
+
+/* ========= SMOOTH SCROLL (к началу секции) ========= */
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener("click", function(e) {
+    const target = document.querySelector(this.getAttribute("href"));
+    if (!target) return;
+
     e.preventDefault();
-    saleSlider.scrollLeft += e.deltaY * 1.5;
-  }, { passive: false });
 
-  // Сенсорный свайп (touch)
-  let startX = 0;
-  let scrollLeftStart = 0;
-
-  saleSlider.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].pageX;
-    scrollLeftStart = saleSlider.scrollLeft;
+    window.scrollTo({
+      top: target.offsetTop - 110,
+      behavior: "smooth"
+    });
   });
+});
 
-  saleSlider.addEventListener('touchmove', (e) => {
-    const dx = startX - e.touches[0].pageX;
-    saleSlider.scrollLeft = scrollLeftStart + dx;
-  });
+//СЛАЙДЕР НА УЦЕНЁННЫХ ТОВАРАХ
+/* ===== SALE SLIDER ARROW CONTROLS ===== */
+const saleSlider = document.getElementById('saleSlider');
+
+document.getElementById('saleLeft').addEventListener('click', () => {
+  saleSlider.scrollBy({ left: -220, behavior: 'smooth' });
+});
+
+document.getElementById('saleRight').addEventListener('click', () => {
+  saleSlider.scrollBy({ left: 220, behavior: 'smooth' });
+});
+
+// СТАТІ
+/* ============================
+   LOAD BLOG PREVIEW
+============================ */
+async function loadBlogPreview() {
+  try {
+    const res = await fetch("blog.json");
+    const posts = await res.json();
+
+    const box = document.getElementById("homeBlogList");
+    if (!box) return;
+
+    const preview = posts.slice(0, 3); // показуємо тільки перші 3 статті
+
+    box.innerHTML = preview.map(p => `
+      <article class="home-blog-card" onclick="location.href='${p.url}'">
+        <div class="home-blog-card-title">${p.title}</div>
+        <div class="home-blog-card-desc">${p.desc}</div>
+        <div class="home-blog-card-link">Читати →</div>
+      </article>
+    `).join("");
+  } catch (e) {
+    console.warn("Блог недоступний");
+  }
 }
 
-// Клик по фото — увеличиваем / возвращаем назад
-const modalImg = document.getElementById('modalImage');
-
-modalImg.addEventListener('click', () => {
-  modalImg.classList.toggle('zoomed');
-});
+loadBlogPreview();
