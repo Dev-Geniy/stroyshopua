@@ -11,6 +11,9 @@ let filtered = [];
 let page = 1;
 const PER_PAGE = 9;
 
+// ✅ ВАЖНО: твой input в HTML называется blogSearchInput
+const SEARCH_INPUT_ID = 'blogSearchInput';
+
 function $(id){ return document.getElementById(id); }
 
 function showToast(msg){
@@ -40,7 +43,6 @@ function normalizeStr(s){
 
 /* -------- Date helpers -------- */
 function parseDate(s){
-  // ожидаем YYYY-MM-DD, но если нет — вернем null
   const v = String(s || '').trim();
   if(!/^\d{4}-\d{2}-\d{2}$/.test(v)) return null;
   const d = new Date(v + 'T00:00:00');
@@ -48,7 +50,6 @@ function parseDate(s){
 }
 
 function formatUA(d){
-  // компактно: 20.12.2025
   const dd = String(d.getDate()).padStart(2,'0');
   const mm = String(d.getMonth()+1).padStart(2,'0');
   const yy = d.getFullYear();
@@ -79,7 +80,6 @@ function formatContent(text){
     const line = rawLine.trim();
     if(!line) continue;
 
-    // Заголовок: "Щось:"
     if (/^[A-Za-zА-Яа-яЁёЇїІіЄєҐґ0-9].*:\s*$/.test(line)) {
       closeLists();
       const title = line.replace(/:\s*$/, '');
@@ -87,7 +87,6 @@ function formatContent(text){
       continue;
     }
 
-    // Маркеры
     const bullet = line.match(/^[-–•*]\s+(.+)/);
     if(bullet){
       if(!inUl){
@@ -99,7 +98,6 @@ function formatContent(text){
       continue;
     }
 
-    // Нумерация
     const num = line.match(/^(\d+)[\).\s]\s*(.+)/);
     if(num){
       if(!inOl){
@@ -132,7 +130,8 @@ function escapeHtml(s){
    ONLY SEARCH: filter + render
 ========================= */
 function applySearch(){
-  const q = normalizeStr($('searchInput')?.value);
+  const input = $(SEARCH_INPUT_ID);
+  const q = normalizeStr(input?.value);
 
   filtered = POSTS.filter(p => {
     if(!q) return true;
@@ -149,7 +148,7 @@ function applySearch(){
     return hay.includes(q);
   });
 
-  // Всегда: новые сверху (без UI сортировки)
+  // новые сверху
   filtered.sort((a,b) => {
     const da = parseDate(a.date) || new Date(0);
     const db = parseDate(b.date) || new Date(0);
@@ -171,7 +170,7 @@ function renderMeta(){
   if(!meta) return;
 
   const total = filtered.length;
-  const q = normalizeStr($('searchInput')?.value);
+  const q = normalizeStr($(SEARCH_INPUT_ID)?.value);
 
   let line = `Знайдено: ${total}`;
   if(q) line += ` • Пошук: “${q}”`;
@@ -278,10 +277,34 @@ function renderPager(){
   pager.appendChild(make('→', Math.min(pages, page + 1)));
 }
 
-/* -------- Modal -------- */
+/* =========================
+   MODAL + LOCK BODY SCROLL
+========================= */
 const postOverlay = $('postOverlay');
 const postModal = $('postModal');
 const postClose = $('postClose');
+
+let savedScrollY = 0;
+
+function lockBodyScroll(){
+  savedScrollY = window.scrollY || 0;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${savedScrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+  document.body.style.overflow = 'hidden';
+}
+
+function unlockBodyScroll(){
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  document.body.style.overflow = '';
+  window.scrollTo(0, savedScrollY);
+}
 
 function openPostModal(slug){
   const p = POSTS.find(x => x.slug === slug);
@@ -317,12 +340,16 @@ function openPostModal(slug){
   postModal.classList.remove('hidden');
   postOverlay.classList.remove('hidden');
 
+  lockBodyScroll(); // ✅ вот это убирает скролл “сзади”
+
   if(window.lucide) lucide.createIcons();
 }
 
 function closePostModal(){
   postModal.classList.add('hidden');
   postOverlay.classList.add('hidden');
+
+  unlockBodyScroll(); // ✅ возвращаем скролл страницы
 
   const url = new URL(window.location.href);
   url.hash = '';
@@ -390,8 +417,8 @@ $('randomPostBtn')?.addEventListener('click', ()=>{
   openPostModal(p.slug);
 });
 
-/* -------- Search events (ONLY) -------- */
-$('searchInput')?.addEventListener('input', ()=>{
+/* ✅ Search events (ONLY) */
+$(SEARCH_INPUT_ID)?.addEventListener('input', ()=>{
   page = 1;
   applySearch();
 });
@@ -441,9 +468,7 @@ function initHashOpen(){
 
   await loadPosts();
 
-  // initial view
-  filtered = [...POSTS];
-  filtered.sort((a,b)=>{
+  filtered = [...POSTS].sort((a,b)=>{
     const da = parseDate(a.date) || new Date(0);
     const db = parseDate(b.date) || new Date(0);
     return db - da;
@@ -455,5 +480,3 @@ function initHashOpen(){
   if(window.lucide) lucide.createIcons();
   initHashOpen();
 })();
-
-
