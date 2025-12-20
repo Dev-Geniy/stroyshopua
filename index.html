@@ -13,6 +13,8 @@
 
   <!-- Lucide (іконки, глобальна змінна lucide) -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.7.0/fonts/remixicon.css" rel="stylesheet">
+
 
   <!-- Наш JS -->
   <script src="script.js" defer></script>
@@ -92,26 +94,60 @@
   </div>
  </div>
   <div class="header-center">
-    <div class="search-bar">
-      <i data-lucide="search"></i>
-      <input id="searchInput" placeholder="Пошук: ковролін, плитка, шпалери..." />
-    </div>
   </div>
 
   <div class="header-right">
+
+<!-- ======== BURGER BUTTON (в хедере) ======== -->
+<button class="burger-btn" id="burgerBtn">
+  <i data-lucide="menu"></i>
+</button>
+
     <button class="btn btn-outline js-consult">
       <i data-lucide="message-circle"></i>
       Консультація
     </button>
+
     <button class="btn cart-btn" id="openCartBtn">
       <i data-lucide="shopping-cart"></i>
       <span>Кошик</span>
       <span class="cart-count" id="cartCount">0</span>
     </button>
-  </div>
+</div>
+
 </header>
+<!-- ======== TOP NAV (ПК версия) ======== -->
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a href="#productsSection">Каталог</a>
+    <a href="#howToOrder">Як замовити</a>
+    <a href="#supplierWarehouses">Логістика</a>
+    <a href="#team">Команда</a>
+    <a href="#interiors">Інтер’єри</a>
+    <a href="opt.html">Оптовикам</a>
+    <a href="dropshipping.html">Дропшиперам</a>
+    <a href="#footer">Карта сайту</a>
+    <a href="partners.html">Співпраця</a>
+    <a href="blog.html">Блог</a>
+  </div>
+</nav>
+
+<!-- ======== MOBILE MENU ======== -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#productsSection">Каталог</a>
+  <a href="#howToOrder">Як замовити</a>
+  <a href="#supplierWarehouses">Логістика</a>
+  <a href="#team">Команда</a>
+  <a href="#interiors">Інтер’єри</a>
+  <a href="opt.html">Оптовикам</a>
+  <a href="dropshipping.html">Дропшиперам</a>
+  <a href="#footer">Карта сайту</a>
+  <a href="partners.html">Співпраця</a>
+  <a href="blog.html">Блог</a>
+</div>
 
 <main>
+  
 <div id="loader" class="loader">
   
   <div class="loader-logo-box">
@@ -194,37 +230,38 @@
     </div>
   </section>
 
-  
-  <section class="sale-section">
-    <h2 class="section-title">Акція товари з уцінкою:</h2>
-    <div class="sale-slider" id="saleSlider"></div>
-  </section>
+<section class="sale-section">
+  <h2 class="section-title">Акція товари з уцінкою:</h2>
+
+  <!-- ЛЕВА СТРІЛКА -->
+  <button class="sale-arrow sale-arrow-left" id="saleLeft">
+    <i data-lucide="chevron-left"></i>
+  </button>
+
+  <!-- СЛАЙДЕР -->
+  <div class="sale-slider" id="saleSlider"></div>
+
+  <!-- ПРАВА СТРІЛКА -->
+  <button class="sale-arrow sale-arrow-right" id="saleRight">
+    <i data-lucide="chevron-right"></i>
+  </button>
+</section>
+
 
   <!-- FILTERS -->
-  <section class="filters">
+<section class="filters">
     <div class="filters-left">
       <span class="filters-label">Категорії:</span>
-      <div class="categories" id="categories">
-        <!-- Кнопки категорий JS добавит сюда -->
-      </div>
+      <div class="categories" id="categories"></div>
     </div>
 
-    <div class="filters-right">
-      <div class="filters-price-box">
-        <span class="filters-label">Ціна:</span>
-        <input type="number" id="minPrice" placeholder="від">
-        <input type="number" id="maxPrice" placeholder="до">
-      </div>
-      <div class="filters-sort-box">
-        <span class="filters-label">Сортування:</span>
-        <select id="sortSelect">
-          <option value="default">За замовчуванням</option>
-          <option value="price-asc">Спочатку дешевші</option>
-          <option value="price-desc">Спочатку дорожчі</option>
-        </select>
-      </div>
+    <div class="filters-right" style="flex:1;">
+        <div class="search-bar" style="max-width:100%;">
+            <i data-lucide="search"></i>
+            <input id="searchInput" placeholder="Пошук товарів..." />
+        </div>
     </div>
-  </section>
+</section>
 
   <!-- PRODUCTS -->
   <section class="products-section" id="productsSection">
@@ -332,83 +369,8 @@
       зв’яжіться з нашим менеджером.
     </p>
   </div>
-
 </section>
 
-<section class="interior-showcase" id="interiors">
-  <h2 class="section-title">Інтер’єри з нашими товарами</h2>
-
-  <p class="interiors-subtitle">
-    Наші дизайнери створили добірку інтер’єрів, де використані матеріали Samostroy Shop.  
-    Подивіться, як виглядають наші товари у реальних проєктах.
-  </p>
-
-  <div class="interiors-grid">
-
-    <!-- Фото 1 -->
-    <div class="interior-item tall">
-      <img src="https://i.ibb.co/hJV0GSD0/1.jpg" alt="Інтер’єр 1">
-    </div>
-
-    <!-- Фото 2 -->
-    <div class="interior-item">
-      <img src="https://i.ibb.co/gZnGqZPJ/2.jpg" alt="Інтер’єр 2">
-    </div>
-
-    <!-- Фото 3 -->
-    <div class="interior-item wide">
-      <img src="https://i.ibb.co/tMr3VnRW/unnamed-34.jpg" alt="Інтер’єр 3">
-    </div>
-
-    <!-- Фото 4 -->
-    <div class="interior-item">
-      <img src="https://i.ibb.co/84nxy5jZ/4.jpg" alt="Інтер’єр 4">
-    </div>
-
-    <!-- Фото 5 -->
-    <div class="interior-item tall">
-      <img src="https://i.ibb.co/BHnXkCSB/5.jpg" alt="Інтер’єр 5">
-    </div>
-
-    <!-- Фото 6 -->
-    <div class="interior-item">
-      <img src="https://i.ibb.co/X69hpbn/6.jpg" alt="Інтер’єр 6">
-    </div>
-
-    <!-- Фото 7 -->
-    <div class="interior-item">
-      <img src="https://i.ibb.co/Wv03pMLY/7.jpg" alt="Інтер’єр 7">
-    </div>
-
-    <!-- Фото 8 -->
-    <div class="interior-item wide">
-      <img src="https://i.ibb.co/7Dpc5VX/8.jpg" alt="Інтер’єр 8">
-    </div>
-
-    <!-- Фото 9 -->
-    <div class="interior-item">
-      <img src="https://i.ibb.co/y2p38nx/9.jpg" alt="Інтер’єр 9">
-    </div>
-
-    <!-- Фото 10 -->
-    <div class="interior-item tall">
-      <img src="https://i.ibb.co/HDZ8Nxng/10.jpg" alt="Інтер’єр 10">
-    </div>
-
-    <!-- Фото 11 -->
-    <div class="interior-item">
-      <img src="https://i.ibb.co/0jj2hh0r/11.jpg" alt="Інтер’єр 11">
-    </div>
-
-    <!-- Фото 12 -->
-    <div class="interior-item">
-      <img src="https://i.ibb.co/9RyWSxX/12.jpg" alt="Інтер’єр 12">
-    </div>
-
-  </div>
-</section>
-
-  
    <!-- TEAMS -->
    <section class="team-section" id="team">
   <h2 class="section-title">Наша команда</h2>
@@ -474,14 +436,134 @@
     </p>
   </div>
 </section>
+  
+<section class="interior-showcase" id="interiors">
+  <h2 class="section-title">Інтер’єри з нашими товарами</h2>
 
+  <p class="interiors-subtitle">
+    Наші дизайнери створили добірку інтер’єрів за допомогою ші, де використані матеріали Samostroy Shop.  
+    Подивіться, як виглядають наші товари у реальних проєктах.
+  </p>
+
+  <div class="interiors-grid">
+
+    <!-- Фото 1 -->
+    <div class="interior-item tall">
+      <img src="https://i.ibb.co/hJV0GSD0/1.jpg" alt="Інтер’єр 1">
+    </div>
+
+    <!-- Фото 2 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/gZnGqZPJ/2.jpg" alt="Інтер’єр 2">
+    </div>
+
+    <!-- Фото 3 -->
+    <div class="interior-item wide">
+      <img src="https://i.ibb.co/tMr3VnRW/unnamed-34.jpg" alt="Інтер’єр 3">
+    </div>
+
+    <!-- Фото 4 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/84nxy5jZ/4.jpg" alt="Інтер’єр 4">
+    </div>
+
+    <!-- Фото 5 -->
+    <div class="interior-item tall">
+      <img src="https://i.ibb.co/BHnXkCSB/5.jpg" alt="Інтер’єр 5">
+    </div>
+
+    <!-- Фото 6 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/X69hpbn/6.jpg" alt="Інтер’єр 6">
+    </div>
+
+    <!-- Фото 7 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/Wv03pMLY/7.jpg" alt="Інтер’єр 7">
+    </div>
+
+    <!-- Фото 8 -->
+    <div class="interior-item wide">
+      <img src="https://i.ibb.co/7Dpc5VX/8.jpg" alt="Інтер’єр 8">
+    </div>
+
+    <!-- Фото 9 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/y2p38nx/9.jpg" alt="Інтер’єр 9">
+    </div>
+
+    <!-- Фото 10 -->
+    <div class="interior-item tall">
+      <img src="https://i.ibb.co/HDZ8Nxng/10.jpg" alt="Інтер’єр 10">
+    </div>
+
+    <!-- Фото 11 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/0jj2hh0r/11.jpg" alt="Інтер’єр 11">
+    </div>
+
+    <!-- Фото 12 -->
+    <div class="interior-item">
+      <img src="https://i.ibb.co/9RyWSxX/12.jpg" alt="Інтер’єр 12">
+    </div>
+  </div>
+  
+  <div class="interiors-back-btn">
+<a href="#categories" class="btn-to-categories pulse-btn">
+    <i data-lucide="arrow-up-circle"></i>
+    Повернутися до категорій
+</a>
+</div>
+</section>
+  
+  <section class="home-blog">
+  <h2 class="home-blog-title">Корисні статті</h2>
+
+  <p class="home-blog-subtitle">
+    Поради з ремонту, вибору матеріалів та лайфхаки від команди Samostroy Shop.
+  </p>
+
+  <div class="home-blog-list" id="homeBlogList">
+    <!-- Сюди JS підставить 3 статті -->
+  </div>
+
+  <div class="home-blog-btn-wrap">
+    <a href="blog.html" class="btn-to-blog">
+      <i class="ri-book-open-line"></i>
+      Переглянути всі статті
+    </a>
+  </div>
+</section>
+
+  
 </main>
 
-<footer>
+<footer id="footer">
   <div class="footer-col footer-brand">
     <div class="footer-logo">Samostroy Shop</div>
     <p>Інтернет-магазин будівельних матеріалів. Підбір, консультація та відправка по всій Україні.</p>
     <div class="footer-copy">© <span id="year"></span> Stroy Shop. Всі права захищені.</div>
+     <div class="share-icons">
+
+    <a class="share-icon"
+       href="https://www.facebook.com/sharer/sharer.php?u=https://samostroy.shop"
+       target="_blank">
+       <i class="ri-facebook-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://api.whatsapp.com/send?text=Рекомендую%20Samostroy%20Shop:%20https://samostroy.shop"
+       target="_blank">
+       <i class="ri-whatsapp-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://t.me/share/url?url=https://samostroy.shop&text=Samostroy%20Shop%20—%20будматеріали%20з%20доставкою"
+       target="_blank">
+       <i class="ri-telegram-fill"></i>
+    </a>
+
+  </div>
   </div>
   
   <div class="footer-col footer-nav-col">
