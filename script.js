@@ -977,28 +977,24 @@ loadBlogPreview();
 
 
 // =========================
-// НОВОГОДНИЙ СТИЛЬ
+// NEWYEAR START (REMOVE LATER)
 // =========================
 (function(){
   // Сезон каждый год: 15 Dec - 15 Jan (включительно)
   function isNewYearSeason(d){
     const m = d.getMonth(); // 0=Jan ... 11=Dec
     const day = d.getDate();
-    const inDec = (m === 11 && day >= 15);
-    const inJan = (m === 0 && day <= 15);
-    return inDec || inJan;
+    return (m === 11 && day >= 15) || (m === 0 && day <= 15);
   }
 
   const now = new Date();
-
   if(!isNewYearSeason(now)){
     document.documentElement.classList.remove("ny");
     return;
   }
   document.documentElement.classList.add("ny");
 
-  // Год возле названия:
-  // декабрь => следующий год, январь => текущий
+  // Год у логотипа: декабрь -> следующий год, январь -> текущий
   const nyYear = (now.getMonth() === 11) ? (now.getFullYear() + 1) : now.getFullYear();
   const logo = document.querySelector(".ac-logo");
   if(logo) logo.setAttribute("data-ny-year", String(nyYear));
@@ -1024,13 +1020,13 @@ loadBlogPreview();
     `;
   }
 
-  // ===== Гирлянда =====
+  // ============ ГИРЛЯНДА ============
   const garland = document.querySelector(".ny-garland");
   if(garland && !garland.querySelector(".ny-garland-row")){
     const row = document.createElement("div");
     row.className = "ny-garland-row";
 
-    const colors = ["#ff4e6d", "#5ce3a0", "#38bdf8", "#ffb347", "#a855f7", "#f97316", "#ffffff"];
+    const colors = ["#ff4e6d","#5ce3a0","#38bdf8","#ffb347","#a855f7","#f97316","#ffffff"];
     const isMobile = window.matchMedia("(max-width: 640px)").matches;
     const count = isMobile ? 14 : 22;
 
@@ -1038,23 +1034,18 @@ loadBlogPreview();
       const b = document.createElement("div");
       b.className = "ny-bulb";
 
-      // тип мерцания
       const r = Math.random();
-      if(r < 0.28) b.classList.add("ny-fast");
-      else if(r < 0.62) b.classList.add("ny-slow");
+      if(r < 0.30) b.classList.add("ny-fast");
+      else if(r < 0.65) b.classList.add("ny-slow");
 
-      // “живые” отклонения + чуть выше
       b.style.setProperty("--ny-drop", `${Math.round((Math.random()*6)-3)}px`);
       b.style.setProperty("--ny-rot", `${Math.round((Math.random()*10)-5)}deg`);
-
-      // скорости
-      b.style.setProperty("--ny-wave", `${(2.7 + Math.random()*2.4).toFixed(2)}s`);
+      b.style.setProperty("--ny-wave", `${(2.8 + Math.random()*2.0).toFixed(2)}s`);
       b.style.setProperty("--ny-blink", `${(0.9 + Math.random()*3.0).toFixed(2)}s`);
 
-      // цвет + задержка волны
       const c = colors[i % colors.length];
       b.style.setProperty("--ny-c", c);
-      b.style.animationDelay = `${(i * 0.12 + Math.random()*0.25).toFixed(2)}s`;
+      b.style.animationDelay = `${(i*0.10 + Math.random()*0.25).toFixed(2)}s`;
 
       b.innerHTML = bulbSVG();
       row.appendChild(b);
@@ -1062,62 +1053,46 @@ loadBlogPreview();
 
     garland.appendChild(row);
 
-    // мягкое “живое” обновление цветов частично
-    setInterval(() => {
-      const bulbs = row.querySelectorAll(".ny-bulb");
-      bulbs.forEach((el, idx) => {
-        if(Math.random() < 0.28){
-          const c = colors[(idx + Math.floor(Math.random()*colors.length)) % colors.length];
-          el.style.setProperty("--ny-c", c);
-        }
-      });
-    }, 1400);
-
-    // клик по любой лампочке => всем рандомные цвета
+    // Клик по любой лампочке => всем рандомные цвета (без setInterval, чтобы не грузить)
     row.addEventListener("click", (e) => {
       const bulb = e.target.closest(".ny-bulb");
       if(!bulb) return;
 
       const bulbs = row.querySelectorAll(".ny-bulb");
       bulbs.forEach((el) => {
-        const c = colors[Math.floor(Math.random() * colors.length)];
-        el.style.setProperty("--ny-c", c);
-
-        // небольшой “переключатель”: меняем темп
-        el.style.setProperty("--ny-wave", `${(2.6 + Math.random()*2.4).toFixed(2)}s`);
+        el.style.setProperty("--ny-c", colors[Math.floor(Math.random() * colors.length)]);
+        el.style.setProperty("--ny-wave", `${(2.6 + Math.random()*2.2).toFixed(2)}s`);
         el.style.setProperty("--ny-blink", `${(0.9 + Math.random()*3.2).toFixed(2)}s`);
       });
     });
   }
 
-  // ===== Снежинки (в 2 раза меньше и прозрачнее) =====
+  // ============ СНЕГ ============
   const snow = document.querySelector(".ny-snow");
   if(snow && !snow.querySelector(".ny-flake")){
     const isMobile = window.matchMedia("(max-width: 640px)").matches;
 
-    // В 2 раза меньше
-    const flakesCount = isMobile ? 9 : 17;
+    // ультра-лайт: минимум элементов
+    const flakesCount = isMobile ? 5 : 9;
 
-    function spawnFlake(){
+    for(let i=0;i<flakesCount;i++){
       const f = document.createElement("div");
       f.className = "ny-flake";
-      f.innerHTML = snowflakeSVG();
+
+      // внутренний слой для sway (дешево)
+      f.innerHTML = `<div class="ny-flake-inner">${snowflakeSVG()}</div>`;
 
       const left = Math.random() * 100;
-      const size = (isMobile ? 10 : 12) + Math.random() * (isMobile ? 10 : 16);
+      const size = (isMobile ? 10 : 12) + Math.random() * (isMobile ? 8 : 12);
+      const op = 0.16 + Math.random() * 0.16; // ещё прозрачнее
+      const dur = (isMobile ? 11 : 12) + Math.random() * (isMobile ? 8 : 12);
+      const sway = 10 + Math.random() * 18;
+      const swayDur = 3.6 + Math.random() * 3.6;
 
-      // прозрачнее (макс ~0.40)
-      const op = 0.18 + Math.random() * 0.22;
-
-      const dur = (isMobile ? 9 : 10) + Math.random() * (isMobile ? 8 : 12);
-
-      const sway = 10 + Math.random() * 22;
-      const swayDur = 3.2 + Math.random() * 3.6;
-
-      const x = (Math.random() * 40) - 20;
-      const x2 = x + ((Math.random() * 70) - 35);
-
-      const r2 = (Math.random() < 0.5 ? 360 : 540) + Math.round(Math.random()*360);
+      // дрейф по x (не “по прямой”)
+      const x = (Math.random() * 30) - 15;
+      const x2 = x + ((Math.random() * 50) - 25);
+      const r2 = 360 + Math.round(Math.random()*360);
 
       f.style.left = `${left}%`;
       f.style.setProperty("--ny-size", `${size.toFixed(1)}px`);
@@ -1129,24 +1104,14 @@ loadBlogPreview();
       f.style.setProperty("--ny-x2", `${x2.toFixed(1)}px`);
       f.style.setProperty("--ny-r2", `${r2}deg`);
 
+      // разнесём старт, чтобы не “пачкой”
       const delay = Math.random() * (isMobile ? 4 : 6);
-      f.style.animationDelay = `${delay.toFixed(2)}s, ${(Math.random()*1.8).toFixed(2)}s`;
-
-      f.addEventListener("animationiteration", () => {
-        const newLeft = Math.random() * 100;
-        const newX = (Math.random() * 40) - 20;
-        const newX2 = newX + ((Math.random() * 70) - 35);
-        f.style.left = `${newLeft}%`;
-        f.style.setProperty("--ny-x", `${newX.toFixed(1)}px`);
-        f.style.setProperty("--ny-x2", `${newX2.toFixed(1)}px`);
-      });
+      f.style.animationDelay = `${delay.toFixed(2)}s`;
 
       snow.appendChild(f);
     }
-
-    for(let i=0;i<flakesCount;i++) spawnFlake();
   }
 })();
 // =========================
-// НОВОГОДНИЙ СТИЛЬ (КОНЕЦ)
+// NEWYEAR END (REMOVE LATER)
 // =========================
