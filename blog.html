@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+  <title>Блог — Samostroy Shop | Поради, інструкції, огляди</title>
+  <meta name="description" content="Корисні статті про ремонт, вибір матеріалів, самоклейки, плитки, шпалер та лайфхаки від Samostroy Shop." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://samostroy.shop/blog.html" />
+
+  <!-- OG -->
+  <meta property="og:title" content="Блог — Samostroy Shop" />
+  <meta property="og:description" content="Поради, інструкції та огляди матеріалів для ремонту." />
+  <meta property="og:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png" />
+  <meta property="og:url" content="https://samostroy.shop/blog.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="uk_UA" />
+
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Remixicon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.7.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="blog.css" />
+
+  <!-- JS -->
+  <script src="blog.js" defer></script>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body id="top">
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-wrapper">
+      <div class="logo-avatar">
+        <img src="https://i.ibb.co/PZGTwyqp/unnamed.jpg" alt="logo">
+      </div>
+      <div>
+        <div class="logo">Samostroy Shop</div>
+        <div class="logo-sub">Блог: поради та інструкції</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-center"></div>
+
+  <div class="header-right">
+    <!-- Burger -->
+    <button class="burger-btn" id="burgerBtn">
+      <i data-lucide="menu"></i>
+    </button>
+
+    <a class="btn btn-outline" href="index.html">
+      <i data-lucide="store"></i> Магазин
+    </a>
+
+    <button class="btn btn-primary js-consult">
+      <i data-lucide="message-circle"></i> Консультація
+    </button>
+  </div>
+</header>
+<!-- ======== TOP NAV (ПК версия) ======== -->
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <a href="index.html#productsSection">Каталог</a>
+    <a href="index.html#howToOrder">Як замовити</a>
+    <a href="index.html#supplierWarehouses">Логістика</a>
+    <a href="index.html#team">Команда</a>
+    <a href="index.html#interiors">Інтер’єри</a>
+    <a href="opt.html">Оптовикам</a>
+    <a href="dropshipping.html">Дропшиперам</a>
+    <a href="#footer">Карта сайту</a>
+    <a href="partners.html">Співпраця</a>
+    <a href="#blogTop" class="active">Блог</a>
+  </div>
+</nav>
+
+<!-- ======== MOBILE MENU ======== -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#productsSection">Каталог</a>
+  <a href="index.html#howToOrder">Як замовити</a>
+  <a href="index.html#supplierWarehouses">Логістика</a>
+  <a href="index.html#team">Команда</a>
+  <a href="index.html#interiors">Інтер’єри</a>
+  <a href="opt.html">Оптовикам</a>
+  <a href="dropshipping.html">Дропшиперам</a>
+  <a href="#footer">Карта сайту</a>
+  <a href="partners.html">Співпраця</a>
+  <a href="blog.html">Блог</a>
+</div>
+
+<main>
+
+<!-- LOADER -->
+<div id="loader" class="loader">
+  <div class="loader-logo-box">
+    <img src="https://i.ibb.co/CsWcwkpc/unnamed.jpg" alt="logo" class="loader-logo">
+    <div class="loader-title">Samostroy Blog</div>
+    <div class="loader-subtitle">Завантажуємо статті…</div>
+  </div>
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Будь ласка, зачекайте</div>
+</div>
+
+<main id="blogTop">
+
+  <!-- HERO -->
+  <section class="blog-hero">
+    <div class="blog-hero-card">
+      <div class="blog-hero-badge">
+        <i class="ri-book-open-line"></i>
+        Корисні статті
+      </div>
+      <h1>Блог Samostroy Shop</h1>
+      <p>
+        Лайфхаки ремонту, поради по вибору матеріалів, інструкції по самоклейці, плитці, шпалерах та інше.
+        Просто. Практично. Без води.
+      </p>
+
+      <div class="blog-hero-actions">
+        <a class="btn btn-primary" href="#postsSection">
+          <i data-lucide="arrow-down"></i> До статей
+        </a>
+        <button class="btn btn-outline" id="randomPostBtn">
+          <i data-lucide="sparkles"></i> Випадкова стаття
+        </button>
+      </div>
+    </div>
+
+    <div class="blog-hero-side">
+      <div class="hero-info-row">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <div class="hero-info-title">Практичні поради</div>
+          <div class="hero-info-text">Пишемо так, щоб можна було повторити крок-за-кроком</div>
+        </div>
+      </div>
+      <div class="hero-info-row">
+        <i data-lucide="search"></i>
+        <div>
+          <div class="hero-info-title">Зручний пошук</div>
+          <div class="hero-info-text">Знаходь статтю за 2 секунди</div>
+        </div>
+      </div>
+      <div class="hero-info-row">
+        <i data-lucide="message-circle"></i>
+        <div>
+          <div class="hero-info-title">Підбір під задачу</div>
+          <div class="hero-info-text">Якщо не впевнений — менеджер підкаже</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- BLOG SEARCH -->
+<section class="blog-search">
+  <div class="search-bar blog-search-bar">
+    <i data-lucide="search"></i>
+    <input
+      type="text"
+      id="blogSearchInput"
+      placeholder="Пошук по статтях..."
+    />
+  </div>
+</section>
+
+  <!-- POSTS -->
+  <section class="posts-section" id="postsSection">
+    <div class="section-head">
+      <h2 class="section-title">Статті</h2>
+      <div class="section-meta" id="resultsMeta">Завантаження…</div>
+    </div>
+
+    <div class="posts-grid" id="postsGrid"></div>
+
+    <div class="pager" id="pager"></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="blog-cta">
+    <div class="blog-cta-card">
+      <h3>Потрібна допомога з підбором матеріалів?</h3>
+      <p>Напиши менеджеру — підкажемо, що краще підійде під твою задачу та бюджет.</p>
+      <button class="btn btn-primary js-consult">
+        <i data-lucide="send"></i> Написати в Telegram
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer">
+  <div class="footer-col footer-brand">
+    <div class="footer-logo">Samostroy Shop</div>
+    <p>Інтернет-магазин будівельних матеріалів. Підбір, консультація та відправка по всій Україні.</p>
+    <div class="footer-copy">© <span id="year"></span> Stroy Shop. Всі права захищені.</div>
+     <div class="share-icons">
+
+    <a class="share-icon"
+       href="https://www.facebook.com/sharer/sharer.php?u=https://samostroy.shop"
+       target="_blank">
+       <i class="ri-facebook-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://api.whatsapp.com/send?text=Рекомендую%20Samostroy%20Shop:%20https://samostroy.shop"
+       target="_blank">
+       <i class="ri-whatsapp-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://t.me/share/url?url=https://samostroy.shop&text=Samostroy%20Shop%20—%20будматеріали%20з%20доставкою"
+       target="_blank">
+       <i class="ri-telegram-fill"></i>
+    </a>
+
+  </div>
+  </div>
+  
+  <div class="footer-col footer-nav-col">
+    <div class="footer-title">Навігація</div>
+    <nav class="footer-nav">
+      <a href="index.html#productsSection">Каталог</a>
+      <a href="index.html#howToOrder">Як замовити</a>
+      <a href="index.html#top">Акції та знижки</a>
+      <a href="index.html#saleSlider">Уцінені товари</a>
+    </nav>
+
+  </div>
+
+  <div class="footer-col footer-coop">
+    <div class="footer-title">Співпраця</div>
+
+      <nav class="footer-nav">
+        <a href="opt.html">Оптовим клієнтам</a>
+        <a href="dropshipping.html">Дропшиперам</a>
+        <a href="academy.html">Академія дропшипінгу</a>
+        <a href="partners.html">Партнерська програма</a>
+        <a href="jobs.html">Робота та вакансії</a>
+    </nav>
+  </div>
+
+  <div class="footer-col footer-coop">
+    <div class="footer-title">Каталоги</div>
+
+      <nav class="footer-nav">
+        <a href="pazl-pidloga.html">Пазл-підлога</a>
+        <a href="kylimky.html">Килимки для підлоги</a>
+        <a href="mebli.html">Меблеві рішення</a>
+        <a href="vinil.html">Вінілові покриття</a>
+        <a href="dzerkala.html">Дзеркала</a>
+        <a href="ekoshkira.html">Екошкіра</a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+    </nav>
+  </div>
+  
+  <div class="footer-col footer-contacts">
+    <div class="footer-title">Контакти</div>
+    <a href="https://t.me/samostroy_shop" target="_blank" class="footer-link">
+      <i data-lucide="send"></i> Telegram-канал
+    </a>
+    <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" class="footer-link">
+      <i data-lucide="play-circle"></i> TikTok: @samostroy_shop
+    </a>
+    <a href="tel:+380984927948" class="footer-phone">
+      <i data-lucide="phone"></i> +380&nbsp;98&nbsp;492&nbsp;79&nbsp;48
+    </a>
+  </div>
+
+  <div class="footer-col">
+  <div class="footer-title">Доставка</div>
+
+  <div class="delivery-footer-item">
+    <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="">
+    <span>Нова Пошта — оплата при отриманні або передплата</span>
+  </div>
+
+  <div class="delivery-footer-item">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="">
+    <span>Укрпошта — оплата при отриманні або передплата</span>
+  </div>
+</div>
+  
+  <div class="footer-col footer-manager">
+    <div class="footer-title">Ваш менеджер</div>
+    <div class="footer-manager-box">
+      <div class="footer-manager-avatar">
+        <img src="https://i.ibb.co/xSSb5csr/unnamedda.jpg" alt="Менеджер магазину">
+      </div>
+      <div>
+        <div class="footer-manager-name">Менеджер Samostroy Shop</div>
+        <a href="https://t.me/manager_samostroy_shop" target="_blank" class="footer-link">
+          <i data-lucide="message-circle"></i> Написати в Telegram
+        </a>
+      </div>
+    </div>
+  </div>
+  
+</footer>
+
+<!-- POST MODAL -->
+<div id="postOverlay" class="modal-overlay hidden"></div>
+<div id="postModal" class="modal hidden">
+  <div class="modal-header">
+    <h3 id="postModalTop">Стаття</h3>
+    <button class="modal-close" id="postClose"><i data-lucide="x"></i></button>
+  </div>
+
+  <div class="modal-body post-modal-body">
+    <div class="post-modal-cover">
+      <img id="postCover" src="" alt="">
+    </div>
+
+    <div class="modal-info">
+      <div class="filters-label" id="postCategory"></div>
+      <h2 id="postTitle"></h2>
+
+      <div class="post-meta-row" id="postMeta"></div>
+
+      <div class="post-excerpt" id="postExcerpt"></div>
+
+      <div class="post-content" id="postContent"></div>
+
+      <div class="post-actions">
+        <button class="btn btn-outline" id="copyLinkBtn">
+          <i data-lucide="link"></i> Скопіювати посилання
+        </button>
+        <button class="btn btn-primary js-consult">
+          <i data-lucide="message-circle"></i> Підібрати матеріали
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast">Повідомлення</div>
+
+</body>
+</html>
