@@ -1939,3 +1939,207 @@ footer{
   transform: translateY(-4px);
   box-shadow: 0 14px 38px rgba(0,0,0,0.85);
 }
+
+/* --------- НГ --------- */
+/* 🎄 + год возле названия (год подставит JS в data-ny-year) */
+html.ny .ac-logo{
+  position:relative;
+}
+html.ny .ac-logo::after{
+  content: " 🎄 " attr(data-ny-year);
+  display:inline-block;
+  margin-left:10px;
+  font-size:12px;
+  font-weight:900;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.04);
+  color:var(--accent2);
+  vertical-align:middle;
+}
+
+/* ===== ГИРЛЯНДА (лампочки сверху) ===== */
+.ny-garland{
+  position:fixed;
+  left:0; right:0; top:0;
+  height:44px;             /* меньше и выше */
+  z-index:55;
+  pointer-events:auto;     /* клики по лампочкам */
+  display:none;
+}
+html.ny .ny-garland{ display:block; }
+
+/* УБРАНО: горизонтальная верёвка полностью */
+/* .ny-garland::before — не используем */
+
+.ny-garland-row{
+  position:absolute;
+  left:0; right:0; top:0;
+  height:44px;
+  display:flex;
+  justify-content:space-evenly;
+  align-items:flex-start;
+  padding:0 12px 0;
+  gap:10px;
+}
+
+/* лампочка (контейнер НЕ переворачиваем, чтобы подвес был сверху) */
+.ny-bulb{
+  position:relative;
+  width:20px;              /* меньше */
+  height:20px;             /* меньше */
+  transform:
+    translateY(var(--ny-drop, -2px))   /* чуть выше */
+    rotate(var(--ny-rot, 0deg));
+  opacity:.95;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+
+  filter:
+    drop-shadow(0 0 10px rgba(255,255,255,.06))
+    drop-shadow(0 0 18px color-mix(in srgb, var(--ny-c) 55%, transparent));
+}
+
+/* подвес (верёвочка) сверху — теперь всегда сверху */
+.ny-bulb::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-11px;
+  width:2px;
+  height:11px;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,.16);
+  border-radius: 2px;
+  pointer-events:none;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,.45));
+}
+
+.ny-bulb svg{
+  width:100%;
+  height:100%;
+  display:block;
+
+  /* переворачиваем ТОЛЬКО лампочку */
+  transform: rotate(180deg);
+  transform-origin:center;
+}
+
+/* обводка + свечение */
+.ny-bulb .ny-stroke{
+  stroke: var(--ny-c);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--ny-c) 70%, transparent));
+}
+
+/* внутренняя “линза” */
+.ny-bulb .ny-glass{
+  fill: color-mix(in srgb, var(--ny-c) 18%, transparent);
+  opacity: .9;
+}
+
+/* Разные типы мерцания */
+@keyframes nyBlinkFast{
+  0%, 100% { opacity:.18; filter: drop-shadow(0 0 0 transparent); }
+  35% { opacity:1; }
+  60% { opacity:.35; }
+}
+@keyframes nyBlinkSlow{
+  0% { opacity:.25; }
+  35% { opacity:1; }
+  75% { opacity:.55; }
+  100% { opacity:.25; }
+}
+
+/* “волна” яркости */
+@keyframes nyWave{
+  0%   { transform: translateY(var(--ny-drop,-2px)) rotate(var(--ny-rot,0deg)) scale(.96); opacity:.35; }
+  35%  { transform: translateY(calc(var(--ny-drop,-2px) + 1px)) rotate(var(--ny-rot,0deg)) scale(1.04); opacity:1; }
+  100% { transform: translateY(var(--ny-drop,-2px)) rotate(var(--ny-rot,0deg)) scale(.96); opacity:.35; }
+}
+
+.ny-bulb{
+  animation: nyWave var(--ny-wave, 3.6s) ease-in-out infinite;
+}
+.ny-bulb.ny-fast{
+  animation:
+    nyWave var(--ny-wave, 3.2s) ease-in-out infinite,
+    nyBlinkFast var(--ny-blink, 1.2s) steps(2, end) infinite;
+}
+.ny-bulb.ny-slow{
+  animation:
+    nyWave var(--ny-wave, 4.4s) ease-in-out infinite,
+    nyBlinkSlow var(--ny-blink, 2.8s) ease-in-out infinite;
+}
+
+/* ===== СНЕЖИНКИ (SVG) ===== */
+.ny-snow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:40;
+  display:none;
+}
+html.ny .ny-snow{ display:block; }
+
+.ny-flake{
+  position:absolute;
+  top:-12vh;
+  left:0;
+  width: var(--ny-size, 16px);
+  height: var(--ny-size, 16px);
+
+  /* прозрачнее, чтобы не перекрывать контент */
+  opacity: var(--ny-op, .40);
+
+  filter:
+    drop-shadow(0 0 10px rgba(255,255,255,.06))
+    drop-shadow(0 0 14px rgba(255,255,255,.05));
+  transform: translate3d(0,0,0) rotate(0deg);
+  will-change: transform;
+}
+
+.ny-flake svg{ width:100%; height:100%; display:block; }
+.ny-flake path{
+  stroke: rgba(255,255,255,.90);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* падение + “шатание” (как листья) */
+@keyframes nyFall{
+  from { transform: translate3d(var(--ny-x,0px), -12vh, 0) rotate(0deg); }
+  to   { transform: translate3d(var(--ny-x2,0px), 112vh, 0) rotate(var(--ny-r2, 540deg)); }
+}
+@keyframes nySway{
+  0%   { margin-left: 0px; }
+  25%  { margin-left: calc(var(--ny-sway, 18px) * 1); }
+  50%  { margin-left: calc(var(--ny-sway, 18px) * -1); }
+  75%  { margin-left: calc(var(--ny-sway, 18px) * .7); }
+  100% { margin-left: 0px; }
+}
+
+.ny-flake{
+  animation:
+    nyFall var(--ny-dur, 12s) linear infinite,
+    nySway var(--ny-sway-dur, 4.6s) ease-in-out infinite;
+}
+
+/* мобильная оптимизация */
+@media (max-width:640px){
+  .ny-bulb{ width:18px; height:18px; }
+  .ny-garland{ height:40px; }
+  .ny-garland-row{ height:40px; }
+}
+
+/* =========================
+   NEWYEAR END (REMOVE LATER)
+   ========================= */
+
