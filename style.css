@@ -2142,4 +2142,49 @@ html.ny .ny-snow{ display:block; }
 /* =========================
    NEWYEAR END (REMOVE LATER)
    ========================= */
+/* ===== TEAM: HIRING CARD ===== */
+.team-card.team-hiring{
+  border:1px dashed rgba(255,255,255,0.22);
+  background: linear-gradient(180deg, rgba(255,122,26,0.10), rgba(17,19,28,0.65));
+  position: relative;
+  overflow:hidden;
+}
 
+.team-card.team-hiring::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background: radial-gradient(circle at 30% 10%, rgba(255,122,26,0.22), transparent 55%),
+              radial-gradient(circle at 80% 60%, rgba(94,232,255,0.16), transparent 55%);
+  pointer-events:none;
+  filter: blur(0px);
+  opacity:0.9;
+}
+
+.team-hiring-icon{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.team-hiring-icon svg{
+  width:40px;
+  height:40px;
+  color: var(--accent);
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.45));
+}
+
+.team-hiring-btn{
+  width:100%;
+  margin-top:14px;
+  justify-content:center;
+}
+
+.team-hiring-note{
+  margin-top:10px;
+  font-size:13px;
+  color: var(--muted);
+  line-height:1.4;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
