@@ -59,13 +59,6 @@ a{
   object-fit:cover;
 }
 
-
-
-
-
-
-
-
 .header{
   position:sticky;
   top:0;
@@ -367,25 +360,6 @@ a{
   color:#000;
   border-color:transparent;
   box-shadow:0 6px 20px rgba(0,0,0,0.7);
-}
-
-.filters input{
-  width:80px;
-  padding:6px;
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  background:transparent;
-  color:var(--text);
-  font-size:13px;
-}
-
-.filters select{
-  padding:6px 10px;
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  font-size:13px;
 }
 
 /* ===== PRODUCTS ===== */
@@ -1649,4 +1623,319 @@ footer{
   .interior-item {
     height: 180px;
   }
+}
+
+/* КНОПКА ПОВЕРНЕННЯ ДО КАТЕГОРІЙ */
+.interiors-back-btn {
+  margin-top: 35px;
+  text-align: center;
+}
+
+.btn-to-categories {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #000;
+  font-weight: 700;
+  border-radius: 14px;
+  text-decoration: none;
+  font-size: 15px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.7);
+  transition: 0.35s ease;
+}
+
+.btn-to-categories:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.85);
+}
+
+.btn-to-categories i {
+  width: 20px;
+  height: 20px;
+}
+
+/* Пульсація */
+@keyframes pulseGlow {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255,122,26,0.0);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 18px rgba(255,122,26,0.45);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255,122,26,0.0);
+  }
+}
+
+.pulse-btn {
+  animation: pulseGlow 2.2s infinite ease-in-out;
+}
+
+/* ============================
+    ==  МЕНЮ ПОД ХЕДЕРОМ ==
+============================ */
+.top-nav {
+  width: 100%;
+  background: var(--bg2);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: sticky;
+  top: 74px;
+  z-index: 90;
+}
+
+.top-nav-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.top-nav-inner a {
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: .25s;
+}
+
+.top-nav-inner a:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+}
+
+/* ===== БУРГЕР ===== */
+.burger-btn {
+  display: none;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: sticky;
+  top: 74px;
+  left: 10px;
+  z-index: 200;
+}
+
+.burger-btn i {
+  width: 24px;
+  height: 24px;
+  color: var(--text);
+}
+
+/* ===== МОБИЛЬНОЕ МЕНЮ ===== */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 74px;
+  left: 0;
+  width: 75%;
+  background: rgba(10,10,14,0.92);
+  border-radius: 0 0 14px 0;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 10px;
+  gap: 6px;
+  flex-direction: column;
+  z-index: 199;
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
+.mobile-menu a {
+  padding: 12px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  transition: .25s;
+}
+
+.mobile-menu a:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+/* ===== МЕДИА АДАПТАЦИЯ ===== */
+@media(max-width: 850px) {
+  .top-nav { display: none; }
+  .burger-btn { display: block; }
+}
+
+/* СТРЕЛКИ АКЦИОННЫХ ТОВАРОВ */
+/* ===== SALE SLIDER ARROWS ===== */
+.sale-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.06);
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  opacity: 0.7;
+  transition: 0.25s;
+  z-index: 10;
+}
+
+.sale-arrow:hover {
+  opacity: 1;
+  background: rgba(255,255,255,0.10);
+}
+
+.sale-arrow i {
+  width: 26px;
+  height: 26px;
+  color: var(--accent2);
+}
+
+.sale-arrow-left {
+  left: 6px;
+}
+
+.sale-arrow-right {
+  right: 6px;
+}
+
+/* Контейнер "Акція" має бути position: relative */
+.sale-section {
+  position: relative;
+}
+
+/* ============================
+   SHARE — Поделиться
+============================ */
+
+.share-icons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: left;
+  gap: 18px;
+}
+
+.share-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--accent2);
+  transition: .25s ease;
+}
+
+.share-icon:hover {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #000;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.7);
+}
+
+.share-icon i {
+  width: 22px;
+  height: 22px;
+}
+
+.share-icons i {
+  font-size: 36px;
+}
+
+/* Статі */
+/* ============================
+   BLOG PREVIEW SECTION
+============================ */
+.home-blog {
+  padding: 60px 20px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.home-blog-title {
+  font-size: 26px;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.home-blog-subtitle {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 15px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-blog-list {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 22px;
+}
+
+.home-blog-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: left;
+  box-shadow: var(--shadow);
+  transition: .25s ease;
+  cursor: pointer;
+}
+
+.home-blog-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.8);
+}
+
+.home-blog-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.home-blog-card-desc {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.home-blog-card-link {
+  color: var(--accent2);
+  font-weight: 600;
+}
+
+.btn-to-blog {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 14px;
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.7);
+  transition: .25s ease;
+}
+
+.btn-to-blog:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 38px rgba(0,0,0,0.85);
 }
