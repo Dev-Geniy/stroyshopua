@@ -1169,6 +1169,8 @@ loadBlogPreview();
     btn.addEventListener('click', () => {
       const isOpen = item.classList.contains('is-open');
 
+      // если хочешь, чтобы открывался только один — раскомментируй блок:
+      /*
       items.forEach(i => {
         i.classList.remove('is-open');
         const b = i.querySelector('.faq-q');
@@ -1176,6 +1178,7 @@ loadBlogPreview();
         if(b) b.setAttribute('aria-expanded', 'false');
         if(a) a.hidden = true;
       });
+      */
 
       if(isOpen){
         item.classList.remove('is-open');
