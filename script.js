@@ -1149,3 +1149,49 @@ loadBlogPreview();
 // =========================
 // NEWYEAR END (REMOVE LATER)
 // =========================
+
+// =========================
+// FAQ accordion
+// =========================
+(function initFAQ(){
+  const items = document.querySelectorAll('.faq-item');
+  if(!items.length) return;
+
+  items.forEach(item => {
+    const btn = item.querySelector('.faq-q');
+    const ans = item.querySelector('.faq-a');
+    if(!btn || !ans) return;
+
+    // на всякий случай
+    ans.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+
+      // если хочешь, чтобы открывался только один — раскомментируй блок:
+      /*
+      items.forEach(i => {
+        i.classList.remove('is-open');
+        const b = i.querySelector('.faq-q');
+        const a = i.querySelector('.faq-a');
+        if(b) b.setAttribute('aria-expanded', 'false');
+        if(a) a.hidden = true;
+      });
+      */
+
+      if(isOpen){
+        item.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        ans.hidden = true;
+      } else {
+        item.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        ans.hidden = false;
+      }
+
+      // обновим иконки lucide после смены состояния (на всякий случай)
+      if(window.lucide) window.lucide.createIcons();
+    });
+  });
+})();
