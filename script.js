@@ -588,7 +588,7 @@ function renderSaleProducts(){
   if(!saleBox) return;
 
   const saleItems = PRODUCTS.filter(p =>
-    p.title.toLowerCase().includes('уцен')
+    p.title.toLowerCase().includes('уцін')
   );
 
   saleBox.innerHTML = '';
@@ -655,7 +655,7 @@ if (loadMoreBtn) {
 
 function highlightSale(text){
   if(!text) return text;
-  return text.replace(/Уценка/gi, '<span class="badge-sale">Уценка</span>');
+  return text.replace(/УЦІНКА/gi, '<span class="badge-sale">УЦІНКА</span>');
 }
 
 function renderProducts(list){
@@ -707,7 +707,6 @@ function hideLoader() {
   const loader = document.getElementById('loader');
   if (loader) loader.classList.add('hide');
 }
-
 
 /* ============================================================
    🟧 9. ФИЛЬТР ТОВАРОВ
@@ -1281,7 +1280,7 @@ async function loadBlogPreview() {
     const box = document.getElementById("homeBlogList");
     if (!box) return;
 
-    const preview = posts.slice(0, 3); // показуємо тільки перші 3 статті
+    const preview = posts.slice(0, 9); // показуємо тільки перші 9 статті
 
     box.innerHTML = preview.map(p => `
       <article class="home-blog-card" onclick="location.href='${p.url}'">
