@@ -346,13 +346,18 @@
   </button>
 </section>
 
-
   <!-- FILTERS -->
-<section class="filters">
-    <div class="filters-left">
-      <span class="filters-label">Категорії:</span>
-      <div class="categories" id="categories"></div>
+<div class="filters">
+  <div class="filters-left">
+
+    <div class="categories-banner">
+      <span class="categories-banner-label">Оберіть категорію:</span>
     </div>
+
+    <div id="categories" class="categories"></div>
+  </div>
+</div>
+
 
     <div class="filters-right" style="flex:1;">
         <div class="search-bar" style="max-width:100%;">
@@ -362,13 +367,23 @@
     </div>
 </section>
 
-  <!-- PRODUCTS -->
-  <section class="products-section" id="productsSection">
-    <h2 class="section-title">Товари:</h2>
-    <div class="products-grid" id="productsGrid">
-      <!-- Карточки товаров JS рендерит сюда -->
-    </div>
-  </section>
+<!-- PRODUCTS -->
+<section class="products-section" id="productsSection">
+  <h2 class="section-title">Товари:</h2>
+
+  <div class="products-grid" id="productsGrid"></div>
+
+  <!-- Кнопка "Показати ще" -->
+  <div class="load-more-wrap">
+    <button id="loadMoreBtn" class="btn load-more-btn">
+      <span class="load-more-text">Показати ще</span>
+      <span class="load-more-icon">
+        <i data-lucide="chevron-down"></i>
+      </span>
+    </button>
+  </div>
+</section>
+
 
   <!-- INFO -->
   <section class="info-section improved-order" id="howToOrder">
