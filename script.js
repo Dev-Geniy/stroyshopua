@@ -812,7 +812,7 @@ function addToCart(id, qtyFromModal){
 
   saveCart();
   updateCartUI();
-
+  toggleCart(true); //ОТКРЫВАЕМ КОРЗИНУ ПОСЛЕ ДОБАВЛЕНИЯ ТОВАРА
   showToast('Товар додано у кошик');
 }
 
@@ -1241,7 +1241,9 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") mobileMenu.classList.remove("show");
 });
 
-/* ========= SMOOTH SCROLL (к началу секции) ========= */
+/* ============================================================
+   🟧 20. SMOOTH SCROLL (к началу секции) 
+============================================================ */
 
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener("click", function(e) {
@@ -1257,7 +1259,9 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-/* ===== СЛАЙДЕР НА УЦЕНЁННЫХ ТОВАРАХ ===== */
+/* ============================================================
+   🟧 21. СЛАЙДЕР НА УЦЕНЁННЫХ ТОВАРАХ 
+============================================================ */
 const saleSlider = document.getElementById('saleSlider');
 
 document.getElementById('saleLeft').addEventListener('click', () => {
@@ -1268,10 +1272,9 @@ document.getElementById('saleRight').addEventListener('click', () => {
   saleSlider.scrollBy({ left: 220, behavior: 'smooth' });
 });
 
-// СТАТІ
-/* ============================
-   LOAD BLOG PREVIEW
-============================ */
+/* ============================================================
+   🟧 22. СТАТІ З БЛОГУ
+============================================================ */
 async function loadBlogPreview() {
   try {
     const res = await fetch("blog.json");
@@ -1280,7 +1283,7 @@ async function loadBlogPreview() {
     const box = document.getElementById("homeBlogList");
     if (!box) return;
 
-    const preview = posts.slice(0, 9); // показуємо тільки перші 9 статті
+    const preview = posts.slice(0, 8); // показуємо тільки перші 9 статті
 
     box.innerHTML = preview.map(p => `
       <article class="home-blog-card" onclick="location.href='${p.url}'">
@@ -1296,10 +1299,9 @@ async function loadBlogPreview() {
 
 loadBlogPreview();
 
-
-// =========================
-// NEWYEAR START (REMOVE LATER)
-// =========================
+/* ============================================================
+   🟧 24. NEWYEAR START (REMOVE LATER)
+============================================================ */
 (function () {
   // Сезон каждый год: 15 Dec - 15 Jan (включительно)
   function isNewYearSeason(d) {
@@ -1441,9 +1443,9 @@ loadBlogPreview();
 // NEWYEAR END (REMOVE LATER)
 // =========================
 
-// =========================
-// FAQ accordion
-// =========================
+/* ============================================================
+   🟧 25. FAQ accordion
+============================================================ */
 (function initFAQ(){
   const items = document.querySelectorAll('.faq-item');
   if(!items.length) return;
