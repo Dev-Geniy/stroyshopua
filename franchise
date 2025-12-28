@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Франшиза / White Label — Samostroy Shop</title>
+
+  <!-- ШРИФТ -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- ІКОНКИ -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg:#050509;
+      --bg2:#0c0d12;
+      --card:rgba(255,255,255,0.04);
+      --card2:rgba(255,255,255,0.06);
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --muted:#a4a9b7;
+      --text:#f1f1f4;
+      --radius:18px;
+      --border:rgba(255,255,255,0.1);
+      --shadow:0 20px 50px rgba(0,0,0,0.55);
+      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+      --trans:0.25s;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:"Inter",sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.45;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    /* HEADER */
+    header{
+      position:sticky;
+      top:0;
+      z-index:10;
+      padding:18px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      backdrop-filter:blur(14px);
+      background:rgba(5,5,9,0.9);
+      border-bottom:1px solid var(--border);
+    }
+
+    .logo{
+      font-size:clamp(20px,3vw,28px);
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .header-badge{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.18);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .header-badge span{
+      color:#fff;
+      font-weight:700;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 20px;
+      background:var(--grad);
+      border-radius:var(--radius);
+      font-size:14px;
+      font-weight:700;
+      color:#000;
+      cursor:pointer;
+      border:none;
+      transition:var(--trans);
+      box-shadow:var(--shadow);
+      white-space:nowrap;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 24px 50px rgba(0,0,0,0.75);
+    }
+
+    .btn-outline{
+      background:transparent;
+      border:1px solid var(--accent);
+      color:var(--accent2);
+      box-shadow:none;
+    }
+
+    .btn-outline:hover{
+      background:rgba(255,122,26,0.08);
+      box-shadow:var(--shadow);
+    }
+
+    .btn i{
+      width:20px;
+      height:20px;
+    }
+
+    /* SECTION BASE */
+    .section{
+      max-width:1150px;
+      margin:50px auto;
+      padding:0 20px;
+    }
+
+    .title{
+      font-size:clamp(24px,4vw,34px);
+      font-weight:800;
+      margin-bottom:10px;
+      line-height:1.2;
+    }
+
+    .title-accent{
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:clamp(14px,2.4vw,16px);
+      max-width:780px;
+      margin-bottom:24px;
+    }
+
+    /* HERO */
+    .hero{
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:32px;
+      align-items:center;
+      max-width:1150px;
+      margin:50px auto;
+      padding:0 20px;
+    }
+
+    .hero h1{
+      font-size:clamp(30px,4vw,45px);
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      font-weight:800;
+      margin-bottom:12px;
+      line-height:1.15;
+    }
+
+    .hero p{
+      color:var(--muted);
+      font-size:clamp(14px,2.4vw,17px);
+      max-width:580px;
+      margin-bottom:20px;
+    }
+
+    .hero-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      color:var(--muted);
+      margin-bottom:10px;
+      background:rgba(255,255,255,0.02);
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero-label span{
+      color:var(--accent2);
+    }
+
+    .hero-spots{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 11px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      background:rgba(255,122,26,0.14);
+      color:#fff;
+    }
+
+    .hero-spots strong{
+      font-weight:800;
+      color:#fff;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:18px 0 22px;
+    }
+
+    .tag{
+      padding:6px 12px;
+      font-size:12px;
+      background:rgba(255,255,255,0.05);
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+
+    .tag i{
+      width:14px;
+      height:14px;
+      margin-right:4px;
+      vertical-align:-2px;
+      color:var(--accent2);
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:6px;
+    }
+
+    .hero-side{
+      padding:20px;
+      background:var(--card2);
+      border-radius:24px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-side::before{
+      content:"White Label";
+      position:absolute;
+      right:-40px;
+      top:16px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.2em;
+      color:rgba(255,255,255,0.06);
+      transform:rotate(90deg);
+    }
+
+    .hero-side-title{
+      font-size:15px;
+      font-weight:700;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .hero-side-title i{
+      width:18px;
+      height:18px;
+      color:var(--accent2);
+    }
+
+    .side-row{
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:13px;
+      padding:6px 0;
+      border-bottom:1px solid rgba(255,255,255,0.07);
+      gap:10px;
+    }
+
+    .side-row:last-child{
+      border-bottom:none;
+    }
+
+    .side-row strong{
+      color:var(--accent2);
+      font-weight:600;
+      text-align:right;
+    }
+
+    .side-note{
+      margin-top:10px;
+      font-size:11px;
+      color:var(--muted);
+      opacity:0.9;
+    }
+
+    /* GRID */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .card h3{
+      font-size:18px;
+      color:var(--accent2);
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .card h3 i{
+      width:18px;
+      height:18px;
+    }
+
+    .card p{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    /* BENEFITS / BULLETS */
+    .benefits-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:16px;
+    }
+
+    .benefit{
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px 18px;
+      font-size:14px;
+      color:var(--muted);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+
+    .benefit i{
+      width:18px;
+      height:18px;
+      flex-shrink:0;
+      color:var(--accent2);
+    }
+
+    .benefit-title{
+      font-weight:600;
+      color:var(--text);
+      margin-bottom:4px;
+      font-size:14px;
+    }
+
+    /* STEPS */
+    .steps .step{
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:20px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .step-num{
+      position:absolute;
+      right:12px;
+      top:12px;
+      font-size:20px;
+      font-weight:800;
+      color:rgba(255,255,255,0.12);
+    }
+
+    .step-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .step-text{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    /* METRICS / STATS */
+    .metrics{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .metric{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:16px 18px;
+    }
+
+    .metric-label{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      color:var(--muted);
+      margin-bottom:5px;
+    }
+
+    .metric-value{
+      font-size:20px;
+      font-weight:800;
+      color:var(--accent2);
+      margin-bottom:4px;
+    }
+
+    .metric-text{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* PACKAGE / CONTENT */
+    .package-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+
+    .package-card{
+      background:var(--card2);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:18px 18px 16px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .package-card h3{
+      font-size:16px;
+      margin-bottom:6px;
+      color:var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .package-card h3 i{
+      width:18px;
+      height:18px;
+    }
+
+    .package-tag{
+      position:absolute;
+      top:16px;
+      right:16px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      color:rgba(255,255,255,0.3);
+    }
+
+    .package-list{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+      list-style:none;
+    }
+
+    .package-list li{
+      margin-bottom:4px;
+      padding-left:14px;
+      position:relative;
+    }
+
+    .package-list li::before{
+      content:"•";
+      position:absolute;
+      left:0;
+      color:var(--accent2);
+    }
+
+    /* TIMELINE */
+    .timeline{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+      gap:18px;
+    }
+
+    .timeline-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:18px;
+    }
+
+    .timeline-badge{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      color:var(--accent2);
+      margin-bottom:6px;
+    }
+
+    .timeline-title{
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .timeline-text{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* COLUMNS: WHO FOR / NOT */
+    .columns-2{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+
+    .pill-list{
+      list-style:none;
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+
+    .pill-list li{
+      margin-bottom:6px;
+      display:flex;
+      align-items:flex-start;
+      gap:6px;
+    }
+
+    .pill-dot{
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      border:1px solid var(--accent2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:11px;
+      flex-shrink:0;
+      color:var(--accent2);
+    }
+
+    /* MONEY / FINANCE */
+    .finance-grid{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:20px;
+    }
+
+    .finance-block{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .finance-block h3{
+      font-size:16px;
+      font-weight:700;
+      margin-bottom:8px;
+      color:var(--accent2);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .finance-block h3 i{
+      width:18px;
+      height:18px;
+    }
+
+    .finance-tagline{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .finance-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:13px;
+      color:var(--muted);
+      padding:6px 0;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .finance-row:last-child{
+      border-bottom:none;
+    }
+
+    .finance-row strong{
+      color:var(--accent2);
+      font-weight:600;
+      text-align:right;
+    }
+
+    .finance-note{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:10px;
+    }
+
+    .finance-example{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:var(--radius);
+      border:1px dashed rgba(255,255,255,0.22);
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    /* CTA */
+    .cta{
+      background:var(--card2);
+      border:1px solid var(--border);
+      border-radius:26px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .cta h3{
+      font-size:clamp(22px,4vw,28px);
+      font-weight:800;
+      margin-bottom:4px;
+    }
+
+    .cta p{
+      color:var(--muted);
+      font-size:14px;
+      max-width:460px;
+    }
+
+    .cta-badge{
+      position:absolute;
+      right:20px;
+      top:16px;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.12em;
+      color:rgba(255,255,255,0.14);
+    }
+
+    /* FAQ */
+    .faq-item{
+      background:var(--card);
+      padding:20px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      margin-bottom:14px;
+    }
+
+    .faq-item h3{
+      font-size:16px;
+      color:var(--accent2);
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .faq-item h3 i{
+      width:18px;
+      height:18px;
+    }
+
+    .faq-item p{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* FORM / APPLICATION */
+    .form-grid{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:18px;
+    }
+
+    .form-card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .form-card label{
+      display:block;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .form-card input,
+    .form-card textarea{
+      width:100%;
+      padding:9px 11px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.16);
+      background:rgba(0,0,0,0.35);
+      color:var(--text);
+      font-family:inherit;
+      font-size:13px;
+      outline:none;
+      margin-bottom:10px;
+    }
+
+    .form-card textarea{
+      resize:vertical;
+      min-height:80px;
+    }
+
+    .form-hint{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    /* FOOTER */
+    footer{
+      text-align:center;
+      padding:22px;
+      color:var(--muted);
+      font-size:13px;
+      border-top:1px solid var(--border);
+      margin-top:40px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hero{
+        grid-template-columns:1fr;
+        margin-top:24px;
+        gap:24px;
+      }
+
+      .cta{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .finance-grid,
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:640px){
+      header{
+        padding:14px 16px;
+      }
+
+      .btn{
+        padding:10px 14px;
+        font-size:13px;
+      }
+
+      .section{
+        margin:40px auto;
+      }
+
+      .header-badge{
+        display:none;
+      }
+    }
+
+    @media(max-width:480px){
+      .hero h1{
+        font-size:28px;
+      }
+
+      .hero p{
+        font-size:14px;
+      }
+
+      .title{
+        font-size:22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Samostroy Shop</div>
+  <div class="header-right">
+    <div class="header-badge">
+      <i data-lucide="users"></i>
+      Ліміт партнерів: <span>5</span>
+    </div>
+    <a href="index.html" class="btn btn-outline">
+      <i data-lucide="arrow-left"></i>
+      Назад до магазину
+    </a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-label">
+      <i data-lucide="shield-check" style="width:14px;height:14px;"></i>
+      Франшиза + <span>White Label</span> формат
+    </div>
+
+    <h1>Запустіть свій бренд будматеріалів під ключ</h1>
+
+    <p>
+      Ми створюємо вам повноцінний бренд: назву, логотип, сайт, рекламу,
+      соцмережі та підключаємо до складу з 370&nbsp;000+ одиниць товару.
+      Ви отримуєте <strong>100% прибутку</strong> і ділитеся лише
+      <strong>15% чистого доходу</strong> за договором.
+    </p>
+
+    <div class="tags">
+      <span class="tag">
+        <i data-lucide="sparkles"></i> Власний бренд без складу
+      </span>
+      <span class="tag">
+        <i data-lucide="globe-2"></i> White Label інтернет-магазин
+      </span>
+      <span class="tag">
+        <i data-lucide="line-chart"></i> 100% прибутку у партнера
+      </span>
+      <span class="tag">
+        <i data-lucide="factory"></i> Прямий імпортер та ексклюзивні новинки
+      </span>
+      <span class="tag hero-spots">
+        <i data-lucide="alert-circle"></i>
+        Залишилось місць: <strong>5</strong>
+      </span>
+    </div>
+
+    <div class="hero-actions">
+      <a
+        href="https://t.me/manager_samostroy_shop?text=Доброго%20дня!%20Хочу%20обговорити%20франшизу%20%2F%20white%20label%20Samostroy%20Shop."
+        class="btn"
+        target="_blank"
+      >
+        <i data-lucide="handshake"></i>
+        Подати заявку на партнерство
+      </a>
+
+      <a
+        href="https://t.me/manager_samostroy_shop?text=Прошу%20надіслати%20деталі%20по%20фінансовій%20моделі%20та%20умовам%20франшизи."
+        class="btn btn-outline"
+        target="_blank"
+      >
+        <i data-lucide="file-text"></i>
+        Отримати презентацію франшизи
+      </a>
+    </div>
+  </div>
+
+  <aside class="hero-side">
+    <div class="hero-side-title">
+      <i data-lucide="layout-dashboard"></i>
+      Формат партнерства
+    </div>
+
+    <div class="side-row">
+      <span>Формат</span>
+      <strong>Франшиза + White Label</strong>
+    </div>
+    <div class="side-row">
+      <span>Разовий внесок</span>
+      <strong>6000&nbsp;$</strong>
+    </div>
+    <div class="side-row">
+      <span>Розподіл внеску</span>
+      <strong>до 1000&nbsp;$ запуск, 5000&nbsp;$ — створення системи</strong>
+    </div>
+    <div class="side-row">
+      <span>Щомісячно</span>
+      <strong>15% від чистого прибутку</strong>
+    </div>
+    <div class="side-row">
+      <span>Прибуток партнера</span>
+      <strong>100% маржі – 15% роялті</strong>
+    </div>
+    <div class="side-row">
+      <span>Обмеження</span>
+      <strong>Лише 5 партнерів</strong>
+    </div>
+
+    <div class="side-note">
+      Після запуску всі регулярні витрати (реклама, хостинг, домен,
+      зарплата менеджера) переходять на сторону партнера, а ми
+      продовжуємо підтримувати вас по стратегії та системам.
+    </div>
+  </aside>
+</section>
+
+<!-- ДЛЯ КОГО ФРАНШИЗА -->
+<section class="section">
+  <h2 class="title">Кому підходить франшиза Samostroy Shop</h2>
+  <p class="sub">
+    Цей формат створений для підприємців, які хочуть запустити
+    <strong>товарний бізнес з готовою системою</strong>, а не просто купити сайт.
+    Ви отримуєте бренд, процеси та стратегію, які вже працюють.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h3><i data-lucide="briefcase"></i> Підприємці та власники бізнесу</h3>
+      <p>
+        Якщо ви хочете стабільний бізнес на фізичних товарах, але не плануєте
+        самостійно будувати логістику, сайт, маркетинг і працювати з постачальниками.
+      </p>
+    </div>
+    <div class="card">
+      <h3><i data-lucide="building-2"></i> Власники локальних магазинів</h3>
+      <p>
+        У вас уже є офлайн-точка або маленький шоурум, але потрібен сильний
+        онлайн-напрямок: сайт, соцмережі, реклама, маркетплейси.
+      </p>
+    </div>
+    <div class="card">
+      <h3><i data-lucide="line-chart"></i> Маркетологи / сейлз-фахівці</h3>
+      <p>
+        Ви вмієте продавати або налаштовувати рекламу, але хочете працювати
+        “на себе” і мати готовий продукт та склад за спиною.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ХТО НЕ НАШ ФОРМАТ -->
+<section class="section">
+  <h2 class="title">Кому це не підходить</h2>
+  <p class="sub">
+    Щоб зберегти сильну репутацію та результати всіх партнерів, ми чесно кажемо,
+    для кого формат не підійде. Це не “кнопка бабло”, а повноцінний бізнес.
+  </p>
+
+  <div class="columns-2">
+    <div class="card">
+      <h3><i data-lucide="smile-plus"></i> Ми шукаємо</h3>
+      <ul class="pill-list">
+        <li>
+          <span class="pill-dot">+</span>
+          <span>Людей, готових працювати по стандартах та системі.</span>
+        </li>
+        <li>
+          <span class="pill-dot">+</span>
+          <span>Партнерів, які розуміють важливість реклами та інвестицій у маркетинг.</span>
+        </li>
+        <li>
+          <span class="pill-dot">+</span>
+          <span>Тих, хто хоче будувати бренд на роки, а не “тестувати місяць”.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="circle-off"></i> Не підходить, якщо</h3>
+      <ul class="pill-list">
+        <li>
+          <span class="pill-dot">–</span>
+          <span>Ви хочете нічого не робити, але очікуєте великий пасивний дохід.</span>
+        </li>
+        <li>
+          <span class="pill-dot">–</span>
+          <span>Ви не готові вкладати у рекламу після запуску.</span>
+        </li>
+        <li>
+          <span class="pill-dot">–</span>
+          <span>Вам важко працювати по регламентах, чек-листах та скриптах.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ЩО МИ РОБИМО ПІД КЛЮЧ -->
+<section class="section">
+  <h2 class="title">Що саме ми створюємо вам “під ключ”</h2>
+  <p class="sub">
+    Ви даєте тільки назву свого бренду — все інше ми беремо на себе. В результаті
+    ви отримуєте повноцінну екосистему продажів, побудовану на нашому досвіді та
+    складі постачальника.
+  </p>
+
+  <div class="package-grid">
+    <div class="package-card">
+      <div class="package-tag">Бренд</div>
+      <h3><i data-lucide="sparkles"></i> Бренд та айдентика</h3>
+      <ul class="package-list">
+        <li>Опрацювання назви бренду (якщо потрібно — допомога з неймінгом).</li>
+        <li>Розробка логотипу (кілька варіантів + фінальне затвердження).</li>
+        <li>Фірмові кольори, шрифти, стилістика.</li>
+        <li>Аватарки та обкладинки для соцмереж, сайту, маркетплейсів.</li>
+        <li>Базовий брендбук з правилами використання стилю.</li>
+      </ul>
+    </div>
+
+    <div class="package-card">
+      <div class="package-tag">Сайт</div>
+      <h3><i data-lucide="globe"></i> Сайт / інтернет-магазин White Label</h3>
+      <ul class="package-list">
+        <li>Сучасний сайт/магазин у стилі Samostroy Shop, але під ваш бренд.</li>
+        <li>Категорії: ковролін, самоклейка, плитка, вініл, екошкіра, теплі шпалери тощо.</li>
+        <li>Підключення до нашого постачальника з актуальними залишками та цінами.</li>
+        <li>SEO-база: мета-теги, структури заголовків, ЧПУ, schema.org.</li>
+        <li>Підключення аналітики: Google Analytics / GA4, пікселі Facebook / TikTok.</li>
+      </ul>
+    </div>
+
+    <div class="package-card">
+      <div class="package-tag">Маркетинг</div>
+      <h3><i data-lucide="megaphone"></i> Реклама та соціальні мережі</h3>
+      <ul class="package-list">
+        <li>Налаштування Google Ads (пошук + ремаркетинг).</li>
+        <li>Налаштування реклами в Instagram + Facebook (Meta Ads).</li>
+        <li>Створення / покупка акаунтів із живими підписниками від 1000+ (FB, IG, TikTok, Telegram).</li>
+        <li>Початковий контент-план на 30 днів: пости, сторіс, приклади креативів.</li>
+        <li>Шаблони оголошень, текстів та банерів для швидкого запуску кампаній.</li>
+      </ul>
+    </div>
+
+    <div class="package-card">
+      <div class="package-tag">Маркетплейси</div>
+      <h3><i data-lucide="shopping-bag"></i> Маркетплейси та додаткові майданчики</h3>
+      <ul class="package-list">
+        <li>Створення або налаштування OLX бізнес-сторінки.</li>
+        <li>Створення магазину на Prom.ua.</li>
+        <li>Підключення / налаштування магазину на Хорошоп.</li>
+        <li>Єдиний візуальний стиль на всіх майданчиках.</li>
+        <li>Рекомендації по ціноутворенню для кожного майданчика.</li>
+      </ul>
+    </div>
+
+    <div class="package-card">
+      <div class="package-tag">Операційка</div>
+      <h3><i data-lucide="headset"></i> Менеджер, скрипти та навчання</h3>
+      <ul class="package-list">
+        <li>Ми допомагаємо прописати профіль менеджера та вимоги до кандидата.</li>
+        <li>Видаємо готові скрипти дзвінків, переписки, консультацій.</li>
+        <li>Чек-листи для обробки замовлень від заявки до відправлення.</li>
+        <li>Навчання менеджера по наших стандартах комунікації та продажів.</li>
+        <li>Супровід на перших етапах, розбір складних ситуацій.</li>
+      </ul>
+    </div>
+
+    <div class="package-card">
+      <div class="package-tag">Підтримка</div>
+      <h3><i data-lucide="users"></i> Супровід та партнерська спільнота</h3>
+      <ul class="package-list">
+        <li>Закритий чат партнерів для обміну досвідом.</li>
+        <li>Регулярні онлайн-зустрічі з розбором результатів та маркетингу.</li>
+        <li>Оновлення по асортименту, новинкам та акціям разом із готовими матеріалами.</li>
+        <li>Спільні промо-акції та масштабні розпродажі.</li>
+        <li>Підтримка в юридичних та організаційних питаннях по бізнесу.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ПОСТАЧАЛЬНИК ТА ТОВАР -->
+<section class="section">
+  <h2 class="title">На чому все тримається: склад, імпорт і новинки</h2>
+  <p class="sub">
+    Ваш бренд працює на базі нашого постачальника — прямого імпортера трендових
+    будматеріалів з Європи. Це дозволяє давати клієнтам не “як у всіх”, а
+    <strong>справжні новинки, яких ще майже немає на ринку</strong>.
+  </p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Досвід</div>
+      <div class="metric-value">13+ років</div>
+      <div class="metric-text">на ринку України в сегменті будматеріалів та декору</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Асортимент</div>
+      <div class="metric-value">370&nbsp;000+</div>
+      <div class="metric-text">одиниць товару на складі станом на сьогодні</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Логістика</div>
+      <div class="metric-value">2 контейнери</div>
+      <div class="metric-text">кожні 2 тижні — регулярні поставки нових позицій</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Зростання</div>
+      <div class="metric-value">×2 щороку</div>
+      <div class="metric-text">обсяги та асортимент збільшуються мінімум удвічі</div>
+    </div>
+  </div>
+
+  <div style="margin-top:18px;font-size:14px;color:var(--muted);max-width:780px;">
+    Постачальник першим завозить інноваційні матеріали з Європи: нові типи
+    самоклейки, теплі шпалери, сучасні рішення для підлоги, декору стін,
+    дзеркальні та 3D-панелі. Ви можете запускати локальні акції та кампанії
+    з позиціонуванням:
+    <strong>“перші в місті / регіоні, хто продає ці матеріали”</strong>.
+  </div>
+</section>
+
+<!-- ФІНАНСОВА МОДЕЛЬ -->
+<section class="section">
+  <h2 class="title">Фінансова модель: як ви заробляєте</h2>
+  <p class="sub">
+    Ми прагнемо максимально прозорої моделі. Ви отримуєте товар
+    по закупочній ціні, самі формуєте роздрібну ціну, а з чистого
+    прибутку виплачуєте нам <strong>15% роялті</strong>.
+  </p>
+
+  <div class="finance-grid">
+    <div class="finance-block">
+      <h3><i data-lucide="wallet-cards"></i> Разовий внесок — 6000&nbsp;$</h3>
+      <div class="finance-tagline">
+        Цей внесок запускає весь процес: від бренду та сайту до реклами та
+        навчання. Усередині:
+      </div>
+
+      <div class="finance-row">
+        <span>До 1000&nbsp;$</span>
+        <strong>Запуск: домен, хостинг, реклама, акаунти</strong>
+      </div>
+      <div class="finance-row">
+        <span>5000&nbsp;$</span>
+        <strong>Створення екосистеми: бренд, сайт, маркетинг, навчання</strong>
+      </div>
+      <div class="finance-row">
+        <span>Реклама на старті</span>
+        <strong>Оплачується з цих 1000&nbsp;$</strong>
+      </div>
+      <div class="finance-row">
+        <span>Сервіси та підписки</span>
+        <strong>На старті — з внеску, далі — за рахунок партнера</strong>
+      </div>
+
+      <div class="finance-note">
+        Після використання стартового бюджету всі подальші витрати (реклама,
+        домен, хостинг, менеджер) — за рахунок партнера. Ми при цьому
+        залишаємося поруч: коригуємо стратегію, аналізуємо результати,
+        допомагаємо рости.
+      </div>
+    </div>
+
+    <div class="finance-block">
+      <h3><i data-lucide="percent"></i> Щомісячне роялті — 15% чистого прибутку</h3>
+      <div class="finance-tagline">
+        Формула проста: все, що ви заробляєте після всіх витрат — ваша чиста
+        прибуток. З неї ви ділитеся 15%.
+      </div>
+
+      <div class="finance-row">
+        <span>Чистий прибуток</span>
+        <strong>Виручка – собівартість – реклама – зарплати – інші витрати</strong>
+      </div>
+      <div class="finance-row">
+        <span>Роялті</span>
+        <strong>15% від чистого прибутку за договором</strong>
+      </div>
+      <div class="finance-row">
+        <span>Частка партнера</span>
+        <strong>85% чистого прибутку залишаються у вас</strong>
+      </div>
+
+      <div class="finance-example">
+        <strong>Приклад:</strong><br>
+        Якщо ваш магазин заробляє 3000&nbsp;$ чистого прибутку на місяць:<br>
+        • 2550&nbsp;$ ви залишаєте собі;<br>
+        • 450&nbsp;$ перераховуєте нам як роялті.<br><br>
+        При 5000&nbsp;$ чистого прибутку:<br>
+        • 4250&nbsp;$ — ваш дохід;<br>
+        • 750&nbsp;$ — роялті за використання системи, бренду та супровід.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ЕТАПИ ЗАПУСКУ -->
+<section class="section">
+  <h2 class="title">Як усе відбувається: поетапний запуск</h2>
+  <p class="sub">
+    Ми працюємо за чітким планом. Кожен етап закриває конкретний блок
+    робіт: від договору до перших оплат від клієнтів.
+  </p>
+
+  <div class="grid steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Знайомство та заявка</div>
+      <div class="step-text">
+        Ви пишете в Telegram, коротко розповідаєте про себе та свої цілі.
+        Ми проводимо первинну консультацію та дивимося, чи підходить вам формат.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Договір та оплата 6000&nbsp;$</div>
+      <div class="step-text">
+        Узгоджуємо всі умови, підписуємо договір, де прописана фінмодель,
+        зона відповідальності, поняття “чистого прибутку” та роялті.
+        Після оплати стартуємо роботу.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Бренд, сайт та технічна база</div>
+      <div class="step-text">
+        Створюємо айдентику, готуємо сайт, підключаємо аналітику та
+        інструменти реклами. Паралельно формуємо структуру каталогу
+        та підключаємо асортимент постачальника.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Соцмережі, маркетплейси та контент</div>
+      <div class="step-text">
+        Запускаємо соцмережі, налаштовуємо акаунти з живими підписниками,
+        оформлюємо OLX, Prom.ua, Хорошоп. Підготуємо перший контент і акції.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-title">Навчання менеджера та скрипти</div>
+      <div class="step-text">
+        Ви або ваш менеджер проходите навчання: як приймати заявки, як
+        консультувати, що питати, як рахувати м², запас і т.д.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-title">Старт реклами та перші продажі</div>
+      <div class="step-text">
+        Запускаємо рекламні кампанії, відстежуємо перші заявки та дзвінки,
+        разом розбираємо результати та оптимізуємо рекламні зв’язки.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ДОРОЖНЯ КАРТА 30 / 60 / 90 ДНІВ -->
+<section class="section">
+  <h2 class="title">Дорожня карта: 30 / 60 / 90 днів</h2>
+  <p class="sub">
+    Щоб вам було простіше орієнтуватися, ми розбиваємо запуск на три
+    відрізки. Це не “жорсткі гарантії”, а реалістичний план при
+    нормальній спільній роботі.
+  </p>
+
+  <div class="timeline">
+    <div class="timeline-card">
+      <div class="timeline-badge">Перші 30 днів</div>
+      <div class="timeline-title">Фундамент бренду</div>
+      <div class="timeline-text">
+        • Назва, логотип, фірмовий стиль.<br>
+        • Структура сайту, базове наповнення та SEO-основа.<br>
+        • Стартове оформлення соцмереж та акаунтів.<br>
+        • Налаштування аналітики та пікселів.
+      </div>
+    </div>
+
+    <div class="timeline-card">
+      <div class="timeline-badge">До 60 днів</div>
+      <div class="timeline-title">Запуск продажів</div>
+      <div class="timeline-text">
+        • Старт рекламних кампаній у Google та Meta.<br>
+        • Запуск OLX, Prom.ua, Хорошоп.<br>
+        • Перші регулярні заявки та замовлення.<br>
+        • Навчання менеджера на реальних діалогах.
+      </div>
+    </div>
+
+    <div class="timeline-card">
+      <div class="timeline-badge">До 90 днів</div>
+      <div class="timeline-title">Стабільність і масштабування</div>
+      <div class="timeline-text">
+        • Оптимізація рекламних зв’язок і бюджетів.<br>
+        • Аналіз маржинальності по категоріях.<br>
+        • Корекція асортименту під ваш регіон.<br>
+        • Вихід на прогнозований щомісячний прибуток.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ОБМЕЖЕННЯ 5 ПАРТНЕРІВ -->
+<section class="section">
+  <h2 class="title">Чому лише <span class="title-accent">5 партнерів</span>?</h2>
+  <p class="sub">
+    Ми навмисно обмежуємо кількість франчайзі/white label-партнерів, щоб
+    не створювати внутрішню конкуренцію та мати можливість якісно
+    супроводжувати кожен проєкт.
+  </p>
+
+  <div class="benefits-list">
+    <div class="benefit">
+      <i data-lucide="target"></i>
+      <div>
+        <div class="benefit-title">Без перенасичення ринку</div>
+        <div>
+          Ми не відкриваємо десятки однакових точок у кожному місті. Кожен
+          партнер отримує свій ринок, а не боротьбу з “клонованими” магазинами.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="group"></i>
+      <div>
+        <div class="benefit-title">Партнерська екосистема, а не конкуренти</div>
+        <div>
+          Партнери можуть обмінюватися досвідом, результатами, кращими
+          рекламними зв’язками, а не “воювати” один з одним.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="hand-heart"></i>
+      <div>
+        <div class="benefit-title">Якісний супровід</div>
+        <div>
+          Обмежена кількість дозволяє реально виділяти час на кожного:
+          розбирати цифри, аналізувати маркетинг, підказувати по стратегії.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="map-pin"></i>
+      <div>
+        <div class="benefit-title">Зона відповідальності</div>
+        <div>
+          Можливість закріпити за партнером місто/регіон або нішеву зону,
+          щоб уникнути перетинів по основних аудиторіях.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <h2 class="title">Поширені питання про франшизу</h2>
+
+  <div class="faq-item">
+    <h3><i data-lucide="help-circle"></i> Чим ваша франшиза відрізняється від класичної?</h3>
+    <p>
+      Класична франшиза — це зазвичай робота під єдиним брендом. У нашому випадку
+      ви отримуєте <strong>свій власний бренд</strong>, а ми виступаємо як
+      white label-партнер: даємо товари, системи, досвід, підтримку. Для
+      клієнтів ви — окремий, повноцінний бренд на ринку.
+    </p>
+  </div>
+
+  <div class="faq-item">
+    <h3><i data-lucide="coins"></i> Чому роялті саме 15% від чистого прибутку?</h3>
+    <p>
+      Нам важливо, щоб франшиза була вигідною обом сторонам. 15% від чистого
+      прибутку дозволяють нам підтримувати систему, розвивати постачальника,
+      маркетинг та стандарти, при цьому у вас залишається 85% чистого доходу.
+    </p>
+  </div>
+
+  <div class="faq-item">
+    <h3><i data-lucide="receipt-text"></i> Як фіксується “чистий прибуток”?</h3>
+    <p>
+      Це чітко прописано в договорі: виручка мінус собівартість товару,
+      рекламні витрати, зарплати та інші прямі витрати. Формула прозора,
+      ви ведете облік, ми періодично звіряємося по звітах та аналітиці.
+    </p>
+  </div>
+
+  <div class="faq-item">
+    <h3><i data-lucide="user-round"></i> Хто займається клієнтами та дзвінками?</h3>
+    <p>
+      Всі клієнти — ваші. Або ви самі, або найнятий вами менеджер відповідає
+      на дзвінки, повідомлення, консультує та супроводжує замовлення.
+      Ми даємо скрипти, інструкції, навчання, але відповідальність за
+      сервіс перед клієнтом несемо разом з вами.
+    </p>
+  </div>
+
+  <div class="faq-item">
+    <h3><i data-lucide="flame"></i> Що буде, якщо партнер перестане працювати?</h3>
+    <p>
+      Цей момент також фіксується в договорі. Якщо партнер системно
+      не виконує зобов’язання або не сплачує роялті, ми маємо право
+      розірвати договір і відкрити можливість для іншого партнера в
+      цьому регіоні. Це потрібно, щоб не “тримати” мертві проєкти.
+    </p>
+  </div>
+</section>
+
+<!-- ФОРМА / ЗАЯВКА -->
+<section class="section">
+  <h2 class="title">Залишити заявку на франшизу / white label</h2>
+  <p class="sub">
+    Заповніть коротку форму, і ми проведемо з вами стратегічну консультацію:
+    пройдемося по цифрах, очікуваннях, місту/регіону та чесно скажемо,
+    чи підходить вам цей формат.
+  </p>
+
+  <div class="form-grid">
+    <div class="form-card">
+      <div class="form-hint">
+        Форма умовна — можна розмістити реальну форму або просто CTA-кнопку на Telegram.
+        Поки що ви можете написати нам одразу:
+        <a href="https://t.me/manager_samostroy_shop" target="_blank" style="color:var(--accent2);text-decoration:underline;">
+          @manager_samostroy_shop
+        </a>
+      </div>
+
+      <label>Ім’я</label>
+      <input type="text" placeholder="Як до вас звертатися?" />
+
+      <label>Місто / регіон</label>
+      <input type="text" placeholder="Ваше місто або область" />
+
+      <label>Досвід у бізнесі або продажах (якщо є)</label>
+      <textarea placeholder="Коротко опишіть свій досвід, якщо він є"></textarea>
+
+      <label>Телефон / Telegram</label>
+      <input type="text" placeholder="@username або номер телефону" />
+
+      <button
+        class="btn"
+        type="button"
+        onclick="window.open('https://t.me/manager_samostroy_shop?text=Доброго%20дня!%20Хочу%20залишити%20заявку%20на%20франшизу%20Samostroy%20Shop%20та%20обговорити%20деталі.','_blank')"
+      >
+        <i data-lucide="send"></i>
+        Написати в Telegram
+      </button>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="info"></i> Що буде після заявки</h3>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:10px;">
+        1. Ми зв’яжемося з вами в Telegram у зручний час.<br>
+        2. Поставимо кілька запитань про ваш досвід, цілі та регіон.<br>
+        3. Покажемо фінмодель і варіанти розвитку саме у вашому випадку.<br>
+        4. Якщо “клікне” з обох сторін — перейдемо до договору та запуску.
+      </p>
+
+      <div class="benefit" style="margin-top:10px;">
+        <i data-lucide="alarm-clock"></i>
+        <div>
+          <div class="benefit-title">Пропозиція обмежена</div>
+          <div>
+            Ми працюємо максимум з 5 партнерами, щоб зберегти якість
+            супроводу та не створювати зайву конкуренцію. Якщо місця
+            закриються, прийом заявок буде зупинений.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA ФІНАЛ -->
+<section class="section">
+  <div class="cta">
+    <div class="cta-badge">Ліміт — 5 партнерів</div>
+    <div>
+      <h3>Готові будувати власний бренд на базі Samostroy Shop?</h3>
+      <p>
+        Якщо ви бачите себе в цьому форматі, хочете прозору фінмодель,
+        сильний продукт та підтримку досвідченої команди — зробіть перший
+        крок. Напишіть нам у Telegram, і ми детально все розберемо.
+      </p>
+    </div>
+
+    <a
+      href="https://t.me/manager_samostroy_shop?text=Доброго%20дня!%20Хочу%20стати%20white%20label%20%2F%20франшиза%20партнером%20Samostroy%20Shop.%20Готовий%2Fготова%20обговорити%20умови."
+      class="btn"
+      target="_blank"
+    >
+      <i data-lucide="handshake"></i>
+      Обговорити партнерство
+    </a>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Samostroy Shop — Франшиза / White Label для будівельного бізнесу
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+</script>
+
+</body>
+</html>
