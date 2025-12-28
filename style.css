@@ -915,32 +915,6 @@ footer{
   transform:translateY(0);
 }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:900px){
-  .hero{
-    flex-direction:column;
-  }
-  .hero-right{
-    width:100%;
-  }
-  footer{
-    grid-template-columns:1fr 1fr;
-  }
-}
-
-@media(max-width:720px){
-  .header-center{
-    order:3;
-    width:100%;
-  }
-  .search-bar{
-    max-width:100%;
-  }
-  footer{
-    grid-template-columns:1fr;
-  }
-}
-
 /* Карточки распродажи и разметка в детальном описании */
 .sale-section{
   padding:20px;
@@ -1600,31 +1574,6 @@ footer{
   box-shadow: 0 14px 36px rgba(0,0,0,0.85);
 }
 
-/* Адаптивність */
-@media(max-width:1100px) {
-  .interiors-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media(max-width:768px) {
-  .interiors-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .interior-item {
-    height: 160px;
-  }
-}
-
-@media(max-width:480px) {
-  .interiors-grid {
-    grid-template-columns: 1fr;
-  }
-  .interior-item {
-    height: 180px;
-  }
-}
-
 /* КНОПКА ПОВЕРНЕННЯ ДО КАТЕГОРІЙ */
 .interiors-back-btn {
   margin-top: 35px;
@@ -1772,6 +1721,58 @@ footer{
   .burger-btn { display: block; }
 }
 
+/* Адаптивність */
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .hero{
+    flex-direction:column;
+  }
+  .hero-right{
+    width:100%;
+  }
+  footer{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:720px){
+  .header-center{
+    order:3;
+    width:100%;
+  }
+  .search-bar{
+    max-width:100%;
+  }
+  footer{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:1100px) {
+  .interiors-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media(max-width:768px) {
+  .interiors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .interior-item {
+    height: 160px;
+  }
+}
+
+@media(max-width:480px) {
+  .interiors-grid {
+    grid-template-columns: 1fr;
+  }
+  .interior-item {
+    height: 180px;
+  }
+}
+
 /* СТРЕЛКИ АКЦИОННЫХ ТОВАРОВ */
 /* ===== SALE SLIDER ARROWS ===== */
 .sale-arrow {
@@ -1791,13 +1792,24 @@ footer{
 
 .sale-arrow:hover {
   opacity: 1;
-  background: rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.20);
 }
 
-.sale-arrow i {
+/* Иконка Lucide внутри стрелки */
+.sale-arrow svg {
   width: 26px;
   height: 26px;
-  color: var(--accent2);
+  stroke: var(--accent);              /* основной оранжевый */
+  /* можно так же задать цвет через color, но у Lucide главное stroke */
+  /* color: var(--accent); */
+  filter: drop-shadow(0 0 10px rgba(255,122,26,0.7));
+}
+
+/* При наведении — ещё теплее */
+.sale-arrow:hover svg {
+  stroke: #ff9a3c;
+  /* color: #ff9a3c; */
+  filter: drop-shadow(0 0 14px rgba(255,122,26,0.9));
 }
 
 .sale-arrow-left {
@@ -3339,4 +3351,149 @@ html.ny .ny-snow{ display:block; }
     font-size: 11px;
     letter-spacing: 0.18em;
   }
+}
+
+/* ===== MAP MODAL ===== */
+.map-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  height: min(70vh, 480px);
+  border: 0;
+  display: block;
+}
+
+.map-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .map-modal-actions {
+    justify-content: center;
+  }
+}
+
+/* Контейнер для зум-картинки в модалке */
+.modal-image-zoom {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  cursor: zoom-in;
+  max-height: 420px;
+}
+
+/* Сама картинка */
+.modal-image-zoom img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.25s ease, transform-origin 0.15s ease;
+  transform-origin: center center;
+}
+
+/* Когда картинка увеличена */
+.modal-image-zoom.zoomed {
+  cursor: zoom-out;
+}
+
+.modal-image-zoom.zoomed img {
+  transform: scale(2); /* можешь сделать 2.5 или 3, если хочешь сильнее */
+}
+
+/* Опционально — затемняем фон и показываем лупу через псевдоэлемент */
+.modal-image-zoom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.25));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-image-zoom:hover::after {
+  opacity: 1;
+}
+
+/* Если хочешь иконку-лупу через CSS, можно так: */
+.modal-image-zoom::before {
+  content: "🔍";
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  font-size: 20px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* ===== МОДАЛКА ТОВАРА — ЛЕЙАУТ ===== */
+
+.modal-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+/* ПК: картинка слева, текст справа */
+@media (min-width: 768px) {
+  .modal-body {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .modal-image-zoom {
+    flex: 0 0 45%;
+    max-width: 45%;
+  }
+
+  .modal-info {
+    flex: 1 1 0;
+    min-width: 0; /* чтобы текст не ломал ширину */
+  }
+}
+
+/* Мобилка: всё столбиком */
+@media (max-width: 767px) {
+  .modal-body {
+    flex-direction: column;
+  }
+
+  .modal-image-zoom {
+    width: 100%;
+  }
+
+  .modal-info {
+    width: 100%;
+  }
+}
+
+.category-chip{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.category-chip img{
+  width:24px;
+  height:24px;
+  object-fit:contain;
+  pointer-events:none;
+  opacity:0.9;
 }
