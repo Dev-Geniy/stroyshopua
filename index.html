@@ -926,12 +926,20 @@
           </div>
 
           <div class="supplier-cta-actions">
+            
             <button class="btn btn-primary js-consult">
               <i data-lucide="message-circle"></i> Уточнити наявність
             </button>
+            
+            <!-- 🧭 НОВАЯ КНОПКА КАРТЫ -->
+            <button class="btn btn-outline" id="openMapBtn">
+              <i data-lucide="map-pin"></i> Карта складу
+            </button>
+            
             <a class="btn btn-outline" href="#footer">
               <i data-lucide="phone"></i> Контакти
             </a>
+            
           </div>
         </div>
 
@@ -941,7 +949,6 @@
       </div>
 
     </div>
-
   </div>
 </section>
 
@@ -1501,9 +1508,14 @@
     <h3>Товар</h3>
     <button class="modal-close" id="productModalClose"><i data-lucide="x"></i></button>
   </div>
-  <div class="modal-body">
+  
+<div class="modal-body">
+  <div class="modal-image-zoom" id="modalImageWrap">
     <img id="modalImage" src="" alt="">
-    <div class="modal-info">
+  </div>
+
+  <div class="modal-info">
+    <!-- категория, заголовок, цена и т.д. -->
       <div class="filters-label" id="modalCategory"></div>
       <h2 id="modalTitle"></h2>
       <div>Артикул: <span id="modalSku"></span></div>
@@ -1608,6 +1620,41 @@
   </div>
 </div>
 
+<!-- MAP MODAL -->
+<div id="mapOverlay" class="modal-overlay hidden"></div>
+<div id="mapModal" class="modal hidden">
+  <div class="modal-header">
+    <h3>Карта складу / самовивозу</h3>
+    <button class="modal-close" id="mapClose">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <div class="modal-body map-modal-body">
+    <div class="map-wrapper">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2648.44724821839!2d34.992545675432645!3d48.40955733218878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40dbe4b6e09d336f%3A0x7ee86d25b96f561c!2z0YPQuy4g0JrRgNCw0YHQvdC-0L_QvtC70YzRgdC60LDRjywgMTcsINCU0L3QtdC_0YAsINCU0L3QtdC_0YDQvtC_0LXRgtGA0L7QstGB0LrQsNGPINC-0LHQu9Cw0YHRgtGMLCA0OTAwMA!5e0!3m2!1sru!2sua!4v1766903976870!5m2!1sru!2sua"
+        width="600"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div class="map-modal-actions">
+      <button class="btn btn-primary" id="mapTelegramBtn">
+        <i data-lucide="message-circle"></i> Написати в Telegram
+      </button>
+      <button class="btn btn-outline" id="mapCloseBottomBtn">
+        Закрити
+      </button>
+    </div>
+  </div>
+</div>
+
+  
 <!-- CART DRAWER -->
 <div id="cartOverlay" class="cart-overlay hidden"></div>
 <aside id="cartDrawer" class="cart-drawer">
