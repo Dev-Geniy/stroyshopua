@@ -12,7 +12,8 @@ const XML_FEED_URL = 'products.xml';
 const CATEGORY_KEYWORDS = [
   
   //3D Панелі
-  { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D'] },
+  { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D'],     icon: 'img/icons/panel3d.png'
+},
   { name: 'Декоративні 3D панелі', keywords: ['Декоративна 3D панель'] },
   { name: 'ПВХ панелі і плити', keywords: ['ПВХ панель', 'ПВХ плита', 'ПВХ'] },
   { name: 'Стенові панелі', keywords: ['Панель стінова', 'Панель-рейка', 'Панель рейка'] },
@@ -72,7 +73,7 @@ const CATEGORY_KEYWORDS = [
   //Контейнери
   { name: 'Контейнери для зберігання', keywords: ['Контейнер для зберігання'] },
   
-    //Меблі
+  //Меблі
   { name: 'Меблі для дому та саду', keywords: ['Набір мебелів складний', 'Меблі', 'Тумба', 'Стелаж', 'Садовий стіл', 'Стіл','Етажерка','Полиця-органайзер','Шафа', 'Надувне крісло', 'Надувний диван', 'Набір мебелів','Комплект надувних меблів'
     ] },
 ];
@@ -98,7 +99,7 @@ function getCategoryFromTitle(title) {
 const DEFAULT_PRODUCTS = [
   {
     id:1,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Уцінка Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -109,7 +110,7 @@ const DEFAULT_PRODUCTS = [
   },
     {
     id:2,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -120,7 +121,7 @@ const DEFAULT_PRODUCTS = [
   },
     {
     id:3,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Уцінка Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -131,7 +132,7 @@ const DEFAULT_PRODUCTS = [
   },
     {
     id:4,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -142,7 +143,7 @@ const DEFAULT_PRODUCTS = [
   },
     {
     id:5,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Уцінка Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -153,7 +154,7 @@ const DEFAULT_PRODUCTS = [
   },
     {
     id:6,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Уцінка Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -164,7 +165,7 @@ const DEFAULT_PRODUCTS = [
   },
     {
     id:7,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -175,7 +176,7 @@ const DEFAULT_PRODUCTS = [
   },
     {
     id:8,
-    title:'Уценка Ковролін SoftLux 4м — кремовий',
+    title:'Уцінка Ковролін SoftLux 4м — кремовий',
     category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
     price:279,
     sku:14417,
@@ -197,7 +198,7 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id:10,
-    title:'Уценка Плівка біла матова 0.45м',
+    title:'Плівка біла матова 0.45м',
     category: getCategoryFromTitle('Плівка біла матова 0.45м'),
     price:59,
     sku:14418,
@@ -626,8 +627,12 @@ function renderCategories(){
   CATEGORY_KEYWORDS.forEach(group => {
     const btn = document.createElement('button');
     btn.className = 'category-chip';
-    btn.textContent = group.name;
     btn.dataset.cat = group.name;
+
+    btn.innerHTML = `
+      ${group.icon ? `<img src="${group.icon}" alt="">` : ''}
+      <span>${group.name}</span>
+    `;
 
     btn.addEventListener('click', () => {
       document.querySelectorAll('.category-chip').forEach(b => b.classList.remove('active'));
@@ -922,6 +927,34 @@ const modalShort = document.getElementById('modalShort');
 const modalFull = document.getElementById('modalFull');
 const modalQtyInput = document.getElementById('modalQtyInput');
 
+// Обёртка для картинки в модалке (для зума)
+const modalImageWrap = document.getElementById('modalImageWrap');
+
+if (modalImageWrap) {
+  // Клик — включаем / выключаем zoom
+  modalImageWrap.addEventListener('click', (e) => {
+    // чтобы случайное выделение текста не мешало
+    e.preventDefault();
+
+    const isZoomed = modalImageWrap.classList.toggle('zoomed');
+    if (!isZoomed) {
+      // вернули обычное состояние
+      modalImage.style.transformOrigin = 'center center';
+    }
+  });
+
+  // При движении мыши по увеличенной картинке — смещаем центр зума
+  modalImageWrap.addEventListener('mousemove', (e) => {
+    if (!modalImageWrap.classList.contains('zoomed')) return;
+
+    const rect = modalImageWrap.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    modalImage.style.transformOrigin = `${x}% ${y}%`;
+  });
+}
+
 /**
  * Красиво форматируем длинное описание:
  * - абзацы
@@ -1031,9 +1064,18 @@ function openProductModal(id){
   }
 }
 
+
 function closeProductModal(){
   productModal.classList.add('hidden');
   productModalOverlay.classList.add('hidden');
+
+  // Сбрасываем зум, когда модалка закрывается
+  if (modalImageWrap) {
+    modalImageWrap.classList.remove('zoomed');
+  }
+  if (modalImage) {
+    modalImage.style.transformOrigin = 'center center';
+  }
 }
 
 document.getElementById('productModalClose').addEventListener('click', closeProductModal);
@@ -1444,7 +1486,68 @@ loadBlogPreview();
 // =========================
 
 /* ============================================================
-   🟧 25. FAQ accordion
+   🟧 25. MAP MODAL — карта складу
+============================================================ */
+const mapModal     = document.getElementById('mapModal');
+const mapOverlay   = document.getElementById('mapOverlay');
+const openMapBtn   = document.getElementById('openMapBtn');
+const mapCloseTop  = document.getElementById('mapClose');
+const mapCloseBot  = document.getElementById('mapCloseBottomBtn');
+const mapTgBtn     = document.getElementById('mapTelegramBtn');
+
+function openMapModal() {
+  if (!mapModal || !mapOverlay) return;
+  mapModal.classList.remove('hidden');
+  mapOverlay.classList.remove('hidden');
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
+
+function closeMapModal() {
+  if (!mapModal || !mapOverlay) return;
+  mapModal.classList.add('hidden');
+  mapOverlay.classList.add('hidden');
+}
+
+// Открыть по кнопке "Карта складу"
+if (openMapBtn) {
+  openMapBtn.addEventListener('click', openMapModal);
+}
+
+// Закрыть по крестику
+if (mapCloseTop) {
+  mapCloseTop.addEventListener('click', closeMapModal);
+}
+
+// Закрыть по нижней кнопке "Закрити"
+if (mapCloseBot) {
+  mapCloseBot.addEventListener('click', closeMapModal);
+}
+
+// Закрыть по клику по затемнению
+if (mapOverlay) {
+  mapOverlay.addEventListener('click', closeMapModal);
+}
+
+// Закрыть по Esc
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeMapModal();
+  }
+});
+
+// Кнопка "Написати в Telegram" под картой
+if (mapTgBtn) {
+  mapTgBtn.addEventListener('click', () => {
+    openTelegram('Питання по складу / самовивозу (Краснопільська 17, Дніпро)');
+  });
+}
+
+
+/* ============================================================
+   🟧 26. FAQ accordion
 ============================================================ */
 (function initFAQ(){
   const items = document.querySelectorAll('.faq-item');
