@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Робоча сторінка — оголошення та маркетплейси</title>
 
-  <!-- Фавікон -->
   <link rel="icon" type="image/png" href="favicon.png">
-  
-  <!-- ШРИФТ -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- ІКОНКИ -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- БЕЗ SEO-БЛОКІВ -->
@@ -278,8 +273,7 @@
       margin-bottom:16px;
       align-items:center;
     }
-    .tools-bar input,
-    .tools-bar select{
+    .tools-bar input{
       background:var(--bg2);
       border-radius:999px;
       border:1px solid var(--border);
@@ -287,7 +281,7 @@
       color:var(--text);
       font-size:13px;
       outline:none;
-      min-width:120px;
+      min-width:160px;
     }
     .tools-bar input::placeholder{color:var(--muted);}
 
@@ -409,7 +403,6 @@
       margin-top:6px;
     }
 
-    /* BADGE УЦІНКА */
     .badge-sale{
       display:inline-block;
       padding:2px 6px;
@@ -420,7 +413,6 @@
       margin-left:6px;
     }
 
-    /* LOAD MORE */
     .load-more-wrap{
       text-align:center;
       margin-top:18px;
@@ -551,7 +543,7 @@
   </div>
 </section>
 
-<!-- БЕЗКОШТОВНІ ДОШКИ ОГОЛОШЕНЬ -->
+<!-- 1. БЕЗКОШТОВНІ ДОШКИ ОГОЛОШЕНЬ -->
 <section class="section" id="free-boards">
   <h2 class="title">Безкоштовні дошки оголошень</h2>
   <p class="sub">
@@ -657,7 +649,7 @@
   </div>
 </section>
 
-<!-- ПЛАТНІ ДОШКИ ОГОЛОШЕНЬ -->
+<!-- 2. ПЛАТНІ ДОШКИ -->
 <section class="section" id="paid-boards">
   <h2 class="title">Платні дошки та просування оголошень</h2>
   <p class="sub">
@@ -666,7 +658,6 @@
   </p>
 
   <div class="boards-wrap">
-    <!-- Платні інструменти на великих дошках -->
     <div class="board-card">
       <div class="board-header">
         <div class="board-title">Платні опції на великих дошках</div>
@@ -708,7 +699,6 @@
       </div>
     </div>
 
-    <!-- Окремі платні дошки -->
     <div class="board-card">
       <div class="board-header">
         <div class="board-title">Окремі платні дошки</div>
@@ -740,7 +730,7 @@
   </div>
 </section>
 
-<!-- МАРКЕТПЛЕЙСИ -->
+<!-- 3. МАРКЕТПЛЕЙСИ -->
 <section class="section" id="marketplaces">
   <h2 class="title">Маркетплейси: де варто бути присутнім</h2>
   <p class="sub">
@@ -749,7 +739,6 @@
   </p>
 
   <div class="boards-wrap">
-    <!-- Умовно безкоштовні -->
     <div class="board-card">
       <div class="board-header">
         <div class="board-title">Умовно безкоштовні маркетплейси</div>
@@ -783,7 +772,6 @@
       </div>
     </div>
 
-    <!-- Платні маркетплейси -->
     <div class="board-card">
       <div class="board-header">
         <div class="board-title">Платні маркетплейси</div>
@@ -815,21 +803,17 @@
   </div>
 </section>
 
-<!-- ТОВАРИ ДЛЯ КОПІЮВАННЯ -->
+<!-- 4. ТОВАРИ ДЛЯ КОПІЮВАННЯ -->
 <section class="section" id="products">
   <h2 class="title">Товари для копіювання на дошки та маркетплейси</h2>
   <p class="sub">
-    Обирай потрібну позицію, копіюй заголовок, опис, ціну, посилання на фото або готовий текст оголошення.
-    Далі просто вставляєш на майданчик — і публікуєш.
+    Обирай позицію, копіюй заголовок, опис, ціну, посилання на фото або готовий текст оголошення — і вставляй на майданчики.
   </p>
 
   <div class="tools-bar">
     <input type="text" id="searchInput" placeholder="Пошук за назвою або артикулом...">
-    <select id="categoryFilter">
-      <option value="">Усі категорії</option>
-    </select>
     <button class="chip-btn" id="clearFiltersBtn">
-      <i data-lucide="x-circle"></i> Скинути фільтри
+      <i data-lucide="x-circle"></i> Скинути пошук
     </button>
   </div>
 
@@ -842,66 +826,58 @@
   </div>
 </section>
 
-<!-- ПОРАДИ -->
+<!-- 5. ПОРАДИ -->
 <section class="section" id="tips">
   <h2 class="title">Поради: заголовки, УТП та структура оголошення</h2>
   <p class="sub">
-    Цей блок — як маленький чек-лист. Перед тим, як публікувати оголошення, пробігтися очима по пунктах —
-    і виправити те, що забули.
+    Маленький чек-лист перед публікацією, щоб оголошення виглядало як у професіонала.
   </p>
 
   <ul class="tips-list">
     <li>
       <strong>1. Заголовок = що + де + для кого.</strong><br>
-      Приклад: “Вінілова плитка під дерево | Для кухні та коридору | Вологостійка”.
-      Важливо: ключові слова + зона використання + основна вигода.
+      “Вінілова плитка під дерево | Для кухні та коридору | Вологостійка”.  
+      Ключові слова + зона використання + основна вигода.
     </li>
     <li>
-      <strong>2. Унікальна торгова пропозиція (УТП).</strong><br>
-      В одному-двох реченнях відповісти: чому купувати саме у нас?
-      Наприклад: “Підбір під ваш ремонт + консультація по укладці”, “Відправка в день замовлення”, “Опт/дрібний опт”.
+      <strong>2. УТП.</strong><br>
+      Чітко відповісти: чому купувати саме у нас?  
+      “Підбір під ваш ремонт”, “Відправка в день замовлення”, “Опт/дрібний опт”.
     </li>
     <li>
       <strong>3. Структура опису.</strong><br>
-      1) Де використовується (кухня, коридор, стіни, підлога).<br>
-      2) Основні переваги (зносостійкість, водостійкість, легко мити).<br>
+      1) Де використовується.<br>
+      2) Переваги (зносостійкість, водостійкість).<br>
       3) Характеристики (розмір, товщина, матеріал).<br>
-      4) Як замовити (написати в чат, дзвінок, Viber/Telegram).
+      4) Як замовити.
     </li>
     <li>
-      <strong>4. Фото — перше враження.</strong><br>
-      Перше фото має бути “вау”: чиста кімната, гарний ракурс, видно текстуру/малюнок.
-      Не соромитись використовувати фото “до/після”, якщо є.
+      <strong>4. Фото.</strong><br>
+      Перше фото — найкраще. Показати інтер’єр, фактуру, масштаб.
     </li>
     <li>
-      <strong>5. Ціна — конкретика.</strong><br>
-      Писати реальну ціну або діапазон. Якщо є знижка чи “УЦІНКА” — відобразити це в назві та в описі.
-      Люди люблять прозорість.
+      <strong>5. Ціна.</strong><br>
+      Писати чесну ціну. “УЦІНКА” — виносити в заголовок і перший рядок опису.
     </li>
     <li>
-      <strong>6. Локація та доставка.</strong><br>
-      Завжди вказувати місто/область + способи доставки (НП, Укрпошта) і орієнтовні строки.
-      Це зменшує кількість уточнювальних питань.
+      <strong>6. Локація + доставка.</strong><br>
+      Місто + служба доставки + орієнтовні строки — мінус купа однакових питань.
     </li>
     <li>
       <strong>7. Заклик до дії.</strong><br>
-      Вкінці тексту додавати щось на кшталт: “Напишіть у чат, скинемо додаткові фото”,
-      “Допоможемо порахувати потрібну кількість під вашу кімнату”.
+      “Напишіть у чат — підберемо під вашу кімнату”, “Скинемо додаткові фото”.
     </li>
     <li>
-      <strong>8. Уникай “заборонених” тригерів майданчика.</strong><br>
-      Не використовувати капслок на весь текст, зайву кількість емодзі та “100% гарантія”
-      там, де це може викликати підозру у модерації.
+      <strong>8. Правила майданчика.</strong><br>
+      Без капслоку на півтексту, без 100 емодзі й “100% гарантія на все”.
     </li>
     <li>
       <strong>9. Один товар — одне оголошення.</strong><br>
-      Краще зробити кілька карток для різних кольорів/малюнків, ніж намагатись усе запхати в одне оголошення.
-      Так простіше тестувати, що заходить краще.
+      Краще 3 окремих картки по кольорам, ніж одна “збірна солянка”.
     </li>
     <li>
-      <strong>10. Аналіз результатів.</strong><br>
-      Фіксувати для себе: на якій платформі, який заголовок і текст дали більше заявок.
-      У майбутньому просто копіюєш найкращі варіанти й масштабуєш.
+      <strong>10. Аналіз.</strong><br>
+      Фіксувати, що працює найкраще: заголовок, фото, текст, платне просування.
     </li>
   </ul>
 </section>
@@ -915,24 +891,25 @@
 </div>
 
 <script>
+  /* =======================
+     0. БАЗА
+  ======================= */
   const XML_FEED_URL = 'products.xml';
 
   const productsGrid = document.getElementById('productsGrid');
   const loadMoreBtn = document.getElementById('loadMoreBtn');
   const searchInput = document.getElementById('searchInput');
-  const categoryFilter = document.getElementById('categoryFilter');
   const clearFiltersBtn = document.getElementById('clearFiltersBtn');
   const copyToast = document.getElementById('copyToast');
 
-  let allProducts = [];
-  let filteredProducts = [];
-  let visibleCount = 30;
+  let ALL_PRODUCTS = [];
+  let FILTERED_PRODUCTS = [];
   const PAGE_SIZE = 30;
+  let visibleCount = PAGE_SIZE;
 
-  function money(value){
-    if(value === undefined || value === null || value === '') return '';
-    const num = parseFloat(value);
-    if(isNaN(num)) return value;
+  function money(n){
+    const num = Number(n);
+    if(isNaN(num)) return '';
     return new Intl.NumberFormat('uk-UA',{
       style:'currency',
       currency:'UAH',
@@ -961,6 +938,200 @@
     }
   }
 
+  /* =======================
+     1. КАТЕГОРІЇ ПО TITLE (як на головній)
+  ======================= */
+  const CATEGORY_KEYWORDS = [
+    { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D']},
+    { name: 'Декоративні 3D панелі', keywords: ['Декоративна 3D панель'] },
+    { name: 'ПВХ панелі і плити', keywords: ['ПВХ панель', 'ПВХ плита', 'ПВХ'] },
+    { name: 'Стенові панелі', keywords: ['Панель стінова', 'Панель-рейка', 'Панель рейка'] },
+    { name: 'Покриття вінілове', keywords: ['Покриття вінілове самоклеюче'] },
+    { name: 'Плитка', keywords: ['Вінілова плитка', 'Вінілова плита', 'ПВХ плитка', 'Поліуретанова плитка', 'Алюмінієва плитка', 'LVT плитка', 'Плитка під ковролін'] },
+    { name: 'PET плитка', keywords: ['Стінова PET плитка', 'PET мозаіка', 'PET плитка у рулоні'] },
+    { name: 'Профілі та декор', keywords: ['Профіль', 'Рейка декоративна', 'Молдинг'] },
+    { name: 'Плінтуси', keywords: ['Плінтус РР', 'Плінтус вініловий', 'Плінтус'] },
+    { name: 'Самоклеюча плівка', keywords: ['Плівка самоклеюча', 'Плівка', 'Плівка віконна'] },
+    { name: 'Шпалери', keywords: ['Шпалери'] },
+    { name: 'Теплі шпалери', keywords: ['Теплі шпалери'] },
+    { name: 'Мозаїка з декоративного скла', keywords: ['Мозаїка з декоративного скла'] },
+    { name: 'Підлогове вінілове покриття', keywords: ['Вінілове покриття', 'Напольное виниловое покрытие'] },
+    { name: 'Покриття вінілове самоклеюче 3D рейки', keywords: ['Покриття вінілове самоклеюче 3D рейки'] },
+    { name: 'Підлога-пазл', keywords: ['Підлога пазл', 'Підлога-пазл', 'Підлога-пазл плюшевий'] },
+    { name: 'Килимки термо (дитячі)', keywords: ['Килимок дитячий', 'Термокилимок', 'Килимок', 'Дитячий'] },
+    { name: 'Килимки вологопоглинаючі', keywords: ['Вологопоглинаючий килимок'] },
+    { name: 'Дзеркала', keywords: ['Дзеркало', 'Дзеркала', 'Дзеркало акрилове', 'Дзеркальний декор'] },
+    { name: 'Екошкіра у рулоні', keywords: ['Екошкіра', 'Шкіра'] },
+    { name: 'Манікюр', keywords: ['Манікюр'] },
+    { name: 'Контейнери для зберігання', keywords: ['Контейнер для зберігання'] },
+    { name: 'Меблі для дому та саду', keywords: ['Набір мебелів складний', 'Меблі', 'Тумба', 'Стелаж', 'Садовий стіл', 'Стіл','Етажерка','Полиця-органайзер','Шафа', 'Надувне крісло', 'Надувний диван', 'Набір мебелів','Комплект надувних меблів'] },
+  ];
+
+  function getCategoryFromTitle(title){
+    const lower = (title || '').toLowerCase();
+    for(const group of CATEGORY_KEYWORDS){
+      for(const key of group.keywords){
+        if(lower.includes(key.toLowerCase())){
+          return group.name;
+        }
+      }
+    }
+    return 'Інше';
+  }
+
+  /* =======================
+     2. ДЕФОЛТНІ ТОВАРИ (якщо XML не працює)
+  ======================= */
+  const DEFAULT_PRODUCTS = [
+    {
+      id:1,
+      title:'Уцінка Ковролін SoftLux 4м — кремовий',
+      category:getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+      price:279,
+      sku:14417,
+      img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      unit:'м',
+      short:'М’який і зносостійкий ковролін для житлових кімнат.',
+      full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
+    },
+    {
+      id:2,
+      title:'Плівка біла матова 0.45м',
+      category:getCategoryFromTitle('Плівка біла матова 0.45м'),
+      price:59,
+      sku:14418,
+      img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      unit:'м',
+      short:'Самоклейна плівка для меблів і декору.',
+      full:'Матовий білий відтінок, підходить для фасадів меблів, дверей, підвіконь. Легко клеїться без бульбашок.'
+    },
+    {
+      id:3,
+      title:'Шпалери Modern Stone',
+      category:getCategoryFromTitle('Шпалери Modern Stone'),
+      price:129,
+      sku:14419,
+      img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      unit:'м',
+      short:'Шпалери з ефектом натурального каменю.',
+      full:'Текстурована поверхня під камінь. Підходить для акцентних стін у вітальні, коридорі, кухні.'
+    }
+  ];
+
+  /* =======================
+     3. XML → МАСИВ ТОВАРІВ
+     (аналогічно до головної, але спрощено)
+  ======================= */
+  async function loadProductsFromXML(){
+    try{
+      const res = await fetch(XML_FEED_URL, { cache:'no-store' });
+      if(!res.ok) throw new Error('Bad status: ' + res.status);
+
+      const text = await res.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, 'application/xml');
+
+      const items = Array.from(xml.getElementsByTagName('item'));
+      if(!items.length){
+        console.warn('XML: не знайдено тегів <item>. Використовую дефолтні товари.');
+        ALL_PRODUCTS = DEFAULT_PRODUCTS.map(p => ({
+          id:p.id,
+          title:p.title,
+          price:p.price,
+          img:p.img,
+          category:p.category,
+          sku:p.sku,
+          unit:p.unit,
+          description:p.full || p.short || ''
+        }));
+        return;
+      }
+
+      const get = (node, tagName) => {
+        const el = node.getElementsByTagName(tagName)[0];
+        return el ? (el.textContent || '').trim() : '';
+      };
+
+      const placeholderImg = 'https://via.placeholder.com/600x400?text=Товар';
+
+      ALL_PRODUCTS = items.map((node, index) => {
+        const rawId =
+          get(node,'g:id') ||
+          get(node,'id') ||
+          String(index + 1);
+
+        const numericId = Number((rawId || '').replace(/\D/g,'')) || (index + 1);
+
+        const title =
+          get(node,'title') ||
+          get(node,'g:title') ||
+          `Товар ${numericId}`;
+
+        const description =
+          get(node,'description') ||
+          get(node,'g:description') ||
+          '';
+
+        const priceText = get(node,'g:price') || '0';
+        const price = parseFloat(
+          priceText
+            .replace(',', '.')
+            .replace(/[^\d.]/g, '')
+        ) || 0;
+
+        const img =
+          get(node,'g:image_link') ||
+          get(node,'g:additional_image_link') ||
+          placeholderImg;
+
+        const availability = (get(node,'g:availability') || '').toLowerCase();
+        if(availability && availability !== 'in stock'){
+          return null;
+        }
+
+        return {
+          id:numericId,
+          title,
+          price,
+          img,
+          category:getCategoryFromTitle(title),
+          sku:rawId,
+          unit:'шт',
+          description
+        };
+      }).filter(Boolean);
+
+      if(!ALL_PRODUCTS.length){
+        console.warn('XML завантажено, але товари не сформувалися. Використовую дефолтні.');
+        ALL_PRODUCTS = DEFAULT_PRODUCTS.map(p => ({
+          id:p.id,
+          title:p.title,
+          price:p.price,
+          img:p.img,
+          category:p.category,
+          sku:p.sku,
+          unit:p.unit,
+          description:p.full || p.short || ''
+        }));
+      }
+    }catch(err){
+      console.error('Помилка завантаження XML:', err);
+      ALL_PRODUCTS = DEFAULT_PRODUCTS.map(p => ({
+        id:p.id,
+        title:p.title,
+        price:p.price,
+        img:p.img,
+        category:p.category,
+        sku:p.sku,
+        unit:p.unit,
+        description:p.full || p.short || ''
+      }));
+    }
+  }
+
+  /* =======================
+     4. ГОТОВИЙ ТЕКСТ ОГОЛОШЕННЯ
+  ======================= */
   function buildFullAd(product){
     const title = product.title || '';
     const priceStr = product.price ? money(product.price) : '';
@@ -973,6 +1144,9 @@
     return `${title}\n\n${category}${sku}${unit}${img}${priceStr ? 'Ціна: ' + priceStr + '\n\n' : '\n'}${desc}\n\nПишіть у чат або телефонуйте, допоможемо підібрати під ваш ремонт.`;
   }
 
+  /* =======================
+     5. РЕНДЕР ТОВАРІВ
+  ======================= */
   function renderProducts(list){
     productsGrid.innerHTML = '';
 
@@ -1046,7 +1220,7 @@
       btn.addEventListener('click',()=>{
         const id = btn.getAttribute('data-id');
         const type = btn.getAttribute('data-type');
-        const product = allProducts.find(p=>String(p.id) === String(id));
+        const product = ALL_PRODUCTS.find(p=>String(p.id) === String(id));
         if(!product) return;
 
         if(type === 'title'){
@@ -1065,84 +1239,29 @@
   }
 
   function updateProductsView(){
-    const slice = filteredProducts.slice(0, visibleCount);
+    const slice = FILTERED_PRODUCTS.slice(0, visibleCount);
     renderProducts(slice);
     if(loadMoreBtn){
-      loadMoreBtn.style.display = visibleCount >= filteredProducts.length ? 'none' : 'inline-flex';
+      loadMoreBtn.style.display = visibleCount >= FILTERED_PRODUCTS.length ? 'none' : 'inline-flex';
     }
   }
 
   function applyFilters(){
     const q = (searchInput.value || '').toLowerCase().trim();
-    const cat = categoryFilter.value;
 
-    filteredProducts = allProducts.filter(p=>{
-      let ok = true;
-      if(q){
-        const hay = `${p.title || ''} ${p.sku || ''}`.toLowerCase();
-        ok = hay.includes(q);
-      }
-      if(ok && cat){
-        ok = (p.category || '').toLowerCase() === cat.toLowerCase();
-      }
-      return ok;
+    FILTERED_PRODUCTS = ALL_PRODUCTS.filter(p=>{
+      if(!q) return true;
+      const hay = `${p.title || ''} ${p.sku || ''}`.toLowerCase();
+      return hay.includes(q);
     });
 
     visibleCount = PAGE_SIZE;
     updateProductsView();
   }
 
-  function fillCategoryFilter(){
-    const set = new Set();
-    allProducts.forEach(p=>{
-      if(p.category){
-        set.add(p.category);
-      }
-    });
-    categoryFilter.innerHTML = '<option value="">Усі категорії</option>';
-    Array.from(set).sort().forEach(cat=>{
-      const opt = document.createElement('option');
-      opt.value = cat;
-      opt.textContent = cat;
-      categoryFilter.appendChild(opt);
-    });
-  }
-
-  // Пример парсинга XML → массив объектов.
-  // Якщо в тебе на головному сайті вже є готовий парсер — просто заміни цю функцію.
-  function parseXmlToProducts(xmlText){
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(xmlText, 'text/xml');
-    const items = Array.from(xml.getElementsByTagName('product'));
-    return items.map((item, index)=>({
-      id: item.getElementsByTagName('id')[0]?.textContent || index + 1,
-      title: item.getElementsByTagName('title')[0]?.textContent || '',
-      price: item.getElementsByTagName('price')[0]?.textContent || '',
-      img: item.getElementsByTagName('image')[0]?.textContent || '',
-      category: item.getElementsByTagName('category')[0]?.textContent || '',
-      sku: item.getElementsByTagName('sku')[0]?.textContent || '',
-      unit: item.getElementsByTagName('unit')[0]?.textContent || '',
-      description: item.getElementsByTagName('description')[0]?.textContent || ''
-    }));
-  }
-
-  async function loadProducts(){
-    try{
-      const res = await fetch(XML_FEED_URL);
-      const text = await res.text();
-
-      allProducts = parseXmlToProducts(text);
-
-      filteredProducts = [...allProducts];
-      fillCategoryFilter();
-      updateProductsView();
-    }catch(e){
-      console.error('Помилка завантаження товарів з XML', e);
-      productsGrid.innerHTML = '<p style="color:#ff9bb0;font-size:14px;">Не вдалося завантажити товари з XML. Перевірте шлях до файлу або формат фіду.</p>';
-    }
-  }
-
-  // Тогл списків в секціях
+  /* =======================
+     6. СПИСКИ ДОшОК: ТОГЛ + ДОДАТИ СВІЙ САЙТ
+  ======================= */
   document.querySelectorAll('.js-toggle-board').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const targetId = btn.getAttribute('data-target');
@@ -1159,7 +1278,6 @@
     });
   });
 
-  // Тогл форм "Додати свій сайт"
   document.querySelectorAll('.js-add-toggle').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const targetId = btn.getAttribute('data-target');
@@ -1173,7 +1291,6 @@
     });
   });
 
-  // Зберегти новий сайт у список (тільки в межах поточної сесії)
   document.querySelectorAll('.js-board-save').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const listId = btn.getAttribute('data-list');
@@ -1200,7 +1317,6 @@
         ${url ? `<a href="${url}" target="_blank" rel="noopener">${name}</a>` : `<span>${name}</span>`}
         ${notes ? `<div>${notes}</div>` : ''}
       `;
-      // вставляємо перед блоком board-add
       const addBlock = list.querySelector('.board-add');
       list.insertBefore(item, addBlock);
 
@@ -1212,25 +1328,18 @@
     });
   });
 
-  // Обробники фільтрів
+  /* =======================
+     7. ПОДІЇ ПОШУКУ/LOAD MORE
+  ======================= */
   if(searchInput){
-    searchInput.addEventListener('input',()=>{
-      applyFilters();
-    });
-  }
-  if(categoryFilter){
-    categoryFilter.addEventListener('change',()=>{
-      applyFilters();
-    });
+    searchInput.addEventListener('input',applyFilters);
   }
   if(clearFiltersBtn){
     clearFiltersBtn.addEventListener('click',()=>{
       searchInput.value = '';
-      categoryFilter.value = '';
       applyFilters();
     });
   }
-
   if(loadMoreBtn){
     loadMoreBtn.addEventListener('click',()=>{
       visibleCount += PAGE_SIZE;
@@ -1238,10 +1347,16 @@
     });
   }
 
-  document.getElementById('year').textContent = new Date().getFullYear();
-  lucide.createIcons();
-
-  loadProducts();
+  /* =======================
+     8. INIT
+  ======================= */
+  (async function init(){
+    document.getElementById('year').textContent = new Date().getFullYear();
+    await loadProductsFromXML();
+    FILTERED_PRODUCTS = [...ALL_PRODUCTS];
+    updateProductsView();
+    if(window.lucide) lucide.createIcons();
+  })();
 </script>
 
 </body>
