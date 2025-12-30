@@ -167,6 +167,14 @@
       max-width:640px; margin-bottom:24px;
     }
 
+    .section-label{
+      text-transform:uppercase;
+      font-size:11px;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
     /* HERO */
     .hero{
       display:grid;
@@ -286,7 +294,7 @@
       font-size:11px; margin-left:6px;
     }
 
-    /* CALCULATOR */
+    /* CALCULATOR (пока не используется, оставляем стиль на будущее) */
     .calc-wrap{
       display:grid; grid-template-columns:1fr 1fr; gap:22px;
     }
@@ -342,6 +350,123 @@
       margin-top:40px;
     }
 
+    /* 3 РІВНІ ПАРТНЕРА */
+.partner-levels{
+  margin-top:18px;
+}
+
+.partner-card{
+  position:relative;
+  overflow:hidden;
+}
+
+.partner-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.02em;
+  margin-bottom:10px;
+}
+
+.partner-badge span{
+  opacity:0.8;
+}
+
+/* Цвета для уровней */
+.partner-card.starter .partner-badge{
+  background:rgba(148,163,184,0.16);
+  color:#e5e7eb;
+}
+
+.partner-card.pro .partner-badge{
+  background:rgba(56,189,248,0.16);
+  color:#7dd3fc;
+}
+
+.partner-card.team .partner-badge{
+  background:rgba(251,191,36,0.16);
+  color:#facc15;
+}
+
+.partner-label{
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+
+.partner-title{
+  font-size:18px;
+  font-weight:700;
+  color:var(--accent2);
+  margin-bottom:6px;
+}
+
+.partner-meta{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+.partner-meta strong{
+  color:var(--text);
+}
+
+/* Список преимуществ */
+.partner-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  margin-top:8px;
+}
+
+.partner-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+
+.partner-dot{
+  width:6px;
+  height:6px;
+  border-radius:999px;
+  background:var(--accent2);
+  margin-top:6px;
+}
+
+/* Маленькие подписи-таблетки */
+.partner-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+
+.partner-pill{
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.09);
+  font-size:11px;
+  color:var(--muted);
+}
+
+/* Небольшая подводка под блоком */
+.partner-note{
+  margin-top:18px;
+  font-size:13px;
+  color:var(--muted);
+  max-width:720px;
+}
+
+    
     /* ========= MOBILE (Идеальная адаптация) ========= */
     @media(max-width:900px){
       .hero{
@@ -371,34 +496,98 @@
     }
     
     /* СЕКЦИЯ АКАДЕМИЯ */
-  /* Timer block */
-  .ac-item{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:10px 14px;
-    text-align:center;
-    min-width:70px;
-  }
+    .ac-item{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px 14px;
+      text-align:center;
+      min-width:70px;
+    }
 
-  .ac-num{
-    font-size:22px;
-    font-weight:800;
-    color:var(--accent2);
-    line-height:1;
-  }
+    .ac-num{
+      font-size:22px;
+      font-weight:800;
+      color:var(--accent2);
+      line-height:1;
+    }
 
-  .ac-label{
-    font-size:12px;
-    color:var(--muted);
-    margin-top:3px;
-  }
+    .ac-label{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:3px;
+    }
 
-  /* Animations reused */
-  @keyframes fadeUp{
-    0%{opacity:0;transform:translateY(10px);}
-    100%{opacity:1;transform:translateY(0);}
-  }
+    /* Дополнительные “инфографические” секции */
+    .pill-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:8px;
+    }
+    .pill{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      font-size:11px;
+      color:var(--muted);
+      background:rgba(255,255,255,0.02);
+    }
+
+    .journey{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+    .journey-step{
+      background:var(--card2);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:20px;
+      position:relative;
+      overflow:hidden;
+    }
+    .journey-step::before{
+      content:attr(data-step);
+      position:absolute;
+      top:10px;right:14px;
+      font-size:22px;
+      font-weight:800;
+      color:rgba(255,255,255,0.08);
+    }
+    .journey-title{
+      font-size:16px;
+      font-weight:600;
+      margin-bottom:6px;
+      color:var(--accent2);
+    }
+    .journey-text{
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .psych-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;
+    }
+    .psych-item{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:16px 18px;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .psych-item strong{
+      color:var(--accent2);
+    }
+
+    /* Animations reused */
+    @keyframes fadeUp{
+      0%{opacity:0;transform:translateY(10px);}
+      100%{opacity:1;transform:translateY(0);}
+    }
   </style>
 </head>
 <body>
@@ -439,15 +628,210 @@
   <div class="grid">
     <div class="card">
       <h3><i data-lucide="store"></i> Для кого</h3>
-      <p>Блогери, магазини, маркетологи, ремонтні компанії.</p>
+      <p>Блогери, магазини, маркетологи, ремонтні компанії, підприємці-початківці.</p>
     </div>
     <div class="card">
       <h3><i data-lucide="infinity"></i> Що ми робимо</h3>
-      <p>Склад, пакування, логістика, консультації клієнтів.</p>
+      <p>Склад, пакування, логістика, консультації клієнтів, контроль якості та відправок.</p>
     </div>
     <div class="card">
       <h3><i data-lucide="rocket"></i> Ваш заробіток</h3>
-      <p>Різниця між оптовою та роздрібною ціною — ваш дохід.</p>
+      <p>Різниця між оптовою та роздрібною ціною — ваш дохід. Чим краще оформлені оголошення, тим більше прибуток.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER LEVELS -->
+<section class="section" id="partner-levels">
+  <h2 class="title">3 рівні партнера Samostroy Shop</h2>
+  <p class="sub">
+    Ми будуємо довгострокову систему, де кожен може рости: від перших оголошень до 
+    стабільного бізнесу з командою. Обирайте свій стартовий рівень — а далі ми допоможемо 
+    перейти на наступний.
+  </p>
+
+  <div class="grid partner-levels">
+    <!-- Starter -->
+    <article class="card partner-card starter">
+      <div class="partner-label">Рівень 1</div>
+      <div class="partner-badge">
+        <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+        <span>Starter</span>
+      </div>
+      <div class="partner-title">Перші кроки в дропшипінгу</div>
+      <div class="partner-meta">
+        Для студентів, новачків, тих, хто тільки тестує нішу та хоче спробувати заробіток без ризиків.
+      </div>
+
+      <ul class="partner-list">
+        <li>
+          <span class="partner-dot"></span>
+          <span>Старт <strong>без мінімального обороту</strong> та без обов’язкових закупівель.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Маржа в середньому <strong>до 10%</strong> за рахунок рекомендованої роздрібної ціни.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Готові фото, описи та базові приклади оголошень для дошок, маркетплейсів та соцмереж.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Безкоштовне професійне навчання у нашій академії Samostroy Academy, курс: "Дропшипінг з нуля".</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Підтримка менеджера в Telegram та по телефону, по базових питаннях.</span>
+        </li>
+      </ul>
+
+      <div class="partner-pills">
+        <span class="partner-pill">Перші 10 оголошень</span>
+        <span class="partner-pill">Тест попиту</span>
+        <span class="partner-pill">Без досвіду</span>
+      </div>
+    </article>
+
+    <!-- Pro -->
+    <article class="card partner-card pro">
+      <div class="partner-label">Рівень 2</div>
+      <div class="partner-badge">
+        <i data-lucide="trending-up" style="width:14px;height:14px;"></i>
+        <span>Pro</span>
+      </div>
+      <div class="partner-title">Стабільний дохід з продажів</div>
+      <div class="partner-meta">
+        Для власників інтернет-магазинів, активних продавців на маркетплейсах та тих, хто вже робить стабільні замовлення.
+      </div>
+
+      <ul class="partner-list">
+        <li>
+          <span class="partner-dot"></span>
+          <span>Місячний оборот від <strong>20 000–30 000+ ₴</strong> або стабільні замовлення кожного тижня.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Поліпшені закупівельні ціни: маржа може зростати до <strong>15%+</strong>.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Розширений доступ до асортименту: новинки, хіти продажів, окремі позиції з уцінки.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Розширені рекомендації: шаблони УТП, готові варіанти заголовків, структура ідеального оголошення.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Більш швидка комунікація з менеджером та пріоритет при бронюванні товару на складі.</span>
+        </li>
+      </ul>
+
+      <div class="partner-pills">
+        <span class="partner-pill">Інтернет-магазини</span>
+        <span class="partner-pill">Маркетплейси</span>
+        <span class="partner-pill">Вищі ціни закупки</span>
+      </div>
+    </article>
+
+    <!-- Team -->
+    <article class="card partner-card team">
+      <div class="partner-label">Рівень 3</div>
+      <div class="partner-badge">
+        <i data-lucide="users" style="width:14px;height:14px;"></i>
+        <span>Team</span>
+      </div>
+      <div class="partner-title">Партнер-лідер з командою</div>
+      <div class="partner-meta">
+        Для тих, хто будує системний бізнес: має декілька каналів продажу або невелику команду та стабільний високий оборот.
+      </div>
+
+      <ul class="partner-list">
+        <li>
+          <span class="partner-dot"></span>
+          <span>Місячний оборот від <strong>80 000–100 000+ ₴</strong> і вище (або еквівалент в замовленнях по категоріях).</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Найвигідніші закупівельні ціни, додаткові знижки та <strong>бонуси з обороту</strong>.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Пріоритетний доступ до нових партій, уцінки та обмежених залишків товару.</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Можливість отримувати додатковий дохід за рекомендацію нових активних партнерів (опція за домовленістю).</span>
+        </li>
+        <li>
+          <span class="partner-dot"></span>
+          <span>Закритий чат для Team-партнерів: обмін досвідом, робочі кейси, підтримка в масштабуванні команди.</span>
+        </li>
+      </ul>
+
+      <div class="partner-pills">
+        <span class="partner-pill">Команда</span>
+        <span class="partner-pill">Бонуси з обороту</span>
+        <span class="partner-pill">Пріоритетні партнери</span>
+      </div>
+    </article>
+  </div>
+
+  <div class="partner-note">
+    Рівні не “прив’язують” вас назавжди — це живий розвиток. Ви можете почати зі <strong>Starter</strong>, 
+    зробити перші замовлення, вийти на стабільний потік і перейти до <strong>Pro</strong>, а далі — до 
+    <strong>Team</strong>, де дропшипінг перетворюється на повноцінний бізнес з командою, досвідом та свободою.
+  </div>
+</section>
+
+  
+<!-- НОВА СЕКЦІЯ: КОМУ ПІДХОДИТЬ -->
+<section class="section" id="audiences">
+  <div class="section-label">Кому це буде корисно</div>
+  <h2 class="title">Кому підходить дропшипінг з Samostroy Shop</h2>
+  <p class="sub">
+    Модель гнучка: вона працює і для діючого бізнесу, і для тих, хто тільки робить перші кроки у підприємництві.
+  </p>
+
+  <div class="grid">
+    <div class="card" style="animation:fadeUp .4s ease both;">
+      <h3><i data-lucide="shopping-bag"></i> Власникам інтернет-магазинів</h3>
+      <p>
+        Ви вже продаєте товари? Просто додаєте наш асортимент як окрему категорію —
+        без складу, без викупу. Розширюєте вітрину, тестуєте нові ніші і заробляєте зверху.
+      </p>
+      <div class="pill-row">
+        <span class="pill">+ новий асортимент</span>
+        <span class="pill">без ризику залишків</span>
+        <span class="pill">можна тестувати нішу</span>
+      </div>
+    </div>
+
+    <div class="card" style="animation:fadeUp .5s ease both;">
+      <h3><i data-lucide="sparkles"></i> Тим, хто хоче стартувати з нуля</h3>
+      <p>
+        Ви можете викладати наші товари на дошки оголошень, маркетплейси або
+        створити сторінку в Instagram / TikTok / Facebook з уже готовим контентом.
+      </p>
+      <div class="pill-row">
+        <span class="pill">перші продажі без інвестицій</span>
+        <span class="pill">готові фото та описи</span>
+        <span class="pill">бізнес “з телефона”</span>
+      </div>
+    </div>
+
+    <div class="card" style="animation:fadeUp .6s ease both;">
+      <h3><i data-lucide="graduation-cap"></i> Студентам та початківцям</h3>
+      <p>
+        Це може замінити підробіток: ви отримуєте досвід продажів, роботи з клієнтами,
+        планування, управління своїм часом і грошима. Те, що прокачує мислення підприємця.
+      </p>
+      <div class="pill-row">
+        <span class="pill">досвід в реальному бізнесі</span>
+        <span class="pill">гнучкий графік</span>
+        <span class="pill">база для майбутніх проєктів</span>
+      </div>
     </div>
   </div>
 </section>
@@ -460,22 +844,82 @@
     <div class="step">
       <div class="step-num">01</div>
       <div class="step-title">Заявка</div>
-      <div class="step-text">Пишете менеджеру, отримуєте консультацію.</div>
+      <div class="step-text">Пишете менеджеру, отримуєте консультацію та відповіді на питання.</div>
     </div>
     <div class="step">
       <div class="step-num">02</div>
       <div class="step-title">Матеріали</div>
-      <div class="step-text">Прайс, фото, відео, рекомендації.</div>
+      <div class="step-text">Отримуєте прайс, фото, відео, описання, рекомендації по продажах.</div>
     </div>
     <div class="step">
       <div class="step-num">03</div>
       <div class="step-title">Розміщення</div>
-      <div class="step-text">Додаєте товари на майданчик.</div>
+      <div class="step-text">Додаєте товари на дошки, маркетплейси або в соцмережі.</div>
     </div>
     <div class="step">
       <div class="step-num">04</div>
       <div class="step-title">Відправки</div>
-      <div class="step-text">Ми пакуємо та відправляємо за вас.</div>
+      <div class="step-text">Ми пакуємо, відправляємо, спілкуємось з клієнтом і ведемо логістику.</div>
+    </div>
+  </div>
+</section>
+
+<!-- НОВА СЕКЦІЯ: ФОРМАТИ РОБОТИ -->
+<section class="section" id="formats">
+  <div class="section-label">Формати роботи</div>
+  <h2 class="title">Як можна заробляти з нами</h2>
+  <p class="sub">
+    Оберіть формат, який вам ближчий: дошки оголошень, маркетплейси, соцмережі чи свій магазин —  
+    модель дропшипінгу однаково працює всюди.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h3><i data-lucide="layout-grid"></i> Дошки оголошень</h3>
+      <p>
+        OLX, Besplatka, Obyava та інші дошки. Ви розміщуєте оголошення, отримуєте заявки,
+        ми — відправляємо товар. Ідеально для старту без бюджету.
+      </p>
+      <div class="pill-row">
+        <span class="pill">безкоштовний старт</span>
+        <span class="pill">можна обійтися без сайту</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="shopping-cart"></i> Маркетплейси</h3>
+      <p>
+        Підв’язуєте наші позиції до свого акаунта/магазину. Працює там, де вже є потік покупців
+        і важливі рейтинг та відгуки.
+      </p>
+      <div class="pill-row">
+        <span class="pill">готовий трафік</span>
+        <span class="pill">зручно масштабувати</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="instagram"></i> Соцмережі</h3>
+      <p>
+        Ведете сторінку в Instagram, TikTok, Facebook або Telegram: ми даємо готовий контент з товарами,
+        а ви будуєте аудиторію та особистий бренд.
+      </p>
+      <div class="pill-row">
+        <span class="pill">контент від нас</span>
+        <span class="pill">можна комбінувати з блогом</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><i data-lucide="briefcase"></i> Власний інтернет-магазин</h3>
+      <p>
+        Додаєте наші позиції до наявного сайту — як окремий розділ чи категорію.
+        Отримуєте додатковий прибуток з трафіку, який уже маєте.
+      </p>
+      <div class="pill-row">
+        <span class="pill">розширення асортименту</span>
+        <span class="pill">мінімум технічних змін</span>
+      </div>
     </div>
   </div>
 </section>
@@ -497,7 +941,7 @@
     <div class="c-card">
       <h4>Опт</h4>
       <ul>
-        <li>Закупівля необхідна</li>
+        <li>Потрібна закупівля товару</li>
         <li>Часткові ризики</li>
       </ul>
     </div>
@@ -513,12 +957,90 @@
   </div>
 </section>
 
+<!-- НОВА СЕКЦІЯ: ШЛЯХ РОЗВИТКУ -->
+<section class="section" id="journey">
+  <div class="section-label">Шлях партнера</div>
+  <h2 class="title">Як дропшипінг змінює мислення та дохід</h2>
+  <p class="sub">
+    Це не просто “підробіток”. Це вхід у реальний бізнес: від перших продажів до управління
+    часом, грошима, людьми та проєктами.
+  </p>
+
+  <div class="journey">
+    <div class="journey-step" data-step="1">
+      <div class="journey-title">Старт: перші продажі</div>
+      <div class="journey-text">
+        Ви запускаєте прості оголошення, пробуєте різні майданчики, вчитеся спілкуватися з клієнтами.
+        Тут формується базове розуміння “що працює”.
+      </div>
+    </div>
+
+    <div class="journey-step" data-step="2">
+      <div class="journey-title">Стабільний дохід</div>
+      <div class="journey-text">
+        Ви вже знаєте, які товари заходять краще, системно оновлюєте оголошення,
+        додаєте маркетплейси та соцмережі. Починає з’являтися відчуття фінансової свободи.
+      </div>
+    </div>
+
+    <div class="journey-step" data-step="3">
+      <div class="journey-title">Масштабування та управління</div>
+      <div class="journey-text">
+        Ви делегуєте частину задач, будуєте невелику команду, вчитеся управляти
+        часом, капіталом і проєктами. Дропшипінг стає базою для великих бізнес-ідей.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- НОВА СЕКЦІЯ: ПСИХОЛОГІЯ ПАРТНЕРСТВА -->
+<section class="section" id="psych">
+  <div class="section-label">Мотивація</div>
+  <h2 class="title">Чому людям легко приєднатися до нас</h2>
+  <p class="sub">
+    В дропшипінгу важливо не тільки “що ми продаємо”, а й “як люди себе почувають, заходячи в цю модель”.
+    Тут ми прибираємо страхи та даємо ясність.
+  </p>
+
+  <div class="psych-grid">
+    <div class="psych-item">
+      <strong>Безпечний старт.</strong><br>
+      Немає ризику “застрягти” з товаром на складі. Людина платить тільки часом і увагою — це знімає напругу
+      і дає сміливість зробити перший крок.
+    </div>
+    <div class="psych-item">
+      <strong>Постійний розвиток.</strong><br>
+      Партнер не просто “продає”, а навчається: розуміє попит, тестує ніші, вчиться мислити як підприємець.
+      Це трансформує мислення і відкриває нові можливості.
+    </div>
+    <div class="psych-item">
+      <strong>Підтримка та структура.</strong><br>
+      Є чіткі кроки, готові матеріали, рекомендації. Коли є зрозуміла система — людина відчуває контроль,
+      а не хаос, і охочіше рухається вперед.
+    </div>
+    <div class="psych-item">
+      <strong>Свобода в форматі.</strong><br>
+      Можна працювати паралельно з основною роботою, навчанням або бізнесом.
+      Партнер сам обирає темп, майданчики та рівень залучення.
+    </div>
+    <div class="psych-item">
+      <strong>Сенс “розвиваюсь разом з командою”.</strong><br>
+      Людина відчуває, що приєднується не просто до магазину, а до спільноти, де вигідно, щоб кожен партнер ріс.
+    </div>
+    <div class="psych-item">
+      <strong>Фінансова перспектива.</strong><br>
+      Від “підробітку” до стабільного доходу — є зрозумілий шлях. Це мотивує не здаватися після перших
+      складностей і йти до результату.
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="section">
   <div class="cta">
     <div>
       <h3>Готові почати?</h3>
-      <p>Отримайте повний пакет матеріалів для легкого старту та перших продажів.</p>
+      <p>Отримайте повний пакет матеріалів для легкого старту, перших продажів та побудови власної бізнес-історії.</p>
     </div>
     <a href="#" class="btn"><i data-lucide="send"></i> Отримати матеріали</a>
   </div>
@@ -536,13 +1058,14 @@
   ">
     
     <h2 class="title" style="background:none;color:var(--accent2);margin-bottom:10px;">
-      Нема досвіду але ви хочете навчитися заробляти на дропшипінгу?
+      Немає досвіду, але хочете навчитися заробляти на дропшипінгу?
     </h2>
 
     <p class="sub" style="max-width:720px;">
-      Підключайся до <strong>Samostroy Academy</strong> — першої навчальної платформи,
+      Підключайся до <strong>Samostroy Academy</strong> — навчальної платформи,
       де ми показуємо, як побудувати стабільний бізнес з нуля, зробити перші продажі та 
-      вийти до своєї фінансової цілі у 2026 році.
+      вийти до своєї фінансової цілі у 2026 році. Це не тільки про гроші, а й про мислення:
+      управління часом, капіталом, людьми та проєктами.
     </p>
 
     <!-- Countdown -->
@@ -579,17 +1102,17 @@
     <div class="grid" style="margin-bottom:24px;">
       <div class="card" style="animation:fadeUp .8s ease both;">
         <h3><i data-lucide="rocket"></i> Швидкий старт</h3>
-        <p>Почнеш з нуля та отримаєш перші замовлення вже через кілька днів.</p>
+        <p>Почнеш з нуля та отримаєш перші замовлення вже через кілька днів за чітким планом.</p>
       </div>
 
       <div class="card" style="animation:fadeUp .85s ease both;">
         <h3><i data-lucide="graduation-cap"></i> Повний курс</h3>
-        <p>24 уроки, шаблони, інструкції, уроки з реклами та аналізу товарів.</p>
+        <p>24 уроки, шаблони, інструкції, уроки з реклами, аналітики та роботи з майданчиками.</p>
       </div>
 
       <div class="card" style="animation:fadeUp .9s ease both;">
-        <h3><i data-lucide="target"></i> Гарантований результат</h3>
-        <p>Працюємо до перших продажів і твого стабільного доходу.</p>
+        <h3><i data-lucide="target"></i> Рух до результату</h3>
+        <p>Працюємо не заради “просто знань”, а заради перших продажів та реального досвіду в бізнесі.</p>
       </div>
     </div>
 
@@ -609,19 +1132,95 @@
 
   <div class="faq-item">
     <h3>Чи потрібні вкладення?</h3>
-    <p>Ні. Ви не викуповуєте товар.</p>
+    <p>Ні. Ви не викуповуєте товар. Ви працюєте з нашим складом по моделі дропшипінгу.</p>
   </div>
 
   <div class="faq-item">
     <h3>Як оформлюються посилки?</h3>
-    <p>Відправлення здійснюється Новою Поштою або Укрпоштою.</p>
+    <p>Відправлення здійснюється Новою Поштою або Укрпоштою. Ми пакуємо, страхуємо та відправляємо.</p>
   </div>
 
   <div class="faq-item">
     <h3>Що з поверненнями?</h3>
-    <p>Повернення бере на себе Samostroy Shop.</p>
+    <p>Повернення та обмін бере на себе Samostroy Shop — ви не залишаєтеся сам на сам з клієнтом.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Чи можна працювати без ФОП?</h3>
+    <p>Ні. Але ви можете почати як фізична особа. Оформлення ФОП буде актуальним коли ви почнете робити стабільний дохід.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Яка середня маржа?</h3>
+    <p>Зазвичай 25–60%. Все залежить від категорії товару, попиту, від вашої націнки (яку ви формуєте самостійно), а також від вашого партнерського рівня (Starter / Pro / Team).</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Де я можу продавати?</h3>
+    <p>OLX, Prom, Rozetka і інші маркетплейси, а також соц. мережі, такі як Instagram, Facebook, Telegram-канали, власний сайт, дошки оголошень, магазини — обмежень немає.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Я ніколи цим не займався. Чи впораюсь?</h3>
+    <p>Так. Ми даємо готові описи, фото, приклади оголошень та базові рекомендації. А ще є Samostroy Academy надає для бажаючих повний курс навчання "Дропшипінг з нуля" безкоштовно.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Як швидко я зможу отримати перші замовлення?</h3>
+    <p>Все залежить від активності. Перші партнери іноді отримували запити вже у перший день після розміщення оголошень.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Як я отримую свій прибуток?</h3>
+    <p>Ви встановлюєте свою роздрібну ціну. Клієнт платить її нам за реквізитами, або післяплатою на пошті. Ми списуємо оптову вартість товару — різниця ваша. Перераховуємо за зверненням у будьякий час, або за домовленністю.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Скільки часу займає робота?</h3>
+    <p>Все залежить від вашої мети: від 1–2 годин на день до повноцінного бізнесу з командою.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Що робити, якщо клієнт відмовився від посилки?</h3>
+    <p>Ми беремо це на себе. Перший місяць ви не несете фінансових втрат, окрім свого часу на спілкування з клієнтом, а в майбутньому обговорюватиметься.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Чи можу я продавати за своїми цінами?</h3>
+    <p>Так. Ми рекомендуємо ринковий рівень, але остаточну ціну ви встановлюєте самостійно.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Чи працюєте ви по всій Україні?</h3>
+    <p>Так. Відправки — по всій Україні Новою Поштою та Укрпоштою, виконуються з двох великих складів у Вінниці та Дніпрі.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Чи надаєте ви документи для магазинів?</h3>
+    <p>Так, для партнерів-Pro та Team ми можемо надавати необхідні документи на запит. Усі товари сертифіковані за стандартами, та мають документаційний супровід.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Чи є мінімальний оборот?</h3>
+    <p>Для рівня Starter — ні. Мінімальний оборот стосується лише рівнів Pro та Team. Ми відкриваємо двері навіть для початківців і допомогаємо зростати.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Як підвищити свій рівень партнера?</h3>
+    <p>Робіть стабільні продажі — і ми переведемо вас з Starter у Pro, а далі — в Team із покращеними умовами та маржею.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Що робити, якщо я боюся починати?</h3>
+    <p>Це нормально. Почніть із малого: 3–5 оголошень, кілька запитів — і ви зрозумієте, що все реально і просто. Усі колись починали і ми готові вас підтримати.</p>
+  </div>
+
+  <div class="faq-item">
+    <h3>Чи можу я поєднувати дропшипінг із роботою або навчанням?</h3>
+    <p>Так. Багато партнерів стартують у вільний час і поступово виходять на стабільний дохід.</p>
   </div>
 </section>
+
 
 <footer>
   © <span id="year"></span> Samostroy Shop
@@ -631,7 +1230,7 @@
   document.getElementById('year').textContent = new Date().getFullYear();
   lucide.createIcons();
   
-    const acTargetDate = new Date('2026-01-10T00:00:00');
+  const acTargetDate = new Date('2026-01-10T00:00:00');
   const acDays = document.getElementById('acDays');
   const acHours = document.getElementById('acHours');
   const acMinutes = document.getElementById('acMinutes');
