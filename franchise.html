@@ -777,6 +777,75 @@
       margin-top:40px;
     }
 
+    /* ===== Додаткові стилі для нових секцій ===== */
+
+/* Маленькі пояснювальні абзаци */
+.section-note{
+  font-size:13px;
+  color:var(--muted);
+  max-width:780px;
+  margin-top:16px;
+}
+
+/* Короткий текст в картках-сценаріях */
+.scenario-card-text{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+/* Примітка під сценаріями доходу */
+.scenario-note{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:16px;
+  max-width:780px;
+}
+
+/* Заголовок для маленьких підписів (використовуємо існуючу логіку metric-стилів, але окремо) */
+.scenario-metric-label{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:0.12em;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+
+/* Значення-цифри в сценаріях */
+.scenario-metric-value{
+  font-size:20px;
+  font-weight:800;
+  color:var(--accent2);
+  margin-bottom:4px;
+}
+
+/* Додатковий текст під цифрами */
+.scenario-metric-text{
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* Щоб порівняльний блок виглядав акуратно в картках з маркованим списком */
+.compare-list{
+  margin-top:10px;
+  font-size:13px;
+  color:var(--muted);
+  list-style:none;
+}
+
+.compare-list li{
+  margin-bottom:4px;
+  padding-left:14px;
+  position:relative;
+}
+
+.compare-list li::before{
+  content:"•";
+  position:absolute;
+  left:0;
+  color:var(--accent2);
+}
+    
     /* RESPONSIVE */
     @media(max-width:900px){
       .hero{
@@ -1023,6 +1092,65 @@
   </div>
 </section>
 
+<!-- ПОРІВНЯННЯ ФОРМАТІВ: ФРАНШИЗА VS ДРОПШИПІНГ VS СТАРТ САМОСТІЙНО -->
+<section class="section">
+  <h2 class="title">Франшиза, дропшипінг чи старт самостійно?</h2>
+  <p class="sub">
+    У нас є кілька форматів співпраці: дропшипінг, франшиза / white label та
+    ваш самостійний запуск. Щоб вам було простіше обрати, зведемо різницю в один блок.
+  </p>
+
+  <div class="grid">
+    <!-- Самостійний старт -->
+    <div class="card">
+      <h3><i data-lucide="person-standing"></i> Старт самостійно</h3>
+      <p class="scenario-card-text">
+        Ви самі шукаєте постачальників, створюєте сайт, тестуєте рекламу, 
+        будуєте операційку. Повна свобода — і повна відповідальність.
+      </p>
+      <ul class="compare-list">
+        <li>Немає внеску за франшизу.</li>
+        <li>Потрібен час і гроші на тестування всіх гіпотез.</li>
+        <li>Високий ризик “застрягти” на етапі налаштування систем.</li>
+      </ul>
+    </div>
+
+    <!-- Дропшипінг -->
+    <div class="card">
+      <h3><i data-lucide="package-open"></i> Дропшипінг з Samostroy Shop</h3>
+      <p class="scenario-card-text">
+        Ви працюєте під нашим брендом і асортиментом. Стартуєте без внеску, 
+        заробляєте на різниці між оптом і роздробом, не вкладаючись у склад.
+      </p>
+      <ul class="compare-list">
+        <li>Низький поріг входу — без разового внеску.</li>
+        <li>Ідеально для першого досвіду в товарному бізнесі.</li>
+        <li>Основний фокус — продажі та робота з клієнтами.</li>
+      </ul>
+    </div>
+
+    <!-- Франшиза / White Label -->
+    <div class="card">
+      <h3><i data-lucide="crown"></i> Франшиза / White Label</h3>
+      <p class="scenario-card-text">
+        Ви отримуєте <strong>власний бренд</strong>, сайт, маркетинг, асортимент та
+        навчання під ключ. Це вже не просто підробіток, а повноцінний бізнес-актив.
+      </p>
+      <ul class="compare-list">
+        <li>Разовий внесок 6000&nbsp;$ за створення всієї системи.</li>
+        <li>Ви володієте брендом і керуєте всією виручкою та прибутком.</li>
+        <li>Роялті лише 15% від чистого прибутку — 85% залишаються у вас.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="section-note">
+    Якщо ви тільки знайомитеся з товарним бізнесом — можна почати з дропшипінгу. 
+    Якщо ви готові будувати <strong>свій бренд і систему на роки</strong> — 
+    логічний формат саме франшиза / white label.
+  </p>
+</section>
+  
 <!-- ЩО МИ РОБИМО ПІД КЛЮЧ -->
 <section class="section">
   <h2 class="title">Що саме ми створюємо вам “під ключ”</h2>
@@ -1223,6 +1351,69 @@
   </div>
 </section>
 
+<!-- СЦЕНАРІЇ ДОХОДУ ФРАНШИЗИ -->
+<section class="section">
+  <h2 class="title">Які цілі по прибутку можна ставити</h2>
+  <p class="sub">
+    Точні цифри завжди залежать від міста, рекламних бюджетів та вашої
+    залученості. Але щоб розуміти порядок, подивімося на кілька реалістичних
+    сценаріїв при роботі по нашій фінмоделі (85% чистого прибутку — ваші).
+  </p>
+
+  <div class="grid">
+    <!-- Обережний старт -->
+    <div class="card">
+      <h3><i data-lucide="leaf"></i> Обережний старт</h3>
+      <p class="scenario-card-text">
+        Невеликі рекламні бюджети, поступове зростання. Формат для тих, хто 
+        хоче “придивитися”, але вже будувати систему.
+      </p>
+      <div class="scenario-metric-label">Ціль по чистому прибутку</div>
+      <div class="scenario-metric-value">1&nbsp;000–1&nbsp;500&nbsp;$ / місяць</div>
+      <div class="scenario-metric-text">
+        Ви тестуєте різні канали, працюєте з базою клієнтів, формуєте перші 
+        повторні продажі. Це рівень “стабільної другої зарплати”.
+      </div>
+    </div>
+
+    <!-- Робочий бізнес -->
+    <div class="card">
+      <h3><i data-lucide="factory"></i> Робочий бізнес</h3>
+      <p class="scenario-card-text">
+        Регулярні рекламні кампанії, оптимізовані зв’язки, досвідчений менеджер.
+        Це вже не тест, а повноцінний напрямок.
+      </p>
+      <div class="scenario-metric-label">Ціль по чистому прибутку</div>
+      <div class="scenario-metric-value">2&nbsp;000–3&nbsp;000&nbsp;$ / місяць</div>
+      <div class="scenario-metric-text">
+        На цьому рівні бренд може повністю закривати ваші особисті витрати 
+        або стати основним джерелом доходу сім’ї.
+      </div>
+    </div>
+
+    <!-- Масштабування -->
+    <div class="card">
+      <h3><i data-lucide="rocket"></i> Масштабування та команда</h3>
+      <p class="scenario-card-text">
+        Ви працюєте з кількома каналами продажу, розширюєте регіони, додаєте
+        команду та збільшуєте рекламні бюджети.
+      </p>
+      <div class="scenario-metric-label">Ціль по чистому прибутку</div>
+      <div class="scenario-metric-value">3&nbsp;000–5&nbsp;000+&nbsp;$ / місяць</div>
+      <div class="scenario-metric-text">
+        На цьому етапі бренд стає активом, який можна масштабувати,
+        відкривати додаткові склади/точки або готувати до продажу інвестору.
+      </div>
+    </div>
+  </div>
+
+  <p class="scenario-note">
+    Ці цифри <strong>не є гарантією</strong>, але показують реалістичний діапазон
+    цілей при адекватній роботі з рекламою, асортиментом та сервісом. 
+    На консультації ми прорахуємо сценарій саме під ваш регіон та бюджети.
+  </p>
+</section>
+
 <!-- ЕТАПИ ЗАПУСКУ -->
 <section class="section">
   <h2 class="title">Як усе відбувається: поетапний запуск</h2>
@@ -1391,6 +1582,85 @@
   </div>
 </section>
 
+<!-- МИСЛЕННЯ ВЛАСНИКА БРЕНДУ -->
+<section class="section">
+  <h2 class="title">Що змінюється, коли у вас з’являється власний бренд</h2>
+  <p class="sub">
+    Франшиза / white label — це не тільки про сайт і товари. Це про зміну
+    позиції: ви стаєте власником системи, яка може працювати роками,
+    масштабуватися і передаватися далі.
+  </p>
+
+  <div class="benefits-list">
+    <div class="benefit">
+      <i data-lucide="brain"></i>
+      <div>
+        <div class="benefit-title">Мислення власника, а не «підробіток»</div>
+        <div>
+          Ви плануєте не “як заробити цього місяця”, а як будувати бренд,
+          який росте, відомий у вашому місті/регіоні і формує базу лояльних клієнтів.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="boxes"></i>
+      <div>
+        <div class="benefit-title">Бізнес-актив, який можна масштабувати</div>
+        <div>
+          Власний бренд, клієнтська база, відпрацьовані процеси — це актив,
+          який з часом можна або масштабувати, або навіть продати як готовий бізнес.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="gauge-circle"></i>
+      <div>
+        <div class="benefit-title">Контроль над цифрами</div>
+        <div>
+          Ви бачите виручку, маржу, витрати на рекламу, зарплати, чистий прибуток.
+          Ми допомагаємо читати аналітику і приймати рішення на цифрах, а не на емоціях.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="users"></i>
+      <div>
+        <div class="benefit-title">Команда та делегування</div>
+        <div>
+          З часом ви переходите від “роблю все сам” до управління менеджером,
+          підрядниками, кур’єрами. Це новий рівень відповідальності — і свободи.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="school"></i>
+      <div>
+        <div class="benefit-title">Прискорений розвиток як підприємця</div>
+        <div>
+          Ви одночасно працюєте з маркетингом, продажами, сервісом, цифрами 
+          і командою. Це концентрований досвід, який важко отримати в наймі.
+        </div>
+      </div>
+    </div>
+
+    <div class="benefit">
+      <i data-lucide="sparkles"></i>
+      <div>
+        <div class="benefit-title">Відчуття “це моє”</div>
+        <div>
+          Ви будуєте не “ще один магазин Samostroy Shop”, а власний бренд
+          під ключ. Коли люди запитують, де ви працюєте — ви говорите
+          про <strong>свій бізнес</strong>, а не про чужий проєкт.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
 <!-- FAQ -->
 <section class="section">
   <h2 class="title">Поширені питання про франшизу</h2>
@@ -1456,32 +1726,30 @@
   <div class="form-grid">
     <div class="form-card">
       <div class="form-hint">
-        Форма умовна — можна розмістити реальну форму або просто CTA-кнопку на Telegram.
-        Поки що ви можете написати нам одразу:
-        <a href="https://t.me/manager_samostroy_shop" target="_blank" style="color:var(--accent2);text-decoration:underline;">
-          @manager_samostroy_shop
-        </a>
+        Після заповнення форми ми відкриємо Telegram із готовим повідомленням
+        менеджеру <strong>@manager_samostroy_shop</strong> — ви зможете
+        відредагувати текст перед відправкою.
       </div>
 
-      <label>Ім’я</label>
-      <input type="text" placeholder="Як до вас звертатися?" />
+      <label for="frName">Ім’я</label>
+      <input id="frName" type="text" placeholder="Як до вас звертатися?" />
 
-      <label>Місто / регіон</label>
-      <input type="text" placeholder="Ваше місто або область" />
+      <label for="frCity">Місто / регіон</label>
+      <input id="frCity" type="text" placeholder="Ваше місто або область" />
 
-      <label>Досвід у бізнесі або продажах (якщо є)</label>
-      <textarea placeholder="Коротко опишіть свій досвід, якщо він є"></textarea>
+      <label for="frExperience">Досвід у бізнесі або продажах (якщо є)</label>
+      <textarea id="frExperience" placeholder="Коротко опишіть свій досвід, якщо він є"></textarea>
 
-      <label>Телефон / Telegram</label>
-      <input type="text" placeholder="@username або номер телефону" />
+      <label for="frContact">Телефон / Telegram</label>
+      <input id="frContact" type="text" placeholder="@username або номер телефону" />
 
       <button
         class="btn"
         type="button"
-        onclick="window.open('https://t.me/manager_samostroy_shop?text=Доброго%20дня!%20Хочу%20залишити%20заявку%20на%20франшизу%20Samostroy%20Shop%20та%20обговорити%20деталі.','_blank')"
+        onclick="sendFranchiseForm()"
       >
         <i data-lucide="send"></i>
-        Написати в Telegram
+        Надіслати заявку в Telegram
       </button>
     </div>
 
@@ -1508,6 +1776,7 @@
     </div>
   </div>
 </section>
+
 
 <!-- CTA ФІНАЛ -->
 <section class="section">
@@ -1538,11 +1807,41 @@
 </footer>
 
 <script>
+  // Рік у футері
   document.getElementById('year').textContent = new Date().getFullYear();
   if (window.lucide) {
     lucide.createIcons();
   }
-</script>
 
+  // Відправка даних форми в Telegram як предзаповнене повідомлення
+  function sendFranchiseForm() {
+    const name = document.getElementById('frName').value.trim();
+    const city = document.getElementById('frCity').value.trim();
+    const experience = document.getElementById('frExperience').value.trim();
+    const contact = document.getElementById('frContact').value.trim();
+
+    // Простенька перевірка: без імені та контакту не відправляємо
+    if (!name || !contact) {
+      alert("Будь ласка, заповніть мінімум поля: Ім’я та Телефон / Telegram.");
+      return;
+    }
+
+    let message = "Доброго дня! Хочу залишити заявку на франшизу Samostroy Shop.\n\n";
+
+    message += "Ім’я: " + name + "\n";
+    if (city) {
+      message += "Місто / регіон: " + city + "\n";
+    }
+    if (experience) {
+      message += "Досвід: " + experience + "\n";
+    }
+    message += "Контакт: " + contact + "\n";
+
+    const encoded = encodeURIComponent(message);
+    const url = "https://t.me/manager_samostroy_shop?text=" + encoded;
+
+    window.open(url, "_blank");
+  }
+</script>
 </body>
 </html>
