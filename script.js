@@ -12,8 +12,7 @@ const XML_FEED_URL = 'products.xml';
 const CATEGORY_KEYWORDS = [
   
   //3D Панелі
-  { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D'],     icon: 'img/icons/panel3d.png'
-},
+  { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D']},
   { name: 'Декоративні 3D панелі', keywords: ['Декоративна 3D панель'] },
   { name: 'ПВХ панелі і плити', keywords: ['ПВХ панель', 'ПВХ плита', 'ПВХ'] },
   { name: 'Стенові панелі', keywords: ['Панель стінова', 'Панель-рейка', 'Панель рейка'] },
