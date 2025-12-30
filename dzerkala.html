@@ -1119,6 +1119,15 @@
 </head>
 <body id="top">
 
+<!-- =========================
+NEWYEAR START (REMOVE LATER)
+========================= -->
+<div class="ny-garland" aria-hidden="true"></div>
+<div class="ny-snow" aria-hidden="true"></div>
+<!-- =========================
+NEWYEAR END (REMOVE LATER)
+========================= -->
+  
 <header class="header">
   <div class="header-left">
     <div class="logo-wrapper">
@@ -1129,13 +1138,6 @@
         <div class="logo">Samostroy Shop</div>
         <div class="logo-sub">Будматеріали з доставкою по Україні</div>
       </div>
-    </div>
-  </div>
-
-  <div class="header-center">
-    <div class="search-bar">
-      <i data-lucide="search"></i>
-      <input id="searchInput" placeholder="Пошук по дзеркалах: настінне, акрилове, декор..." />
     </div>
   </div>
 
@@ -1276,6 +1278,12 @@
         <option value="price-desc">Спочатку дорожчі</option>
       </select>
     </div>
+      <div class="header-center">
+    <div class="search-bar">
+      <i data-lucide="search"></i>
+      <input id="searchInput" placeholder="Пошук по дзеркалах: настінне, акрилове, декор..." />
+    </div>
+  </div>
   </section>
 
   <!-- PRODUCTS -->
@@ -1401,29 +1409,70 @@
   </section>
 </main>
 
-<footer>
+<footer id="footer">
   <div class="footer-col footer-brand">
     <div class="footer-logo">Samostroy Shop</div>
     <p>Інтернет-магазин будівельних матеріалів. Підбір, консультація та відправка по всій Україні.</p>
-    <div class="footer-copy">© <span id="year"></span> Samostroy Shop. Всі права захищені.</div>
+    <div class="footer-copy">© <span id="year"></span> Stroy Shop. Всі права захищені.</div>
+     <div class="share-icons">
+
+    <a class="share-icon"
+       href="https://www.facebook.com/sharer/sharer.php?u=https://samostroy.shop"
+       target="_blank">
+       <i class="ri-facebook-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://api.whatsapp.com/send?text=Рекомендую%20Samostroy%20Shop:%20https://samostroy.shop"
+       target="_blank">
+       <i class="ri-whatsapp-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://t.me/share/url?url=https://samostroy.shop&text=Samostroy%20Shop%20—%20будматеріали%20з%20доставкою"
+       target="_blank">
+       <i class="ri-telegram-fill"></i>
+    </a>
+
+  </div>
   </div>
   
   <div class="footer-col footer-nav-col">
     <div class="footer-title">Навігація</div>
     <nav class="footer-nav">
-      <a href="index.html">Головна / Каталог</a>
-      <a href="#productsSection">Дзеркала</a>
-      <a href="#top">Вгору сторінки</a>
+      <a href="#productsSection">Каталог</a>
+      <a href="#howToOrder">Як замовити</a>
+      <a href="#top">Акції та знижки</a>
+      <a href="#saleSlider">Уцінені товари</a>
+      <a href="blog.html">Блог</a>
     </nav>
+
   </div>
 
   <div class="footer-col footer-coop">
     <div class="footer-title">Співпраця</div>
-    <nav class="footer-nav">
-      <a href="opt.html">Оптовим клієнтам</a>
-      <a href="dropshipping.html">Дропшиперам</a>
-      <a href="partners.html">Партнерська програма</a>
-      <a href="jobs.html">Робота та вакансії</a>
+
+      <nav class="footer-nav">
+        <a href="opt.html">Оптовим клієнтам</a>
+        <a href="postachalniky.html">Постачальникам</a>
+        <a href="franchise.html">Франшиза</a>
+        <a href="dropshipping.html">Дропшиперам</a>
+        <a href="academy.html">Академія дропшипінгу</a>
+        <a href="partners.html">Партнерська програма</a>
+        <a href="jobs.html">Робота та вакансії</a>
+    </nav>
+  </div>
+
+  <div class="footer-col footer-coop">
+    <div class="footer-title">Каталоги</div>
+
+      <nav class="footer-nav">
+        <a href="pazl-pidloga.html">Пазл-підлога</a>
+        <a href="kylimky.html">Килимки для підлоги</a>
+        <a href="mebli.html">Меблеві рішення</a>
+        <a href="vinil.html">Вінілові покриття</a>
+        <a href="dzerkala.html">Дзеркала</a>
+        <a href="ekoshkira.html">Екошкіра</a>
     </nav>
   </div>
   
@@ -1433,7 +1482,7 @@
       <i data-lucide="send"></i> Telegram-канал
     </a>
     <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" class="footer-link">
-      <i data-lucide="play-circle"></i> TikTok: @stroyshop_ua
+      <i data-lucide="play-circle"></i> TikTok: @samostroy_shop
     </a>
     <a href="tel:+380984927948" class="footer-phone">
       <i data-lucide="phone"></i> +380&nbsp;98&nbsp;492&nbsp;79&nbsp;48
@@ -1441,16 +1490,18 @@
   </div>
 
   <div class="footer-col">
-    <div class="footer-title">Доставка</div>
-    <div class="delivery-footer-item">
-      <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="">
-      <span>Нова Пошта — оплата при отриманні або передплата</span>
-    </div>
-    <div class="delivery-footer-item">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="">
-      <span>Укрпошта — оплата при отриманні або передплата</span>
-    </div>
+  <div class="footer-title">Доставка</div>
+
+  <div class="delivery-footer-item">
+    <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="">
+    <span>Нова Пошта — оплата при отриманні або передплата</span>
   </div>
+
+  <div class="delivery-footer-item">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="">
+    <span>Укрпошта — оплата при отриманні або передплата</span>
+  </div>
+</div>
   
   <div class="footer-col footer-manager">
     <div class="footer-title">Ваш менеджер</div>
@@ -1466,6 +1517,7 @@
       </div>
     </div>
   </div>
+  
 </footer>
 
 <!-- PRODUCT MODAL -->
@@ -1708,7 +1760,7 @@ const CATEGORY_KEYWORDS = [
       category: 'Дзеркала',
       price: 699,
       sku: 'MIR-RECT-50x70',
-      img: 'https://via.placeholder.com/600x400?text=%D0%94%D0%B7%D0%B5%D1%80%D0%BA%D0%B0%D0%BB%D0%BE',
+      img: 'samostroy-shop-logo.jpg',
       unit: 'шт',
       short: 'Класичне настінне дзеркало для коридору, спальні чи ванної кімнати.',
       full: 'Настінне дзеркало 50×70 см — універсальний варіант для більшості приміщень.\n\n- Підходить для коридору, ванної чи спальні\n- Акуратна рамка, яка підходить під більшість інтер’єрів\n- Можливість вертикального або горизонтального монтажу'
@@ -1719,7 +1771,7 @@ const CATEGORY_KEYWORDS = [
       category: 'Дзеркала',
       price: 499,
       sku: 'MIR-ACR-CHILD',
-      img: 'https://via.placeholder.com/600x400?text=%D0%90%D0%BA%D1%80%D0%B8%D0%BB%D0%BE%D0%B2%D0%B5+%D0%B4%D0%B7%D0%B5%D1%80%D0%BA%D0%B0%D0%BB%D0%BE',
+      img: 'samostroy-shop-logo.jpg',
       unit: 'шт',
       short: 'Легке небитке акрилове дзеркало, ідеальне для дитячих та ігрових зон.',
       full: 'Акрилове дзеркало — безпечна альтернатива склу для дитячих кімнат та садків.\n\n- Не б’ється, легка вага\n- Монтаж на двосторонній скотч або клей\n- Підходить для навчальних та ігрових зон'
@@ -1730,7 +1782,7 @@ const CATEGORY_KEYWORDS = [
       category: 'Дзеркала',
       price: 399,
       sku: 'MIR-DECOR-HONEY',
-      img: 'https://via.placeholder.com/600x400?text=%D0%94%D0%B7%D0%B5%D1%80%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%B9+%D0%B4%D0%B5%D0%BA%D0%BE%D1%80',
+      img: 'samostroy-shop-logo.jpg',
       unit: 'набір',
       short: 'Дзеркальний декор у вигляді сот — для акцентних стін у вітальні чи коридорі.',
       full: 'Набір дзеркального декору «Соти» дозволяє створювати індивідуальні композиції.\n\n- Легкий монтаж на рівну стіну\n- Підходить для коридорів, спалень, віталень\n- Можна комбінувати з іншими наборами'
