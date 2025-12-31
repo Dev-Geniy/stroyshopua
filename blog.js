@@ -480,3 +480,147 @@ function initHashOpen(){
   if(window.lucide) lucide.createIcons();
   initHashOpen();
 })();
+
+/* ============================================================
+   🟧 NEWYEAR START (REMOVE LATER)
+============================================================ */
+(function () {
+  // Сезон каждый год: 15 Dec - 15 Jan (включительно)
+  function isNewYearSeason(d) {
+    const m = d.getMonth(); // 0=Jan ... 11=Dec
+    const day = d.getDate();
+    return (m === 11 && day >= 15) || (m === 0 && day <= 15);
+  }
+
+  const now = new Date();
+  if (!isNewYearSeason(now)) {
+    document.documentElement.classList.remove("ny");
+    return;
+  }
+  document.documentElement.classList.add("ny");
+
+  // Год у логотипа: декабрь -> следующий год, январь -> текущий
+  const nyYear =
+    now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
+  const logo = document.querySelector(".ac-logo");
+  if (logo) logo.setAttribute("data-ny-year", String(nyYear));
+
+  // SVG лампочка
+  function bulbSVG() {
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path class="ny-glass" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
+        <path class="ny-stroke" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
+        <path class="ny-stroke" d="M9.2 18.4h5.6"/>
+        <path class="ny-stroke" d="M9.8 21h4.4"/>
+      </svg>
+    `;
+  }
+
+  // SVG снежинка
+  function snowflakeSVG() {
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2v20M4 6l16 12M20 6L4 18M6 4l2 2M18 4l-2 2M6 20l2-2M18 20l-2-2M2 12h3M19 12h3"/>
+      </svg>
+    `;
+  }
+
+  // ============ ГИРЛЯНДА (ТОЛЬКО ВИЗУАЛ, БЕЗ КЛИКОВ) ============
+  const garland = document.querySelector(".ny-garland");
+  if (garland && !garland.querySelector(".ny-garland-row")) {
+    // Важно: гирлянда не перехватывает клики вообще
+    garland.style.pointerEvents = "none";
+
+    const row = document.createElement("div");
+    row.className = "ny-garland-row";
+
+    const colors = [
+      "#ff4e6d",
+      "#5ce3a0",
+      "#38bdf8",
+      "#ffb347",
+      "#a855f7",
+      "#f97316",
+      "#ffffff",
+    ];
+
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+    const count = isMobile ? 14 : 22;
+
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement("div");
+      b.className = "ny-bulb";
+
+      const r = Math.random();
+      if (r < 0.3) b.classList.add("ny-fast");
+      else if (r < 0.65) b.classList.add("ny-slow");
+
+      b.style.setProperty("--ny-drop", `${Math.round(Math.random() * 6 - 3)}px`);
+      b.style.setProperty("--ny-rot", `${Math.round(Math.random() * 10 - 5)}deg`);
+      b.style.setProperty("--ny-wave", `${(2.8 + Math.random() * 2.0).toFixed(2)}s`);
+      b.style.setProperty("--ny-blink", `${(0.9 + Math.random() * 3.0).toFixed(2)}s`);
+
+      const c = colors[i % colors.length];
+      b.style.setProperty("--ny-c", c);
+      b.style.animationDelay = `${(i * 0.1 + Math.random() * 0.25).toFixed(2)}s`;
+
+      b.innerHTML = bulbSVG();
+      row.appendChild(b);
+    }
+
+    garland.appendChild(row);
+
+    // ВАЖНО: никаких addEventListener("click") тут нет — только визуал
+  }
+
+  // ============ СНЕГ ============
+  const snow = document.querySelector(".ny-snow");
+  if (snow && !snow.querySelector(".ny-flake")) {
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+
+    // ультра-лайт: минимум элементов
+    const flakesCount = isMobile ? 5 : 9;
+
+    for (let i = 0; i < flakesCount; i++) {
+      const f = document.createElement("div");
+      f.className = "ny-flake";
+
+      // внутренний слой для sway (дешево)
+      f.innerHTML = `<div class="ny-flake-inner">${snowflakeSVG()}</div>`;
+
+      const left = Math.random() * 100;
+      const size =
+        (isMobile ? 10 : 12) + Math.random() * (isMobile ? 8 : 12);
+      const op = 0.16 + Math.random() * 0.16;
+      const dur =
+        (isMobile ? 11 : 12) + Math.random() * (isMobile ? 8 : 12);
+      const sway = 10 + Math.random() * 18;
+      const swayDur = 3.6 + Math.random() * 3.6;
+
+      // дрейф по x
+      const x = Math.random() * 30 - 15;
+      const x2 = x + (Math.random() * 50 - 25);
+      const r2 = 360 + Math.round(Math.random() * 360);
+
+      f.style.left = `${left}%`;
+      f.style.setProperty("--ny-size", `${size.toFixed(1)}px`);
+      f.style.setProperty("--ny-op", op.toFixed(2));
+      f.style.setProperty("--ny-dur", `${dur.toFixed(2)}s`);
+      f.style.setProperty("--ny-sway", `${sway.toFixed(1)}px`);
+      f.style.setProperty("--ny-sway-dur", `${swayDur.toFixed(2)}s`);
+      f.style.setProperty("--ny-x", `${x.toFixed(1)}px`);
+      f.style.setProperty("--ny-x2", `${x2.toFixed(1)}px`);
+      f.style.setProperty("--ny-r2", `${r2}deg`);
+
+      // разнесём старт
+      const delay = Math.random() * (isMobile ? 4 : 6);
+      f.style.animationDelay = `${delay.toFixed(2)}s`;
+
+      snow.appendChild(f);
+    }
+  }
+})();
+// =========================
+// NEWYEAR END (REMOVE LATER)
+// =========================
