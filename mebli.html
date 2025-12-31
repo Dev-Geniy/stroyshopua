@@ -1097,6 +1097,209 @@
       transform:translateY(0);
     }
 
+    /* --------- НГ --------- */
+/* 🎄 + год возле названия (год подставит JS в data-ny-year) */
+html.ny .ac-logo{ position:relative; }
+html.ny .ac-logo::after{
+  content: " 🎄 " attr(data-ny-year);
+  display:inline-block;
+  margin-left:10px;
+  font-size:12px;
+  font-weight:900;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.04);
+  color:var(--accent2);
+  vertical-align:middle;
+}
+
+/* ===== ГИРЛЯНДА (лампочки сверху) ===== */
+.ny-garland{
+  position:fixed;
+  left:0; right:0; top:0;
+  height:44px;          /* выше и меньше */
+  z-index:55;
+  pointer-events:auto;  /* клики по лампочкам */
+  display:none;
+}
+html.ny .ny-garland{ display:block; }
+
+/* УБРАНО: горизонтальная верёвка полностью */
+/* .ny-garland::before — не используем */
+
+.ny-garland-row{
+  position:absolute;
+  left:0; right:0; top:0;
+  height:44px;
+  display:flex;
+  justify-content:space-evenly;
+  align-items:flex-start;
+  padding:0 12px 0;
+  gap:10px;
+}
+
+/* лампочка: контейнер НЕ переворачиваем (чтоб подвес сверху был сверху) */
+.ny-bulb{
+  position:relative;
+  width:18px;                 /* меньше */
+  height:18px;                /* меньше */
+  transform: translateY(var(--ny-drop, -3px)) rotate(var(--ny-rot, 0deg));
+  opacity:.92;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+
+  /* лёгкая тень (дешевле чем filter drop-shadow) */
+  box-shadow: 0 0 10px rgba(0,0,0,.25);
+}
+
+/* подвес сверху */
+.ny-bulb::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-11px;
+  width:2px;
+  height:11px;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,.16);
+  border-radius: 2px;
+  pointer-events:none;
+  box-shadow: 0 6px 10px rgba(0,0,0,.35);
+}
+
+/* переворачиваем ТОЛЬКО SVG лампочки */
+.ny-bulb svg{
+  width:100%;
+  height:100%;
+  display:block;
+  transform: rotate(180deg);
+  transform-origin:center;
+}
+
+/* контур лампочки */
+.ny-bulb .ny-stroke{
+  stroke: var(--ny-c);
+  stroke-width: 2.1;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* “стекло” внутри */
+.ny-bulb .ny-glass{
+  fill: color-mix(in srgb, var(--ny-c) 14%, transparent);
+  opacity: .8;
+}
+
+/* дешёвые анимации (только opacity) */
+@keyframes nyWave{
+  0%,100% { opacity:.35; }
+  40%     { opacity:1; }
+}
+@keyframes nyBlinkFast{
+  0%,100% { opacity:.25; }
+  35%     { opacity:1; }
+  65%     { opacity:.35; }
+}
+@keyframes nyBlinkSlow{
+  0%   { opacity:.35; }
+  35%  { opacity:1; }
+  75%  { opacity:.55; }
+  100% { opacity:.35; }
+}
+
+/* базовая “жизнь” */
+.ny-bulb{
+  animation: nyWave var(--ny-wave, 3.4s) ease-in-out infinite;
+}
+.ny-bulb.ny-fast{
+  animation:
+    nyWave var(--ny-wave, 3.2s) ease-in-out infinite,
+    nyBlinkFast var(--ny-blink, 1.2s) steps(2, end) infinite;
+}
+.ny-bulb.ny-slow{
+  animation:
+    nyWave var(--ny-wave, 4.2s) ease-in-out infinite,
+    nyBlinkSlow var(--ny-blink, 2.8s) ease-in-out infinite;
+}
+
+/* ===== СНЕЖИНКИ (ультра-лёгкий DOM) ===== */
+.ny-snow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:40;
+  display:none;
+}
+html.ny .ny-snow{ display:block; }
+
+/* падение анимируем на контейнере (transform) */
+.ny-flake{
+  position:absolute;
+  top:-12vh;
+  left:0;
+  width: var(--ny-size, 14px);
+  height: var(--ny-size, 14px);
+
+  /* в 2 раза прозрачнее */
+  opacity: var(--ny-op, .28);
+
+  will-change: transform;
+  transform: translate3d(0,0,0);
+
+  animation: nyFall var(--ny-dur, 14s) linear infinite;
+}
+
+/* sway отдельно на вложенном (transform translateX — дешево) */
+.ny-flake-inner{
+  width:100%;
+  height:100%;
+  animation: nySway var(--ny-sway-dur, 5s) ease-in-out infinite;
+}
+
+.ny-flake svg{ width:100%; height:100%; display:block; }
+.ny-flake path{
+  stroke: rgba(255,255,255,.85);
+  stroke-width: 1.6;
+  fill:none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* только transform/opacity */
+@keyframes nyFall{
+  from { transform: translate3d(var(--ny-x,0px), -12vh, 0) rotate(0deg); opacity: var(--ny-op, .28); }
+  to   { transform: translate3d(var(--ny-x2,0px), 112vh, 0) rotate(var(--ny-r2, 540deg)); opacity: var(--ny-op, .28); }
+}
+@keyframes nySway{
+  0%   { transform: translateX(0px); }
+  25%  { transform: translateX(var(--ny-sway, 14px)); }
+  50%  { transform: translateX(calc(var(--ny-sway, 14px) * -1)); }
+  75%  { transform: translateX(calc(var(--ny-sway, 14px) * .6)); }
+  100% { transform: translateX(0px); }
+}
+
+/* мобилка ещё легче */
+@media (max-width:640px){
+  .ny-bulb{ width:16px; height:16px; }
+  .ny-garland{ height:40px; }
+  .ny-garland-row{ height:40px; }
+  .ny-flake{ opacity: .22; }
+}
+
+/* если пользователь/устройство просит меньше анимации — отключаем */
+@media (prefers-reduced-motion: reduce){
+  html.ny .ny-snow{ display:none !important; }
+  html.ny .ny-garland{ display:none !important; }
+  html.ny .ac-logo::after{ display:none !important; }
+}
+
+/* =========================
+   NEWYEAR END (REMOVE LATER)
+   ========================= */
+    
     /* PULSE FOR DETAILS BUTTON */
     @keyframes pulse-btn {
       0% { transform: scale(1); }
@@ -1128,23 +1331,25 @@
 </head>
 <body id="top">
 
+<!-- =========================
+     NEWYEAR START (REMOVE LATER)
+     ========================= -->
+<div class="ny-garland" aria-hidden="true"></div>
+<div class="ny-snow" aria-hidden="true"></div>
+<!-- =========================
+     NEWYEAR END (REMOVE LATER)
+     ========================= -->
+  
 <header class="header">
   <div class="header-left">
     <div class="logo-wrapper">
       <div class="logo-avatar">
-        <img src="https://i.ibb.co/PZGTwyqp/unnamed.jpg" alt="logo">
+        <img src="logo.jpg" alt="logo">
       </div>
       <div>
         <div class="logo">Samostroy Shop</div>
         <div class="logo-sub">Будматеріали та меблі з доставкою по Україні</div>
       </div>
-    </div>
-  </div>
-
-  <div class="header-center">
-    <div class="search-bar">
-      <i data-lucide="search"></i>
-      <input id="searchInput" placeholder="Пошук по меблях: стелаж, тумба, контейнер..." />
     </div>
   </div>
 
@@ -1285,6 +1490,12 @@
         <option value="price-desc">Спочатку дорожчі</option>
       </select>
     </div>
+      <div class="header-center">
+    <div class="search-bar">
+      <i data-lucide="search"></i>
+      <input id="searchInput" placeholder="Пошук по меблях: стелаж, тумба, контейнер..." />
+    </div>
+  </div>
   </section>
 
   <!-- PRODUCTS -->
@@ -1390,13 +1601,39 @@
   </section>
 </main>
 
-<footer>
+
+
+
+
+
+<footer id="footer">
   <div class="footer-col footer-brand">
     <div class="footer-logo">Samostroy Shop</div>
     <p>Інтернет-магазин будівельних матеріалів, меблів та рішень для зберігання. Підбір, консультація та відправка по всій Україні.</p>
-    <div class="footer-copy">© <span id="year"></span> Samostroy Shop. Всі права захищені.</div>
+    <div class="footer-copy">© <span id="year"></span> Stroy Shop. Всі права захищені.</div>
+    
+     <div class="share-icons">
+    <a class="share-icon"
+       href="https://www.facebook.com/sharer/sharer.php?u=https://samostroy.shop"
+       target="_blank">
+       <i class="ri-facebook-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://api.whatsapp.com/send?text=Рекомендую%20Samostroy%20Shop:%20https://samostroy.shop"
+       target="_blank">
+       <i class="ri-whatsapp-fill"></i>
+    </a>
+
+    <a class="share-icon"
+       href="https://t.me/share/url?url=https://samostroy.shop&text=Samostroy%20Shop%20—%20будматеріали%20з%20доставкою"
+       target="_blank">
+       <i class="ri-telegram-fill"></i>
+    </a>
+
   </div>
-  
+  </div>
+
   <div class="footer-col footer-nav-col">
     <div class="footer-title">Навігація</div>
     <nav class="footer-nav">
@@ -1408,11 +1645,28 @@
 
   <div class="footer-col footer-coop">
     <div class="footer-title">Співпраця</div>
-    <nav class="footer-nav">
-      <a href="opt.html">Оптовим клієнтам</a>
-      <a href="dropshipping.html">Дропшиперам</a>
-      <a href="partners.html">Партнерська програма</a>
-      <a href="jobs.html">Робота та вакансії</a>
+
+      <nav class="footer-nav">
+        <a href="opt.html">Оптовим клієнтам</a>
+        <a href="postachalniky.html">Постачальникам</a>
+        <a href="franchise.html">Франшиза</a>
+        <a href="dropshipping.html">Дропшиперам</a>
+        <a href="academy.html">Академія дропшипінгу</a>
+        <a href="partners.html">Партнерська програма</a>
+        <a href="jobs.html">Робота та вакансії</a>
+    </nav>
+  </div>
+
+  <div class="footer-col footer-coop">
+    <div class="footer-title">Каталоги</div>
+
+      <nav class="footer-nav">
+        <a href="pazl-pidloga.html">Пазл-підлога</a>
+        <a href="kylimky.html">Килимки для підлоги</a>
+        <a href="mebli.html">Меблеві рішення</a>
+        <a href="vinil.html">Вінілові покриття</a>
+        <a href="dzerkala.html">Дзеркала</a>
+        <a href="ekoshkira.html">Екошкіра</a>
     </nav>
   </div>
   
@@ -1422,7 +1676,7 @@
       <i data-lucide="send"></i> Telegram-канал
     </a>
     <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" class="footer-link">
-      <i data-lucide="play-circle"></i> TikTok: @stroyshop_ua
+      <i data-lucide="play-circle"></i> TikTok: @samostroy_shop
     </a>
     <a href="tel:+380984927948" class="footer-phone">
       <i data-lucide="phone"></i> +380&nbsp;98&nbsp;492&nbsp;79&nbsp;48
@@ -1430,16 +1684,18 @@
   </div>
 
   <div class="footer-col">
-    <div class="footer-title">Доставка</div>
-    <div class="delivery-footer-item">
-      <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="">
-      <span>Нова Пошта — оплата при отриманні або передплата</span>
-    </div>
-    <div class="delivery-footer-item">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="">
-      <span>Укрпошта — оплата при отриманні або передплата</span>
-    </div>
+  <div class="footer-title">Доставка</div>
+
+  <div class="delivery-footer-item">
+    <img src="https://play-lh.googleusercontent.com/mtyOm0Rp0PeG_BWE7M5j9gBWuU1Du34LLj-dLdSE1-006_BkFg32W3Cca00l2BBvNM0" alt="">
+    <span>Нова Пошта — оплата при отриманні або передплата</span>
   </div>
+
+  <div class="delivery-footer-item">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWVqOtJXJdCf2fRoFNt9neOTVbZjZKOxu-3g&s" alt="">
+    <span>Укрпошта — оплата при отриманні або передплата</span>
+  </div>
+</div>
   
   <div class="footer-col footer-manager">
     <div class="footer-title">Ваш менеджер</div>
@@ -1455,6 +1711,7 @@
       </div>
     </div>
   </div>
+  
 </footer>
 
 <!-- PRODUCT MODAL -->
@@ -1661,7 +1918,7 @@
       category: 'Меблі й зберігання',
       price: 899,
       sku: 'STL-4SHELF',
-      img: 'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      img: 'samostroy-shop-logo.jpg',
       unit: 'шт',
       short: 'Легкий стелаж для балкона, кладовки або гаража — 4 полиці для коробок і контейнерів.',
       full: 'Пластиковий стелаж з 4 полицями — компактне рішення для зберігання:\n\n- Не боїться вологи, підходить для балкона та кладовки\n- Легко миється та збирається без інструментів\n- Вміщує коробки, побутову хімію, інструменти\n- Ідеальний для організації зони зберігання без важкого металу'
@@ -1672,7 +1929,7 @@
       category: 'Меблі й зберігання',
       price: 349,
       sku: 'BOX-60L-LID',
-      img: 'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      img: 'samostroy-shop-logo.jpg',
       unit: 'шт',
       short: 'Місткий пластиковий контейнер з кришкою для одягу, іграшок, сезонних речей.',
       full: 'Контейнер 60 л — універсальний варіант для дому та офісу:\n\n- Закривається кришкою, захищає від пилу\n- Підходить для одягу, постільної білизни, іграшок\n- Можна ставити один на один, економлячи простір\n- Зручно ховати в шафу, під ліжко або на стелаж'
@@ -1683,7 +1940,7 @@
       category: 'Меблі й зберігання',
       price: 599,
       sku: 'AIR-CHAIR-HOME',
-      img: 'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+      img: 'samostroy-shop-logo.jpg',
       unit: 'шт',
       short: 'Комфортне надувне крісло для відпочинку вдома, на дачі або в студії.',
       full: 'Надувне крісло — мобільний комфорт:\n\n- Швидко надувається та здувається\n- Не займає багато місця при зберіганні\n- Підійде для зони відпочинку, кімнати підлітка чи дачі\n- Можна комбінувати з надувним диваном та пуфами'
@@ -2236,6 +2493,150 @@
     });
   });
 
+  /* ============================================================
+   🟧 24. NEWYEAR START (REMOVE LATER)
+============================================================ */
+(function () {
+  // Сезон каждый год: 15 Dec - 15 Jan (включительно)
+  function isNewYearSeason(d) {
+    const m = d.getMonth(); // 0=Jan ... 11=Dec
+    const day = d.getDate();
+    return (m === 11 && day >= 15) || (m === 0 && day <= 15);
+  }
+
+  const now = new Date();
+  if (!isNewYearSeason(now)) {
+    document.documentElement.classList.remove("ny");
+    return;
+  }
+  document.documentElement.classList.add("ny");
+
+  // Год у логотипа: декабрь -> следующий год, январь -> текущий
+  const nyYear =
+    now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
+  const logo = document.querySelector(".ac-logo");
+  if (logo) logo.setAttribute("data-ny-year", String(nyYear));
+
+  // SVG лампочка
+  function bulbSVG() {
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path class="ny-glass" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
+        <path class="ny-stroke" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
+        <path class="ny-stroke" d="M9.2 18.4h5.6"/>
+        <path class="ny-stroke" d="M9.8 21h4.4"/>
+      </svg>
+    `;
+  }
+
+  // SVG снежинка
+  function snowflakeSVG() {
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2v20M4 6l16 12M20 6L4 18M6 4l2 2M18 4l-2 2M6 20l2-2M18 20l-2-2M2 12h3M19 12h3"/>
+      </svg>
+    `;
+  }
+
+  // ============ ГИРЛЯНДА (ТОЛЬКО ВИЗУАЛ, БЕЗ КЛИКОВ) ============
+  const garland = document.querySelector(".ny-garland");
+  if (garland && !garland.querySelector(".ny-garland-row")) {
+    // Важно: гирлянда не перехватывает клики вообще
+    garland.style.pointerEvents = "none";
+
+    const row = document.createElement("div");
+    row.className = "ny-garland-row";
+
+    const colors = [
+      "#ff4e6d",
+      "#5ce3a0",
+      "#38bdf8",
+      "#ffb347",
+      "#a855f7",
+      "#f97316",
+      "#ffffff",
+    ];
+
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+    const count = isMobile ? 14 : 22;
+
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement("div");
+      b.className = "ny-bulb";
+
+      const r = Math.random();
+      if (r < 0.3) b.classList.add("ny-fast");
+      else if (r < 0.65) b.classList.add("ny-slow");
+
+      b.style.setProperty("--ny-drop", `${Math.round(Math.random() * 6 - 3)}px`);
+      b.style.setProperty("--ny-rot", `${Math.round(Math.random() * 10 - 5)}deg`);
+      b.style.setProperty("--ny-wave", `${(2.8 + Math.random() * 2.0).toFixed(2)}s`);
+      b.style.setProperty("--ny-blink", `${(0.9 + Math.random() * 3.0).toFixed(2)}s`);
+
+      const c = colors[i % colors.length];
+      b.style.setProperty("--ny-c", c);
+      b.style.animationDelay = `${(i * 0.1 + Math.random() * 0.25).toFixed(2)}s`;
+
+      b.innerHTML = bulbSVG();
+      row.appendChild(b);
+    }
+
+    garland.appendChild(row);
+
+    // ВАЖНО: никаких addEventListener("click") тут нет — только визуал
+  }
+
+  // ============ СНЕГ ============
+  const snow = document.querySelector(".ny-snow");
+  if (snow && !snow.querySelector(".ny-flake")) {
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+
+    // ультра-лайт: минимум элементов
+    const flakesCount = isMobile ? 5 : 9;
+
+    for (let i = 0; i < flakesCount; i++) {
+      const f = document.createElement("div");
+      f.className = "ny-flake";
+
+      // внутренний слой для sway (дешево)
+      f.innerHTML = `<div class="ny-flake-inner">${snowflakeSVG()}</div>`;
+
+      const left = Math.random() * 100;
+      const size =
+        (isMobile ? 10 : 12) + Math.random() * (isMobile ? 8 : 12);
+      const op = 0.16 + Math.random() * 0.16;
+      const dur =
+        (isMobile ? 11 : 12) + Math.random() * (isMobile ? 8 : 12);
+      const sway = 10 + Math.random() * 18;
+      const swayDur = 3.6 + Math.random() * 3.6;
+
+      // дрейф по x
+      const x = Math.random() * 30 - 15;
+      const x2 = x + (Math.random() * 50 - 25);
+      const r2 = 360 + Math.round(Math.random() * 360);
+
+      f.style.left = `${left}%`;
+      f.style.setProperty("--ny-size", `${size.toFixed(1)}px`);
+      f.style.setProperty("--ny-op", op.toFixed(2));
+      f.style.setProperty("--ny-dur", `${dur.toFixed(2)}s`);
+      f.style.setProperty("--ny-sway", `${sway.toFixed(1)}px`);
+      f.style.setProperty("--ny-sway-dur", `${swayDur.toFixed(2)}s`);
+      f.style.setProperty("--ny-x", `${x.toFixed(1)}px`);
+      f.style.setProperty("--ny-x2", `${x2.toFixed(1)}px`);
+      f.style.setProperty("--ny-r2", `${r2}deg`);
+
+      // разнесём старт
+      const delay = Math.random() * (isMobile ? 4 : 6);
+      f.style.animationDelay = `${delay.toFixed(2)}s`;
+
+      snow.appendChild(f);
+    }
+  }
+})();
+// =========================
+// NEWYEAR END (REMOVE LATER)
+// =========================
+  
   /* INIT */
   (async function init(){
     const yearSpan = document.getElementById('year');
