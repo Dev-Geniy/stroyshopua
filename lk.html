@@ -3,195 +3,343 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Кабінет партнера — Samostroy.shop</title>
-  <meta name="description" content="Сторінка для дропшиперів: товари з XML, копіювання заголовків і описів, інструкції та спільнота." />
+  <title>Partner Hub — Samostroy.shop</title>
+  <meta name="description" content="Сторінка для дропшиперів: каталог з XML, копіювання заголовків/описів, дошки оголошень та спільнота." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#050509;
       --bg2:#0a0b10;
       --card:#11131c;
+      --card2:#0f1017;
       --accent:#ff7a1a;
       --accent2:#ffb347;
       --text:#f5f5f7;
       --muted:#9da3b5;
-      --border:rgba(255,255,255,.08);
-      --shadow:0 14px 45px rgba(0,0,0,.45);
+      --border:rgba(255,255,255,.09);
+      --shadow:0 18px 60px rgba(0,0,0,.55);
+      --shadow2:0 10px 30px rgba(0,0,0,.35);
       --radius:16px;
-      --radius2:22px;
-      --max:1200px;
+      --radius2:24px;
+      --max:1220px;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background: radial-gradient(900px 500px at 75% -10%, rgba(255,122,26,.12), transparent 65%),
-                  radial-gradient(900px 500px at 20% 110%, rgba(255,179,71,.10), transparent 60%),
-                  linear-gradient(180deg, var(--bg), var(--bg2));
       color:var(--text);
+      background:
+        radial-gradient(900px 500px at 75% -10%, rgba(255,122,26,.14), transparent 65%),
+        radial-gradient(900px 500px at 20% 110%, rgba(255,179,71,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
     }
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:18px;}
+    .muted{color:var(--muted)}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+
+    /* ===== Header (compact + hide on scroll) ===== */
     .topbar{
-      position:sticky; top:0; z-index:50;
+      position:sticky; top:0; z-index:60;
       backdrop-filter: blur(10px);
       background: rgba(5,5,9,.55);
       border-bottom: 1px solid var(--border);
+      transition: transform .22s ease;
     }
+    html.header-hidden .topbar{ transform: translateY(-120%); }
+
     .topbar-inner{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      max-width:var(--max); margin:0 auto; padding:12px 18px;
+      max-width:var(--max);
+      margin:0 auto;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
+
     .brand{
-      display:flex; align-items:center; gap:10px; min-width:220px;
+      display:flex; align-items:center; gap:10px;
+      min-width: 220px;
     }
-    .logo-dot{
-      width:10px; height:10px; border-radius:50%;
-      background: linear-gradient(180deg, var(--accent), var(--accent2));
-      box-shadow:0 0 22px rgba(255,122,26,.55);
+    .brand-badge{
+      width:38px; height:38px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(18px 18px at 35% 30%, rgba(255,179,71,.30), transparent 60%),
+        radial-gradient(22px 22px at 70% 80%, rgba(255,122,26,.28), transparent 60%),
+        rgba(255,255,255,.03);
+      box-shadow: 0 0 0 3px rgba(255,122,26,.08) inset, var(--shadow2);
+      position:relative;
+    }
+    .brand-badge:after{
+      content:"";
+      position:absolute; inset:0;
+      border-radius: 14px;
+      box-shadow: 0 0 24px rgba(255,122,26,.18);
+      pointer-events:none;
     }
     .brand b{font-size:14px; letter-spacing:.2px}
-    .brand small{display:block; color:var(--muted); font-size:12px; margin-top:2px}
-    nav{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:center;
-    }
-    .pill{
-      text-decoration:none;
-      border:1px solid var(--border);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:13px;
-      color:var(--text);
-      background: rgba(255,255,255,.03);
-      transition:.18s ease;
-    }
-    .pill:hover{transform: translateY(-1px); border-color: rgba(255,122,26,.35)}
-    .pill.active{border-color: rgba(255,122,26,.55); box-shadow:0 0 0 3px rgba(255,122,26,.10) inset}
+    .brand small{display:block; font-size:12px; color:var(--muted); margin-top:2px}
 
+    .nav{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .nav a{
+      text-decoration:none;
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+      transition:.18s ease;
+      min-width: 210px;
+    }
+    .nav a:hover{transform: translateY(-1px); border-color: rgba(255,122,26,.35)}
+    .nav a.active{
+      border-color: rgba(255,122,26,.65);
+      background: linear-gradient(180deg, rgba(255,122,26,.12), rgba(255,255,255,.03));
+      box-shadow: 0 0 0 3px rgba(255,122,26,.12) inset, 0 18px 55px rgba(0,0,0,.35);
+    }
+    .nav-ico{
+      width:34px; height:34px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background: rgba(5,5,9,.35);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900;
+      color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(255,122,26,.08) inset;
+      flex:0 0 auto;
+    }
+    .nav strong{display:block; font-size:13px}
+    .nav span{display:block; font-size:11.5px; color:var(--muted); margin-top:2px}
+
+    .menu-toggle{
+      display:none;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      transition:.18s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .menu-toggle:hover{transform: translateY(-1px); border-color: rgba(255,122,26,.35)}
+
+    @media (max-width: 980px){
+      .topbar-inner{padding:10px 12px}
+      .brand{min-width:auto}
+      .brand b{font-size:13px}
+      .brand small{font-size:11px}
+      .menu-toggle{display:inline-flex; align-items:center; gap:8px;}
+      .nav{
+        display:none;
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+        justify-content:flex-start;
+        gap:8px;
+      }
+      .nav.open{display:flex;}
+      .nav a{min-width:auto}
+    }
+
+    /* ===== Hero layout ===== */
     .hero{
-      padding:26px 0 8px;
+      padding: 16px 0 8px;
     }
     .hero-grid{
-      display:grid; grid-template-columns: 1.2fr .8fr; gap:14px;
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:14px;
+      align-items:stretch;
     }
-    @media (max-width: 920px){
-      .hero-grid{grid-template-columns:1fr}
-      .brand{min-width:auto}
-    }
-    .hero-card{
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    @media (max-width: 980px){ .hero-grid{grid-template-columns:1fr} }
+
+    .panel{
       border:1px solid var(--border);
       border-radius: var(--radius2);
-      padding:18px;
+      background: rgba(17,19,28,.72);
       box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
     }
-    .hero-card:before{
+    .panel.glow:before{
       content:"";
       position:absolute; inset:-2px;
-      background: radial-gradient(700px 220px at 30% 0%, rgba(255,122,26,.18), transparent 60%);
+      background: radial-gradient(850px 260px at 25% 0%, rgba(255,122,26,.22), transparent 60%);
       pointer-events:none;
     }
+    .panel-inner{padding:18px; position:relative;}
     .hero h1{
-      margin:0 0 6px;
-      font-size:28px;
+      margin:0 0 8px;
+      font-size:30px;
       letter-spacing:.2px;
-      position:relative;
+      line-height:1.15;
     }
     .hero p{
       margin:0;
       color:var(--muted);
+      line-height:1.65;
+      font-size:13.5px;
+      max-width: 880px;
+    }
+    .quick-steps{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 980px){ .quick-steps{grid-template-columns:1fr} }
+    .step{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding:12px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.22);
+    }
+    .step b{display:block; font-size:12.5px}
+    .step span{display:block; margin-top:4px; font-size:12px; color:var(--muted); line-height:1.55}
+
+    .stats{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .stat{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding:12px;
+    }
+    .stat .val{font-size:20px; font-weight:900}
+    .stat .lbl{font-size:12px; color:var(--muted); margin-top:4px}
+    .hint{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
       line-height:1.6;
-      position:relative;
     }
-    .hero-actions{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; position:relative;
+
+    /* ===== Section heads ===== */
+    section{padding:16px 0;}
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
     }
+    .section-title{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+    .section-sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      max-width: 820px;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      font-size:12px;
+      color: rgba(245,245,247,.92);
+    }
+    .chip-dot{
+      width:8px; height:8px; border-radius:50%;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 18px rgba(255,122,26,.45);
+    }
+
+    /* ===== Controls ===== */
+    .toolbar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding:10px;
+      box-shadow: 0 14px 38px rgba(0,0,0,.18);
+    }
+    .input, .select{
+      border:1px solid var(--border);
+      background: rgba(5,5,9,.35);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 14px;
+      outline:none;
+    }
+    .input{flex:1; min-width: 220px;}
+    .select{min-width: 220px;}
     .btn{
       border:1px solid var(--border);
       background: rgba(255,255,255,.03);
       color:var(--text);
       padding:10px 12px;
-      border-radius:12px;
-      font-size:13px;
+      border-radius: 14px;
       cursor:pointer;
       transition:.18s ease;
       user-select:none;
+      white-space:nowrap;
     }
     .btn:hover{transform: translateY(-1px); border-color: rgba(255,122,26,.35)}
     .btn.primary{
-      border-color: rgba(255,122,26,.55);
-      background: linear-gradient(180deg, rgba(255,122,26,.16), rgba(255,255,255,.03));
-      box-shadow:0 0 0 3px rgba(255,122,26,.10) inset;
+      border-color: rgba(255,122,26,.62);
+      background: linear-gradient(180deg, rgba(255,122,26,.18), rgba(255,255,255,.03));
+      box-shadow: 0 0 0 3px rgba(255,122,26,.10) inset;
     }
-    .meta-card{
-      background: rgba(17,19,28,.75);
+
+    /* ===== Loader ===== */
+    .loader-wrap{
+      margin-top:12px;
       border:1px solid var(--border);
+      background: rgba(17,19,28,.72);
       border-radius: var(--radius2);
-      padding:18px;
       box-shadow: var(--shadow);
+      padding:18px;
+      display:none;
     }
-    .meta-card h3{margin:0 0 10px; font-size:14px; letter-spacing:.2px}
-    .kpi{
-      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    .loader{
+      display:flex; align-items:center; gap:12px;
     }
-    .kpi .box{
-      border:1px solid var(--border);
-      border-radius: 16px;
-      padding:12px;
-      background: rgba(255,255,255,.03);
+    .spinner{
+      width:34px; height:34px;
+      border-radius:50%;
+      border: 3px solid rgba(255,255,255,.12);
+      border-top-color: rgba(255,122,26,.85);
+      animation: spin 1s linear infinite;
+      box-shadow:0 0 22px rgba(255,122,26,.18);
+      flex:0 0 auto;
     }
-    .kpi .val{font-size:18px; font-weight:800}
-    .kpi .lbl{font-size:12px; color:var(--muted); margin-top:4px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loader b{font-size:13px}
+    .loader p{margin:2px 0 0; color:var(--muted); font-size:12.5px; line-height:1.5}
 
-    section{
-      padding:18px 0;
-    }
-    .section-title{
-      margin:0 0 12px;
-      font-size:18px;
-      letter-spacing:.2px;
-    }
-    .section-sub{
-      margin:-6px 0 14px;
-      color:var(--muted);
-      line-height:1.6;
-      font-size:13px;
-    }
-
-    .toolbar{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      padding:10px;
-      border-radius: 18px;
-    }
-    .input{
-      flex:1;
-      min-width:220px;
-      border:1px solid var(--border);
-      background: rgba(5,5,9,.35);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius: 14px;
-      outline:none;
-    }
-    .select{
-      border:1px solid var(--border);
-      background: rgba(5,5,9,.35);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius: 14px;
-      outline:none;
-      min-width:220px;
-    }
-
+    /* ===== Products grid ===== */
     .grid{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -204,19 +352,20 @@
     .card{
       border:1px solid var(--border);
       border-radius: var(--radius2);
-      background: rgba(17,19,28,.75);
+      background: rgba(17,19,28,.78);
       box-shadow: var(--shadow);
       overflow:hidden;
       display:flex;
       flex-direction:column;
-      min-height: 220px;
+      min-height: 240px;
     }
     .card-media{
-      height:160px;
+      height: 175px;
       background: rgba(255,255,255,.03);
       display:flex; align-items:center; justify-content:center;
       overflow:hidden;
       border-bottom: 1px solid var(--border);
+      position:relative;
     }
     .card-media img{
       width:100%;
@@ -224,13 +373,21 @@
       object-fit:cover;
       display:block;
     }
+    .card-media .noimg{
+      font-size:12px;
+      color: rgba(245,245,247,.85);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding:7px 10px;
+      border-radius:999px;
+    }
     .card-body{padding:14px;}
     .title{
       margin:0 0 8px;
       font-size:14px;
       line-height:1.35;
       letter-spacing:.2px;
-      font-weight:800;
+      font-weight:900;
     }
     .desc{
       margin:0;
@@ -241,9 +398,9 @@
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
       overflow:hidden;
-      min-height: 78px;
+      min-height: 80px;
     }
-    .badge-row{
+    .meta{
       display:flex; gap:8px; flex-wrap:wrap;
       margin-top:10px;
     }
@@ -264,65 +421,145 @@
     }
     .mini{
       flex:1;
-      min-width: 140px;
+      min-width: 160px;
       text-align:center;
       border-radius: 14px;
       padding:10px 10px;
       font-size:12.5px;
     }
     .mini.accent{
-      border-color: rgba(255,122,26,.55);
-      background: linear-gradient(180deg, rgba(255,122,26,.16), rgba(255,255,255,.03));
-    }
-    .mini.ghost{background: rgba(255,255,255,.03);}
-    .mini:active{transform: translateY(1px);}
-
-    .note{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.6;
+      border-color: rgba(255,122,26,.62);
+      background: linear-gradient(180deg, rgba(255,122,26,.20), rgba(255,255,255,.03));
     }
 
-    .list{
+    /* ===== Boards (with large logo) ===== */
+    .boards{
       display:grid;
       grid-template-columns: repeat(2, 1fr);
       gap:12px;
     }
-    @media (max-width: 820px){ .list{grid-template-columns:1fr;} }
-    .list .item{
+    @media (max-width: 900px){ .boards{grid-template-columns: 1fr;} }
+
+    .board{
       border:1px solid var(--border);
+      background: rgba(17,19,28,.72);
       border-radius: var(--radius2);
-      background: rgba(17,19,28,.65);
-      padding:14px;
       box-shadow: var(--shadow);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 210px;
     }
-    .item h4{margin:0 0 6px; font-size:14px}
-    .item p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
-    .item .row{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap}
-    .item .row a{
+    @media (max-width: 640px){ .board{grid-template-columns:1fr} }
+
+    .board-logo{
+      border-right:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      display:flex; align-items:center; justify-content:center;
+      padding:14px;
+      position:relative;
+      min-height:210px;
+    }
+    @media (max-width: 640px){
+      .board-logo{border-right:none; border-bottom:1px solid var(--border); min-height:170px;}
+    }
+    .board-logo img{
+      width: 100%;
+      max-width: 190px;
+      height: auto;
+      display:block;
+      border-radius: 18px;
+      border:1px solid var(--border);
+      background: rgba(5,5,9,.35);
+      box-shadow: 0 0 0 3px rgba(255,122,26,.06) inset;
+    }
+    .board-logo .logo-fallback{
+      display:none;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-size:12px;
+      color: rgba(245,245,247,.88);
+    }
+    .board-body{padding:14px;}
+    .board-body h3{margin:0 0 6px; font-size:16px; letter-spacing:.2px}
+    .board-body p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
+    .steps{
+      margin:10px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+    .steps li{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding:9px 10px;
+      font-size:12.5px;
+      color: rgba(245,245,247,.92);
+      line-height:1.5;
+    }
+    .board-actions{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .link-btn{
       text-decoration:none;
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap:8px;
       padding:10px 12px;
       border-radius: 14px;
       border:1px solid var(--border);
       background: rgba(255,255,255,.03);
       font-size:13px;
+      transition:.18s ease;
+      min-width: 160px;
+      text-align:center;
     }
+    .link-btn:hover{transform: translateY(-1px); border-color: rgba(255,122,26,.35)}
+    .link-btn.primary{
+      border-color: rgba(255,122,26,.62);
+      background: linear-gradient(180deg, rgba(255,122,26,.18), rgba(255,255,255,.03));
+      box-shadow: 0 0 0 3px rgba(255,122,26,.10) inset;
+    }
+
+    /* ===== Community (buttons only) ===== */
+    .community{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 900px){ .community{grid-template-columns: 1fr;} }
+
+    .com{
+      border:1px solid var(--border);
+      background: rgba(17,19,28,.72);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding:14px;
+    }
+    .com h3{margin:0 0 6px; font-size:16px}
+    .com p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
+    .com .row{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap}
+
+    /* ===== Footer, toast ===== */
     footer{
       padding:26px 0 40px;
       color:var(--muted);
       font-size:12px;
       text-align:center;
     }
-
     .toast{
       position: fixed;
       right: 14px;
       bottom: 14px;
-      z-index: 100;
+      z-index: 120;
       border: 1px solid var(--border);
       background: rgba(17,19,28,.92);
       border-radius: 16px;
@@ -337,206 +574,386 @@
     .toast.show{opacity:1; transform: translateY(0px);}
     .toast b{color:var(--text); font-size:13px}
     .toast span{display:block; color:var(--muted); font-size:12px; margin-top:2px}
+    
+    /* Контейнер для кнопки и выпадающего меню */
+.nav-wrap{
+  position: relative;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+/* Desktop: навигация как обычно */
+@media (min-width: 981px){
+  .nav{
+    display:flex !important;
+    position: static;
+    width:auto;
+    flex-direction:row;
+    align-items:center;
+    gap:10px;
+  }
+}
+
+/* Mobile: меню выпадает ПОД хедером на всю ширину */
+@media (max-width: 980px){
+  .nav-wrap{
+    width:100%;
+    justify-content:space-between;
+  }
+
+  .menu-toggle{display:inline-flex;}
+
+  .nav{
+    display:none;               /* по умолчанию скрыто */
+    position:absolute;          /* выпадает под хедером */
+    top: calc(100% + 10px);     /* ниже строки хедера */
+    left: 0;
+    right: 0;
+    width: 100%;
+    flex-direction:column;
+    align-items:stretch;
+    gap:8px;
+
+    padding:10px;
+    border-radius: 18px;
+    border:1px solid var(--border);
+    background: rgba(5,5,9,.92);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow);
+    z-index: 999;
+  }
+
+  .nav.open{display:flex;}
+
+  .nav a{
+    min-width: unset;
+    width:100%;
+  }
+}
+
   </style>
 </head>
 
 <body>
+  <!-- ===== HEADER ===== -->
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">
-        <span class="logo-dot" aria-hidden="true"></span>
+      <div class="brand" aria-label="Partner Hub">
+        <div class="brand-badge" aria-hidden="true"></div>
         <div>
-          <b>Кабінет партнера</b>
-          <small>Дропшипінг / White Label — Samostroy.shop</small>
+          <b>Partner Hub</b>
+          <small>Samostroy.shop • Дропшипінг / White Label</small>
         </div>
       </div>
 
-      <nav id="nav">
-        <a class="pill active" href="#products">Товари</a>
-        <a class="pill" href="#post">Де викладати</a>
-        <a class="pill" href="#community">Спільнота</a>
+  <div class="nav-wrap">
+  <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="nav">
+    ☰ Меню
+  </button>
+
+  <nav class="nav" id="nav" aria-label="Навігація">
+        <a class="active" href="#products">
+          <div class="nav-ico">1</div>
+          <div>
+            <strong>Товари</strong>
+            <span>копіюй назву та опис</span>
+          </div>
+        </a>
+        <a href="#boards">
+          <div class="nav-ico">2</div>
+          <div>
+            <strong>Дошки / Маркетплейси</strong>
+            <span>де викладати та як</span>
+          </div>
+        </a>
+        <a href="#community">
+          <div class="nav-ico">3</div>
+          <div>
+            <strong>Спільнота</strong>
+            <span>канали, промо, підтримка</span>
+          </div>
+        </a>
       </nav>
     </div>
   </header>
 
   <main class="wrap">
-    <div class="hero">
+    <!-- ===== HERO ===== -->
+    <section class="hero" aria-label="Вступ">
       <div class="hero-grid">
-        <div class="hero-card">
-          <h1>Все для швидкого старту продажів</h1>
-          <p>
-            Тут ти береш готові товари з нашого каталогу, копіюєш заголовок та опис — і публікуєш на маркетплейсах/дошках оголошень.
-            Ніяких зайвих рухів.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#products">Відкрити товари</a>
-            <a class="btn" href="#post">Де викладати</a>
-            <a class="btn" href="#community">Наші соцмережі</a>
+        <div class="panel glow">
+          <div class="panel-inner">
+            <h1>Партнерська сторінка для швидких продажів</h1>
+            <p>
+              Тут ти береш готові товари з нашого каталогу, копіюєш заголовок та опис — і публікуєш на OLX / Facebook Marketplace / Prom та інших майданчиках.
+              Все зроблено максимально просто.
+            </p>
+
+            <div class="quick-steps" aria-label="Короткий алгоритм">
+              <div class="step">
+                <b>1) Обери товар</b>
+                <span>Відкрий вкладку “Товари” та знайди позицію.</span>
+              </div>
+              <div class="step">
+                <b>2) Скопіюй тексти</b>
+                <span>Кнопки “Копіювати заголовок” і “Копіювати опис”.</span>
+              </div>
+              <div class="step">
+                <b>3) Опублікуй</b>
+                <span>Додай фото/відео й виклади на майданчику зі списку.</span>
+              </div>
+            </div>
+
+            <p class="hint">
+              Порада: найкраще працює 3–6 фото + коротке відео 5–12 секунд. Публікуй регулярно — це дає стабільність.
+            </p>
           </div>
-          <p class="note">Порада: додавай свої фото/відео товару — так оголошення дає більше переглядів.</p>
         </div>
 
-        <div class="meta-card">
-          <h3>Статус каталогу</h3>
-          <div class="kpi">
-            <div class="box">
-              <div class="val" id="kpiCount">—</div>
-              <div class="lbl">Товарів у списку</div>
+        <div class="panel">
+          <div class="panel-inner">
+            <div class="section-head" style="margin-bottom:10px;">
+              <div>
+                <h2 class="section-title" style="font-size:18px;margin:0;">Статус каталогу</h2>
+                <p class="section-sub" style="margin-top:6px;">Каталог підтягується з XML, як на головній.</p>
+              </div>
+              <div class="chip"><span class="chip-dot"></span> Live</div>
             </div>
-            <div class="box">
-              <div class="val" id="kpiUpdated">—</div>
-              <div class="lbl">Останнє оновлення</div>
+
+            <div class="stats">
+              <div class="stat">
+                <div class="val" id="kpiCount">—</div>
+                <div class="lbl">Товарів</div>
+              </div>
+              <div class="stat">
+                <div class="val" id="kpiUpdated">—</div>
+                <div class="lbl">Оновлено</div>
+              </div>
+            </div>
+
+            <p class="hint" id="feedHint">Готуємось завантажити товари…</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+              <a class="link-btn primary" href="#products">Відкрити товари</a>
+              <a class="link-btn" href="#boards">Де викладати</a>
             </div>
           </div>
-          <p class="note" id="feedHint">Завантажуємо XML…</p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 1) ТОВАРЫ -->
-    <section id="products">
-      <h2 class="section-title">Товари</h2>
-      <p class="section-sub">
-        Пошук + фільтр по категоріях (категорія береться з XML). Кнопки копіювання — в кожній картці.
-      </p>
+    <!-- ===== PRODUCTS ===== -->
+    <section id="products" aria-label="Товари">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">1) Товари</h2>
+          <p class="section-sub">
+            Обери товар → натисни “Копіювати заголовок/опис” → встав у своє оголошення.
+          </p>
+        </div>
+        <div class="chip"><span class="chip-dot"></span> Копіюй → Вставляй → Продавай</div>
+      </div>
 
-      <div class="toolbar">
+      <div class="toolbar" role="group" aria-label="Фільтри">
         <input id="search" class="input" placeholder="Пошук по назві або опису…" />
-        <select id="category" class="select">
+        <select id="category" class="select" aria-label="Категорія">
           <option value="__all__">Усі категорії</option>
         </select>
-        <button class="btn" id="reloadBtn" type="button">Оновити</button>
+        <button class="btn primary" id="reloadBtn" type="button">Оновити каталог</button>
       </div>
 
-      <div class="grid" id="grid"></div>
-      <p class="note" id="status"></p>
+      <div class="loader-wrap" id="loaderWrap" aria-live="polite">
+        <div class="loader">
+          <div class="spinner" aria-hidden="true"></div>
+          <div>
+            <b>Завантажуємо товари…</b>
+            <p>Якщо довго — натисни “Оновити каталог”.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid" id="grid" aria-label="Список товарів"></div>
+      <p class="hint" id="status"></p>
     </section>
 
-    <!-- 2) ГДЕ ВЫКЛАДЫВАТЬ -->
-    <section id="post">
-      <h2 class="section-title">Де викладати</h2>
-      <p class="section-sub">
-        Коротко про майданчики + як швидко опублікувати товар. Потім ти це розшириш.
-      </p>
-
-      <div class="list">
-        <div class="item">
-          <h4>OLX</h4>
-          <p>Створюєш оголошення → вставляєш заголовок/опис → додаєш фото/відео → вказуєш ціну та місто → публікуєш.</p>
-          <div class="row">
-            <a href="https://www.olx.ua/" target="_blank" rel="noopener">Відкрити OLX</a>
-            <button class="btn" type="button" data-copy="Порада OLX: роби 3–6 фото, додавай відео, в заголовку — ключові слова.">
-              Копіювати пораду
-            </button>
-          </div>
+    <!-- ===== BOARDS ===== -->
+    <section id="boards" aria-label="Дошки оголошень та маркетплейси">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">2) Дошки оголошень / маркетплейси</h2>
+          <p class="section-sub">
+            Додай сюди логотипи (JPG/PNG) і пізніше розшириш інструкції. Я зробив зрозумілий “скелет” під розвиток.
+          </p>
         </div>
-
-        <div class="item">
-          <h4>Prom.ua</h4>
-          <p>Підійде як “вітрина-магазин”. Додавай товари, категорії, фото, опис, умови доставки та оплати.</p>
-          <div class="row">
-            <a href="https://prom.ua/" target="_blank" rel="noopener">Відкрити Prom.ua</a>
-            <button class="btn" type="button" data-copy="Порада Prom: для кожного товару — 5+ фото, характеристики, ключові слова, доставка/оплата.">
-              Копіювати пораду
-            </button>
-          </div>
-        </div>
-
-        <div class="item">
-          <h4>Rozetka (маркетплейс)</h4>
-          <p>Якщо є можливість підключення — це сильний канал. Потрібні якісні фото, точні характеристики, стабільна логістика.</p>
-          <div class="row">
-            <a href="https://rozetka.com.ua/" target="_blank" rel="noopener">Відкрити Rozetka</a>
-            <button class="btn" type="button" data-copy="Порада Rozetka: максимально точні характеристики + якісні фото, щоб уникати повернень.">
-              Копіювати пораду
-            </button>
-          </div>
-        </div>
-
-        <div class="item">
-          <h4>Facebook Marketplace / Groups</h4>
-          <p>Публікуй у Marketplace та тематичних групах. Працює добре для локальних продажів.</p>
-          <div class="row">
-            <a href="https://www.facebook.com/marketplace/" target="_blank" rel="noopener">Відкрити Marketplace</a>
-            <button class="btn" type="button" data-copy="Порада FB: роби 1 пост під товар + 3–5 груп, додавай фото ‘до/після’ коли можливо.">
-              Копіювати пораду
-            </button>
-          </div>
-        </div>
+        <div class="chip"><span class="chip-dot"></span> 1 товар = багато каналів</div>
       </div>
 
-      <p class="note">Хочеш — потім додамо окремий блок “Як правильно писати оголошення” + шаблони текстів під кожну платформу.</p>
+      <div class="boards">
+        <!-- OLX -->
+        <article class="board">
+          <div class="board-logo">
+            <img src="assets/boards/olx.jpg" alt="OLX logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+            <div class="logo-fallback">Додай: assets/boards/olx.jpg</div>
+          </div>
+          <div class="board-body">
+            <h3>OLX</h3>
+            <p>Швидкі локальні продажі. Працює добре, коли оголошення оформлене якісно і відповіді швидкі.</p>
+            <ul class="steps">
+              <li><b>Крок 1:</b> У “Товари” скопіюй заголовок та опис.</li>
+              <li><b>Крок 2:</b> Створи оголошення → встав тексти → додай 3–6 фото.</li>
+              <li><b>Крок 3:</b> Вкажи місто/доставку → опублікуй → відповідай оперативно.</li>
+            </ul>
+            <div class="board-actions">
+              <a class="link-btn primary" href="https://www.olx.ua/" target="_blank" rel="noopener">Відкрити OLX</a>
+              <a class="link-btn" href="#products">Взяти товар</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Prom -->
+        <article class="board">
+          <div class="board-logo">
+            <img src="assets/boards/prom.jpg" alt="Prom.ua logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+            <div class="logo-fallback">Додай: assets/boards/prom.jpg</div>
+          </div>
+          <div class="board-body">
+            <h3>Prom.ua</h3>
+            <p>Підходить як “вітрина-магазин”. Добре працює з характеристиками, фото і структурованим описом.</p>
+            <ul class="steps">
+              <li><b>Крок 1:</b> Створи картку товару на Prom.</li>
+              <li><b>Крок 2:</b> Встав заголовок/опис → додай характеристики (розмір/матеріал/застосування).</li>
+              <li><b>Крок 3:</b> Фото 5+ → доставка/оплата → публікація.</li>
+            </ul>
+            <div class="board-actions">
+              <a class="link-btn primary" href="https://prom.ua/" target="_blank" rel="noopener">Відкрити Prom.ua</a>
+              <a class="link-btn" href="#products">Взяти товар</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Rozetka -->
+        <article class="board">
+          <div class="board-logo">
+            <img src="assets/boards/rozetka.jpg" alt="Rozetka logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+            <div class="logo-fallback">Додай: assets/boards/rozetka.jpg</div>
+          </div>
+          <div class="board-body">
+            <h3>Rozetka (маркетплейс)</h3>
+            <p>Великий трафік, але потрібно максимально точне оформлення (назва, характеристики, якісні фото).</p>
+            <ul class="steps">
+              <li><b>Крок 1:</b> Підготуй фото без водяних знаків, з хорошим світлом.</li>
+              <li><b>Крок 2:</b> Назва = точна, без “води”; характеристики заповнені.</li>
+              <li><b>Крок 3:</b> Опис: переваги → застосування → монтаж/догляд.</li>
+            </ul>
+            <div class="board-actions">
+              <a class="link-btn primary" href="https://rozetka.com.ua/" target="_blank" rel="noopener">Відкрити Rozetka</a>
+              <a class="link-btn" href="#products">Взяти товар</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Facebook Marketplace -->
+        <article class="board">
+          <div class="board-logo">
+            <img src="assets/boards/facebook.jpg" alt="Facebook Marketplace logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+            <div class="logo-fallback">Додай: assets/boards/facebook.jpg</div>
+          </div>
+          <div class="board-body">
+            <h3>Facebook Marketplace</h3>
+            <p>Працює для локальних продажів та швидких заявок у Messenger. Плюс — пости можна дублювати в групи.</p>
+            <ul class="steps">
+              <li><b>Крок 1:</b> Створи лістинг у Marketplace.</li>
+              <li><b>Крок 2:</b> Додай 3–8 фото, краще “в інтер’єрі”.</li>
+              <li><b>Крок 3:</b> Продублюй у 3–10 груп по ремонту/інтер’єру.</li>
+            </ul>
+            <div class="board-actions">
+              <a class="link-btn primary" href="https://www.facebook.com/marketplace/" target="_blank" rel="noopener">Відкрити Marketplace</a>
+              <a class="link-btn" href="#products">Взяти товар</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <p class="hint">
+        Якщо хочеш — додамо ще: Viber/Telegram-чати, Instagram-магазин, Google Business Profile, локальні дошки по містах.
+      </p>
     </section>
 
-    <!-- 3) СООБЩЕСТВО -->
-    <section id="community">
-      <h2 class="section-title">Спільнота</h2>
-      <p class="section-sub">
-        Тут посилання на наші канали та сторінки. Замінюй на свої реальні URL/нікнейми.
-      </p>
+    <!-- ===== COMMUNITY ===== -->
+    <section id="community" aria-label="Спільнота">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">3) Спільнота</h2>
+          <p class="section-sub">
+            Підписуйся — тут новинки товарів, промо-матеріали, інструкції та підтримка партнерів.
+          </p>
+        </div>
+        <div class="chip"><span class="chip-dot"></span> Підтримка + контент</div>
+      </div>
 
-      <div class="list">
-        <div class="item">
-          <h4>Telegram канал партнерів</h4>
-          <p>Оновлення по товарах, акції, підказки, відповіді на питання.</p>
+      <div class="community">
+        <div class="com">
+          <h3>Telegram — канал партнерів</h3>
+          <p>Оновлення по товарах, акції, відповіді на питання. Підписка = бути в курсі.</p>
           <div class="row">
-            <a href="#" target="_blank" rel="noopener" id="tgPartners">Додати посилання</a>
-            <button class="btn" type="button" data-copy="Напиши мені в Telegram, щоб отримати доступ до партнерського каналу Samostroy.shop">
-              Копіювати текст
-            </button>
+            <a class="link-btn primary" href="#" target="_blank" rel="noopener">Перейти в канал</a>
           </div>
         </div>
 
-        <div class="item">
-          <h4>TikTok (промо)</h4>
-          <p>Відео-огляди, кейси партнерів, мотивація та контент під продажі.</p>
+        <div class="com">
+          <h3>TikTok — промо</h3>
+          <p>Готові ідеї контенту під продажі, приклади подачі, трендові формати.</p>
           <div class="row">
-            <a href="#" target="_blank" rel="noopener" id="ttPromo">Додати посилання</a>
-            <button class="btn" type="button" data-copy="Підписуйся на TikTok Samostroy.shop — там готові ідеї контенту під продажі.">
-              Копіювати текст
-            </button>
+            <a class="link-btn primary" href="#" target="_blank" rel="noopener">Перейти в TikTok</a>
           </div>
         </div>
 
-        <div class="item">
-          <h4>Instagram (промо)</h4>
-          <p>Сторіс, новинки, приклади робіт, акції та швидкі відповіді.</p>
+        <div class="com">
+          <h3>Instagram — промо</h3>
+          <p>Сторіс/пости, приклади в інтер’єрі, швидкі оновлення і промо-матеріали.</p>
           <div class="row">
-            <a href="#" target="_blank" rel="noopener" id="igPromo">Додати посилання</a>
-            <button class="btn" type="button" data-copy="Instagram Samostroy.shop — новинки й ідеї для постів/сторіс під продажі.">
-              Копіювати текст
-            </button>
+            <a class="link-btn primary" href="#" target="_blank" rel="noopener">Перейти в Instagram</a>
           </div>
         </div>
 
-        <div class="item">
-          <h4>Facebook</h4>
-          <p>Пости, каталоги, групи, Marketplace та оголошення.</p>
+        <div class="com">
+          <h3>Facebook — сторінка</h3>
+          <p>Пости для репостів, Marketplace і групи. Допомагає тримати активність.</p>
           <div class="row">
-            <a href="#" target="_blank" rel="noopener" id="fbPromo">Додати посилання</a>
-            <button class="btn" type="button" data-copy="Facebook Samostroy.shop — пости та товари, які легко репостити в групи/Marketplace.">
-              Копіювати текст
-            </button>
+            <a class="link-btn primary" href="#" target="_blank" rel="noopener">Перейти у Facebook</a>
           </div>
         </div>
       </div>
+
+      <p class="hint">
+        Заміни “#” в кнопках на реальні посилання. Можу додати окремо “Telegram-чат партнерів” + форму вступу.
+      </p>
     </section>
 
     <footer>
-      © <span id="year"></span> Samostroy.shop — Партнерська сторінка
+      © <span id="year"></span> Samostroy.shop — Partner Hub
     </footer>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // === 1) ПУТЬ К XML ===
+    /* =========================================================
+       Partner Hub — single-file page
+       - Loads products from XML feed
+       - Copy title/description
+       - Mobile compact header: burger + auto-hide on scroll
+    ========================================================= */
+
+    // 1) XML feed path (same folder by default)
     const XML_FEED_URL = 'products.xml';
 
-    // === 2) ХРАНЕНИЕ ТОВАРОВ ===
+    // 2) State
     let allProducts = [];
+    let isLoading = false;
 
-    // === 3) UI ЭЛЕМЕНТЫ ===
+    // 3) Elements
     const gridEl = document.getElementById('grid');
     const statusEl = document.getElementById('status');
     const searchEl = document.getElementById('search');
@@ -544,116 +961,117 @@
     const kpiCountEl = document.getElementById('kpiCount');
     const kpiUpdatedEl = document.getElementById('kpiUpdated');
     const feedHintEl = document.getElementById('feedHint');
+    const loaderWrapEl = document.getElementById('loaderWrap');
     const toastEl = document.getElementById('toast');
+
+    const nav = document.getElementById('nav');
+    const navLinks = Array.from(nav.querySelectorAll('a'));
+    const menuToggle = document.getElementById('menuToggle');
 
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Меню: подсветка активной секции
-    const nav = document.getElementById('nav');
-    const navLinks = Array.from(nav.querySelectorAll('a.pill'));
-    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href')));
+    // ===== Helpers =====
+    function escapeHTML(str){
+      return (str || '').replace(/[&<>"']/g, (c) => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+      }[c]));
+    }
+    function normalize(str){
+      return (str || '').toLowerCase().replace(/\s+/g,' ').trim();
+    }
 
-    const obs = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter(e => e.isIntersecting)
-        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if(!visible) return;
-      const id = '#' + visible.target.id;
-      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
-    }, { rootMargin: '-30% 0px -60% 0px', threshold: [0.05, 0.15, 0.25] });
+    function setLoading(state){
+      isLoading = state;
+      loaderWrapEl.style.display = state ? 'block' : 'none';
+      gridEl.style.display = state ? 'none' : 'grid';
+      if(state) statusEl.textContent = '';
+    }
 
-    sections.forEach(s => s && obs.observe(s));
+    // ===== Toast =====
+    let toastTimer = null;
+    function toast(title, subtitle){
+      toastEl.innerHTML = `<b>${escapeHTML(title)}</b><span>${escapeHTML(subtitle || '')}</span>`;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+    }
 
-    // === 4) ЗАГРУЗКА XML ===
-    async function loadProducts(){
-      feedHintEl.textContent = 'Завантажуємо XML…';
-      statusEl.textContent = '';
-
+    // ===== Copy =====
+    async function copyText(text, okTitle){
+      const value = (text || '').trim();
+      if(!value){
+        toast('Нічого копіювати', 'Поле порожнє.');
+        return;
+      }
       try{
-        const res = await fetch(XML_FEED_URL, { cache: 'no-store' });
-        if(!res.ok) throw new Error('Не вдалося завантажити XML: ' + res.status);
-        const text = await res.text();
-
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(text, 'text/xml');
-
-        // Пытаемся понять формат: либо <item>, либо <offer> (YML), либо что-то подобное
-        // Мы вытащим универсально: title/name, description, image, category
-        const items =
-          Array.from(xml.querySelectorAll('item')).length ? Array.from(xml.querySelectorAll('item')) :
-          Array.from(xml.querySelectorAll('offer')).length ? Array.from(xml.querySelectorAll('offer')) :
-          Array.from(xml.querySelectorAll('product')).length ? Array.from(xml.querySelectorAll('product')) :
-          [];
-
-        if(!items.length){
-          allProducts = [];
-          render();
-          feedHintEl.textContent = 'XML завантажено, але не знайдено елементів товарів (item/offer/product).';
-          kpiCountEl.textContent = '0';
-          kpiUpdatedEl.textContent = '—';
-          return;
-        }
-
-        const getText = (node, selectors) => {
-          for(const sel of selectors){
-            const el = node.querySelector(sel);
-            if(el && (el.textContent || '').trim()) return (el.textContent || '').trim();
-          }
-          return '';
-        };
-
-        const getImage = (node) => {
-          // частые варианты: <image>, <picture>, <img>, <image_link>, <picture>...
-          const byText = getText(node, ['image', 'picture', 'img', 'image_link', 'imageUrl', 'image_url']);
-          if(byText) return byText;
-
-          // иногда бывает как атрибут
-          const attr = node.getAttribute('image') || node.getAttribute('picture') || '';
-          return attr.trim();
-        };
-
-        allProducts = items.map((it, idx) => {
-          const title = getText(it, ['title', 'name', 'vendor.model', 'model', 'h1', 'fullName']) || ('Товар #' + (idx+1));
-          const description = getText(it, ['description', 'desc', 'full_description', 'text']) || '';
-          const category = getText(it, ['category', 'categoryId', 'category_id', 'group', 'type']) || 'Без категорії';
-          const image = getImage(it);
-
-          return {
-            id: getText(it, ['id']) || it.getAttribute('id') || String(idx+1),
-            title,
-            description,
-            category,
-            image
-          };
-        });
-
-        // KPI
-        kpiCountEl.textContent = String(allProducts.length);
-
-        // "обновлено" — точной даты в XML может не быть, поэтому показываем сегодняшнюю
-        const d = new Date();
-        kpiUpdatedEl.textContent = d.toLocaleDateString('uk-UA', { year:'numeric', month:'2-digit', day:'2-digit' });
-
-        // Категории
-        buildCategoryOptions(allProducts);
-
-        feedHintEl.textContent = 'XML успішно завантажено.';
-        render();
-
-      }catch(err){
-        allProducts = [];
-        render();
-        feedHintEl.textContent = 'Помилка завантаження XML.';
-        statusEl.textContent = 'Помилка: ' + (err?.message || err);
+        await navigator.clipboard.writeText(value);
+        toast(okTitle, value.slice(0, 120));
+      }catch(e){
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = value;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if(ok) toast(okTitle, value.slice(0, 120));
+        else toast('Помилка копіювання', 'Спробуй вручну виділити текст.');
       }
     }
 
+    // ===== XML parsing (universal) =====
+    function parseProductsFromXML(xmlText){
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlText, 'text/xml');
+
+      // Try common nodes: item / offer (YML) / product
+      const items =
+        Array.from(xml.querySelectorAll('item')).length ? Array.from(xml.querySelectorAll('item')) :
+        Array.from(xml.querySelectorAll('offer')).length ? Array.from(xml.querySelectorAll('offer')) :
+        Array.from(xml.querySelectorAll('product')).length ? Array.from(xml.querySelectorAll('product')) :
+        [];
+
+      const getText = (node, selectors) => {
+        for(const sel of selectors){
+          const el = node.querySelector(sel);
+          if(el && (el.textContent || '').trim()) return (el.textContent || '').trim();
+        }
+        return '';
+      };
+
+      const getImage = (node) => {
+        const byText = getText(node, ['image', 'picture', 'img', 'image_link', 'imageUrl', 'image_url']);
+        if(byText) return byText;
+        const attr = node.getAttribute('image') || node.getAttribute('picture') || '';
+        return (attr || '').trim();
+      };
+
+      const products = items.map((it, idx) => {
+        const title = getText(it, ['title', 'name', 'vendor.model', 'model', 'h1', 'fullName']) || ('Товар #' + (idx + 1));
+        const description = getText(it, ['description', 'desc', 'full_description', 'text']) || '';
+        const category = getText(it, ['category', 'categoryId', 'category_id', 'group', 'type']) || 'Без категорії';
+        const image = getImage(it);
+
+        return {
+          id: getText(it, ['id']) || it.getAttribute('id') || String(idx + 1),
+          title,
+          description,
+          category: (category || 'Без категорії').trim(),
+          image
+        };
+      });
+
+      return products;
+    }
+
+    // ===== Category options =====
     function buildCategoryOptions(products){
       const uniq = new Set();
       products.forEach(p => uniq.add((p.category || 'Без категорії').trim()));
       const sorted = Array.from(uniq).sort((a,b) => a.localeCompare(b, 'uk'));
 
-      // очищаем, оставляя первый option
       while(categoryEl.options.length > 1) categoryEl.remove(1);
 
       sorted.forEach(cat => {
@@ -664,17 +1082,7 @@
       });
     }
 
-    // === 5) РЕНДЕР ===
-    function escapeHTML(str){
-      return (str || '').replace(/[&<>"']/g, (c) => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
-      }[c]));
-    }
-
-    function normalize(str){
-      return (str || '').toLowerCase().replace(/\s+/g,' ').trim();
-    }
-
+    // ===== Filtering =====
     function getFiltered(){
       const q = normalize(searchEl.value);
       const cat = categoryEl.value;
@@ -688,13 +1096,15 @@
       });
     }
 
+    // ===== Render =====
     function render(){
       const list = getFiltered();
       gridEl.innerHTML = '';
 
       if(!list.length){
-        gridEl.innerHTML = '';
-        statusEl.textContent = allProducts.length ? 'Нічого не знайдено за фільтрами.' : 'Каталог порожній.';
+        if(!isLoading){
+          statusEl.textContent = allProducts.length ? 'Нічого не знайдено за фільтрами.' : 'Каталог порожній.';
+        }
         return;
       }
 
@@ -714,7 +1124,10 @@
           img.src = p.image;
           media.appendChild(img);
         } else {
-          media.innerHTML = '<div class="badge">Без фото</div>';
+          const noimg = document.createElement('div');
+          noimg.className = 'noimg';
+          noimg.textContent = 'Без фото';
+          media.appendChild(noimg);
         }
 
         const body = document.createElement('div');
@@ -722,7 +1135,7 @@
         body.innerHTML = `
           <h3 class="title">${escapeHTML(p.title)}</h3>
           <p class="desc">${escapeHTML(p.description || 'Опис ще не додано в XML.')}</p>
-          <div class="badge-row">
+          <div class="meta">
             <span class="badge">${escapeHTML((p.category || 'Без категорії').trim())}</span>
             <span class="badge">ID: ${escapeHTML(p.id)}</span>
           </div>
@@ -735,13 +1148,13 @@
         btnTitle.className = 'btn mini accent';
         btnTitle.type = 'button';
         btnTitle.textContent = 'Копіювати заголовок';
-        btnTitle.addEventListener('click', () => copyText(p.title, 'Заголовок скопійовано', p.title));
+        btnTitle.addEventListener('click', () => copyText(p.title, 'Заголовок скопійовано'));
 
         const btnDesc = document.createElement('button');
-        btnDesc.className = 'btn mini ghost';
+        btnDesc.className = 'btn mini';
         btnDesc.type = 'button';
         btnDesc.textContent = 'Копіювати опис';
-        btnDesc.addEventListener('click', () => copyText(p.description || '', 'Опис скопійовано', (p.description || '')));
+        btnDesc.addEventListener('click', () => copyText(p.description || '', 'Опис скопійовано'));
 
         actions.appendChild(btnTitle);
         actions.appendChild(btnDesc);
@@ -757,53 +1170,103 @@
       statusEl.textContent = `Показано: ${list.length} / ${allProducts.length}`;
     }
 
-    // === 6) КОПИРОВАНИЕ ===
-    async function copyText(text, title, preview){
-      const value = (text || '').trim();
-      if(!value){
-        toast('Нічого копіювати', 'Поле порожнє.');
+    // ===== Load products =====
+    async function loadProducts(){
+      setLoading(true);
+      feedHintEl.textContent = 'Завантажуємо XML…';
+      statusEl.textContent = '';
+
+      try{
+        const res = await fetch(XML_FEED_URL, { cache: 'no-store' });
+        if(!res.ok) throw new Error('Не вдалося завантажити XML: ' + res.status);
+        const text = await res.text();
+
+        const products = parseProductsFromXML(text);
+        allProducts = products;
+
+        buildCategoryOptions(allProducts);
+
+        kpiCountEl.textContent = String(allProducts.length);
+        const d = new Date();
+        kpiUpdatedEl.textContent = d.toLocaleDateString('uk-UA', { year:'numeric', month:'2-digit', day:'2-digit' });
+
+        feedHintEl.textContent = allProducts.length
+          ? 'Каталог завантажено. Можна копіювати тексти.'
+          : 'XML завантажено, але товари не знайдено (item/offer/product).';
+
+        render();
+        setLoading(false);
+      }catch(err){
+        allProducts = [];
+        buildCategoryOptions(allProducts);
+        render();
+        setLoading(false);
+        feedHintEl.textContent = 'Помилка завантаження XML.';
+        statusEl.textContent = 'Помилка: ' + (err?.message || err);
+      }
+    }
+
+    // ===== UI events =====
+    searchEl.addEventListener('input', render);
+    categoryEl.addEventListener('change', render);
+    document.getElementById('reloadBtn').addEventListener('click', loadProducts);
+
+    // ===== Active nav highlight by sections =====
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const obs = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if(!visible) return;
+
+      const id = '#' + visible.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+    }, { rootMargin: '-35% 0px -55% 0px', threshold: [0.06, 0.15, 0.25] });
+    sections.forEach(s => obs.observe(s));
+
+    // ===== Mobile: burger menu =====
+    if(menuToggle){
+      menuToggle.addEventListener('click', () => {
+        const open = nav.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      // close after click on link (mobile)
+      navLinks.forEach(a => a.addEventListener('click', () => {
+        if(window.innerWidth <= 980){
+          nav.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      }));
+    }
+
+    // ===== Mobile: auto-hide header on scroll down / show on scroll up =====
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      const goingDown = y > lastScrollY;
+
+      // Keep header visible near top
+      if(y < 60){
+        document.documentElement.classList.remove('header-hidden');
+        lastScrollY = y;
         return;
       }
 
-      try{
-        await navigator.clipboard.writeText(value);
-        toast(title, (preview || '').slice(0, 120));
-      }catch(e){
-        // Фоллбек для старых браузеров
-        const ta = document.createElement('textarea');
-        ta.value = value;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        const ok = document.execCommand('copy');
-        document.body.removeChild(ta);
-
-        if(ok) toast(title, (preview || '').slice(0, 120));
-        else toast('Помилка копіювання', 'Спробуй вручну виділити текст.');
+      // If menu open, don't hide header
+      if(nav.classList.contains('open')){
+        document.documentElement.classList.remove('header-hidden');
+        lastScrollY = y;
+        return;
       }
-    }
 
-    // Кнопки с data-copy (в инструкциях/сообществе)
-    document.querySelectorAll('[data-copy]').forEach(btn => {
-      btn.addEventListener('click', () => copyText(btn.getAttribute('data-copy'), 'Текст скопійовано', btn.getAttribute('data-copy')));
-    });
+      if(goingDown) document.documentElement.classList.add('header-hidden');
+      else document.documentElement.classList.remove('header-hidden');
 
-    // === 7) TOAST ===
-    let toastTimer = null;
-    function toast(t, s){
-      toastEl.innerHTML = `<b>${escapeHTML(t)}</b><span>${escapeHTML(s || '')}</span>`;
-      toastEl.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
-    }
+      lastScrollY = y;
+    }, { passive:true });
 
-    // === 8) EVENTS ===
-    searchEl.addEventListener('input', () => render());
-    categoryEl.addEventListener('change', () => render());
-    document.getElementById('reloadBtn').addEventListener('click', () => loadProducts());
-
-    // === 9) START ===
+    // ===== START =====
     loadProducts();
   </script>
 </body>
