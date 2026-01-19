@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m1l2 — Вибір ніші та продукту (з Samostroy.shop) | Samostroy Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:82ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .flow{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.20);
+      border-radius:20px;padding:14px;margin-top:14px;
+    }
+    .flowhead{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12.5px;}
+    .flowhead i{width:16px;height:16px;color:var(--accent2)}
+    .flowline{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px;}
+    @media (min-width:900px){ .flowline{grid-template-columns:1fr 1fr 1fr} }
+    .step{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;padding:12px;
+      display:flex;gap:12px;align-items:flex-start;
+    }
+    .mini{
+      width:40px;height:40px;border-radius:16px;border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .mini i{width:18px;height:18px;color:var(--accent2)}
+    .step b{font-size:14px}
+    .step span{display:block;margin-top:4px;color:var(--muted);font-size:13.3px;line-height:1.55}
+
+    .stats{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+    @media (min-width:760px){ .stats{grid-template-columns:1fr 1fr 1fr} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;position:relative;overflow:hidden;
+    }
+    .stat::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;position:relative;z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;margin-top:8px;font-size:18px;font-weight:900;
+      color:var(--accent2);position:relative;z-index:1;
+    }
+
+    .bars{
+      margin-top:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .barrow{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-top:10px;color:var(--muted);font-size:13px;
+    }
+    .barrow:first-child{margin-top:0}
+    .track{
+      flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.10);overflow:hidden;margin:0 10px;
+    }
+    .fill{height:100%;background:var(--grad);border-radius:999px;}
+    .val{min-width:70px;text-align:right;color:var(--accent2);font-weight:900;font-size:13px;}
+
+    .myths{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;margin-top:14px;
+    }
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    .task{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .taskhead{display:flex;gap:12px;align-items:flex-start;}
+    .taskhead i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .taskhead b{font-size:15px}
+    .task p{
+      margin:10px 0 0;font-size:14px;line-height:1.75;color:rgba(245,245,247,.92);
+    }
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;color:rgba(245,245,247,.92);line-height:1.6;white-space:pre-wrap;
+    }
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    /* Highlight block */
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{
+      display:flex;gap:12px;align-items:flex-start;
+    }
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Урок 2 — Вибір ніші та продукту</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Вибір ніші та продукту: як заробляти з Samostroy.shop</h1>
+    <p class="lead">
+      Цей курс — для наших партнерів-дропшиперів, які беруть товари з <b>Samostroy.shop</b> і заробляють на націнці.
+      Урок 2 — про те, як вибрати нішу і товари так, щоб ти швидко отримав(ла) перші замовлення,
+      а потім масштабував(ла) продажі.
+      <br><br>
+      Важливо: у нас є <b>РРЦ</b> (рекомендована роздрібна ціна) і є <b>ціна постачальника</b> на сайті.
+      Ти можеш заробляти <b>до 60%</b>: приблизно <b>10% від РРЦ</b> як базова різниця + до <b>+50% націнки</b>
+      (залежно від товару і твоєї подачі).
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 12–16 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: ніша + 5 товарів під тест</div>
+      <div class="chip"><i data-lucide="badge-percent"></i> Потенціал: до 60% маржі</div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Ніша ≠ товар: вибір, який економить тижні</h2>
+    <div class="sub">Ти обираєш не “що подобається”, а “що купують і легко продається”</div>
+
+    <p class="text">
+      <b>Ніша</b> — це напрям (категорія), де є аудиторія та проблема.
+      <b>Товар</b> — конкретна позиція, яку ти тестуєш у цій ніші.
+      Для партнера Samostroy.shop це зручно: ти не витрачаєш час на пошук “де взяти товар” —
+      ти одразу працюєш з готовим асортиментом і вибираєш <b>що саме</b> продавати.
+    </p>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="map"></i></div>
+          <div>
+            <b>Ніша</b>
+            <span>Напрям: декор, ремонт, підлога, організація простору тощо</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="package"></i></div>
+          <div>
+            <b>Товар</b>
+            <span>Конкретика: 3D панелі, вінілові панелі, пазл-килимики…</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="test-tube"></i></div>
+          <div>
+            <b>Тест</b>
+            <span>Контент → заявки → продажі → ти лишаєш те, що “зайшло”</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <b>Перевага партнера Samostroy.shop</b>
+          <p>
+            Тобі не треба: шукати постачальників, перевіряти склад, домовлятись про упаковку та відправки з нуля.
+            Ці “болі” уже зняті — ти фокусуєшся на тому, що реально приносить гроші: <b>подача + продаж + сервіс</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Формула “правильної ніші” саме для наших товарів</h2>
+    <div class="sub">5 критеріїв: якщо є 4/5 — можна стартувати</div>
+
+    <p class="text">
+      У дропшипінгу новачку потрібні ніші, які <b>легко пояснити</b> і <b>легко показати</b> у відео/фото.
+      Товари Samostroy.shop часто дають сильний “вау-ефект” (до/після, приклади в інтер’єрі),
+      а це напряму піднімає конверсію.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <small><i data-lucide="users"></i> Є попит</small>
+        <b>люди вже купують</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="badge-percent"></i> Є маржа</small>
+        <b>до 60% потенціалу</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="camera"></i> Візуальність</small>
+        <b>продається очима</b>
+      </div>
+    </div>
+
+    <div class="stats" style="margin-top:10px;">
+      <div class="stat">
+        <small><i data-lucide="truck"></i> Простий процес</small>
+        <b>логістика вже налагоджена</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="layers"></i> Є вибір</small>
+        <b>можна тестувати SKU</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="repeat-2"></i> Є повтори</small>
+        <b>допродажі/комплекти</b>
+      </div>
+    </div>
+
+    <div class="bars">
+      <div class="barrow">
+        <span>Ніша, де легко зробити контент “до/після”</span>
+        <div class="track"><div class="fill" style="width:85%"></div></div>
+        <span class="val">ТОП</span>
+      </div>
+      <div class="barrow">
+        <span>Ніша, де треба 20 характеристик пояснювати</span>
+        <div class="track"><div class="fill" style="width:28%"></div></div>
+        <span class="val">СТОП</span>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="sparkles"></i></div>
+        <div>
+          <b>Швидка підказка</b>
+          <span>Якщо товар можна продати в 10 секундах відео — це хороший кандидат на старт.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Як вибирати товари з Samostroy.shop: алгоритм партнера</h2>
+    <div class="sub">Тут ти прямо “приземляєш” вибір на наш каталог</div>
+
+    <p class="text">
+      Тобі не потрібно вигадувати велосипед. Працюй так:
+      обираєш категорію → береш 10 кандидатів → відбираєш 5 найкращих → тестуєш контентом.
+      А головне — ти одразу бачиш <b>ціну постачальника</b> (твоя собівартість) і можеш планувати націнку.
+    </p>
+
+    <div class="flow">
+      <div class="flowhead">
+        <i data-lucide="route"></i>
+        <span>Алгоритм вибору товарів</span>
+      </div>
+
+      <div class="flowline">
+        <div class="step">
+          <div class="mini"><i data-lucide="layers"></i></div>
+          <div>
+            <b>Крок 1 — Обери категорію</b>
+            <span>Декор / стіни / підлога / інтер’єрні рішення</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="filter"></i></div>
+          <div>
+            <b>Крок 2 — Фільтр “продається”</b>
+            <span>вау-ефект, простота, середній чек, доставка</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="badge-percent"></i></div>
+          <div>
+            <b>Крок 3 — План націнки</b>
+            <span>10% від РРЦ + твоя надбавка до +50%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="calculator"></i></div>
+          <div>
+            <b>Формула заробітку (просто)</b>
+            <span>РРЦ → орієнтир ціни для ринку. Ціна постачальника → твоя база. Різниця + твоя націнка = прибуток.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="shopping-cart"></i></div>
+          <div>
+            <b>Чому це легше саме з нами</b>
+            <span>Товар вже в каталозі, ціни прозорі, асортимент широкий — ти тестуєш швидше, ніж ті, хто починає “з нуля”.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="sparkles"></i></div>
+        <div>
+          <b>Що робити, якщо товарів багато?</b>
+          <span>Не вибирай “ідеально”. Вибери 5 товарів і тестуй. Ринок сам покаже, що приносить заявки.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Конкуренція: як виграти, якщо товар не унікальний</h2>
+    <div class="sub">Той самий товар можуть продавати інші — але покупець купує у того, кому довіряє</div>
+
+    <p class="text">
+      Конкуренція є завжди. Перевага партнера Samostroy.shop — у тому, що ти можеш будувати продажі на
+      <b>якісному контенті</b>, а не “вигадувати логістику”.
+      Твоя задача: зробити кращу подачу + швидше відповісти + дати нормальні умови.
+    </p>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="video"></i></div>
+          <div>
+            <b>Краща подача</b>
+            <span>До/після, монтаж, приклад у кімнаті, “як виглядає вживу”, відповіді на заперечення</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="headphones"></i></div>
+          <div>
+            <b>Кращий сервіс</b>
+            <span>швидкість відповіді, чіткі терміни, контроль доставки, мінімум “води”</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Що вже “відпало” завдяки співпраці з нами</b>
+          <p>
+            Не треба домовлятися з 5 постачальниками, вести 5 прайсів і 5 складів.
+            Ти працюєш з одним партнером — а час вкладаєш у контент та продажі.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Типові помилки новачків саме у виборі товарів</h2>
+    <div class="sub">Щоб не зливати час на “сліпі” рішення</div>
+
+    <div class="myths">
+      <details open>
+        <summary>“Візьму найдешевше — легше продам” <span class="badge">Помилка</span></summary>
+        <p>Дешеві товари часто дають слабку маржу. Краще — середній чек + нормальна націнка (і ти реально заробиш).</p>
+      </details>
+      <details>
+        <summary>“Один товар — і все” <span class="badge">Помилка</span></summary>
+        <p>Правильніше: 5 товарів на тест. У нас асортимент дозволяє швидко перебирати та знаходити “хіти”.</p>
+      </details>
+      <details>
+        <summary>“Товар складний, але я поясню” <span class="badge">Помилка</span></summary>
+        <p>На старті бери те, що зрозуміло за 10 секунд. Складні товари залиш на етап, коли буде досвід і команда.</p>
+      </details>
+      <details>
+        <summary>“Я поставлю максимальну націнку завжди” <span class="badge">Помилка</span></summary>
+        <p>Націнка має бути гнучкою: на одних товарах +10–20%, на інших можна +30–50% (де є вау і цінність).</p>
+      </details>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="badge-percent"></i></div>
+        <div>
+          <b>Реалістичний підхід до націнки</b>
+          <span>Твоя задача — не “викрутити максимум”, а зробити так, щоб було: продажі + стабільна маржа + масштаб.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Практика: обери нішу і 5 товарів з нашого каталогу</h2>
+    <div class="sub">Зроби зараз — і ти перейдеш до наступного уроку з готовою базою</div>
+
+    <div class="task">
+      <div class="taskhead">
+        <i data-lucide="clipboard-check"></i>
+        <div>
+          <b>Твоє завдання</b>
+          <div class="sub" style="margin:6px 0 0;">1 ніша + 5 товарів + план націнки</div>
+        </div>
+      </div>
+
+      <p>
+        У нотатках напиши:
+        <br>1) <b>Ніша</b> (1 варіант)
+        <br>2) <b>5 товарів-кандидатів</b> з Samostroy.shop
+        <br>3) Для кожного — <b>націнка</b> (10–50%) і причина (“вау”, “середній чек”, “до/після”)
+      </p>
+
+      <div class="sample" id="sampleText">Мій план (партнер Samostroy.shop):
+Ніша: Декор / ремонт / інтер’єр
+
+5 товарів на тест:
+1) 3D панелі — націнка +30% (вау-ефект, до/після)
+2) Вінілові панелі — націнка +20% (масовий попит, легко пояснити)
+3) Пазл-килимки — націнка +35% (візуально, “збирається як конструктор”)
+4) (Товар 4) — націнка +15% (швидкі продажі, доступна ціна)
+5) (Товар 5) — націнка +40% (преміум-цінність, сильний контент)
+
+Перші тести:
+— 5 відео (по 1 на товар) + 2 відео “порівняння/до-після”
+— збираю заявки і залишаю 2 найкращих</div>
+
+      <div class="actions">
+        <button class="btn secondary" id="copyBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати шаблон
+        </button>
+
+        <button class="btn" id="btnDone" type="button">
+          <i data-lucide="check-circle"></i>
+          Позначити як пройдено
+        </button>
+      </div>
+
+      <p style="margin-top:10px;color:rgba(245,245,247,.85)">
+        <b>Порада:</b> якщо сумніваєшся — став меншу націнку на перші тести, а потім піднімай, коли з’явиться потік заявок.
+      </p>
+    </div>
+
+    <div style="margin-top:12px; color:var(--muted); font-size:13px;">
+      <span id="doneText">Статус: не пройдено</span>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m1l2";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  const sampleText = document.getElementById("sampleText");
+  const copyBtn = document.getElementById("copyBtn");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  copyBtn.addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(sampleText.textContent.trim());
+      copyBtn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        copyBtn.innerHTML = '<i data-lucide="copy"></i> Скопіювати шаблон';
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  });
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
