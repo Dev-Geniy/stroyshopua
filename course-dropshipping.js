@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lessons:[
         {id:"m2l1", title:"Як створити УТП, яке продає",         url:"cd/m2l1.html"},
         {id:"m2l2", title:"Де розміщувати оголошення",           url:"cd/m2l2.html"},
-        {id:"m2l3", title:"Типові помилки новачків",             url:"cd/m2l3.html"}
+        {id:"m2l3", title:"Свій сайт, інтернет-магазин",         url:"cd/m2l3.html"}
       ]
     },
     {
