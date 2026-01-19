@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m2l3 — Свій сайт без коду (швидкий запуск) | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff4d4d;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:86ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .warn{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .warn .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .warn .hrow i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .warn b{font-size:15px}
+    .warn p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .stats{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+    @media (min-width:760px){ .stats{grid-template-columns:1fr 1fr 1fr} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;position:relative;overflow:hidden;
+    }
+    .stat::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;position:relative;z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;margin-top:8px;font-size:18px;font-weight:900;
+      color:var(--accent2);position:relative;z-index:1;
+    }
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--muted);
+      padding:7px 10px;border-radius:999px;
+      font-size:12px;display:inline-flex;align-items:center;gap:7px;
+      cursor:pointer; user-select:none;
+    }
+    .pill i{width:16px;height:16px;color:var(--accent2)}
+    .pill.active{
+      border-color:rgba(255,179,71,.35);
+      background:rgba(255,179,71,.10);
+      color:rgba(245,245,247,.92);
+    }
+
+    .platforms{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px;}
+    @media (min-width:900px){ .platforms{grid-template-columns:1fr 1fr} }
+
+    .pCard{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;
+      position:relative; overflow:hidden;
+    }
+    .pCard::after{
+      content:""; position:absolute; inset:-50px;
+      background:radial-gradient(circle at 0 0, rgba(255,122,26,.10), transparent 55%);
+      opacity:.35; pointer-events:none;
+    }
+    .pHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:1;}
+    .pName{display:flex;gap:10px;align-items:flex-start;}
+    .pLogo{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .pLogo i{width:20px;height:20px;color:var(--accent2)}
+    .pTitle b{font-size:15px}
+    .pMeta{margin-top:2px;color:var(--muted);font-size:12.8px;line-height:1.5}
+    .pPrice{
+      font-weight:900;color:var(--accent2);
+      font-size:13px;white-space:nowrap;position:relative;z-index:1;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+    }
+    .pBody{position:relative;z-index:1;margin-top:10px;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+    .pList{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:13.3px;line-height:1.7}
+    .pList li{margin:6px 0}
+    .kv{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px;position:relative;z-index:1;}
+    @media (min-width:900px){ .kv{grid-template-columns:1fr 1fr} }
+    .k{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.16);
+      border-radius:16px;padding:10px;
+    }
+    .k b{font-size:13.2px}
+    .k span{display:block;margin-top:4px;color:var(--muted);font-size:12.8px;line-height:1.55}
+    .linkbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;position:relative;z-index:1;}
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.20);
+      border:1px dashed rgba(255,255,255,.22);
+      color:rgba(245,245,247,.92);
+      box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;color:rgba(245,245,247,.92);
+      line-height:1.6;white-space:pre-wrap;
+    }
+
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+
+    /* filtering */
+    .dim{opacity:.45; filter:saturate(.6); transform:scale(.995); transition:.18s ease;}
+    .focus{outline:1px solid rgba(255,179,71,.25); box-shadow:0 0 0 3px rgba(255,179,71,.06);}
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 2 • Урок 3 — Свій сайт без коду</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Свій сайт без коду: запуск за 1–2 дні (і без хаосу)</h1>
+    <p class="lead">
+      Урок 3 — як новачку зробити <b>власний сайт/вітрину</b> під продажі будматеріалів та декору
+      без програмування: яку платформу обрати, що підключити, які сторінки обовʼязкові, і як запуститися швидко.
+      <br><br>
+      <b>Перевага партнера Samostroy.shop:</b> товар, фото, описи, ціни постачальника та РРЦ у тебе вже є — сайт стає “упаковкою”
+      під продажі, а не довгим проєктом на місяць.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 18–24 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: вибір платформи + план запуску</div>
+      <div class="chip"><i data-lucide="globe"></i> Фокус: довіра + конверсія</div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Правило профі</b>
+          <p>
+            Не “роби ідеально” — <b>запусти базову версію</b>.
+            Перший сайт має вирішувати 3 речі: показати каталог, дати довіру, прийняти заявку/замовлення.
+            Все інше — допиляєш після перших продажів.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Навіщо сайт, якщо є Instagram / OLX?</h2>
+    <div class="sub">Сайт — це “база довіри”. Він піднімає конверсію, середній чек і повторні продажі</div>
+
+    <p class="text">
+      Для будматеріалів люди часто купують після порівняння і довіри. Соцмережа дає охоплення, а сайт дає:
+      <b>структуру, аргументи, гарантії, умови</b>. І головне — сайт не зникає з алгоритмів, як пост у стрічці.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <small><i data-lucide="shield-check"></i> Довіра</small>
+        <b>“це реальний бізнес”</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="layers"></i> Каталог</small>
+        <b>легко вибрати</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="repeat-2"></i> Повтори</small>
+        <b>повертаються знов</b>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="sparkles"></i>
+        <div>
+          <b>Плюс партнера Samostroy.shop</b>
+          <p>
+            Тобі не треба “вигадувати асортимент”. Ти швидко збираєш вітрину з наших товарів і тестуєш:
+            що дає заявки, що дає продажі, які позиції тягнуть маржу.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. 3 формати запуску: обери свій (без зайвих витрат)</h2>
+    <div class="sub">Не існує “найкращого”. Є “найкращий під твою задачу прямо зараз”</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="zap"></i></div>
+          <div>
+            <b>Формат А — Вітрина/лендінг</b>
+            <span>1 сторінка + каталог + заявки в месенджер. Найшвидший старт.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="store"></i></div>
+          <div>
+            <b>Формат B — Інтернет-магазин</b>
+            <span>Категорії, картки товарів, доставка/оплата, кошик, замовлення.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="settings"></i></div>
+          <div>
+            <b>Формат C — “під систему”</b>
+            <span>WordPress/індивідуально. Довше, але гнучко. Потрібно, коли вже є обсяги.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Рекомендація для новачка</b>
+          <p>
+            Якщо ти ще тестуєш нішу/товари — почни з <b>Формату А або B</b>.
+            Формат C має сенс, коли є стабільний потік замовлень і ти точно знаєш, що хочеш автоматизувати.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Порівняння платформ: що обрати саме тобі</h2>
+    <div class="sub">Натисни ціль — і сторінка підсвітить платформи, які найкраще підходять</div>
+
+    <div class="pillrow" id="goalRow">
+      <div class="pill active" data-goal="all"><i data-lucide="sparkles"></i> Показати всі</div>
+      <div class="pill" data-goal="ua-shop"><i data-lucide="flag"></i> Магазин в Україні</div>
+      <div class="pill" data-goal="fast"><i data-lucide="zap"></i> Запуск за 1 день</div>
+      <div class="pill" data-goal="catalog"><i data-lucide="layers"></i> Каталог + заявки</div>
+      <div class="pill" data-goal="scale"><i data-lucide="trending-up"></i> Масштабування</div>
+    </div>
+
+    <div class="platforms" id="platforms">
+      <!-- HOROSHOP -->
+      <div class="pCard" data-tags="ua-shop scale shop">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="store"></i></div>
+            <div class="pTitle">
+              <b>Horoshop (Хорошоп)</b>
+              <div class="pMeta">Платформа під інтернет-магазин (UA). Коли хочеш “магазин як бізнес”.</div>
+            </div>
+          </div>
+          <div class="pPrice">від тарифів на сайті</div>
+        </div>
+
+        <div class="pBody">
+          Найкраще підходить, якщо тобі потрібні: <b>категорії, картки товарів, SEO, замовлення, структура</b>
+          і ти хочеш будувати магазин “в довгу”.
+        </div>
+
+        <div class="kv">
+          <div class="k">
+            <b>Плюси</b>
+            <span>зручний e-commerce, структура, стабільність, “професійний вигляд”.</span>
+          </div>
+          <div class="k">
+            <b>Мінуси</b>
+            <span>це не “безкоштовно”, потрібен мінімальний бюджет на тариф/домен.</span>
+          </div>
+        </div>
+
+        <ul class="pList">
+          <li><b>Коли обирати:</b> хочеш інтернет-магазин, який працює як система.</li>
+          <li><b>Для Samostroy:</b> ідеально, коли вже є 30–200 SKU і ти робиш структуру під продажі.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://horoshop.ua/prices/" target="_blank" rel="noopener">
+            <i data-lucide="badge-percent"></i> Тарифи/ціни
+          </a>
+          <a class="btn ghost" href="https://horoshop.ua/" target="_blank" rel="noopener">
+            <i data-lucide="globe"></i> Сайт платформи
+          </a>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <div class="top">
+            <div class="ico"><i data-lucide="sparkles"></i></div>
+            <div>
+              <b>Порада</b>
+              <span>Не стартуй з “1000 SKU”. Старт: 30–80 позицій, 5–10 категорій, потім розширюй.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEBLIUM -->
+      <div class="pCard" data-tags="ua-shop fast catalog">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="layout-template"></i></div>
+            <div class="pTitle">
+              <b>Weblium</b>
+              <div class="pMeta">Конструктор сайтів (є UA). Сильний для лендінгів/вітрин/швидкого старту.</div>
+            </div>
+          </div>
+          <div class="pPrice">Free / Pro (плани на сайті)</div>
+        </div>
+
+        <div class="pBody">
+          Найкраще, якщо ти хочеш: <b>красивий лендінг</b>, блоки довіри, кнопки “купити/замовити”,
+          заявки в месенджер — і старт “вчора”.
+        </div>
+
+        <div class="kv">
+          <div class="k">
+            <b>Плюси</b>
+            <span>дуже швидко, шаблони, просто для новачка, можна зібрати вітрину за день.</span>
+          </div>
+          <div class="k">
+            <b>Мінуси</b>
+            <span>для великого магазину з складною логікою може бути тісно (залежить від задачі).</span>
+          </div>
+        </div>
+
+        <ul class="pList">
+          <li><b>Коли обирати:</b> 1–5 категорій + “хіти”, багато контенту/відео, заявки в чат.</li>
+          <li><b>Для Samostroy:</b> супер, якщо ти продаєш через Instagram/TikTok і хочеш “базу довіри”.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://weblium.com/pricing/" target="_blank" rel="noopener">
+            <i data-lucide="badge-percent"></i> Pricing
+          </a>
+          <a class="btn ghost" href="https://weblium.com/" target="_blank" rel="noopener">
+            <i data-lucide="globe"></i> Сайт платформи
+          </a>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <div class="top">
+            <div class="ico"><i data-lucide="zap"></i></div>
+            <div>
+              <b>Порада</b>
+              <span>Зроби 1 сторінку “Каталог + Доставка/Оплата + Відгуки + Контакти” — і вже можна продавати.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WIX -->
+      <div class="pCard" data-tags="fast catalog shop">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="wand-2"></i></div>
+            <div class="pTitle">
+              <b>Wix</b>
+              <div class="pMeta">Глобальний конструктор “все-в-одному”. Добре для красивих сайтів і малого магазину.</div>
+            </div>
+          </div>
+          <div class="pPrice">ціни залежать від країни</div>
+        </div>
+
+        <div class="pBody">
+          Підходить, якщо хочеш багато дизайну/шаблонів, швидкий старт,
+          і тобі ок міжнародна платформа.
+        </div>
+
+        <div class="kv">
+          <div class="k">
+            <b>Плюси</b>
+            <span>шаблони, дизайн, багато інтеграцій, швидко стартувати.</span>
+          </div>
+          <div class="k">
+            <b>Мінуси</b>
+            <span>тарифи/опції різняться по регіонах, треба уважно читати умови.</span>
+          </div>
+        </div>
+
+        <ul class="pList">
+          <li><b>Коли обирати:</b> сайт-вітрина + невеликий каталог, коли дизайн важливий.</li>
+          <li><b>Для Samostroy:</b> добре для “пакування” під заявки та довіру.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.wix.com/pricing" target="_blank" rel="noopener">
+            <i data-lucide="badge-percent"></i> Pricing
+          </a>
+          <a class="btn ghost" href="https://www.wix.com/" target="_blank" rel="noopener">
+            <i data-lucide="globe"></i> Wix.com
+          </a>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <div class="top">
+            <div class="ico"><i data-lucide="alert-triangle"></i></div>
+            <div>
+              <b>Порада</b>
+              <span>Перед оплатою перевір: домен, прийом оплат, комісії, ліміти та умови e-commerce.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHOPIFY -->
+      <div class="pCard" data-tags="scale shop">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="shopping-bag"></i></div>
+            <div class="pTitle">
+              <b>Shopify</b>
+              <div class="pMeta">Глобальна e-commerce платформа. Сильна, коли є ціль масштабувати.</div>
+            </div>
+          </div>
+          <div class="pPrice">ціни залежать від валюти/регіону</div>
+        </div>
+
+        <div class="pBody">
+          Обирають, коли планують: каталоги, рекламу, аналітику, інтеграції і масштаб.
+          Для новачка може бути “з запасом”, але потужна.
+        </div>
+
+        <div class="kv">
+          <div class="k">
+            <b>Плюси</b>
+            <span>екосистема додатків, масштаб, стабільність, багато можливостей.</span>
+          </div>
+          <div class="k">
+            <b>Мінуси</b>
+            <span>потрібно розібратись, і зазвичай дорожче за “простий старт”.</span>
+          </div>
+        </div>
+
+        <ul class="pList">
+          <li><b>Коли обирати:</b> ти націлений на системний магазин + рекламу + масштабування.</li>
+          <li><b>Для Samostroy:</b> актуально, якщо ти йдеш у великі обсяги та хочеш “платформу надовго”.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.shopify.com/pricing" target="_blank" rel="noopener">
+            <i data-lucide="badge-percent"></i> Pricing
+          </a>
+          <a class="btn ghost" href="https://www.shopify.com/" target="_blank" rel="noopener">
+            <i data-lucide="globe"></i> Shopify.com
+          </a>
+        </div>
+
+        <div class="card" style="margin-top:12px;">
+          <div class="top">
+            <div class="ico"><i data-lucide="sparkles"></i></div>
+            <div>
+              <b>Порада</b>
+              <span>Якщо поки нема замовлень — краще стартувати простіше, а Shopify підключити, коли зʼявиться потік.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="info"></i>
+        <div>
+          <b>Важливо про ціни</b>
+          <p>
+            Тарифи можуть змінюватися. Орієнтир — <b>стартові плани</b> на сторінках pricing (кнопки вище).
+            Перед оплатою завжди перевір: що входить у тариф, домен, e-commerce функції, комісії та інтеграції.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Структура сайту, яка реально продає</h2>
+    <div class="sub">Порядок блоків важливіший за “красивий дизайн”. Ось схема для старту</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="layout-dashboard"></i></div>
+          <div>
+            <b>Сторінка “Головна / Вітрина”</b>
+            <span>
+              1) Заголовок (УТП) + кнопка “Замовити”<br>
+              2) Хіти (6–12 товарів)<br>
+              3) “До/Після” або приклади в інтерʼєрі<br>
+              4) Доставка/Оплата/Гарантії (коротко)<br>
+              5) Відгуки/кейси<br>
+              6) Контакти + месенджери
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="package"></i></div>
+          <div>
+            <b>Картка товару (must-have)</b>
+            <span>
+              1) Фото/відео + “як виглядає вживу”<br>
+              2) 3–5 вигод (не характеристики!)<br>
+              3) Характеристики списком (коротко)<br>
+              4) Доставка/оплата/повернення (1 блок)<br>
+              5) CTA: “Купити/Замовити/Написати”<br>
+              6) Схожі товари / комплекти
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <b>Перевага з Samostroy.shop</b>
+          <p>
+            Тобі не треба з нуля робити “контент-хаос”.
+            Візьми 30–80 позицій, зроби 5–10 категорій, додай 3–5 блоків довіри — і ти вже виглядаєш як магазин.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="sparkles"></i></div>
+        <div>
+          <b>Шаблон УТП для сайту (простий)</b>
+          <span>“[Категорія] для [кімнати/задачі] з доставкою по Україні — підбір за 10 хв у месенджері”.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Мінімальні підключення: без цього сайт “не бізнес”</h2>
+    <div class="sub">Тут новачки найчастіше зливають час. Зроби базу — і працюй спокійно</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="globe"></i></div>
+          <div>
+            <b>Домен</b>
+            <span>Короткий, читабельний, під бренд. Домен = довіра.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="message-circle"></i></div>
+          <div>
+            <b>Заявки</b>
+            <span>Кнопки: Telegram / Viber / WhatsApp + форма “Замовити”.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="bar-chart-3"></i></div>
+          <div>
+            <b>Аналітика</b>
+            <span>Хоч мінімально: бачити, що дає заявки (джерела трафіку).</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Не роби так</b>
+          <p>
+            “Сайт без сторінки Доставка/Оплата/Повернення” = мінус довіра.  
+            “Сайт без CTA-кнопок” = люди не знають, що робити.  
+            “Сайт без контактів” = виглядає як фейк.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Практика: план запуску за 1 день + готове ТЗ</h2>
+    <div class="sub">Скопіюй, заповни під себе — і завтра у тебе вже є сайт</div>
+
+        <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Що здати як результат уроку</b>
+          <p>
+            1) Обрана платформа (1 шт) + чому саме вона. <br>
+            2) План структури сайту (мінімум 5 сторінок). <br>
+            3) 30–80 SKU на старт (списком категорій/хітів). <br>
+            4) 1 рядок УТП + CTA-кнопка.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="clipboard-list"></i></div>
+          <div>
+            <b>План “Запуск за 1 день”</b>
+            <span>Це реальний мінімум: без ідеалу, але з продажами.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="dayPlan">План запуску сайту за 1 день (новачок):
+
+1) Обираю формат: (A) вітрина/лендінг або (B) магазин
+2) Платформа: __________
+3) Домен: __________
+4) Структура:
+   — Головна (УТП + хіти + доставка/оплата + відгуки + контакти)
+   — Каталог / Категорії
+   — Доставка/Оплата
+   — Повернення/Гарантії
+   — Контакти
+5) Товари на старт:
+   — 30–80 SKU (хіти + 3–5 категорій)
+6) CTA-кнопки:
+   — Telegram / Viber / WhatsApp + “Замовити”
+7) Перевірка:
+   — відкривається з телефону
+   — кнопки працюють
+   — є умови доставки/оплати/повернення
+8) Публікація:
+   — додаю посилання в Instagram/TikTok/OLX
+   — перші 3 пости з посиланням на сайт</div>
+
+        <div class="actions" style="margin-top:12px; justify-content:flex-start;">
+          <button class="btn secondary" id="copyDayPlan" type="button">
+            <i data-lucide="copy"></i>
+            Скопіювати план
+          </button>
+          <a class="btn ghost" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">
+            <i data-lucide="message-circle"></i>
+            Питання? Написати менеджеру Samostroy
+          </a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="file-text"></i></div>
+          <div>
+            <b>ТЗ на сайт (шаблон)</b>
+            <span>Дає чіткість: що робимо, для кого, які блоки.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="siteBrief">ТЗ (бриф) на сайт:
+
+Ніша/товари: будматеріали / декор / ________
+Ціль: заявки / замовлення / консультації в месенджер
+
+УТП (1 рядок): _____________________________
+CTA (кнопка): “Замовити / Підібрати / Написати”
+
+Сторінки:
+1) Головна (блоки в порядку):
+   — Заголовок + УТП + CTA
+   — Хіти (6–12)
+   — Приклади/до-після (3–6)
+   — Доставка/Оплата (коротко)
+   — Гарантії/Повернення (коротко)
+   — Відгуки/кейси
+   — Контакти + месенджери
+2) Каталог/Категорії
+3) Картка товару (фото + вигоди + характеристики + умови + CTA)
+4) Доставка/Оплата
+5) Повернення/Гарантії
+6) Контакти
+
+Стартовий асортимент: 30–80 SKU
+Комунікація: Telegram/Viber/WhatsApp + телефон (за потреби)</div>
+
+        <div class="actions" style="margin-top:12px; justify-content:flex-start;">
+          <button class="btn secondary" id="copyBrief" type="button">
+            <i data-lucide="copy"></i>
+            Скопіювати ТЗ
+          </button>
+          <button class="btn" id="btnDone" type="button">
+            <i data-lucide="check-circle"></i>
+            Позначити як пройдено
+          </button>
+        </div>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+          <span id="doneText">Статус: не пройдено</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m2l3";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  const dayPlan = document.getElementById("dayPlan");
+  const siteBrief = document.getElementById("siteBrief");
+  const copyDayPlan = document.getElementById("copyDayPlan");
+  const copyBrief = document.getElementById("copyBrief");
+
+  const goalRow = document.getElementById("goalRow");
+  const platformWrap = document.getElementById("platforms");
+  const cards = Array.from(platformWrap.querySelectorAll(".pCard"));
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  async function copyText(btn, text){
+    try{
+      await navigator.clipboard.writeText(text.trim());
+      const prev = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        btn.innerHTML = prev;
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  }
+
+  copyDayPlan.addEventListener("click", ()=>copyText(copyDayPlan, dayPlan.textContent));
+  copyBrief.addEventListener("click", ()=>copyText(copyBrief, siteBrief.textContent));
+
+  // Goal filter (highlight)
+  const goalMap = {
+    "all":   { want: [] },
+    "ua-shop": { want: ["ua-shop","shop"] },
+    "fast":  { want: ["fast"] },
+    "catalog": { want: ["catalog"] },
+    "scale": { want: ["scale","shop"] }
+  };
+
+  function setGoal(goal){
+    // pills
+    Array.from(goalRow.querySelectorAll(".pill")).forEach(p=>{
+      p.classList.toggle("active", p.dataset.goal === goal);
+    });
+
+    const want = (goalMap[goal] && goalMap[goal].want) ? goalMap[goal].want : [];
+    if(!want.length){
+      cards.forEach(c=>{ c.classList.remove("dim","focus"); });
+      return;
+    }
+
+    cards.forEach(c=>{
+      const tags = (c.dataset.tags || "").split(/\s+/).filter(Boolean);
+      const hit = want.some(w => tags.includes(w));
+      c.classList.toggle("dim", !hit);
+      c.classList.toggle("focus", hit);
+    });
+  }
+
+  goalRow.addEventListener("click", (e)=>{
+    const pill = e.target.closest(".pill");
+    if(!pill) return;
+    setGoal(pill.dataset.goal || "all");
+  });
+
+  // Init
+  setGoal("all");
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
