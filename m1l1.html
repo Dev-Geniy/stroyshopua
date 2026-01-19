@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m1l1 — Що таке дропшипінг | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:0 14px;
+    }
+
+    /* ===== Header (simple) ===== */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{
+      height:58px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .h-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .icon{
+      width:40px;height:40px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+      min-width:0;
+    }
+    .crumb small{
+      color:var(--muted);
+      font-size:11.5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){
+      .status-pill{display:none;}
+    }
+
+    main{padding:18px 0 44px}
+
+    /* ===== HERO ===== */
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;
+      letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;
+      color:rgba(245,245,247,.90);
+      font-size:15px;
+      line-height:1.85;
+      max-width:82ch;
+    }
+    .chips{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      align-items:center;
+      gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    /* ===== Sections (MORE SPACE + GIANT TITLES) ===== */
+    .sec{
+      margin-top:58px;                 /* bigger distance between sections */
+      padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{
+      margin-top:34px;
+      padding-top:0;
+      border-top:none;
+    }
+
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px); /* GIANT */
+      font-weight:900;
+      letter-spacing:-.03em;
+      line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;              /* more breathing space */
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;
+      color:rgba(245,245,247,.92);
+      font-size:15px;
+      line-height:1.9;
+      max-width:92ch;
+    }
+
+    /* Cards */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;
+      padding:14px;
+    }
+    .top{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .ico{
+      width:46px;height:46px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{
+      display:block;
+      font-size:14px;
+    }
+    .card span{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.6;
+    }
+
+    /* Flow */
+    .flow{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.20);
+      border-radius:20px;
+      padding:14px;
+      margin-top:14px;
+    }
+    .flowhead{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:12.5px;
+    }
+    .flowhead i{width:16px;height:16px;color:var(--accent2)}
+    .flowline{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (min-width:900px){
+      .flowline{grid-template-columns:1fr 1fr 1fr}
+    }
+    .step{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;
+      padding:12px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .mini{
+      width:40px;height:40px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+    }
+    .mini i{width:18px;height:18px;color:var(--accent2)}
+    .step b{font-size:14px}
+    .step span{display:block;margin-top:4px;color:var(--muted);font-size:13.3px;line-height:1.55}
+
+    /* Stats */
+    .stats{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:14px;
+    }
+    @media (min-width:760px){
+      .stats{grid-template-columns:1fr 1fr 1fr}
+    }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .stat::after{
+      content:"";
+      position:absolute;
+      inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12.5px;
+      position:relative;
+      z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      font-weight:900;
+      color:var(--accent2);
+      position:relative;
+      z-index:1;
+    }
+
+    /* Bars */
+    .bars{
+      margin-top:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;
+      padding:14px;
+    }
+    .barrow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .barrow:first-child{margin-top:0}
+    .track{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      margin:0 10px;
+    }
+    .fill{
+      height:100%;
+      background:var(--grad);
+      border-radius:999px;
+    }
+    .val{
+      min-width:70px;
+      text-align:right;
+      color:var(--accent2);
+      font-weight:900;
+      font-size:13px;
+    }
+
+    /* Myths */
+    .myths{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;
+      padding:14px;
+      margin-top:14px;
+    }
+    details{
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:12px;
+      margin-top:12px;
+    }
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;
+      list-style:none;
+      font-weight:900;
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.7;
+    }
+    .badge{
+      font-size:11px;
+      color:var(--muted);
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);
+      white-space:nowrap;
+    }
+
+    /* Task */
+    .task{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .taskhead{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .taskhead i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .taskhead b{font-size:15px}
+    .task p{
+      margin:10px 0 0;
+      font-size:14px;
+      line-height:1.75;
+      color:rgba(245,245,247,.92);
+    }
+    .sample{
+      margin-top:12px;
+      border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;
+      padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;
+      color:rgba(245,245,247,.92);
+      line-height:1.6;
+      white-space:pre-wrap;
+    }
+    .actions{
+      margin-top:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:900;
+      font-size:13.5px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:var(--grad);
+      color:#0b0b10;
+      box-shadow:0 14px 26px rgba(0,0,0,.30);
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--ink);
+      box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    footer{
+      margin-top:34px;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Урок 1 — Що таке дропшипінг</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Що таке дропшипінг і де тут гроші</h1>
+    <p class="lead">
+      Дропшипінг — це модель, де ти заробляєш на продажах <b>без складу</b> і без закупки товару наперед.
+      У цьому уроці ми розкладемо все “по полицях”, щоб ти зрозумів(ла) модель <b>від і до</b>:
+      ролі, гроші, оплата, ризики, і що робити новачку в перший день.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 10–12 хв читання</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: розумієш модель повністю</div>
+      <div class="chip"><i data-lucide="graduation-cap"></i> Рівень: Новачок</div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Визначення: що таке дропшипінг</h2>
+    <div class="sub">Одна фраза, яка пояснює модель “без води”</div>
+
+    <p class="text">
+      <b>Дропшипінг</b> — це коли ти продаєш товар клієнту, а фізично відправляє його постачальник.
+      Ти не тримаєш склад, не купуєш товар наперед — але керуєш процесом продажу та сервісом.
+      Твій прибуток — <b>маржа</b> (різниця між ціною постачальника і твоєю ціною продажу).
+    </p>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="shopping-bag"></i></div>
+          <div>
+            <b>Клієнт</b>
+            <span>Купує і хоче швидко та без проблем</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="user"></i></div>
+          <div>
+            <b>Ти — продавець</b>
+            <span>Контент, довіра, консультація, замовлення, контроль</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="truck"></i></div>
+          <div>
+            <b>Постачальник</b>
+            <span>Склад, пакування, відправка, логістика</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Як це працює: схема в 3 кроки</h2>
+    <div class="sub">Міні-інфографіка, щоб “клацнуло” з першого разу</div>
+
+    <p class="text">
+      Уяви, що ти — “вітрина” (TikTok/Instagram/OLX/маркетплейс/сайт).
+      Людина бачить пропозицію → пише → ти оформлюєш замовлення → товар їде клієнту.
+    </p>
+
+    <div class="flow">
+      <div class="flowhead">
+        <i data-lucide="route"></i>
+        <span>Шлях замовлення</span>
+      </div>
+
+      <div class="flowline">
+        <div class="step">
+          <div class="mini"><i data-lucide="megaphone"></i></div>
+          <div>
+            <b>Крок 1 — Приводиш клієнта</b>
+            <span>Контент → довіра → повідомлення/дзвінок</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="clipboard-list"></i></div>
+          <div>
+            <b>Крок 2 — Фіксуєш замовлення</b>
+            <span>Товар, кількість, адреса, оплата, деталі</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="package"></i></div>
+          <div>
+            <b>Крок 3 — Відправка</b>
+            <span>Постачальник пакує та відправляє клієнту</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bars">
+      <div class="barrow">
+        <span>Твоя зона відповідальності</span>
+        <div class="track"><div class="fill" style="width:78%"></div></div>
+        <span class="val">78%</span>
+      </div>
+      <div class="barrow">
+        <span>Зона постачальника</span>
+        <div class="track"><div class="fill" style="width:22%"></div></div>
+        <span class="val">22%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Де тут гроші: маржа, повтори, масштаб</h2>
+    <div class="sub">Три “двигуни” доходу в дропшипінгу</div>
+
+    <p class="text">
+      Гроші з’являються там, де ти створюєш продаж і керуєш процесом. Дропшипінг — це не “пасив”.
+      Це бізнес, де дохід росте від <b>системності</b>.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <small><i data-lucide="coins"></i> Маржа</small>
+        <b>прибуток з 1 продажу</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="repeat-2"></i> Повторні продажі</small>
+        <b>довше життя клієнта</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="trending-up"></i> Масштабування</small>
+        <b>більше контенту = більше замовлень</b>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="calculator"></i></div>
+        <div>
+          <b>Приклад на цифрах</b>
+          <span>Ти продаєш за 1200 грн, постачальник дає по 850 грн → маржа 350 грн.</span>
+        </div>
+      </div>
+
+      <div class="stats" style="margin-top:14px;">
+        <div class="stat">
+          <small><i data-lucide="tag"></i> Твоя ціна</small>
+          <b>1200 грн</b>
+        </div>
+        <div class="stat">
+          <small><i data-lucide="box"></i> Ціна постачальника</small>
+          <b>850 грн</b>
+        </div>
+        <div class="stat">
+          <small><i data-lucide="sparkles"></i> Твій прибуток</small>
+          <b>350 грн</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="film"></i></div>
+        <div>
+          <b>Приклад сценарію</b>
+          <span>1 відео → 5 повідомлень → 2 замовлення → 2×300 грн ≈ 600 грн/день → 30 днів ≈ 18 000 грн.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Оплата: 2 сценарії (A / B)</h2>
+    <div class="sub">Включно з вашим принципом: постачальник приймає оплату і віддає різницю</div>
+
+    <p class="text">
+      У дропшипінгу важливо домовитись про оплату прозоро. Є два нормальні сценарії:
+      клієнт платить тобі або клієнт платить постачальнику (ваш принцип), а постачальник виплачує твою маржу.
+    </p>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="credit-card"></i></div>
+          <div>
+            <b>Сценарій A — оплата тобі</b>
+            <span>Клієнт платить тобі → ти оплачуєш постачальнику → маржа у тебе.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="hand-coins"></i></div>
+          <div>
+            <b>Сценарій B — оплата постачальнику</b>
+            <span>Клієнт платить постачальнику → постачальник фіксує маржу → виплачує тобі різницю.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flowhead">
+        <i data-lucide="lightbulb"></i>
+        <span>Правило “один рядок”</span>
+      </div>
+      <div class="card" style="margin-top:12px; background:rgba(0,0,0,.18)">
+        <div class="top">
+          <div class="ico"><i data-lucide="quote"></i></div>
+          <div>
+            <b>Формула</b>
+            <span>“Я продаю по X, постачальник отримує Y, різниця Z — моя”.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Міфи новачків: що заважає старту</h2>
+    <div class="sub">Коротко, щоб прибрати страхи і “тормоза”</div>
+
+    <div class="myths">
+      <details open>
+        <summary>“Потрібно ФОП одразу” <span class="badge">Міф</span></summary>
+        <p>Спочатку — розуміння моделі і перші продажі. Юридичні кроки — коли є система та стабільність.</p>
+      </details>
+      <details>
+        <summary>“Без сайту не вийде” <span class="badge">Міф</span></summary>
+        <p>Можна стартувати через TikTok/Instagram/OLX/маркетплейси. Сайт — не обов’язково в перший місяць.</p>
+      </details>
+      <details>
+        <summary>“Ринок переповнений” <span class="badge">Міф</span></summary>
+        <p>Переповнені не товари — переповнені однакові подачі. Виграє той, хто робить краще і стабільніше.</p>
+      </details>
+      <details>
+        <summary>“Потрібні великі бюджети” <span class="badge">Міф</span></summary>
+        <p>Можна почати без бюджету через контент. Або з малого тесту. Головне — регулярність.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Практика: твоє перше завдання</h2>
+    <div class="sub">Точка відліку — напиши це зараз (2 хвилини)</div>
+
+    <div class="task">
+      <div class="taskhead">
+        <i data-lucide="clipboard-check"></i>
+        <div>
+          <b>Твоє завдання</b>
+          <div class="sub" style="margin:6px 0 0;">3 відповіді, які запускають дисципліну</div>
+        </div>
+      </div>
+
+      <p>
+        У нотатках напиши:
+        <br>1) Чому ти хочеш займатись дропшипінгом
+        <br>2) Яка ціль по доходу через 3 місяці
+        <br>3) Скільки годин на день ти готовий(а) виділяти
+      </p>
+
+      <div class="sample" id="sampleText">Моя ціль:
+— 15 000 грн/місяць через 3 місяці
+— Готовий(а) працювати 1–2 години щодня
+— Хочу фінансову свободу та власну справу</div>
+
+      <div class="actions">
+        <button class="btn secondary" id="copyBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати шаблон
+        </button>
+
+        <button class="btn" id="btnDone" type="button">
+          <i data-lucide="check-circle"></i>
+          Позначити як пройдено
+        </button>
+      </div>
+
+      <p style="margin-top:10px;color:rgba(245,245,247,.85)">
+        <b>Порада:</b> цей запис — твоя стартова “точка”. Наприкінці курсу ти побачиш, як змінилось мислення і результати.
+      </p>
+    </div>
+
+    <div style="margin-top:12px; color:var(--muted); font-size:13px;">
+      <span id="doneText">Статус: не пройдено</span>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m1l1";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  const sampleText = document.getElementById("sampleText");
+  const copyBtn = document.getElementById("copyBtn");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  copyBtn.addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(sampleText.textContent.trim());
+      copyBtn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        copyBtn.innerHTML = '<i data-lucide="copy"></i> Скопіювати шаблон';
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  });
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
