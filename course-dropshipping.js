@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       id:"m1",
       title:"Швидкий старт у дропшипінгу",
       lessons:[
-        {id:"m1l1", title:"Що таке дропшипінг і де тут гроші", url:"m1l1.html"},
+        {id:"m1l1", title:"Що таке дропшипінг і де тут гроші", url:"cd/m1l1.html"},
         {id:"m1l2", title:"Вибір ніші та продукту",              url:"m1l2.html"},
         {id:"m1l3", title:"Перевірка попиту на товар",           url:"m1l3.html"},
         {id:"m1l4", title:"Перший постачальник",                 url:"m1l4.html"},
