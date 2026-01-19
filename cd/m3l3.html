@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m3l3 — Контент-план з AI | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff4d4d;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:92ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .warn{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .warn .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .warn .hrow i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .warn b{font-size:15px}
+    .warn p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .stats{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+    @media (min-width:760px){ .stats{grid-template-columns:1fr 1fr 1fr} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;position:relative;overflow:hidden;
+    }
+    .stat::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;position:relative;z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;margin-top:8px;font-size:18px;font-weight:900;
+      color:var(--accent2);position:relative;z-index:1;
+    }
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--muted);
+      padding:7px 10px;border-radius:999px;
+      font-size:12px;display:inline-flex;align-items:center;gap:7px;
+      cursor:pointer; user-select:none;
+    }
+    .pill i{width:16px;height:16px;color:var(--accent2)}
+    .pill.active{
+      border-color:rgba(255,179,71,.35);
+      background:rgba(255,179,71,.10);
+      color:rgba(245,245,247,.92);
+    }
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.6px;color:rgba(245,245,247,.92);
+      line-height:1.65;white-space:pre-wrap;
+    }
+
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.20);
+      border:1px dashed rgba(255,255,255,.22);
+      color:rgba(245,245,247,.92);
+      box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    .links{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){ .links{grid-template-columns:1fr 1fr} }
+    .lCard{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;
+      position:relative; overflow:hidden;
+    }
+    .lCard::after{
+      content:""; position:absolute; inset:-50px;
+      background:radial-gradient(circle at 0 0, rgba(255,122,26,.10), transparent 55%);
+      opacity:.28; pointer-events:none;
+    }
+    .lHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:1;}
+    .lName{display:flex;gap:10px;align-items:flex-start;}
+    .lLogo{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .lLogo i{width:20px;height:20px;color:var(--accent2)}
+    .lTitle b{font-size:15px}
+    .lMeta{margin-top:2px;color:var(--muted);font-size:12.8px;line-height:1.5}
+    .lTag{
+      font-weight:900;color:var(--accent2);
+      font-size:12.5px;white-space:nowrap;position:relative;z-index:1;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+    }
+    .lBody{position:relative;z-index:1;margin-top:10px;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+    .linkbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;position:relative;z-index:1;}
+
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;position:relative;z-index:1;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+
+    /* prompt filtering */
+    .dim{opacity:.42; filter:saturate(.6); transform:scale(.995); transition:.18s ease;}
+    .focus{outline:1px solid rgba(255,179,71,.25); box-shadow:0 0 0 3px rgba(255,179,71,.06);}
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 3 • Урок 3 — Контент-план з AI</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Контент-план з AI: 7–30 днів ідей за 30 хв (без “що постити?”)</h1>
+    <p class="lead">
+      Урок 3 — вчимося робити <b>сильний контент-план</b> за допомогою AI:
+      задаємо правильний контекст, отримуємо таблицю тем, hooks, сценарії відео, тексти під платформи
+      і перетворюємо це у “пакет на тиждень”.
+      <br><br>
+      Ти — керівник. AI — асистент. Твоя задача: <b>керувати процесом</b>, а не копіювати все “як є”.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 30–55 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: план 7–30 днів + контент-банк</div>
+      <div class="chip"><i data-lucide="sparkles"></i> Фокус: hooks + сценарії + CTA</div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Важливо</b>
+          <p>
+            AI може робити граматичні помилки та “воду”.
+            Тому: <b>перевіряй текст</b>, скорочуй, і фінальний текст на креатив краще наносити в <b>Canva</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Крутий контент-план: що всередині</h2>
+    <div class="sub">Не список тем. А система: рубрика → формат → hook → суть → CTA</div>
+
+    <p class="text">
+      Контент-план — це таблиця, де для кожного поста/відео є:
+      <b>формат</b>, <b>тема</b>, <b>hook</b> (перші 2 секунди), <b>користь</b>, <b>CTA</b> та матеріали (що показати).
+      Так ти перестаєш “вигадувати”, а просто виконуєш план.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <small><i data-lucide="megaphone"></i> Охоплення</small>
+        <b>привернути увагу</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="shield-check"></i> Довіра</small>
+        <b>“можна купувати”</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="mouse-pointer-click"></i> Продаж</small>
+        <b>заявка / підбір</b>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Формула балансу на 7 днів</b>
+          <p>
+            2 пости “охоплення” + 2 “довіра” + 2 “продаж” + 1 “сервіс/FAQ”.
+            Це працює і не виглядає як спам.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Як працювати з AI правильно: 5 кроків</h2>
+    <div class="sub">AI любить чіткий контекст. Чим точніше “вхідні дані” — тим сильніший результат</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="info"></i></div>
+          <div>
+            <b>Крок 1 — дай контекст</b>
+            <span>Ніша, товари, країна, платформи, стиль, ціль (заявки в месенджер).</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="layout-list"></i></div>
+          <div>
+            <b>Крок 2 — отримай “матрицю контенту”</b>
+            <span>Таблиця: день/рубрика/тема/формат/hook/сценарій/CTA/що показати.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="filter"></i></div>
+          <div>
+            <b>Крок 3 — відсій зайве</b>
+            <span>Вибери 10–30 найсильніших тем і зроби “контент-банк”.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="wand-2"></i></div>
+          <div>
+            <b>Крок 4 — перетвори в готові матеріали</b>
+            <span>Сценарії, тексти, hooks, CTA під TikTok/IG/TG/OLX.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="package"></i></div>
+          <div>
+            <b>Крок 5 — збереш “пакет на тиждень”</b>
+            <span>7–10 креативів + 7–10 текстів + 7–10 сценаріїв. Далі просто постиш.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="warn">
+        <div class="hrow">
+          <i data-lucide="alert-triangle"></i>
+          <div>
+            <b>Не роби так</b>
+            <p>
+              Не проси “зроби контент-план” без контексту.
+              Отримаєш загальні фрази. Спочатку — <b>чіткі вхідні дані</b>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Промти (готові): натисни ціль → копіюй</h2>
+    <div class="sub">Підсвітка допомагає обрати потрібні промти під задачу</div>
+
+    <div class="pillrow" id="goalRow">
+      <div class="pill active" data-goal="all"><i data-lucide="sparkles"></i> Показати всі</div>
+      <div class="pill" data-goal="plan"><i data-lucide="calendar-days"></i> План</div>
+      <div class="pill" data-goal="hooks"><i data-lucide="zap"></i> Hooks</div>
+      <div class="pill" data-goal="scripts"><i data-lucide="video"></i> Сценарії</div>
+      <div class="pill" data-goal="tg"><i data-lucide="send"></i> Telegram</div>
+      <div class="pill" data-goal="olx"><i data-lucide="file-text"></i> OLX</div>
+    </div>
+
+    <div class="grid two" id="promptGrid">
+      <!-- PROMPT: PLAN -->
+      <div class="card pCard" data-tags="plan">
+        <div class="top">
+          <div class="ico"><i data-lucide="calendar-days"></i></div>
+          <div>
+            <b>Промт №1 — контент-план на 14 днів</b>
+            <span>Отримаєш таблицю: день/рубрика/тема/формат/hook/сценарій/CTA/що показати.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pPlan">Ти — маркетолог для e-commerce (дропшипінг) в Україні.
+Ніша: декоративні будматеріали (3D панелі, вінілові панелі, підлогові покриття).
+Ціль: заявки в месенджер + продажі.
+Платформи: TikTok, Instagram Reels, Telegram, OLX.
+Стиль: преміум, просто і зрозуміло.
+
+Зроби контент-план на 14 днів у вигляді таблиці:
+День / Рубрика (охоплення-довіра-продаж-сервіс) / Тема / Формат / Hook (1 фраза) /
+Сценарій (5–7 кроків) / CTA / Що показати в кадрі або на креативі.
+
+Пиши просто, для новачка. Дай 2 альтернативи тем на кожен день.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyPlanPrompt" type="button">
+            <i data-lucide="copy"></i> Скопіювати промт
+          </button>
+        </div>
+      </div>
+
+      <!-- PROMPT: HOOKS -->
+      <div class="card pCard" data-tags="hooks">
+        <div class="top">
+          <div class="ico"><i data-lucide="zap"></i></div>
+          <div>
+            <b>Промт №2 — 30 hooks (гачків) під твою нішу</b>
+            <span>Отримаєш короткі фрази, які тримають увагу.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pHooks">Згенеруй 30 коротких hook-фраз (1 рядок) для відео в TikTok/IG Reels
+на тему декоративних будматеріалів (3D панелі, стіни, підлога).
+
+Зроби hooks різні:
+— помилки
+— порівняння
+— до/після
+— міфи
+— “секрети”
+— “не роби так”
+— підбір під запит
+
+Українською. Без води. Щоб хотілося дослухати.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyHooksPrompt" type="button">
+            <i data-lucide="copy"></i> Скопіювати промт
+          </button>
+        </div>
+      </div>
+
+      <!-- PROMPT: SCRIPTS -->
+      <div class="card pCard" data-tags="scripts">
+        <div class="top">
+          <div class="ico"><i data-lucide="video"></i></div>
+          <div>
+            <b>Промт №3 — 10 сценаріїв відео (15–25 сек)</b>
+            <span>Сценарій по секундах: що показати + текст + голос + CTA.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pScripts">Зроби 10 сценаріїв відео для TikTok/IG Reels на 15–25 секунд.
+Ніша: декор/ремонт (3D панелі, вінілові панелі, підлога).
+Ціль: заявки в месенджер через “підбір”.
+
+Для кожного сценарію:
+1) Hook (перші 2 секунди)
+2) Що показую в кадрі (по секундах)
+3) Текст на екрані (коротко)
+4) Що кажу голосом (простими словами)
+5) CTA в кінці (“Напиши ‘ПІДБІР’…”)
+
+Стиль: дружньо, по-людськи, без маркетингової води.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyScriptsPrompt" type="button">
+            <i data-lucide="copy"></i> Скопіювати промт
+          </button>
+        </div>
+      </div>
+
+      <!-- PROMPT: TELEGRAM -->
+      <div class="card pCard" data-tags="tg">
+        <div class="top">
+          <div class="ico"><i data-lucide="send"></i></div>
+          <div>
+            <b>Промт №4 — перетвори тему в Telegram-пост</b>
+            <span>Підходить, коли є тема або товар — і треба швидко написати пост.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pTG">Ось тема: [встав тему або товар]
+Зроби Telegram-пост:
+
+— Заголовок (1 рядок)
+— Текст 6–10 рядків (без води)
+— 3 буліти вигод (✅)
+— 1 рядок про доставку/умови
+— CTA: “Напиши ‘ПІДБІР’ — підберу 2–3 варіанти під твій запит”
+
+Мова: українська. Тон: впевнено і дружньо.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyTGPrompt" type="button">
+            <i data-lucide="copy"></i> Скопіювати промт
+          </button>
+        </div>
+      </div>
+
+      <!-- PROMPT: OLX -->
+      <div class="card pCard" data-tags="olx">
+        <div class="top">
+          <div class="ico"><i data-lucide="file-text"></i></div>
+          <div>
+            <b>Промт №5 — зроби оголошення для OLX</b>
+            <span>Заголовок + опис по блоках: що це / вигоди / характеристики / доставка / як замовити.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pOLX">Ось товар: [назва]
+Ось ключові вигоди: [2-3 вигоди]
+Ось характеристики: [список]
+Ось умови доставки/оплати: [коротко]
+
+Зроби оголошення для OLX:
+— Заголовок (продаючий, але без спаму)
+— Опис по блоках (логічно і читабельно)
+— CTA: “Напиши ‘ХОЧУ’ — підберу варіант під ваш запит”
+
+Мова: українська. Без “води”.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyOLXPrompt" type="button">
+            <i data-lucide="copy"></i> Скопіювати промт
+          </button>
+        </div>
+      </div>
+
+      <!-- QUICK CONTEXT TEMPLATE -->
+      <div class="card pCard" data-tags="plan hooks scripts tg olx">
+        <div class="top">
+          <div class="ico"><i data-lucide="settings-2"></i></div>
+          <div>
+            <b>Шаблон “Контекст для AI” (вставляй першим)</b>
+            <span>Щоб AI одразу давав сильні відповіді, а не загальні фрази.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pContext">Контекст:
+— Ніша/товари: декоративні будматеріали (3D панелі / вінілові панелі / підлога / декор)
+— Країна: Україна
+— Ціль: заявки в месенджер + продажі
+— Платформи: TikTok / Instagram / Telegram / OLX
+— Стиль: преміум, прості слова, без “маркетингової води”
+— CTA: “Напиши ‘ПІДБІР’ — підберу 2–3 варіанти під вашу задачу і бюджет”
+— Важливо: коротко, конкретно, читабельно з телефону</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyContextPrompt" type="button">
+            <i data-lucide="copy"></i> Скопіювати контекст
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="info"></i>
+        <div>
+          <b>Порада</b>
+          <p>
+            Спочатку вставляй <b>контекст</b>, а потім потрібний промт. Це дає набагато кращий результат.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Практика: план на 7 днів (шаблон)</h2>
+    <div class="sub">Скопіюй і заповни. Це твій перший “робочий” контент-план</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="calendar"></i></div>
+          <div>
+            <b>7-денний план (баланс)</b>
+            <span>2 охоплення • 2 довіра • 2 продаж • 1 сервіс</span>
+          </div>
+        </div>
+
+        <div class="sample" id="plan7">Контент-план на 7 днів (шаблон):
+
+День 1 (Охоплення)
+— Тема: __________
+— Hook: __________
+— CTA: __________
+
+День 2 (Довіра)
+— Тема: __________
+— Hook: __________
+— CTA: __________
+
+День 3 (Продаж)
+— Товар/категорія: __________
+— Вигода: __________
+— CTA: “Напиши ‘ПІДБІР’…”
+
+День 4 (Сервіс / FAQ)
+— Питання: __________
+— Коротка відповідь: __________
+— CTA: __________
+
+День 5 (Охоплення)
+— Тема: __________
+— Hook: __________
+— CTA: __________
+
+День 6 (Продаж)
+— Товар/категорія: __________
+— Вигода: __________
+— CTA: “Напиши ‘ПІДБІР’…”
+
+День 7 (Довіра)
+— Відгук/кейс/процес: __________
+— Hook: __________
+— CTA: __________</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyPlan7" type="button">
+            <i data-lucide="copy"></i> Скопіювати шаблон
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="sparkles"></i></div>
+          <div>
+            <b>Супер-CTA для новачка</b>
+            <span>Найлегше отримувати заявки через “підбір під запит”.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="ctaPack">CTA-шаблони (вставляй у пости):
+
+1) Напиши “ПІДБІР” — підберу 2–3 варіанти під вашу кімнату і бюджет.
+2) Напиши “ХОЧУ” — скину ціни + приклади в інтерʼєрі.
+3) Напиши “РОЗМІР” — підкажу, скільки потрібно і як порахувати.
+4) Напиши “ДОСТАВКА” — розповім по термінах/оплаті.
+5) Напиши “ФОТО” — надішлю реальні фото/відео товару.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyCTA" type="button">
+            <i data-lucide="copy"></i> Скопіювати CTA
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Інструменти (мінімум) + як працювати</h2>
+    <div class="sub">Тобі не треба 20 сервісів. Достатньо 2–3, але регулярно</div>
+
+    <div class="links">
+      <!-- ChatGPT / AI -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="bot"></i></div>
+            <div class="lTitle">
+              <b>AI (ChatGPT / Gemini)</b>
+              <div class="lMeta">Ідеї, hooks, сценарії, тексти. Потрібні чіткі вхідні дані.</div>
+            </div>
+          </div>
+          <div class="lTag">AI</div>
+        </div>
+
+        <div class="lBody">
+          Використовуй “Шаблон контексту” + потрібний промт. Потім відсіюй зайве і роби пакет на тиждень.
+        </div>
+
+        <details>
+          <summary>Покроково: як робити план швидко <span class="badge">4 кроки</span></summary>
+          <p>1) Встав “Контекст для AI”.</p>
+          <p>2) Встав промт №1 (контент-план на 14 днів).</p>
+          <p>3) Обери 7–10 найкращих тем і попроси промт №3 (сценарії) + №4 (TG-пости).</p>
+          <p>4) Збережи все в “Week_1” (папка + файл текстів).</p>
+        </details>
+      </div>
+
+      <!-- Canva -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="layout-template"></i></div>
+            <div class="lTitle">
+              <b>Canva</b>
+              <div class="lMeta">Фінальна подача: тексти без помилок, однаковий стиль, швидкі креативи.</div>
+            </div>
+          </div>
+          <div class="lTag">Дизайн</div>
+        </div>
+
+        <div class="lBody">
+          Після AI: не клеї текст “як є” на картинку. Краще вставити в Canva і поправити граматику.
+        </div>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.canva.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Canva
+          </a>
+        </div>
+
+        <details>
+          <summary>Покроково: як зробити 10 креативів <span class="badge">5 кроків</span></summary>
+          <p>1) Create a design → 1080×1350 (4:5).</p>
+          <p>2) Зроби 1 шаблон: місце під УТП + товар + лого.</p>
+          <p>3) Дублюй сторінку 10 разів.</p>
+          <p>4) Підставляй різні фото товарів + коротке УТП (перевір граматику).</p>
+          <p>5) Download → PNG → збережи в папку Week_1.</p>
+        </details>
+      </div>
+
+      <!-- Sheets -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="table-2"></i></div>
+            <div class="lTitle">
+              <b>Google Sheets / Notion</b>
+              <div class="lMeta">Таблиця плану: день, тема, формат, hook, CTA, готовність.</div>
+            </div>
+          </div>
+          <div class="lTag">План</div>
+        </div>
+
+        <div class="lBody">
+          Ти бачиш прогрес: що вже готово, що ще треба зробити. Це і є система.
+        </div>
+
+        <details>
+          <summary>Покроково: таблиця контент-плану <span class="badge">4 кроки</span></summary>
+          <p>1) Створи колонки: Дата | Рубрика | Тема | Формат | Hook | CTA | Матеріали | Статус.</p>
+          <p>2) Статус: Ідея / Написано / Креатив готовий / Опубліковано.</p>
+          <p>3) Заповни 7–14 рядків з AI-плану.</p>
+          <p>4) Щодня відмічай статус — і в тебе порядок.</p>
+        </details>
+      </div>
+
+      <!-- Meta/Telegram -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="calendar-check"></i></div>
+            <div class="lTitle">
+              <b>Планування постів (коли буде пакет)</b>
+              <div class="lMeta">Спочатку зроби контент-банк. Потім плануй публікації.</div>
+            </div>
+          </div>
+          <div class="lTag">Постинг</div>
+        </div>
+
+        <div class="lBody">
+          Планування має сенс, коли є 7–14 постів наперед. Інакше — ти просто “плануєш порожнє”.
+        </div>
+
+        <details>
+          <summary>Покроково: як робити правильно <span class="badge">3 кроки</span></summary>
+          <p>1) Збери Week_1: 7–10 креативів + тексти.</p>
+          <p>2) Вистав пости по днях (де можливо) або тримай список “що сьогодні”.</p>
+          <p>3) Після 7 днів — подивись, що зайшло, і повтори найкраще.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Практика: чекліст + “здати результат”</h2>
+    <div class="sub">Зроби за 1–2 вечори. Це дає сильний старт і стабільність</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="clipboard-check"></i></div>
+          <div>
+            <b>Чекліст уроку</b>
+            <span>Мінімум, який робить контент системним.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="checklist">Чекліст (М3 Урок 3):
+
+1) Я підготував “Контекст для AI” — ✅ / ⬜
+2) Згенерував контент-план на 14 днів (AI) — ✅ / ⬜
+3) Відібрав 7–10 сильних тем на тиждень — ✅ / ⬜
+4) Згенерував 10 hooks + 5 сценаріїв — ✅ / ⬜
+5) Згенерував 5 TG-постів (або тексти під IG/OLX) — ✅ / ⬜
+6) Зробив 7–10 креативів у Canva — ✅ / ⬜
+7) Заповнив таблицю плану (Sheets/Notion) — ✅ / ⬜</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyChecklist" type="button">
+            <i data-lucide="copy"></i> Скопіювати чекліст
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="file-text"></i></div>
+          <div>
+            <b>Що здати як результат</b>
+            <span>Контрольна точка: видно прогрес і готовий пакет.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="deliver">Результат (що має бути готово):
+
+1) Контент-план на 7 або 14 днів (таблиця)
+2) 10 hook-фраз (готові)
+3) 5 сценаріїв відео (15–25 сек)
+4) 5 Telegram-постів (або 5 текстів під IG)
+5) 3 OLX-оголошення (за потреби)
+6) Папка Week_1: 7–10 креативів + тексти
+7) Позначити урок як “пройдено” ✅</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyDeliver" type="button">
+            <i data-lucide="copy"></i> Скопіювати результат
+          </button>
+          <button class="btn" id="btnDone" type="button">
+            <i data-lucide="check-circle"></i> Позначити як пройдено
+          </button>
+        </div>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+          <span id="doneText">Статус: не пройдено</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m3l3";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  // Prompts
+  const pPlan = document.getElementById("pPlan");
+  const pHooks = document.getElementById("pHooks");
+  const pScripts = document.getElementById("pScripts");
+  const pTG = document.getElementById("pTG");
+  const pOLX = document.getElementById("pOLX");
+  const pContext = document.getElementById("pContext");
+
+  // Copies
+  const copyPlanPrompt = document.getElementById("copyPlanPrompt");
+  const copyHooksPrompt = document.getElementById("copyHooksPrompt");
+  const copyScriptsPrompt = document.getElementById("copyScriptsPrompt");
+  const copyTGPrompt = document.getElementById("copyTGPrompt");
+  const copyOLXPrompt = document.getElementById("copyOLXPrompt");
+  const copyContextPrompt = document.getElementById("copyContextPrompt");
+
+  const plan7 = document.getElementById("plan7");
+  const ctaPack = document.getElementById("ctaPack");
+  const checklist = document.getElementById("checklist");
+  const deliver = document.getElementById("deliver");
+
+  const copyPlan7 = document.getElementById("copyPlan7");
+  const copyCTA = document.getElementById("copyCTA");
+  const copyChecklist = document.getElementById("copyChecklist");
+  const copyDeliver = document.getElementById("copyDeliver");
+
+  // Filter
+  const goalRow = document.getElementById("goalRow");
+  const promptGrid = document.getElementById("promptGrid");
+  const cards = Array.from(promptGrid.querySelectorAll(".pCard"));
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  async function copyText(btn, text){
+    try{
+      await navigator.clipboard.writeText(text.trim());
+      const prev = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        btn.innerHTML = prev;
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  }
+
+  // Copy bindings (prompts)
+  copyPlanPrompt.addEventListener("click", ()=>copyText(copyPlanPrompt, pPlan.textContent));
+  copyHooksPrompt.addEventListener("click", ()=>copyText(copyHooksPrompt, pHooks.textContent));
+  copyScriptsPrompt.addEventListener("click", ()=>copyText(copyScriptsPrompt, pScripts.textContent));
+  copyTGPrompt.addEventListener("click", ()=>copyText(copyTGPrompt, pTG.textContent));
+  copyOLXPrompt.addEventListener("click", ()=>copyText(copyOLXPrompt, pOLX.textContent));
+  copyContextPrompt.addEventListener("click", ()=>copyText(copyContextPrompt, pContext.textContent));
+
+  // Copy bindings (practice)
+  copyPlan7.addEventListener("click", ()=>copyText(copyPlan7, plan7.textContent));
+  copyCTA.addEventListener("click", ()=>copyText(copyCTA, ctaPack.textContent));
+  copyChecklist.addEventListener("click", ()=>copyText(copyChecklist, checklist.textContent));
+  copyDeliver.addEventListener("click", ()=>copyText(copyDeliver, deliver.textContent));
+
+  // Filtering (highlight)
+  const goalMap = {
+    "all":     { want: [] },
+    "plan":    { want: ["plan"] },
+    "hooks":   { want: ["hooks"] },
+    "scripts": { want: ["scripts"] },
+    "tg":      { want: ["tg"] },
+    "olx":     { want: ["olx"] }
+  };
+
+  function setGoal(goal){
+    Array.from(goalRow.querySelectorAll(".pill")).forEach(p=>{
+      p.classList.toggle("active", p.dataset.goal === goal);
+    });
+
+    const want = (goalMap[goal] && goalMap[goal].want) ? goalMap[goal].want : [];
+    if(!want.length){
+      cards.forEach(c=>{ c.classList.remove("dim","focus"); });
+      return;
+    }
+
+    cards.forEach(c=>{
+      const tags = (c.dataset.tags || "").split(/\s+/).filter(Boolean);
+      const hit = want.some(w => tags.includes(w));
+      c.classList.toggle("dim", !hit);
+      c.classList.toggle("focus", hit);
+    });
+  }
+
+  goalRow.addEventListener("click", (e)=>{
+    const pill = e.target.closest(".pill");
+    if(!pill) return;
+    setGoal(pill.dataset.goal || "all");
+  });
+
+  // Init
+  setGoal("all");
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
