@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m2l2 — Де розміщувати оголошення (Україна) | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --warn:#ffd36a;
+      --bad:#ff6b6b;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(28px,5.2vw,44px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:92ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(32px,6.2vw,58px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+    .pill{
+      display:inline-flex;align-items:center;gap:7px;
+      padding:7px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);color:var(--muted);font-size:12px;
+    }
+    .pill i{width:16px;height:16px;color:var(--accent2)}
+    .pill.ok{border-color:rgba(92,227,160,.25); background:rgba(92,227,160,.10); color:rgba(245,245,247,.92)}
+    .pill.warn{border-color:rgba(255,211,106,.25); background:rgba(255,211,106,.10); color:rgba(245,245,247,.92)}
+    .pill.bad{border-color:rgba(255,107,107,.25); background:rgba(255,107,107,.10); color:rgba(245,245,247,.92)}
+
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+    .btn.small{padding:9px 12px;font-size:12.5px}
+    .btn:active{transform:translateY(1px)}
+
+    .split{
+      display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;margin-top:10px;
+    }
+
+    .platform{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;overflow:hidden;
+    }
+    .phead{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+    .pname{display:flex;gap:12px;align-items:flex-start;min-width:0}
+    .pname b{font-size:15px}
+    .pname small{display:block;color:var(--muted);font-size:12.5px;margin-top:4px;line-height:1.5}
+    .pmeta{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+    .tag{
+      padding:6px 9px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);font-size:12px;display:inline-flex;align-items:center;gap:6px;
+    }
+    .tag i{width:14px;height:14px;color:var(--accent2)}
+    .cols{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+    @media (min-width:900px){ .cols{grid-template-columns:1fr 1fr 1fr} }
+    .box{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;padding:12px;
+    }
+    .box h4{
+      margin:0 0 8px;font-size:12.5px;color:rgba(245,245,247,.92);
+      display:flex;align-items:center;gap:8px;
+    }
+    .box h4 i{width:16px;height:16px;color:var(--accent2)}
+    .box ul{margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.7}
+    .box li{margin:4px 0}
+
+    .searchbar{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.20);
+      border-radius:18px;padding:10px;
+      display:flex;gap:10px;align-items:center;
+    }
+    .searchbar i{width:18px;height:18px;color:var(--accent2)}
+    .searchbar input{
+      width:100%;
+      border:none;outline:none;
+      background:transparent;color:var(--ink);
+      font-size:14px;
+    }
+    .searchbar input::placeholder{color:rgba(154,160,179,.85)}
+
+    .links-panel{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      border-radius:22px;padding:14px;margin-top:14px;
+    }
+    .links-panel .head{
+      display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12.5px;
+    }
+    .links-panel .head i{width:16px;height:16px;color:var(--accent2)}
+    .links-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px;}
+    @media (min-width:900px){ .links-grid{grid-template-columns:1fr 1fr} }
+    .group{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:12px;
+    }
+    .group b{font-size:13.5px}
+    .group p{margin:6px 0 10px;color:var(--muted);font-size:13px;line-height:1.6}
+    .pill-links{display:flex;flex-wrap:wrap;gap:8px}
+    .alink{
+      text-decoration:none;
+      padding:7px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      color:rgba(245,245,247,.92);
+      font-size:12px;
+      display:inline-flex;gap:7px;align-items:center;
+    }
+    .alink i{width:16px;height:16px;color:var(--accent2)}
+    .alink:hover{background:rgba(255,255,255,.08)}
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;color:rgba(245,245,247,.92);line-height:1.6;white-space:pre-wrap;
+    }
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .task{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .taskhead{display:flex;gap:12px;align-items:flex-start;}
+    .taskhead i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .taskhead b{font-size:15px}
+    .task p{
+      margin:10px 0 0;font-size:14px;line-height:1.75;color:rgba(245,245,247,.92);
+    }
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 2 • Урок 2 — Де розміщувати оголошення</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Де розміщувати оголошення в Україні: дошки + маркетплейси + швидкі лайфхаки</h1>
+    <p class="lead">
+      Ціль уроку — не “викласти всюди”, а <b>вибрати правильні канали</b> і зробити це системно.
+      У будматеріалах найкраще працює комбінація:
+      <b>1) дошки оголошень</b> (швидкі заявки) + <b>2) маркетплейси</b> (довга воронка) + <b>3) соцмережі</b> (довіра).
+      <br><br>
+      Нижче ти отримаєш: <b>ТОП майданчики</b>, <b>повний список посилань</b>, <b>плюси/мінуси</b>,
+      та <b>план на 7 днів</b>, щоб не зливати час.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 18–25 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: список каналів + план публікацій</div>
+      <div class="chip"><i data-lucide="layers"></i> Фокус: будматеріали / декор / ремонти</div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Стратегія: як обрати канали і не “розмазатися”</h2>
+    <div class="sub">Правило профі: краще 3 канали якісно, ніж 15 каналів абияк</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="zap"></i></div>
+          <div>
+            <b>Хвиля 1 (швидко)</b>
+            <span>OLX + Facebook Marketplace → перші заявки вже сьогодні</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="shopping-bag"></i></div>
+          <div>
+            <b>Хвиля 2 (стабільно)</b>
+            <span>Маркетплейси → постійний потік замовлень після “розкрутки”</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="badge-check"></i></div>
+          <div>
+            <b>Хвиля 3 (довіра)</b>
+            <span>TikTok / Instagram / Telegram → прогрів і повторні продажі</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <b>Мінімальний набір “на старт”</b>
+          <p>
+            Якщо ти новачок — обирай: <b>OLX</b> (швидкі ліди) + <b>Facebook Marketplace</b> (живі покупці поруч)
+            + <b>1 маркетплейс</b> (на перспективу). Через 7–10 днів дивишся, де є заявки → туди додаєш темп.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="sparkles"></i></div>
+        <div>
+          <b>Швидка підказка (з твого скріну)</b>
+          <span>
+            Безкоштовні/майже безкоштовні канали: TikTok, Instagram, Telegram, WhatsApp Business, Facebook Marketplace, Rozetka (як точка входу), плюс “простий сайт” на конструкторі.
+            В цьому уроці фокус — <b>дошки + маркетплейси</b>, але пам’ятай: соцмережі = довіра.
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. ТОП дошки оголошень України для будматеріалів</h2>
+    <div class="sub">Тут ти отримуєш заявки швидше за все. Головне — швидка відповідь і нормальні фото</div>
+
+    <div class="searchbar">
+      <i data-lucide="search"></i>
+      <input id="searchBoards" type="text" placeholder="Пошук по дошках… (OLX, Flagma, IZI, Ukrboard…)">
+    </div>
+
+    <div class="grid two" id="boardsWrap">
+
+      <!-- OLX -->
+      <div class="platform" data-keywords="olx дошка оголошень classifieds ukraine будматеріали ремонт">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="shopping-cart"></i></div>
+            <div>
+              <b>OLX.ua</b>
+              <small>Найсильніший канал для швидких заявок. Працює “тут і зараз”.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://www.olx.ua/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="trophy"></i> Категорія: #1 (Classifieds)</span>
+          <span class="tag"><i data-lucide="map-pin"></i> UA rank: #5</span>
+          <span class="tag"><i data-lucide="activity"></i> Bounce: 23.23%</span>
+          <span class="tag"><i data-lucide="layers"></i> Pages/visit: 10.71</span>
+          <span class="tag"><i data-lucide="clock-3"></i> Avg: 00:06:42</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Найбільша увага аудиторії → швидкі запити</li>
+              <li>Локальні продажі (місто/район)</li>
+              <li>Добре заходять: панелі, підлога, декор, “до/після”</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Багато “просто питаю” → треба фільтрувати</li>
+              <li>Конкуренція і демпінг в популярних нішах</li>
+              <li>Потрібна швидка відповідь (5–15 хв)</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Перші 7 днів: 1–2 оголошення/день + оновлення</li>
+              <li>Додавай: відео/карусель + “приклади в інтер’єрі”</li>
+              <li>Відповідай шаблоном + одразу уточнюй місто/кількість</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split">
+          <span class="pill ok"><i data-lucide="zap"></i> Найкраще для старту</span>
+          <a class="btn small" href="https://www.similarweb.com/website/olx.ua/" target="_blank" rel="noopener">
+            <i data-lucide="bar-chart-3"></i> Статистика (Similarweb)
+          </a>
+        </div>
+      </div>
+
+      <!-- Facebook Marketplace -->
+      <div class="platform" data-keywords="facebook marketplace фейсбук барахолка groups">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="users"></i></div>
+            <div>
+              <b>Facebook Marketplace</b>
+              <small>Дуже живий канал: люди купують “поруч”. Плюс — локальні групи/барахолки.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://www.facebook.com/marketplace/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="map-pin"></i> Локально: місто/район</span>
+          <span class="tag"><i data-lucide="message-circle"></i> Швидкі переписки</span>
+          <span class="tag"><i data-lucide="users"></i> Додатково: FB групи</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Довіра через профіль (ім’я, фото, активність)</li>
+              <li>Можна постити в групи (ремонт/будматеріали/місто)</li>
+              <li>Добре для: великих позицій і локальної доставки</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Часто торгуються і “бронюють”</li>
+              <li>Потрібно тримати швидку відповідь</li>
+              <li>Може просити “підтвердження”/довіру → потрібні відгуки</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Публікуй: 3 фото + 1 відео, вказуй розміри/комплект</li>
+              <li>Паралельно: 5–10 локальних груп</li>
+              <li>Додай “приклади робіт” у профіль (альбом)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split">
+          <span class="pill warn"><i data-lucide="handshake"></i> Трафік через довіру</span>
+          <span class="pill"><i data-lucide="info"></i> Статистика залежить від міста/груп</span>
+        </div>
+      </div>
+
+      <!-- IZI -->
+      <div class="platform" data-keywords="izi маркетплейс оголошення україна">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="sparkles"></i></div>
+            <div>
+              <b>IZI.ua</b>
+              <small>Ще один канал під оголошення. Варто тестувати як додатковий.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://izi.ua/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="test-tube-2"></i> Режим: тест</span>
+          <span class="tag"><i data-lucide="layers"></i> Додатковий трафік</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Може дати “дешеві” ліди</li>
+              <li>Менше конкуренції, ніж на OLX</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Трафік зазвичай менший, ніж у топів</li>
+              <li>Потрібно тестувати конкретно твій товар</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Виклади 10–15 позицій і подивись на конверсію 7 днів</li>
+              <li>Залишай той контент, що “чіпляє” (фото/UTP)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flagma -->
+      <div class="platform" data-keywords="flagma b2b опт будматеріали">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="briefcase"></i></div>
+            <div>
+              <b>Flagma.ua (B2B)</b>
+              <small>Для опту, підрядників, бригад, компаній. Добре під будматеріали.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://flagma.ua/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="briefcase"></i> Формат: B2B</span>
+          <span class="tag"><i data-lucide="package"></i> Опт/під проєкти</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Аудиторія з наміром “купити під роботу”</li>
+              <li>Може давати великі чеки (обʼєми)</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Повільніша комунікація (B2B)</li>
+              <li>Іноді запитують документи/умови/прайси</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Підготуй: прайс + умови доставки + мінімальний обʼєм</li>
+              <li>Додай “кейс” (фото монтажу / обʼєктів)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 3 (ADDITIONAL LINKS SECTION IN THE MIDDLE) -->
+  <section class="sec">
+    <h2>3. Повний список посилань: дошки оголошень + каталоги + соцмережі</h2>
+    <div class="sub">Ця секція — твоя “шпаргалка”. Відкрий і просто кликай. Під будматеріали підходить більшість.</div>
+
+    <div class="links-panel">
+      <div class="head">
+        <i data-lucide="link"></i>
+        <span>Збережи собі: швидкі кнопки-посилання</span>
+      </div>
+
+      <div class="links-grid">
+
+        <div class="group">
+          <b>ТОП дошки (починай з цих)</b>
+          <p>Найчастіше дають заявки швидко. Спочатку 7–10 днів тесту — потім масштаб.</p>
+          <div class="pill-links">
+            <a class="alink" href="https://www.olx.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> OLX</a>
+            <a class="alink" href="https://www.facebook.com/marketplace/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Facebook Marketplace</a>
+            <a class="alink" href="https://www.ria.com/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> RIA</a>
+            <a class="alink" href="https://izi.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> IZI</a>
+            <a class="alink" href="https://besplatka.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Besplatka</a>
+            <a class="alink" href="https://obyava.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Obyava</a>
+          </div>
+        </div>
+
+        <div class="group">
+          <b>Додаткові дошки (розширення охоплення)</b>
+          <p>Тут менше трафіку, але інколи “вистрілює” саме твій товар. Викладай пачкою і дивись статистику.</p>
+          <div class="pill-links">
+            <a class="alink" href="https://ogolosha.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Ogolosha</a>
+            <a class="alink" href="https://www.ukrboard.com.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Ukrboard</a>
+            <a class="alink" href="https://bboard.com.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Bboard</a>
+            <a class="alink" href="https://avizinfo.com.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Avizinfo</a>
+            <a class="alink" href="https://board.com.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Board.com.ua</a>
+          </div>
+        </div>
+
+        <div class="group">
+          <b>B2B / каталоги (опт, підрядники, бригади)</b>
+          <p>Корисно, якщо хочеш великі чеки: “під обʼєкт”, “під ремонт”, “для бригади”.</p>
+          <div class="pill-links">
+            <a class="alink" href="https://flagma.ua/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Flagma</a>
+            <a class="alink" href="https://ua.all.biz/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Allbiz</a>
+            <a class="alink" href="https://zakupka.com/uk/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Zakupka</a>
+          </div>
+        </div>
+
+        <div class="group">
+          <b>Соцмережі (продають через довіру)</b>
+          <p>Сюди веди людей з оголошень: приклади робіт, відео, відгуки, “до/після”.</p>
+          <div class="pill-links">
+            <a class="alink" href="https://www.tiktok.com/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> TikTok</a>
+            <a class="alink" href="https://www.instagram.com/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Instagram</a>
+            <a class="alink" href="https://web.telegram.org/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Telegram</a>
+            <a class="alink" href="https://www.whatsapp.com/business/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> WhatsApp Business</a>
+            <a class="alink" href="https://www.viber.com/" target="_blank" rel="noopener"><i data-lucide="external-link"></i> Viber</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <b>Порядок “як профі”</b>
+          <p>
+            Спочатку: <b>ТОП 2–3 канали</b> → відшліфуй оголошення → зроби швидкий шаблон відповіді → тільки потім додавай інші майданчики.
+            Це дасть результат швидше, ніж “розкидати всюди”.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Маркетплейси України: куди реально викладати товар</h2>
+    <div class="sub">Маркетплейси дають стабільний потік, але потребують правильного оформлення й терпіння</div>
+
+    <div class="searchbar">
+      <i data-lucide="search"></i>
+      <input id="searchMps" type="text" placeholder="Пошук по маркетплейсах… (Rozetka, Prom, Епіцентр, Bigl…)">
+    </div>
+
+    <div class="grid two" id="mpsWrap">
+
+      <!-- ROZETKA -->
+      <div class="platform" data-keywords="rozetka маркетплейс україна">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="shopping-bag"></i></div>
+            <div>
+              <b>ROZETKA</b>
+              <small>Найпотужніший маркетплейс в Україні. Довга гра, але дуже цінна.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://rozetka.com.ua/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="trophy"></i> Категорія: #1 (Marketplace)</span>
+          <span class="tag"><i data-lucide="map-pin"></i> UA rank: #7</span>
+          <span class="tag"><i data-lucide="activity"></i> Bounce: 33.11%</span>
+          <span class="tag"><i data-lucide="layers"></i> Pages/visit: 5.49</span>
+          <span class="tag"><i data-lucide="clock-3"></i> Avg: 00:04:58</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Високий намір купити (люди вже “в магазині”)</li>
+              <li>Довіра до платформи → легше конвертувати</li>
+              <li>Підходить для масштабування каталогу</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Вищі вимоги до контенту/оформлення</li>
+              <li>Потрібно працювати зі швидкістю і сервісом</li>
+              <li>Не “вистрілює” за 1 день — потрібен час</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Почни з 20–50 SKU: наймаржинальніші й найпопулярніші</li>
+              <li>Фото: чисті + “в інтерʼєрі”, опис: коротко і по суті</li>
+              <li>Слідкуй за наявністю і швидкістю відповіді</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split">
+          <span class="pill ok"><i data-lucide="trophy"></i> Топ для масштабу</span>
+          <a class="btn secondary small" href="https://www.similarweb.com/website/rozetka.com.ua/" target="_blank" rel="noopener">
+            <i data-lucide="bar-chart-3"></i> Статистика</a>
+        </div>
+      </div>
+
+      <!-- PROM -->
+      <div class="platform" data-keywords="prom маркетплейс україна">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="store"></i></div>
+            <div>
+              <b>Prom.ua</b>
+              <small>Один з головних маркетплейсів. Добре для великого каталогу і тестів.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://prom.ua/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="trophy"></i> Категорія: #2 (Marketplace)</span>
+          <span class="tag"><i data-lucide="layers"></i> Добре для 100+ SKU</span>
+          <span class="tag"><i data-lucide="test-tube-2"></i> Швидкі тести товарів</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Легко масштабувати каталог</li>
+              <li>Зручно тестувати “що зайде”</li>
+              <li>Багато категорій → будматеріали там органічні</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Потрібно змагатися ціною/сервісом</li>
+              <li>Сильна конкуренція на простих позиціях</li>
+              <li>Без контенту і швидких відповідей “глухо”</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Заповни картку на 100% (фото/опис/характеристики)</li>
+              <li>Піднімай довіру: гарантії, доставка, “що в комплекті”</li>
+              <li>Системно оновлюй і додавай нові позиції</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split">
+          <span class="pill warn"><i data-lucide="layers"></i> Сильний канал під каталог</span>
+          <a class="btn secondary small" href="https://www.similarweb.com/website/prom.ua/" target="_blank" rel="noopener">
+            <i data-lucide="bar-chart-3"></i> Статистика
+          </a>
+        </div>
+      </div>
+
+      <!-- EPICENTR -->
+      <div class="platform" data-keywords="епіцентр epicentr маркетплейс будматеріали">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="home"></i></div>
+            <div>
+              <b>Епіцентр (epicentrk.ua)</b>
+              <small>Найближчий по темі до будматеріалів. Дуже логічний майданчик для ніші ремонту.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://epicentrk.ua/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="trophy"></i> Категорія: #4 (Marketplace)</span>
+          <span class="tag"><i data-lucide="home"></i> Ніша: ремонт/дім</span>
+          <span class="tag"><i data-lucide="truck"></i> Важлива логістика</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Цільова аудиторія саме “під ремонт”</li>
+              <li>Добре заходять категорії: панелі, декор, покриття</li>
+              <li>Брендовий трафік і довіра</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Потрібні чіткі характеристики (розміри/вага/упаковка)</li>
+              <li>Важливо не “зривати” наявність і терміни</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Додавай фото “в інтерʼєрі” + інструкцію монтажу</li>
+              <li>Пиши чесно: площа покриття, товщина, комплектація</li>
+              <li>Перевір доставку/габарити перед масштабом</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split">
+          <span class="pill ok"><i data-lucide="home"></i> Дуже релевантно ніші</span>
+          <a class="btn secondary small" href="https://www.similarweb.com/website/epicentrk.ua/" target="_blank" rel="noopener">
+            <i data-lucide="bar-chart-3"></i> Статистика
+          </a>
+        </div>
+      </div>
+
+      <!-- BIGL -->
+      <div class="platform" data-keywords="bigl маркетплейс україна">
+        <div class="phead">
+          <div class="pname">
+            <div class="ico"><i data-lucide="layers"></i></div>
+            <div>
+              <b>Bigl.ua</b>
+              <small>Додатковий маркетплейс: часто дає “приємні” продажі як другий канал.</small>
+            </div>
+          </div>
+          <a class="btn secondary small" href="https://bigl.ua/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити
+          </a>
+        </div>
+
+        <div class="pmeta">
+          <span class="tag"><i data-lucide="test-tube-2"></i> Канал #2</span>
+          <span class="tag"><i data-lucide="repeat"></i> Підкріплення продажів</span>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <h4><i data-lucide="plus"></i> Плюси</h4>
+            <ul>
+              <li>Може давати додатковий потік без великих витрат</li>
+              <li>Працює як “резервний” маркетплейс</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="minus"></i> Мінуси</h4>
+            <ul>
+              <li>Зазвичай менший трафік, ніж у топів</li>
+              <li>Потрібно тестувати конкретно твій товар</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h4><i data-lucide="sparkles"></i> Рекомендації</h4>
+            <ul>
+              <li>Копіюй найкращі картки з ROZETKA/PROM</li>
+              <li>Підтягуй відгуки, швидкість і наявність</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split">
+          <span class="pill warn"><i data-lucide="repeat"></i> Добре як додатковий</span>
+          <a class="btn secondary small" href="https://www.similarweb.com/website/bigl.ua/" target="_blank" rel="noopener">
+            <i data-lucide="bar-chart-3"></i> Статистика
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Лайфхаки по кожному каналу (коротко і по суті)</h2>
+    <div class="sub">Це дрібниці, але саме вони дають +30–70% до результату</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="message-circle"></i></div>
+          <div>
+            <b>Правило №1: швидкість відповіді</b>
+            <span>
+              Дошки оголошень: відповідай <b>за 5–15 хв</b>. Маркетплейси: тримай <b>стабільний SLA</b>.
+              Відповідь “завтра” = мінус продаж.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="camera"></i></div>
+          <div>
+            <b>Правило №2: фото = продаж</b>
+            <span>
+              Мінімум: 3 фото + 1 фото “в інтерʼєрі”. Для будматеріалів дуже важливо показати <b>фактуру</b> і <b>масштаб</b>.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="list-checks"></i></div>
+          <div>
+            <b>Правило №3: структура оголошення</b>
+            <span>
+              Заголовок (УТП) → 3–5 вигод → характеристики (розміри/матеріал) → доставка/оплата → CTA.
+              (Детально буде в уроці m2l1.)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="bar-chart-3"></i></div>
+          <div>
+            <b>Правило №4: тест → залишаєш сильне</b>
+            <span>
+              7 днів тесту: де є заявки — туди додаєш темп. Де тиша — або міняєш оголошення, або прибираєш канал.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <b>Золоте правило будматеріалів</b>
+          <p>
+            Уточнюй одразу: <b>місто</b>, <b>кількість</b>, <b>площа/метраж</b>, <b>термін</b>.
+            Це фільтрує “порожні” діалоги і залишає покупців.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Практика: план на 7 днів + трекер каналів</h2>
+    <div class="sub">Зроби це — і в тебе з’явиться реальна картина: де є продажі</div>
+
+    <div class="task">
+      <div class="taskhead">
+        <i data-lucide="clipboard-check"></i>
+        <div>
+          <b>Твоє завдання (обов’язково)</b>
+          <div class="sub" style="margin:6px 0 0;">обери 3 канали → виклади → зніми цифри</div>
+        </div>
+      </div>
+
+      <p>
+        1) Обери <b>3 канали</b> (рекомендація: OLX + FB Marketplace + 1 маркетплейс).<br>
+        2) Публікуй <b>1 оголошення/день</b> (або 3 оголошення за 1 день) — головне, щоб ти встигав відповідати.<br>
+        3) Веди трекер: заявки / діалоги / конверсія / що питали.
+      </p>
+
+      <div class="sample" id="trackerText">Трекер каналів (7 днів):
+Товар: ______________________
+Місто/регіон: _______________
+
+День 1:
+— Канал 1 (OLX): покази ___ / повідомлення ___ / заявки ___ / продажі ___ / питання: __________
+— Канал 2 (FB):  покази ___ / повідомлення ___ / заявки ___ / продажі ___ / питання: __________
+— Канал 3 (MP):  покази ___ / повідомлення ___ / заявки ___ / продажі ___ / питання: __________
+
+День 7 — висновок:
+1) Найкращий канал: __________ (чому?)
+2) Що покращити в оголошенні: ________________________
+3) Наступний крок: подвоїти ___ / прибрати ___ / додати ___</div>
+
+      <div class="actions">
+        <button class="btn secondary" id="copyTrackerBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати трекер
+        </button>
+
+        <button class="btn" id="btnDone" type="button">
+          <i data-lucide="check-circle"></i>
+          Позначити як пройдено
+        </button>
+      </div>
+
+      <p style="margin-top:10px;color:rgba(245,245,247,.85)">
+        <b>Порада:</b> не оцінюй канал за 1 день. Мінімум 7 днів тесту (або 30–50 діалогів).
+      </p>
+    </div>
+
+    <div style="margin-top:12px; color:var(--muted); font-size:13px;">
+      <span id="doneText">Статус: не пройдено</span>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m2l2";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  const trackerText = document.getElementById("trackerText");
+  const copyTrackerBtn = document.getElementById("copyTrackerBtn");
+
+  const boardsWrap = document.getElementById("boardsWrap");
+  const mpsWrap = document.getElementById("mpsWrap");
+  const searchBoards = document.getElementById("searchBoards");
+  const searchMps = document.getElementById("searchMps");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  copyTrackerBtn.addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(trackerText.textContent.trim());
+      copyTrackerBtn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        copyTrackerBtn.innerHTML = '<i data-lucide="copy"></i> Скопіювати трекер';
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  });
+
+  function filterCards(container, query){
+    const q = (query || "").trim().toLowerCase();
+    const cards = container.querySelectorAll(".platform");
+    cards.forEach(card=>{
+      const kw = (card.getAttribute("data-keywords") || "").toLowerCase();
+      const text = (card.textContent || "").toLowerCase();
+      const show = !q || kw.includes(q) || text.includes(q);
+      card.style.display = show ? "" : "none";
+    });
+  }
+
+  searchBoards.addEventListener("input", (e)=> filterCards(boardsWrap, e.target.value));
+  searchMps.addEventListener("input", (e)=> filterCards(mpsWrap, e.target.value));
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
