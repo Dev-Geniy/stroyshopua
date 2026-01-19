@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m2l1 — УТП + структура оголошення (повний гайд) | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff5c7a;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:86ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .flow{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.20);
+      border-radius:20px;padding:14px;margin-top:14px;
+    }
+    .flowhead{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12.5px;}
+    .flowhead i{width:16px;height:16px;color:var(--accent2)}
+    .flowline{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px;}
+    @media (min-width:900px){ .flowline{grid-template-columns:1fr 1fr 1fr} }
+    .step{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;padding:12px;
+      display:flex;gap:12px;align-items:flex-start;
+    }
+    .mini{
+      width:40px;height:40px;border-radius:16px;border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .mini i{width:18px;height:18px;color:var(--accent2)}
+    .step b{font-size:14px}
+    .step span{display:block;margin-top:4px;color:var(--muted);font-size:13.3px;line-height:1.55}
+
+    .stats{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+    @media (min-width:760px){ .stats{grid-template-columns:1fr 1fr 1fr} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;position:relative;overflow:hidden;
+    }
+    .stat::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;position:relative;z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;margin-top:8px;font-size:18px;font-weight:900;
+      color:var(--accent2);position:relative;z-index:1;
+    }
+
+    .bars{
+      margin-top:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .barrow{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-top:10px;color:var(--muted);font-size:13px;
+    }
+    .barrow:first-child{margin-top:0}
+    .track{
+      flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.10);overflow:hidden;margin:0 10px;
+    }
+    .fill{height:100%;background:var(--grad);border-radius:999px;}
+    .val{min-width:70px;text-align:right;color:var(--accent2);font-weight:900;font-size:13px;}
+
+    .myths{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;margin-top:14px;
+    }
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+    .badge.ok{border-color:rgba(92,227,160,.22); color:rgba(92,227,160,.95)}
+    .badge.bad{border-color:rgba(255,92,122,.25); color:rgba(255,92,122,.95)}
+
+    .task{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .taskhead{display:flex;gap:12px;align-items:flex-start;}
+    .taskhead i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .taskhead b{font-size:15px}
+    .task p{
+      margin:10px 0 0;font-size:14px;line-height:1.75;color:rgba(245,245,247,.92);
+    }
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;color:rgba(245,245,247,.92);line-height:1.6;white-space:pre-wrap;
+    }
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Модуль 2</small>
+          <b>Урок 1 — УТП + структура оголошення</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>УТП, яке продає: заголовок + оголошення “як у профі”</h1>
+    <p class="lead">
+      У цьому уроці ти зробиш найважливіше для перших продажів: навчишся писати <b>УТП</b> (унікальну торгову пропозицію)
+      і збирати оголошення з правильних блоків — у правильному порядку.
+      <br><br>
+      Це особливо вигідно партнеру <b>Samostroy.shop</b>: товар і каталог вже є, ціни прозорі, логістика закрита постачальником —
+      тобі треба лише <b>правильно подати</b> пропозицію, щоб отримувати заявки і заробляти на націнці.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 16–22 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: 3 готові заголовки + шаблон оголошення</div>
+      <div class="chip"><i data-lucide="trending-up"></i> Фокус: конверсія</div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. УТП простими словами: “чому купити у тебе”</h2>
+    <div class="sub">Не “у нас якісний товар”, а конкретна вигода + причина довіряти</div>
+
+    <p class="text">
+      <b>УТП</b> — це 1–2 речення, які відповідають на питання клієнта:
+      <b>“Чим це для мене корисно і чому я маю купити саме тут?”</b>
+      <br><br>
+      Важливо: УТП — це не тільки про “унікальність товару”. Найчастіше клієнт обирає за рахунок:
+      <b>результату (що зміниться), швидкості, простоти, гарантії, зрозумілих умов</b>.
+    </p>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="sparkles"></i></div>
+          <div>
+            <b>Результат</b>
+            <span>що зміниться після покупки (до/після, “вау” ефект)</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="shield-check"></i></div>
+          <div>
+            <b>Безпека</b>
+            <span>гарантія, обмін/повернення, чесні умови</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="zap"></i></div>
+          <div>
+            <b>Простота</b>
+            <span>легко вибрати, легко замовити, зрозуміло як використати</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Перевага партнера Samostroy.shop</b>
+          <p>
+            Тобі не треба вигадувати “звідки товар” і “чи є склад”.
+            Ти можеш будувати УТП на реальних речах: <b>каталог, прозора ціна постачальника, підтримка менеджера, стандартизований процес</b>.
+            Це виглядає професійно й піднімає довіру.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Заголовок: формула, яка дає кліки</h2>
+    <div class="sub">Перші 60–80 символів вирішують: відкриють оголошення чи пролистають</div>
+
+    <p class="text">
+      Хороший заголовок завжди містить 3 речі:
+      <br><b>Що це</b> → <b>для кого/куди</b> → <b>вигода або тригер довіри</b>.
+      <br><br>
+      Формула:
+      <b>[Товар] + [місце/для кого] + [1 сильна вигода] + (опційно: [тригер])</b>
+    </p>
+
+    <div class="flow">
+      <div class="flowhead">
+        <i data-lucide="type"></i>
+        <span>6 готових шаблонів заголовка</span>
+      </div>
+      <div class="flowline">
+        <div class="step">
+          <div class="mini"><i data-lucide="layout-template"></i></div>
+          <div>
+            <b>Шаблон 1 (до/після)</b>
+            <span>“[Товар] — швидкий ефект ‘до/після’ для [кімната/зона]”</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="mini"><i data-lucide="home"></i></div>
+          <div>
+            <b>Шаблон 2 (інтер’єр)</b>
+            <span>“[Товар] для [стіни/підлоги]: стильний вигляд без складного ремонту”</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="mini"><i data-lucide="badge-percent"></i></div>
+          <div>
+            <b>Шаблон 3 (вигода)</b>
+            <span>“[Товар] — рішення для [проблема]: вигідно та швидко”</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flowline" style="margin-top:12px;">
+        <div class="step">
+          <div class="mini"><i data-lucide="check"></i></div>
+          <div>
+            <b>Шаблон 4 (підбір)</b>
+            <span>“Підбір [товар] під ваш інтер’єр — допоможемо обрати варіант”</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="mini"><i data-lucide="package"></i></div>
+          <div>
+            <b>Шаблон 5 (комплект)</b>
+            <span>“[Товар] + аксесуари/комплект: все в одному замовленні”</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="mini"><i data-lucide="shield-check"></i></div>
+          <div>
+            <b>Шаблон 6 (довіра)</b>
+            <span>“[Товар] — прозорі умови + контроль замовлення до отримання”</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bars">
+      <div class="barrow">
+        <span>Заголовок: конкретний товар + вигода</span>
+        <div class="track"><div class="fill" style="width:92%"></div></div>
+        <span class="val">ТОП</span>
+      </div>
+      <div class="barrow">
+        <span>Заголовок: “Якісні товари. Недорого.”</span>
+        <div class="track"><div class="fill" style="width:18%"></div></div>
+        <span class="val">СТОП</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Структура оголошення: блоки в правильному порядку</h2>
+    <div class="sub">Це як “продаж по сходинках”: гачок → вигоди → деталі → довіра → умови → дія</div>
+
+    <p class="text">
+      Більшість новачків робить помилку: пише “все підряд” або тільки характеристики.
+      А професійне оголошення — це <b>структура</b>. Нижче — порядок блоків, який працює майже всюди.
+    </p>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="list-ordered"></i></div>
+          <div>
+            <b>Порядок блоків (копіюй як шаблон)</b>
+            <span>
+              1) Гачок / 1 речення результату<br>
+              2) 3–5 вигод (не “якість”, а конкретика)<br>
+              3) Характеристики (коротко, списком)<br>
+              4) Варіанти/кольори/розміри (якщо є)<br>
+              5) Довіра: “підбір/консультація/контроль”<br>
+              6) Умови: доставка, оплата, обмін/повернення (коротко)<br>
+              7) CTA: “Напишіть ‘ХОЧУ’ / залиште телефон / уточніть наявність”
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="scissors"></i></div>
+          <div>
+            <b>Правило “коротко і по суті”</b>
+            <span>
+              Не роби полотно тексту. Клієнт читає очима.
+              Краще: короткі рядки + списки + 1–2 емодзі максимум (або взагалі без).
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="sparkles"></i>
+        <div>
+          <b>Як будувати довіру саме партнеру Samostroy.shop</b>
+          <p>
+            Додавай у блок “довіра” не вигадки, а прості речі:
+            <b>підбір варіанту</b>, <b>чіткі відповіді по наявності</b>, <b>контроль замовлення до отримання</b>.
+            Це піднімає конверсію навіть якщо товар продають і інші.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Приклади УТП під товари Samostroy.shop</h2>
+    <div class="sub">Використай як основу — і підстав свій товар/категорію</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="grid-3x3"></i></div>
+          <div>
+            <b>3D панелі</b>
+            <span>“Перетвори стіну за 1 день: 3D ефект + стильний вигляд для кімнати/офісу.”</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="layers"></i></div>
+          <div>
+            <b>Вінілові панелі</b>
+            <span>“Оновлення інтер’єру без пилу: акуратний вигляд + простий догляд.”</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="puzzle"></i></div>
+          <div>
+            <b>Пазл-килимки</b>
+            <span>“Підлога-конструктор: швидко зібрати, легко замінити секцію, зручно для дому/дитячої.”</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="badge-percent"></i></div>
+        <div>
+          <b>Міні-порада по ціні (без “перегріву”)</b>
+          <span>
+            В оголошенні краще показати <b>діапазон</b> (“від … грн”) або “ціна залежить від варіанту”.
+            Так ти не відлякаєш і збереш більше звернень.
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Типові помилки та швидкий чек-лист</h2>
+    <div class="sub">Виправляєш 5 пунктів — і оголошення стає сильнішим одразу</div>
+
+    <div class="myths">
+      <details open>
+        <summary>“У мене немає УТП — напишу просто ‘якість’” <span class="badge bad">Помилка</span></summary>
+        <p>“Якість” пишуть всі. Дай конкретику: ефект, простота монтажу/догляду, підбір, чіткі умови.</p>
+      </details>
+      <details>
+        <summary>“Напишу тільки характеристики” <span class="badge bad">Помилка</span></summary>
+        <p>Характеристики — це 3–7 рядків після вигод. Спочатку результат, потім цифри.</p>
+      </details>
+      <details>
+        <summary>“Без CTA теж норм” <span class="badge bad">Помилка</span></summary>
+        <p>CTA обов’язковий: “Напишіть ‘ХОЧУ’ — підберу варіант і ціну”. Без цього падає конверсія.</p>
+      </details>
+      <details>
+        <summary>“Суцільний текст полотном” <span class="badge bad">Помилка</span></summary>
+        <p>Роби блоки, списки, короткі рядки. Клієнт має “сканувати” очима.</p>
+      </details>
+      <details>
+        <summary>Швидкий чек-лист перед публікацією <span class="badge ok">OK</span></summary>
+        <p>
+          ✅ Заголовок: товар + вигода<br>
+          ✅ Перший рядок: результат/гачок<br>
+          ✅ 3–5 вигод списком<br>
+          ✅ Деталі/варіанти коротко<br>
+          ✅ Умови (доставка/оплата/обмін) в 1–3 рядки<br>
+          ✅ CTA: що написати/що зробити зараз
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Практика: збереш своє УТП + оголошення за 10 хв</h2>
+    <div class="sub">Скопіюй шаблон, заповни поля — і в тебе буде готовий текст для OLX/Marketplace/Telegram</div>
+
+    <div class="task">
+      <div class="taskhead">
+        <i data-lucide="clipboard-check"></i>
+        <div>
+          <b>Твоє завдання</b>
+          <div class="sub" style="margin:6px 0 0;">3 заголовки + 1 оголошення по структурі</div>
+        </div>
+      </div>
+
+      <p>
+        1) Напиши <b>3 варіанти заголовка</b> (за формулами з уроку) <br>
+        2) Збери <b>1 оголошення</b> по блоках: гачок → вигоди → деталі → умови → CTA <br>
+        3) Збережи в нотатках і використовуй як “майстер-шаблон”
+      </p>
+
+      <div class="sample" id="sampleText">ШАБЛОН (копіюй і заповнюй)
+
+ЗАГОЛОВОК #1:
+[Товар] для [кімната/зона] — [вигода/ефект]
+
+ЗАГОЛОВОК #2:
+[Товар] — швидкий “до/після” для [зона] (підбір варіантів)
+
+ЗАГОЛОВОК #3:
+[Товар] — рішення для [проблема]: [вигода] + [тригер довіри]
+
+ОГОЛОШЕННЯ:
+🔥 ХОЧЕТЕ [результат]? (1 речення)
+
+✅ Вигоди:
+— [вигода 1]
+— [вигода 2]
+— [вигода 3]
+(додай 1–2 ще за потреби)
+
+📌 Характеристики (коротко):
+— [матеріал/розмір/фактура]
+— [комплектація/площа/кількість]
+— [варіанти/кольори/моделі]
+
+🤝 Довіра / сервіс:
+— допоможу підібрати варіант
+— уточню наявність і відповім до [час]
+
+🚚 Умови:
+— доставка: [служби/місто]
+— оплата: [як зручно]
+— обмін/повернення: [коротко]
+
+👉 Напишіть “ХОЧУ” — надішлю варіанти та ціну під ваш запит.</div>
+
+      <div class="actions">
+        <button class="btn secondary" id="copyBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати шаблон
+        </button>
+
+        <button class="btn" id="btnDone" type="button">
+          <i data-lucide="check-circle"></i>
+          Позначити як пройдено
+        </button>
+      </div>
+
+      <p style="margin-top:10px;color:rgba(245,245,247,.85)">
+        <b>Порада:</b> твоя мета на старті — не “ідеальний текст”, а <b>швидкі тести</b>.
+        3 варіанти заголовка + 1 оголошення → публікація → збір реакції → покращення.
+      </p>
+    </div>
+
+    <div style="margin-top:12px; color:var(--muted); font-size:13px;">
+      <span id="doneText">Статус: не пройдено</span>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m2l1";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  const sampleText = document.getElementById("sampleText");
+  const copyBtn = document.getElementById("copyBtn");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  copyBtn.addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(sampleText.textContent.trim());
+      copyBtn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        copyBtn.innerHTML = '<i data-lucide="copy"></i> Скопіювати шаблон';
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  });
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
