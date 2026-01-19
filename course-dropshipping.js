@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title:"Заглиблення у найголовніше",
       lessons:[
         {id:"m2l1", title:"Як створити УТП, яке продає",         url:"cd/m2l1.html"},
-        {id:"m2l2", title:"Де розміщувати оголошення",           url:"cd/m2l2.html"},
+        {id:"m2l2", title:"Де розміщувати оголошення + переліксайтів", url:"cd/m2l2.html"},
         {id:"m2l3", title:"Свій сайт, інтернет-магазин",         url:"cd/m2l3.html"}
       ]
     },
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       id:"m3",
       title:"Технології унікалізації та автоматизації",
       lessons:[
-        {id:"m3l1", title:"Як унікалізувати товари і створити креативи", url:"cd/m3l1.html"},
+        {id:"m3l1", title:"Як унікалізувати товари і створити креативи + інструменти", url:"cd/m3l1.html"},
         {id:"m3l2", title:"Про автоматизацію, постинг і т.д.",   url:"cd/m3l2.html"},
         {id:"m3l3", title:"Як розробити крутий контент план з AI", url:"cd/m3l3.html"},
         {id:"m3l4", title:"Інструменти для творчості підприємця", url:"cd/m3l4.html"}
