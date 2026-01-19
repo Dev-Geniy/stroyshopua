@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m3l1 — Унікалізація товарів і креативи | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff4d4d;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:92ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .warn{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .warn .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .warn .hrow i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .warn b{font-size:15px}
+    .warn p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.6px;color:rgba(245,245,247,.92);
+      line-height:1.65;white-space:pre-wrap;
+    }
+
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.20);
+      border:1px dashed rgba(255,255,255,.22);
+      color:rgba(245,245,247,.92);
+      box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    .links{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){ .links{grid-template-columns:1fr 1fr} }
+    .lCard{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;
+      position:relative; overflow:hidden;
+    }
+    .lCard::after{
+      content:""; position:absolute; inset:-50px;
+      background:radial-gradient(circle at 0 0, rgba(255,122,26,.10), transparent 55%);
+      opacity:.28; pointer-events:none;
+    }
+    .lHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:1;}
+    .lName{display:flex;gap:10px;align-items:flex-start;}
+    .lLogo{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .lLogo i{width:20px;height:20px;color:var(--accent2)}
+    .lTitle b{font-size:15px}
+    .lMeta{margin-top:2px;color:var(--muted);font-size:12.8px;line-height:1.5}
+    .lTag{
+      font-weight:900;color:var(--accent2);
+      font-size:12.5px;white-space:nowrap;position:relative;z-index:1;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+    }
+    .lBody{position:relative;z-index:1;margin-top:10px;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+    .lList{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:13.3px;line-height:1.7}
+    .lList li{margin:6px 0}
+    .linkbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;position:relative;z-index:1;}
+
+    .steps{margin-top:12px}
+    .step{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.16);
+      border-radius:16px;padding:10px;margin-top:10px;
+    }
+    .step b{font-size:13.2px}
+    .step span{display:block;margin-top:4px;color:var(--muted);font-size:12.8px;line-height:1.6}
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 3 • Урок 1 — Унікалізація товарів і креативи</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Унікалізація товарів: преміум фото + логотип + місце під УТП</h1>
+    <p class="lead">
+      Урок 1 — робимо твій контент <b>“не як у всіх”</b> за 15–30 хв: міняємо фон, додаємо логотип, тримаємо один стиль на всі товари
+      і готуємо креативи під оголошення/соцмережі.
+      <br><br>
+      Твоя задача як новачка: не “ідеально”, а <b>швидко і стабільно</b> — щоб кожна картинка виглядала як бренд.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 20–35 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: 10 креативів в одному стилі</div>
+      <div class="chip"><i data-lucide="layers"></i> Фокус: фон + лого + шаблон</div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Правило №1</b>
+          <p>
+            Не витрачай день на 1 картинку. Тобі потрібен <b>конвеєр</b>:
+            зробив 1 “еталон” → потім 10–50 товарів робиш по цьому еталону.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Що таке “унікалізація” і навіщо вона</h2>
+    <div class="sub">Коли фото однакові у всіх — ти зливаєш кліки. Коли стиль брендований — ти піднімаєш довіру</div>
+
+    <p class="text">
+      Унікалізація — це не “фотошоп на максимум”. Це <b>простий набір дій</b>, який робить товарні фото
+      більш дорогими і впізнаваними: новий фон, тінь, логотип, чистий шаблон.
+    </p>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="mouse-pointer-click"></i></div>
+          <div>
+            <b>Краще клікають</b>
+            <span>преміум вигляд підвищує CTR у стрічці/оголошеннях.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="shield-check"></i></div>
+          <div>
+            <b>Більше довіри</b>
+            <span>логотип і стиль створюють “відчуття бренду”.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="copy-check"></i></div>
+          <div>
+            <b>Менше копіюють</b>
+            <span>твій контент важче “вкрасти і вставити”.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="sparkles"></i>
+        <div>
+          <b>Ціль на сьогодні</b>
+          <p>
+            Зробити 1 “еталон стилю” і за ним підготувати мінімум <b>10</b> товарних фото з однаковим фоном і логотипом.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Конвеєр: як робити креативи швидко (без хаосу)</h2>
+    <div class="sub">Одна правильна послідовність — і ти робиш контент пачками</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="workflow"></i></div>
+          <div>
+            <b>Схема 1 креатива</b>
+            <span>
+              1) Вирізка товару (без фону) <br>
+              2) Преміум фон <br>
+              3) М’яка тінь/світло <br>
+              4) Логотип в один кут <br>
+              5) Місце під УТП зверху
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="repeat-2"></i></div>
+          <div>
+            <b>Як тримати один стиль</b>
+            <span>
+              1) Зроби 1 “еталон” <br>
+              2) Далі додавай: (нове фото) + (еталон) + (лого) <br>
+              3) Пиши: “зроби так само як еталон”
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Типова помилка</b>
+          <p>
+            Робити кожен товар “по-новому”. Тобі потрібен <b>шаблон</b>, а не творчий хаос.
+            Шаблон = швидкість = більше оголошень = більше заявок.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Gemini: унікалізація фону + логотип (в одному діалозі)</h2>
+    <div class="sub">Робимо 1 еталон → потім просто кидаємо нові фото товарів — і отримуємо такий самий стиль</div>
+
+    <p class="text">
+      Ідея: ти завантажуєш перше фото товару, просиш зробити преміум фон, додати тінь, поставити логотип у кут.
+      Потім у цьому ж діалозі відправляєш наступні товари — і просиш “як на еталоні”.
+    </p>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="image"></i></div>
+          <div>
+            <b>Що потрібно підготувати</b>
+            <span>
+              • Фото товару (краще чітке, без розмиття) <br>
+              • Логотип PNG (прозорий фон) <br>
+              • 1 еталон-картинка (після першого результату)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="check-circle-2"></i></div>
+          <div>
+            <b>План на 5 хв</b>
+            <span>
+              1) Зроби 1 еталон <br>
+              2) Збережи еталон <br>
+              3) Далі: фото товару + еталон + лого <br>
+              4) Повторюй 10–50 разів
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="wand-2"></i></div>
+        <div>
+          <b>Промт для Gemini: преміум фон + логотип + місце під УТП</b>
+          <span>Скопіюй, встав, і просто додай свої файли (фото товару + логотип).</span>
+        </div>
+      </div>
+
+      <div class="sample" id="promptGemini">Завдання: унікалізувати фото товару для продажів.
+
+1) Замінити фон на преміальний темний (графіт / глибокий синій), легкі світлові акценти, відчуття дорогого бренду.
+2) Товар НЕ змінювати (форма/колір/деталі — без змін). Зберегти реалістичність.
+3) Додати мʼяку природну тінь під товаром, щоб він виглядав “реально”.
+4) Додати наш логотип (я прикріпив) у правий нижній кут:
+   — маленький, акуратний, не перекривати товар
+   — однакова позиція на всіх товарах
+5) Зверху залишити чисту зону під текст (УТП). НІЯКИХ написів на зображенні.
+6) Стиль має бути однаковим для всієї серії товарів (каталог бренду).</div>
+
+      <div class="actions" style="justify-content:flex-start;">
+        <button class="btn secondary" id="copyPromptGemini" type="button">
+          <i data-lucide="copy"></i> Скопіювати промт
+        </button>
+        <a class="btn ghost" href="https://gemini.google.com/" target="_blank" rel="noopener">
+          <i data-lucide="external-link"></i> Відкрити Gemini
+        </a>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="info"></i>
+        <div>
+          <b>Як робити “пачку” в тому ж діалозі</b>
+          <p>
+            Після першого результату: прикріпи <b>нове фото товару</b> + <b>еталон</b> + <b>лого</b> і напиши:
+            “Зроби так само як на еталоні. Логотип — той самий кут. Фон і світло — як еталон”.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. УТП над товаром: як правильно (і чому краще в Canva)</h2>
+    <div class="sub">AI інколи робить помилки в словах. Тому найкраща схема: AI робить фото, а текст — у Canva</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="type"></i></div>
+          <div>
+            <b>Формула короткого УТП (1 рядок)</b>
+            <span>
+              “Категорія + головна вигода + доставка/підбір” <br>
+              Приклад: “3D панелі — стиль за 1 день + доставка по Україні”
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="spell-check-2"></i></div>
+          <div>
+            <b>Чому текст краще в Canva</b>
+            <span>
+              • немає граматичних помилок <br>
+              • рівний шрифт, читабельність <br>
+              • однаковий стиль на всіх креативах
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="message-square-text"></i></div>
+        <div>
+          <b>Промт: попросити AI запропонувати УТП (а НЕ малювати текст)</b>
+          <span>Найбезпечніше: нехай AI дає 5 варіантів текстом, а ти наносиш в Canva.</span>
+        </div>
+      </div>
+
+      <div class="sample" id="promptUtp">Склади 7 коротких варіантів УТП (українською) для цього товару.
+Формат: 3–7 слів + 1 вигода. Без “води”.
+
+Важливо:
+1) НЕ додавай текст на зображення.
+2) Просто дай варіанти УТП текстом, щоб я наніс їх у Canva без помилок.
+
+Дані товару:
+— Назва: __________
+— Головна вигода: __________
+— Доставка: по Україні
+— CTA (кнопка): “Написати / Замовити”</div>
+
+      <div class="actions" style="justify-content:flex-start;">
+        <button class="btn secondary" id="copyPromptUtp" type="button">
+          <i data-lucide="copy"></i> Скопіювати промт
+        </button>
+        <a class="btn ghost" href="https://www.canva.com/" target="_blank" rel="noopener">
+          <i data-lucide="external-link"></i> Відкрити Canva
+        </a>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Швидка схема “ідеально для новачка”</b>
+          <p>
+            1) Gemini робить: фон + тінь + логотип + місце під текст <br>
+            2) Canva робить: УТП текстом (без помилок) + правильний розмір під майданчик
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Сервіси: посилання + що роблять + покроково “куди натискати”</h2>
+    <div class="sub">Вибери 2–3 інструменти і працюй ними. Не треба 10 сервісів — потрібна стабільність</div>
+
+    <div class="links">
+      <!-- Gemini -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="sparkles"></i></div>
+            <div class="lTitle">
+              <b>Gemini</b>
+              <div class="lMeta">AI-редагування: фон, стиль, “як еталон”, серія фото в одному діалозі.</div>
+            </div>
+          </div>
+          <div class="lTag">AI</div>
+        </div>
+
+        <div class="lBody">
+          Найкраще для швидкого преміум-фону + логотипу і повторення стилю на всіх товарах.
+        </div>
+
+        <ul class="lList">
+          <li><b>Навіщо:</b> зробити 1 еталон і штампувати серію.</li>
+          <li><b>Ключ:</b> “еталон” тримає однаковий дизайн.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://gemini.google.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Gemini
+          </a>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <b>Крок 1</b>
+            <span>Зайди в Gemini → натисни “додати зображення” → завантаж фото товару.</span>
+          </div>
+          <div class="step">
+            <b>Крок 2</b>
+            <span>Додай логотип (PNG) → встав промт з цього уроку → відправ.</span>
+          </div>
+          <div class="step">
+            <b>Крок 3</b>
+            <span>Збережи результат як “еталон”. Далі: новий товар + еталон + лого → “зроби як еталон”.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canva -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="layout-template"></i></div>
+            <div class="lTitle">
+              <b>Canva</b>
+              <div class="lMeta">Дизайн, текст (УТП), шаблони, формати 1:1 / 4:5 / 9:16.</div>
+            </div>
+          </div>
+          <div class="lTag">Дизайн</div>
+        </div>
+
+        <div class="lBody">
+          Найкраще для нанесення тексту без помилок, однакових шрифтів і красивих шаблонів.
+        </div>
+
+        <ul class="lList">
+          <li><b>Навіщо:</b> УТП/ціна/CTA на креативах.</li>
+          <li><b>Плюс:</b> експортуєш під будь-яку платформу.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.canva.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Canva
+          </a>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <b>Крок 1</b>
+            <span>Create a design → обери розмір (1080×1350 або 1080×1920).</span>
+          </div>
+          <div class="step">
+            <b>Крок 2</b>
+            <span>Uploads → завантаж готове фото з Gemini → перетягни на макет.</span>
+          </div>
+          <div class="step">
+            <b>Крок 3</b>
+            <span>Text → встав УТП → вирівняй → Download (PNG/JPG).</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- remove.bg -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="scissors"></i></div>
+            <div class="lTitle">
+              <b>remove.bg</b>
+              <div class="lMeta">Автоматично видаляє фон. Зручно для вирізки товару або логотипа.</div>
+            </div>
+          </div>
+          <div class="lTag">Швидко</div>
+        </div>
+
+        <div class="lBody">
+          Якщо треба зробити прозорий фон за 10 секунд — це must-have.
+        </div>
+
+        <ul class="lList">
+          <li><b>Навіщо:</b> вирізка товару або прозорий логотип.</li>
+          <li><b>Порада:</b> логотип краще мати PNG прозорий.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.remove.bg/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити remove.bg
+          </a>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <b>Крок 1</b>
+            <span>Зайди на remove.bg → Upload image → вибери файл.</span>
+          </div>
+          <div class="step">
+            <b>Крок 2</b>
+            <span>Сервіс прибере фон автоматично → Download PNG.</span>
+          </div>
+          <div class="step">
+            <b>Крок 3</b>
+            <span>Встав PNG у Canva/PhotoRoom або додай у Gemini як логотип.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PhotoRoom -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="layers"></i></div>
+            <div class="lTitle">
+              <b>PhotoRoom (Batch)</b>
+              <div class="lMeta">Потокова обробка: фон/тінь/логотип одразу для пачки фото.</div>
+            </div>
+          </div>
+          <div class="lTag">Batch</div>
+        </div>
+
+        <div class="lBody">
+          Коли в тебе 50–200 фото — batch-режим економить години.
+        </div>
+
+        <ul class="lList">
+          <li><b>Навіщо:</b> робити серії товарів одразу.</li>
+          <li><b>Плюс:</b> один шаблон на всю лінійку.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.photoroom.com/batch" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити PhotoRoom Batch
+          </a>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <b>Крок 1</b>
+            <span>Відкрий Batch → завантаж одразу багато фото товарів.</span>
+          </div>
+          <div class="step">
+            <b>Крок 2</b>
+            <span>Обери: remove background / change background / shadow / add logo.</span>
+          </div>
+          <div class="step">
+            <b>Крок 3</b>
+            <span>Apply to all → експортуй пачкою → далі додай УТП у Canva.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TinyPNG -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="package"></i></div>
+            <div class="lTitle">
+              <b>TinyPNG</b>
+              <div class="lMeta">Стиснення зображень без великої втрати якості (швидше завантаження).</div>
+            </div>
+          </div>
+          <div class="lTag">Оптимізація</div>
+        </div>
+
+        <div class="lBody">
+          Важкі картинки = повільно. Стиснення = швидше і легше постити всюди.
+        </div>
+
+        <ul class="lList">
+          <li><b>Навіщо:</b> зменшити вагу PNG/JPG.</li>
+          <li><b>Порада:</b> особливо важливо для сайтів і маркетплейсів.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://tinypng.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити TinyPNG
+          </a>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <b>Крок 1</b>
+            <span>Зайди на TinyPNG → перетягни 5–20 зображень у вікно.</span>
+          </div>
+          <div class="step">
+            <b>Крок 2</b>
+            <span>Дочекайся стиснення → Download all.</span>
+          </div>
+          <div class="step">
+            <b>Крок 3</b>
+            <span>Використовуй стиснені файли для оголошень/сайту/соцмереж.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photopea -->
+      <div class="lCard">
+        <div class="lHead">
+          <div class="lName">
+            <div class="lLogo"><i data-lucide="pen-tool"></i></div>
+            <div class="lTitle">
+              <b>Photopea</b>
+              <div class="lMeta">Безкоштовний “Photoshop” у браузері: шари, текст, логотип, експорт.</div>
+            </div>
+          </div>
+          <div class="lTag">Pro</div>
+        </div>
+
+        <div class="lBody">
+          Коли Canva “не вистачає”, Photopea дає гнучкість (шари, маски).
+        </div>
+
+        <ul class="lList">
+          <li><b>Навіщо:</b> складніші правки.</li>
+          <li><b>Плюс:</b> без установки, працює у браузері.</li>
+        </ul>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.photopea.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Photopea
+          </a>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <b>Крок 1</b>
+            <span>File → Open → відкрий картинку.</span>
+          </div>
+          <div class="step">
+            <b>Крок 2</b>
+            <span>File → Open & Place → додай логотип як шар, пересунь у кут.</span>
+          </div>
+          <div class="step">
+            <b>Крок 3</b>
+            <span>Text (T) → додай УТП → Export As → PNG/JPG.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="sparkles"></i>
+        <div>
+          <b>Мінімальний набір (щоб не плутатись)</b>
+          <p>
+            Новачку достатньо: <b>Gemini + Canva</b>.
+            Якщо треба вирізка — додай <b>remove.bg</b>.
+            Якщо пачки 100+ — додай <b>PhotoRoom Batch</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Практика: чекліст + домашнє завдання (з копіюванням)</h2>
+    <div class="sub">Скопіюй, заповни, і зроби за 1 вечір — у тебе буде серія контенту</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="clipboard-check"></i></div>
+          <div>
+            <b>Чекліст “Еталон + 10 товарів”</b>
+            <span>Це мінімум, який реально зробити новачку.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="checklist">Чекліст (М3 Урок 1):
+
+1) Логотип PNG (прозорий фон) — готово ✅ / ні ⬜
+2) Зробив 1 еталон (фон + тінь + лого + місце під УТП) — ✅ / ⬜
+3) Зробив 10 товарів в одному стилі — ✅ / ⬜
+4) Додав УТП у Canva (без помилок) — ✅ / ⬜
+5) Експорт у 2 форматах:
+   — 1080×1350 (4:5) — ✅ / ⬜
+   — 1080×1920 (9:16) — ✅ / ⬜
+6) Назви файлів (щоб не губитись):
+   товар_01_4x5.jpg, товар_01_9x16.jpg ...</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyChecklist" type="button">
+            <i data-lucide="copy"></i> Скопіювати чекліст
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="file-text"></i></div>
+          <div>
+            <b>Що здати як результат уроку</b>
+            <span>Це “контрольна точка” — щоб реально був прогрес.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="deliver">Результат (що має бути готово):
+
+1) 1 еталон-картинка (стиль серії)
+2) 10 товарів у цьому стилі (фон + лого + тінь)
+3) 5 варіантів УТП (текстом) для своєї ніші
+4) 3 креативи у форматі 9:16 (для Reels/TikTok)
+5) Позначити урок як “пройдено” ✅</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyDeliver" type="button">
+            <i data-lucide="copy"></i> Скопіювати результат
+          </button>
+          <button class="btn" id="btnDone" type="button">
+            <i data-lucide="check-circle"></i> Позначити як пройдено
+          </button>
+        </div>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+          <span id="doneText">Статус: не пройдено</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m3l1";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  const promptGemini = document.getElementById("promptGemini");
+  const promptUtp = document.getElementById("promptUtp");
+  const checklist = document.getElementById("checklist");
+  const deliver = document.getElementById("deliver");
+
+  const copyPromptGemini = document.getElementById("copyPromptGemini");
+  const copyPromptUtp = document.getElementById("copyPromptUtp");
+  const copyChecklist = document.getElementById("copyChecklist");
+  const copyDeliver = document.getElementById("copyDeliver");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  async function copyText(btn, text){
+    try{
+      await navigator.clipboard.writeText(text.trim());
+      const prev = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        btn.innerHTML = prev;
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  }
+
+  copyPromptGemini.addEventListener("click", ()=>copyText(copyPromptGemini, promptGemini.textContent));
+  copyPromptUtp.addEventListener("click", ()=>copyText(copyPromptUtp, promptUtp.textContent));
+  copyChecklist.addEventListener("click", ()=>copyText(copyChecklist, checklist.textContent));
+  copyDeliver.addEventListener("click", ()=>copyText(copyDeliver, deliver.textContent));
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
