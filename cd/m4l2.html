@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m4l2 — Психологія клієнта та довіра | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff4d4d;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:96ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:96ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:96ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+    .list{margin:10px 0 0;padding-left:18px;color:var(--muted);font-size:13.4px;line-height:1.75}
+    .list li{margin:6px 0}
+    .mini{
+      margin-top:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.16);
+      border-radius:16px;padding:10px;
+      color:rgba(245,245,247,.92);
+      font-size:13.5px;line-height:1.7;
+    }
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .warn{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .warn .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .warn .hrow i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .warn b{font-size:15px}
+    .warn p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .stats{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+    @media (min-width:760px){ .stats{grid-template-columns:1fr 1fr 1fr} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;position:relative;overflow:hidden;
+    }
+    .stat::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;position:relative;z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;margin-top:8px;font-size:18px;font-weight:900;
+      color:var(--accent2);position:relative;z-index:1;
+    }
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--muted);
+      padding:7px 10px;border-radius:999px;
+      font-size:12px;display:inline-flex;align-items:center;gap:7px;
+      cursor:pointer; user-select:none;
+    }
+    .pill i{width:16px;height:16px;color:var(--accent2)}
+    .pill.active{
+      border-color:rgba(255,179,71,.35);
+      background:rgba(255,179,71,.10);
+      color:rgba(245,245,247,.92);
+    }
+
+    .platforms{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px;}
+    @media (min-width:900px){ .platforms{grid-template-columns:1fr 1fr} }
+
+    .pCard{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;
+      position:relative; overflow:hidden;
+    }
+    .pCard::after{
+      content:""; position:absolute; inset:-60px;
+      background:radial-gradient(circle at 0 0, rgba(255,122,26,.10), transparent 55%);
+      opacity:.30; pointer-events:none;
+    }
+    .pHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:1;}
+    .pName{display:flex;gap:10px;align-items:flex-start;}
+    .pLogo{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .pLogo i{width:20px;height:20px;color:var(--accent2)}
+    .pTitle b{font-size:15px}
+    .pMeta{margin-top:2px;color:var(--muted);font-size:12.8px;line-height:1.5}
+    .pTag{
+      font-weight:900;color:var(--accent2);
+      font-size:12.5px;white-space:nowrap;position:relative;z-index:1;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+    }
+    .pBody{position:relative;z-index:1;margin-top:10px;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;position:relative;z-index:1;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.6px;color:rgba(245,245,247,.92);
+      line-height:1.65;white-space:pre-wrap;
+    }
+
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.20);
+      border:1px dashed rgba(255,255,255,.22);
+      color:rgba(245,245,247,.92);
+      box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    /* filtering */
+    .dim{opacity:.42; filter:saturate(.6); transform:scale(.995); transition:.18s ease;}
+    .focus{outline:1px solid rgba(255,179,71,.25); box-shadow:0 0 0 3px rgba(255,179,71,.06);}
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 4 • Урок 2 — Психологія та довіра</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Психологія клієнта та довіра: чому купують (і як підняти конверсію)</h1>
+    <p class="lead">
+      Людина купує не тоді, коли “красиво показано”, а коли в голові закрились 3 питання:
+      <b>чи підходить?</b> • <b>чи безпечно?</b> • <b>що робити далі?</b>
+      <br><br>
+      У цьому уроці: страхи клієнта, “піраміда довіри”, готові блоки для вітрини, скрипти відповідей і
+      покрокові рекомендації по Instagram / TikTok / Telegram / OLX / Facebook.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 25–40 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: система довіри + скрипти</div>
+      <div class="chip"><i data-lucide="shield-check"></i> Фокус: зняти страх → отримати “так”</div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Головна помилка новачка</b>
+          <p>
+            Писати тільки “ціна/характеристики”. Люди зупиняються не через характеристики — вони зупиняються через
+            <b>страх</b>. Твоя задача — зробити покупку безпечною і простою.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Як клієнт приймає рішення (3 питання)</h2>
+    <div class="sub">Якщо хоч одне питання не закрито — отримаєш “я подумаю”</div>
+
+    <div class="stats">
+      <div class="stat">
+        <small><i data-lucide="check-circle-2"></i> Питання №1</small>
+        <b>Чи підходить?</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="shield"></i> Питання №2</small>
+        <b>Чи безпечно?</b>
+      </div>
+      <div class="stat">
+        <small><i data-lucide="mouse-pointer-click"></i> Питання №3</small>
+        <b>Що робити далі?</b>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="heart"></i></div>
+          <div>
+            <b>Голос “Хочу”</b>
+            <span>Краса, вигода, затишок, “вау-ефект”.</span>
+          </div>
+        </div>
+        <div class="mini">Тут працюють: приклади інтерʼєру, до/після, відео “вживу”, короткі вигоди.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="triangle-alert"></i></div>
+          <div>
+            <b>Голос “Страшно”</b>
+            <span>Обман, не підійде, брак, доставка, повернення.</span>
+          </div>
+        </div>
+        <div class="mini">Тут працюють: умови, гарантія/обмін, відгуки, “підбір”, живі фото, простий CTA.</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="sparkles"></i>
+        <div>
+          <b>Формула продажу</b>
+          <p>
+            Продаж = <b>зменшення страху</b> + <b>простий наступний крок</b>.  
+            У дропшипінгу виграє не “найкрасивіший”, а “найзрозуміліший і найбезпечніший”.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. 7 страхів клієнта (і як їх закривати)</h2>
+    <div class="sub">Це реальні причини, чому люди “не купують”, навіть якщо товар класний</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="ruler"></i></div>
+          <div>
+            <b>1) “Не підійде”</b>
+            <span>Колір, розмір, фактура, стиль.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Дай “підбір за 10 хв”.</li>
+          <li>Покажи приклади/варіанти під різні кімнати.</li>
+          <li>Запитай 3 дані: розмір/фото/бюджет.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="image"></i></div>
+          <div>
+            <b>2) “Вживу не так”</b>
+            <span>Фото можуть обманювати.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Відео “вживу” при денному світлі.</li>
+          <li>Крупний план фактури.</li>
+          <li>Фото “в руці / поруч з лінійкою”.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="wrench"></i></div>
+          <div>
+            <b>3) “Складно монтувати”</b>
+            <span>“Я не майстер”.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Сторіс/відео “монтаж 3 кроки”.</li>
+          <li>Поясни: “впораєтесь самі”.</li>
+          <li>Дай інструкцію одним повідомленням.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="truck"></i></div>
+          <div>
+            <b>4) “Доставка зламає”</b>
+            <span>Боїться пошкодження.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Покажи “як пакуємо”.</li>
+          <li>Опис: “надійне пакування”.</li>
+          <li>План дій при пошкодженні.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="credit-card"></i></div>
+          <div>
+            <b>5) “Заплачу — не відправлять”</b>
+            <span>Страх шахрайства.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Прозорі умови оплати (варіанти).</li>
+          <li>Відгуки/кейси.</li>
+          <li>Живий профіль/канал.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="rotate-ccw"></i></div>
+          <div>
+            <b>6) “Повернення — морока”</b>
+            <span>Бояться проблем.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Коротко: “як працює обмін/повернення”.</li>
+          <li>Заздалегідь поясни процес.</li>
+          <li>Фраза: “вирішуємо ситуації”.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warn">
+      <div class="hrow">
+        <i data-lucide="info"></i>
+        <div>
+          <b>Головний “антистрах”</b>
+          <p>
+            Найкраще працює зв’язка: <b>підбір</b> + <b>живе відео</b> + <b>умови</b> + <b>відгуки</b>.  
+            Це можна зробити навіть без сайту — прямо в Instagram/TikTok/Telegram.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Піраміда довіри (як будувати системно)</h2>
+    <div class="sub">Починай з фундаменту. Далі — безпека, докази, простота рішення</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="user-check"></i></div>
+          <div>
+            <b>Рівень 1 — “Ти реальний”</b>
+            <span>Профіль/канал має виглядати як бізнес, а не “одна картинка”.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Логотип/назва, нормальне біо.</li>
+          <li>Живі фото/відео товару.</li>
+          <li>Контакти + швидка відповідь.</li>
+        </ul>
+        <div class="mini"><b>Приклад фрази:</b> “Підбір під ваш розмір • доставка по Україні • відповідаю швидко”.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="shield-check"></i></div>
+          <div>
+            <b>Рівень 2 — “Безпека угоди”</b>
+            <span>Чітко: доставка/оплата/повернення/що робимо якщо проблема.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>Окремий блок “Умови”.</li>
+          <li>Пояснення процесу без складних слів.</li>
+          <li>Зняття ризику: “допоможемо/вирішимо”.</li>
+        </ul>
+        <div class="mini"><b>Приклад фрази:</b> “Якщо щось не так — підкажемо і вирішимо ситуацію”.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="message-square-heart"></i></div>
+          <div>
+            <b>Рівень 3 — “Докази”</b>
+            <span>Відгуки, приклади, до/після, реальні відео.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>5–10 відгуків мінімум.</li>
+          <li>1–3 кейси/до-після.</li>
+          <li>Скрін діалогу (без персональних даних).</li>
+        </ul>
+        <div class="mini"><b>Приклад фрази:</b> “Ось як виглядає вживу + відгуки клієнтів”.</div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="mouse-pointer-click"></i></div>
+          <div>
+            <b>Рівень 4 — “Простота рішення”</b>
+            <span>Людині має бути легко: 1 слово → 3 варіанти → замовлення.</span>
+          </div>
+        </div>
+        <ul class="list">
+          <li>CTA: “ПІДБІР / ЦІНА / ФОТО”.</li>
+          <li>Підбір: бюджет/оптимум/преміум.</li>
+          <li>Кроки: 1–2–3.</li>
+        </ul>
+        <div class="mini"><b>Приклад фрази:</b> “Напишіть ‘ПІДБІР’ — підберу 3 варіанти за 10 хв”.</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Що робити новачку</b>
+          <p>
+            Якщо в тебе мало контенту — спочатку зроби <b>умови</b> + <b>підбір</b> + <b>5 відгуків</b> + <b>1 відео “вживу”</b>.
+            Це вже дає сильний ріст довіри.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Заперечення і готові відповіді (скрипти)</h2>
+    <div class="sub">Скопіюй і збережи — це твої “готові продажі” в Direct/Telegram</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="message-circle-question"></i></div>
+          <div>
+            <b>“А точно підійде?”</b>
+            <span>Закриваємо страх помилки: підбір.</span>
+          </div>
+        </div>
+        <div class="sample" id="s1">Так, щоб не помилитись — зробимо підбір.
+Напишіть розмір (або скиньте фото місця) і я підберу 3 варіанти + поясню різницю між ними.</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="c1"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="camera"></i></div>
+          <div>
+            <b>“Боюсь, що вживу буде не так”</b>
+            <span>Даємо “реальність” товару: відео + фактура.</span>
+          </div>
+        </div>
+        <div class="sample" id="s2">Розумію 🙂 Можу скинути відео “вживу” при денному світлі + фото фактури крупно.
+Так ви побачите реальний вигляд перед замовленням.</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="c2"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="truck"></i></div>
+          <div>
+            <b>“Як з доставкою/оплатою?”</b>
+            <span>Прозорі умови без “сюрпризів”.</span>
+          </div>
+        </div>
+        <div class="sample" id="s3">Доставка по Україні, відправляємо з надійним пакуванням.
+По оплаті є кілька варіантів — підкажу, який зручніший. Хочете — скину умови одним коротким повідомленням.</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="c3"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="rotate-ccw"></i></div>
+          <div>
+            <b>“А якщо не підійде?”</b>
+            <span>Зняття ризику + пояснення процесу.</span>
+          </div>
+        </div>
+        <div class="sample" id="s4">Якщо раптом не підійде — підкажемо як зробити обмін/вирішити ситуацію.
+Тому ми робимо підбір перед покупкою, щоб звести ризик майже до нуля 🙂</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="c4"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="badge-percent"></i></div>
+          <div>
+            <b>“Дорого”</b>
+            <span>Порівняння 3 варіанти — люди люблять вибір.</span>
+          </div>
+        </div>
+        <div class="sample" id="s5">Давайте зроблю так: під вашу задачу підберу 3 варіанти — бюджет / оптимум / преміум.
+Ви порівняєте і виберете, що підходить саме вам.</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="c5"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="clipboard-pen-line"></i></div>
+          <div>
+            <b>Скрипт “підбір” (збір даних)</b>
+            <span>Коли клієнт написав “ПІДБІР”.</span>
+          </div>
+        </div>
+        <div class="sample" id="s6">Привіт! Щоб підказати точно, напишіть, будь ласка:
+1) розмір/площа або фото місця
+2) куди саме (стіна/підлога/яка кімната)
+3) приблизний бюджет
+
+Я підберу 3 варіанти + скажу різницю по якості/вигляду 🙂</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="c6"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="sparkles"></i>
+        <div>
+          <b>Фішка</b>
+          <p>
+            Скрипти не повинні виглядати як “робот”. Додай 1 емоцію (🙂) і 1 фразу “зроблю підбір” — і довіра росте.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Довіра по платформах (що робити саме там)</h2>
+    <div class="sub">Натисни платформу — і підсвітиться, що в ній найбільше впливає на довіру</div>
+
+    <div class="pillrow" id="goalRow">
+      <div class="pill active" data-goal="all"><i data-lucide="sparkles"></i> Показати всі</div>
+      <div class="pill" data-goal="ig"><i data-lucide="camera"></i> Instagram</div>
+      <div class="pill" data-goal="tt"><i data-lucide="video"></i> TikTok</div>
+      <div class="pill" data-goal="tg"><i data-lucide="send"></i> Telegram</div>
+      <div class="pill" data-goal="olx"><i data-lucide="shopping-bag"></i> OLX</div>
+      <div class="pill" data-goal="fb"><i data-lucide="users"></i> Facebook</div>
+    </div>
+
+    <div class="platforms" id="platforms">
+
+      <!-- IG -->
+      <div class="pCard" data-tags="ig">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="camera"></i></div>
+            <div class="pTitle">
+              <b>Instagram — довіра через Highlights</b>
+              <div class="pMeta">Люди дивляться профіль як “візитку” + “докази”.</div>
+            </div>
+          </div>
+          <div class="pTag">IG</div>
+        </div>
+
+        <div class="pBody">
+          Мінімум: <b>Умови</b> + <b>Відгуки</b> + <b>Приклади/До-після</b> + <b>Монтаж</b>.
+        </div>
+
+        <details open>
+          <summary>Highlights (5 обовʼязково) <span class="badge">структура</span></summary>
+          <p>Каталог • Доставка/Оплата • Відгуки • До/Після • Монтаж</p>
+        </details>
+        <details>
+          <summary>Контент довіри (3 формати) <span class="badge">швидко</span></summary>
+          <p>1) “Вживу” (відео під світлом)</p>
+          <p>2) “Пакуємо/відправляємо”</p>
+          <p>3) “Відгуки тижня”</p>
+        </details>
+      </div>
+
+      <!-- TT -->
+      <div class="pCard" data-tags="tt">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="video"></i></div>
+            <div class="pTitle">
+              <b>TikTok — довіра через “реальність”</b>
+              <div class="pMeta">Тут віра в товар з’являється тільки після живого відео.</div>
+            </div>
+          </div>
+          <div class="pTag">TT</div>
+        </div>
+
+        <div class="pBody">
+          Робочі формати: <b>фактура крупно</b>, <b>до/після</b>, <b>розпаковка</b>, <b>підбір</b>.
+        </div>
+
+        <details open>
+          <summary>Сценарій 15 сек <span class="badge">шаблон</span></summary>
+          <p>1) “Ось як виглядає вживу” (1 сек)</p>
+          <p>2) Крупний план фактури (6–8 сек)</p>
+          <p>3) 1 вигода (2 сек)</p>
+          <p>4) CTA: “Пиши ‘ПІДБІР’” (2 сек)</p>
+        </details>
+      </div>
+
+      <!-- TG -->
+      <div class="pCard" data-tags="tg">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="send"></i></div>
+            <div class="pTitle">
+              <b>Telegram — довіра через порядок</b>
+              <div class="pMeta">Меню + закріп + швидкі відповіді = довіра.</div>
+            </div>
+          </div>
+          <div class="pTag">TG</div>
+        </div>
+
+        <div class="pBody">
+          У Telegram довіра = <b>структура</b> + <b>зрозумілі умови</b> + <b>відгуки</b>.
+        </div>
+
+        <details open>
+          <summary>Закріп “Меню” <span class="badge">must</span></summary>
+          <p>Каталог • Умови • Як замовити • Відгуки • Контакт</p>
+        </details>
+        <details>
+          <summary>Пости довіри (2 шт) <span class="badge">мінімум</span></summary>
+          <p>1) “Умови доставки/оплати”</p>
+          <p>2) “Відгуки”</p>
+        </details>
+      </div>
+
+      <!-- OLX -->
+      <div class="pCard" data-tags="olx">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="shopping-bag"></i></div>
+            <div class="pTitle">
+              <b>OLX — довіра через опис і фото</b>
+              <div class="pMeta">Тут вирішує: фото 1 + умови + “підбір”.</div>
+            </div>
+          </div>
+          <div class="pTag">OLX</div>
+        </div>
+
+        <div class="pBody">
+          Обовʼязково додай: <b>умови</b> + <b>підбір</b> + <b>відео “вживу” на запит</b>.
+        </div>
+
+        <details open>
+          <summary>Формула опису <span class="badge">по блоках</span></summary>
+          <p>Що це → Вигоди → Характеристики → Умови → CTA</p>
+        </details>
+      </div>
+
+      <!-- FB -->
+      <div class="pCard" data-tags="fb">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="users"></i></div>
+            <div class="pTitle">
+              <b>Facebook — довіра через “живу сторінку”</b>
+              <div class="pMeta">Активність, відповіді, пости “як замовити” + відгуки.</div>
+            </div>
+          </div>
+          <div class="pTag">FB</div>
+        </div>
+
+        <div class="pBody">
+          Показуй “ви існуєте”: пости, коментарі, фото, відповіді. Це сильніше, ніж “ідеальний дизайн”.
+        </div>
+
+        <details open>
+          <summary>Мінімум на сторінці <span class="badge">5 пунктів</span></summary>
+          <p>Обкладинка + аватар • Кнопка “написати” • 5–10 фото/відео • Пост “як замовити” • Пост “відгуки”</p>
+        </details>
+      </div>
+
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="info"></i>
+        <div>
+          <b>Супер проста дія</b>
+          <p>
+            Додай 1 блок “Умови” + 1 блок “Відгуки” у свою вітрину сьогодні — і ти вже закриєш половину страхів клієнта.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Контент довіри: 12 ідей (щоб продавало)</h2>
+    <div class="sub">Це “золоті” формати, які піднімають конверсію майже в будь-якій ніші товарів для дому</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="sparkles"></i></div><div><b>Вживу</b><span>Фактура/колір при денному світлі.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="wand-2"></i></div><div><b>До/Після</b><span>Було/стало — найсильніше.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="package"></i></div><div><b>Пакування</b><span>Показати, як відправляєш.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="circle-help"></i></div><div><b>Топ-питання</b><span>FAQ у сторіс/пості.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="alert-triangle"></i></div><div><b>Помилки</b><span>“Так не робіть” + рішення.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="sliders-horizontal"></i></div><div><b>Підбір 3 варіанти</b><span>Бюджет/оптимум/преміум.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="hammer"></i></div><div><b>Монтаж</b><span>3 кроки — “впораєтесь самі”.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="message-square-heart"></i></div><div><b>Відгуки</b><span>Скрін + короткий коментар.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="columns-2"></i></div><div><b>Порівняння</b><span>Бюджет vs преміум.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="wallet"></i></div><div><b>Що входить в ціну</b><span>Пояснити просто.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="badge-check"></i></div><div><b>Чому нам довіряють</b><span>Списком 5 пунктів.</span></div></div>
+      </div>
+      <div class="card">
+        <div class="top"><div class="ico"><i data-lucide="rotate-ccw"></i></div><div><b>Гарантія/обмін</b><span>Як це працює по кроках.</span></div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="sparkles"></i></div>
+        <div>
+          <b>Міні-план на 7 днів (довіра)</b>
+          <span>Кожен день 1 пост/відео з цього списку — і ти відчуєш ріст заявок.</span>
+        </div>
+      </div>
+
+      <div class="sample" id="plan7">План на 7 днів (контент довіри):
+День 1 — “Вживу” (фактура/колір)
+День 2 — “Як замовити” (3 кроки)
+День 3 — “Відгуки” (5 скрінів)
+День 4 — “Пакування/відправка”
+День 5 — “Підбір 3 варіанти” (бюджет/оптимум/преміум)
+День 6 — “До/Після” або приклад в інтерʼєрі
+День 7 — “FAQ” (5 питань клієнтів)</div>
+
+      <div class="actions" style="justify-content:flex-start;">
+        <button class="btn secondary" id="copyPlan7"><i data-lucide="copy"></i> Скопіювати план</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="sec">
+    <h2>7. Практика + позначити як пройдено</h2>
+    <div class="sub">Сьогодні зроби мінімум — і довіра вже виросте. Статус збережеться як у попередніх уроках</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="check-check"></i></div>
+          <div>
+            <b>Що зробити (мінімум)</b>
+            <span>Виконай 4 дії — і твоя вітрина стане “безпечнішою”.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="practice">Практика (М4 Урок 2):
+
+1) Додай блок “Умови” (доставка/оплата/повернення) ✅ / ⬜
+2) Додай 5 відгуків (скріни/текст) ✅ / ⬜
+3) Зроби 1 відео/сторіс “вживу” (фактура під світлом) ✅ / ⬜
+4) Збережи 3 скрипти відповідей (з цього уроку) ✅ / ⬜
+
+Бонус:
+— Сторіс/відео “пакуємо замовлення”
+— Пост “підбір 3 варіанти”</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyPractice"><i data-lucide="copy"></i> Скопіювати практику</button>
+          <button class="btn ghost" id="copyAll"><i data-lucide="copy"></i> Скопіювати все важливе</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="flag"></i></div>
+          <div>
+            <b>Позначити урок як пройдено</b>
+            <span>localStorage: можна відмінити, як у попередніх уроках.</span>
+          </div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-start; margin-top:12px;">
+          <button class="btn" id="btnDone" type="button">
+            <i data-lucide="check-circle"></i>
+            Позначити як пройдено
+          </button>
+        </div>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+          <span id="doneText">Статус: не пройдено</span>
+        </div>
+
+        <div class="warn" style="margin-top:12px;">
+          <div class="hrow">
+            <i data-lucide="sparkles"></i>
+            <div>
+              <b>Порада</b>
+              <p>
+                Якщо клієнти часто питають одне й те саме — винеси відповідь у Highlights/закріп.  
+                Кожне повторне питання = “дірка довіри”, яку можна закрити контентом.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m4l2";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  async function copyText(btn, text){
+    try{
+      await navigator.clipboard.writeText(text.trim());
+      const prev = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        btn.innerHTML = prev;
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  }
+
+  // copy scripts
+  const map = [
+    ["c1","s1"],["c2","s2"],["c3","s3"],["c4","s4"],["c5","s5"],["c6","s6"]
+  ];
+  map.forEach(([btnId, srcId])=>{
+    const b = document.getElementById(btnId);
+    const s = document.getElementById(srcId);
+    if(b && s) b.addEventListener("click", ()=>copyText(b, s.textContent));
+  });
+
+  const copyPlan7 = document.getElementById("copyPlan7");
+  const plan7 = document.getElementById("plan7");
+  if(copyPlan7 && plan7) copyPlan7.addEventListener("click", ()=>copyText(copyPlan7, plan7.textContent));
+
+  const copyPractice = document.getElementById("copyPractice");
+  const practice = document.getElementById("practice");
+  if(copyPractice && practice) copyPractice.addEventListener("click", ()=>copyText(copyPractice, practice.textContent));
+
+  const copyAll = document.getElementById("copyAll");
+  if(copyAll){
+    copyAll.addEventListener("click", ()=>{
+      const big =
+`Ключ:
+Клієнт купує коли закриті 3 питання: чи підходить / чи безпечно / що робити далі
+
+Піраміда довіри:
+1) Ви реальні
+2) Безпека угоди
+3) Докази (відгуки/до-після/вживу)
+4) Простота рішення (підбір + CTA)
+
+Скрипти:
+— А точно підійде?
+${document.getElementById("s1").textContent}
+
+— Вживу не так
+${document.getElementById("s2").textContent}
+
+— Доставка/оплата
+${document.getElementById("s3").textContent}
+
+— Якщо не підійде
+${document.getElementById("s4").textContent}
+
+— Дорого
+${document.getElementById("s5").textContent}
+
+— Підбір (збір даних)
+${document.getElementById("s6").textContent}
+
+План 7 днів:
+${document.getElementById("plan7").textContent}
+
+Практика:
+${document.getElementById("practice").textContent}`.trim();
+
+      copyText(copyAll, big);
+    });
+  }
+
+  // Platform filter
+  const goalRow = document.getElementById("goalRow");
+  const platformWrap = document.getElementById("platforms");
+  const cards = Array.from(platformWrap.querySelectorAll(".pCard"));
+
+  const goalMap = {
+    "all": { want: [] },
+    "ig":  { want: ["ig"] },
+    "tt":  { want: ["tt"] },
+    "tg":  { want: ["tg"] },
+    "olx": { want: ["olx"] },
+    "fb":  { want: ["fb"] }
+  };
+
+  function setGoal(goal){
+    Array.from(goalRow.querySelectorAll(".pill")).forEach(p=>{
+      p.classList.toggle("active", p.dataset.goal === goal);
+    });
+
+    const want = (goalMap[goal] && goalMap[goal].want) ? goalMap[goal].want : [];
+    if(!want.length){
+      cards.forEach(c=>{ c.classList.remove("dim","focus"); });
+      return;
+    }
+
+    cards.forEach(c=>{
+      const tags = (c.dataset.tags || "").split(/\s+/).filter(Boolean);
+      const hit = want.some(w => tags.includes(w));
+      c.classList.toggle("dim", !hit);
+      c.classList.toggle("focus", hit);
+    });
+  }
+
+  if(goalRow){
+    goalRow.addEventListener("click", (e)=>{
+      const pill = e.target.closest(".pill");
+      if(!pill) return;
+      setGoal(pill.dataset.goal || "all");
+    });
+  }
+
+  setGoal("all");
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
