@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m4l1 — Що має бути на продаючій вітрині | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff4d4d;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:92ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .warn{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .warn .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .warn .hrow i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .warn b{font-size:15px}
+    .warn p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .stats{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+    @media (min-width:760px){ .stats{grid-template-columns:1fr 1fr 1fr} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;position:relative;overflow:hidden;
+    }
+    .stat::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;position:relative;z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;margin-top:8px;font-size:18px;font-weight:900;
+      color:var(--accent2);position:relative;z-index:1;
+    }
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--muted);
+      padding:7px 10px;border-radius:999px;
+      font-size:12px;display:inline-flex;align-items:center;gap:7px;
+      cursor:pointer; user-select:none;
+    }
+    .pill i{width:16px;height:16px;color:var(--accent2)}
+    .pill.active{
+      border-color:rgba(255,179,71,.35);
+      background:rgba(255,179,71,.10);
+      color:rgba(245,245,247,.92);
+    }
+
+    .platforms{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px;}
+    @media (min-width:900px){ .platforms{grid-template-columns:1fr 1fr} }
+
+    .pCard{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;
+      position:relative; overflow:hidden;
+    }
+    .pCard::after{
+      content:""; position:absolute; inset:-60px;
+      background:radial-gradient(circle at 0 0, rgba(255,122,26,.10), transparent 55%);
+      opacity:.30; pointer-events:none;
+    }
+    .pHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:1;}
+    .pName{display:flex;gap:10px;align-items:flex-start;}
+    .pLogo{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .pLogo i{width:20px;height:20px;color:var(--accent2)}
+    .pTitle b{font-size:15px}
+    .pMeta{margin-top:2px;color:var(--muted);font-size:12.8px;line-height:1.5}
+    .pTag{
+      font-weight:900;color:var(--accent2);
+      font-size:12.5px;white-space:nowrap;position:relative;z-index:1;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+    }
+    .pBody{position:relative;z-index:1;margin-top:10px;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;position:relative;z-index:1;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.6px;color:rgba(245,245,247,.92);
+      line-height:1.65;white-space:pre-wrap;
+    }
+
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.20);
+      border:1px dashed rgba(255,255,255,.22);
+      color:rgba(245,245,247,.92);
+      box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    /* filtering */
+    .dim{opacity:.42; filter:saturate(.6); transform:scale(.995); transition:.18s ease;}
+    .focus{outline:1px solid rgba(255,179,71,.25); box-shadow:0 0 0 3px rgba(255,179,71,.06);}
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 4 • Урок 1 — Продаюча вітрина</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Що має бути на продаючій вітрині (щоб клієнт купив)</h1>
+    <p class="lead">
+      Вітрина — це профіль/канал/оголошення, куди потрапляє клієнт перед покупкою.
+      Задача вітрини проста: <b>зрозуміло що ти продаєш</b> → <b>чому тобі довіряти</b> → <b>як замовити за 10 секунд</b>.
+      <br><br>
+      У цьому уроці ти отримаєш: <b>структуру</b>, <b>чеклісти</b> і <b>покрокові інструкції</b> для Instagram, TikTok, Telegram, OLX та Facebook.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 25–35 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: готова вітрина + 3 закріпи/меню</div>
+      <div class="chip"><i data-lucide="mouse-pointer-click"></i> Фокус: ясність + довіра + CTA</div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Правило профі</b>
+          <p>
+            Не роби “красиво без сенсу”. Спочатку структура: що/для кого/умови/відгуки/CTA.
+            Дизайн — потім. Продажі починаються зі <b>зрозумілості</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Золота формула вітрини (6 блоків)</h2>
+    <div class="sub">Ці блоки мають бути на будь-якій платформі — просто в різному вигляді</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="badge-check"></i></div>
+          <div>
+            <b>1) Хто ти + що продаєш</b>
+            <span>1 рядок: товар + доставка + підбір.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="target"></i></div>
+          <div>
+            <b>2) Для кого</b>
+            <span>Кімната/задача/біль: швидко, красиво, без майстрів.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="shield-check"></i></div>
+          <div>
+            <b>3) Довіра</b>
+            <span>Умови + відгуки + фото/відео “вживу”.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="layers"></i></div>
+          <div>
+            <b>4) Каталог/навігація</b>
+            <span>Категорії / хіти / акції / FAQ.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="mouse-pointer-click"></i></div>
+          <div>
+            <b>5) CTA</b>
+            <span>“Напиши ‘ПІДБІР’ — підберу 3 варіанти”.</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="message-circle"></i></div>
+          <div>
+            <b>6) Контакт</b>
+            <span>Telegram/Viber/WhatsApp + (за потреби) телефон.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="sparkles"></i>
+        <div>
+          <b>Супер проста перевірка</b>
+          <p>
+            Дай своє посилання другу і запитай: “Що я продаю? Як купити?”  
+            Якщо він не відповість за 10 секунд — вітрина не продає.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Чекліст: вітрина готова до продажів</h2>
+    <div class="sub">Скопіюй цей чекліст і відмічай ✅ (ідеально підходить для новачка)</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="list-checks"></i></div>
+          <div>
+            <b>Чекліст “Вітрина готова”</b>
+            <span>Мінімум, який робить профіль продаючим.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="checklist">Чекліст (М4 Урок 1):
+
+[ ] В біо/описі є УТП (що/доставка/підбір)
+[ ] Є 1 головний CTA (що написати і куди)
+[ ] Є навігація по товарах (категорії/хіти/закріп/меню)
+[ ] Є умови: доставка/оплата/повернення
+[ ] Є відгуки/кейси (хоч 3–5)
+[ ] Є 3 закріпи / меню (хіти, як замовити, довіра)
+[ ] Є контакти: TG/Viber/WhatsApp
+[ ] Візуально охайно: 1 стиль, логотип, читабельно</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyChecklist" type="button">
+            <i data-lucide="copy"></i> Скопіювати чекліст
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="clipboard-list"></i></div>
+          <div>
+            <b>Шаблон ТЗ на вітрину</b>
+            <span>Щоб було чітко, що саме ти робиш.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="brief">ТЗ на вітрину (шаблон):
+
+Платформа: ________________________
+Ціль: заявки / продажі / підбір
+Ніша/товари: ______________________
+
+УТП (1 рядок): _____________________
+CTA-слово: “ПІДБІР / ЦІНА / ФОТО / НАЯВНІСТЬ”
+Куди писати: Direct / Telegram / Viber / WhatsApp
+
+Навігація:
+— Каталог/Категорії: __________________
+— Хіти (топ-10): _______________________
+— Доставка/Оплата: ____________________
+— Відгуки/кейси: ______________________
+
+3 закріпи / меню:
+1) Хіти / Топ
+2) Як замовити (3 кроки)
+3) Відгуки / довіра</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyBrief" type="button">
+            <i data-lucide="copy"></i> Скопіювати ТЗ
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Платформи: покроково під кожну соцмережу</h2>
+    <div class="sub">Натисни платформу — і сторінка підсвітить потрібні інструкції</div>
+
+    <div class="pillrow" id="goalRow">
+      <div class="pill active" data-goal="all"><i data-lucide="sparkles"></i> Показати всі</div>
+      <div class="pill" data-goal="ig"><i data-lucide="camera"></i> Instagram</div>
+      <div class="pill" data-goal="tt"><i data-lucide="video"></i> TikTok</div>
+      <div class="pill" data-goal="tg"><i data-lucide="send"></i> Telegram</div>
+      <div class="pill" data-goal="olx"><i data-lucide="shopping-bag"></i> OLX</div>
+      <div class="pill" data-goal="fb"><i data-lucide="users"></i> Facebook</div>
+    </div>
+
+    <div class="platforms" id="platforms">
+
+      <!-- Instagram -->
+      <div class="pCard" data-tags="ig">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="camera"></i></div>
+            <div class="pTitle">
+              <b>Instagram — профіль, що продає</b>
+              <div class="pMeta">Профіль + Highlights + 3 закріпи. Ціль: людина зайшла → написала.</div>
+            </div>
+          </div>
+          <div class="pTag">IG</div>
+        </div>
+
+        <div class="pBody">
+          Мінімум для продажів: <b>чітке біо</b>, <b>навігація по товарах</b>, <b>умови</b>, <b>відгуки</b>, <b>CTA</b>.
+        </div>
+
+        <details open>
+          <summary>Структура профілю <span class="badge">4 блоки</span></summary>
+          <p>1) Аватар: логотип/знак (читабельно).</p>
+          <p>2) Name: ключове слово + Україна/місто (щоб знаходили пошуком).</p>
+          <p>3) Bio (3 рядки): що продаєш + доставка + CTA.</p>
+          <p>4) Link: 1 посилання (TG/каталог/лендінг).</p>
+        </details>
+
+        <details>
+          <summary>Highlights (Актуальне) <span class="badge">мінімум 5</span></summary>
+          <p>Каталог • Ціни • Доставка/Оплата • Відгуки • До/Після (або Приклади).</p>
+          <p>Зроби іконки в одному стилі (Canva).</p>
+        </details>
+
+        <details>
+          <summary>3 закріпи (Pinned) <span class="badge">must</span></summary>
+          <p>1) “Хіти / Топ товари” (6–12 позицій).</p>
+          <p>2) “Як замовити” (3 кроки + CTA).</p>
+          <p>3) “Відгуки / кейси / приклади” (довіра).</p>
+        </details>
+
+        <details>
+          <summary>Швидкий CTA для Direct <span class="badge">приклади</span></summary>
+          <p>— “Напиши ‘ПІДБІР’ — підберу 3 варіанти за 10 хв”.</p>
+          <p>— “Скинь фото кімнати — підкажу що підійде”.</p>
+          <p>— “Напиши ‘ЦІНА’ — скину прайс/наявність”.</p>
+        </details>
+      </div>
+
+      <!-- TikTok -->
+      <div class="pCard" data-tags="tt">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="video"></i></div>
+            <div class="pTitle">
+              <b>TikTok — профіль + 3 закріпи</b>
+              <div class="pMeta">Ціль: 2–3 відео → перехід у біо → заявка.</div>
+            </div>
+          </div>
+          <div class="pTag">TT</div>
+        </div>
+
+        <div class="pBody">
+          TikTok продає, коли в профілі є <b>чіткий оффер</b> і <b>закріплені відео</b> як “вітрина”.
+        </div>
+
+        <details open>
+          <summary>Оформлення профілю <span class="badge">4 кроки</span></summary>
+          <p>1) Аватар: логотип.</p>
+          <p>2) Імʼя/нік: читабельно, без хаосу.</p>
+          <p>3) Bio: 1 рядок (що + доставка + CTA).</p>
+          <p>4) Link: Telegram/каталог/лендінг (що простіше).</p>
+        </details>
+
+        <details>
+          <summary>3 закріплені відео <span class="badge">супер-важливо</span></summary>
+          <p>1) “Що ми продаємо” (швидка нарізка 7–10 товарів).</p>
+          <p>2) “Як замовити” (3 кроки + CTA).</p>
+          <p>3) “До/Після / реальні приклади” (довіра).</p>
+        </details>
+
+        <details>
+          <summary>Текст на екрані (обовʼязково) <span class="badge">приклади</span></summary>
+          <p>— “ПІДБІР за 10 хв в Telegram”.</p>
+          <p>— “Напиши ‘ЦІНА’ — скину прайс”.</p>
+          <p>— “Доставка по Україні • оплата зручно”.</p>
+        </details>
+
+        <details>
+          <summary>Міні-шаблон відео (15 сек) <span class="badge">конструктор</span></summary>
+          <p>1) Hook (1 сек): “Ремонт без майстрів?”</p>
+          <p>2) 3 кадри товару (8–10 сек).</p>
+          <p>3) Вигода/ціна/факт (2–3 сек).</p>
+          <p>4) CTA (2 сек): “Пиши ‘ПІДБІР’”.</p>
+        </details>
+      </div>
+
+      <!-- Telegram -->
+      <div class="pCard" data-tags="tg">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="send"></i></div>
+            <div class="pTitle">
+              <b>Telegram — канал як “магазин-меню”</b>
+              <div class="pMeta">Ціль: зайшов → бачить меню → обирає → пише менеджеру.</div>
+            </div>
+          </div>
+          <div class="pTag">TG</div>
+        </div>
+
+        <div class="pBody">
+          У Telegram виграє той, у кого є <b>закріп-меню</b> і <b>навігація</b> по товарах.
+        </div>
+
+        <details open>
+          <summary>Структура каналу (мінімум) <span class="badge">3 пункти</span></summary>
+          <p>1) Опис каналу: що продаєш + доставка + CTA.</p>
+          <p>2) Закріп (Pinned): МЕНЮ / КАТАЛОГ / ЯК ЗАМОВИТИ.</p>
+          <p>3) Навігація: хештеги (#категорія) або кнопки/посилання.</p>
+        </details>
+
+        <details>
+          <summary>Як зробити “меню” в закріпі <span class="badge">копіюй</span></summary>
+          <p>— Каталог: #3Dпанелі #пазли #вініл</p>
+          <p>— Умови: Доставка/Оплата/Повернення (коротко)</p>
+          <p>— Як замовити: 1–2–3</p>
+          <p>— Контакт: @username / посилання</p>
+        </details>
+
+        <details>
+          <summary>Формула TG-поста (щоб продавало) <span class="badge">структура</span></summary>
+          <p>1) Заголовок (вигода).</p>
+          <p>2) 3–5 булітів (вигоди/під що підходить).</p>
+          <p>3) Умови: доставка/оплата.</p>
+          <p>4) CTA: “пиши ‘ПІДБІР’”.</p>
+        </details>
+      </div>
+
+      <!-- OLX -->
+      <div class="pCard" data-tags="olx">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="shopping-bag"></i></div>
+            <div class="pTitle">
+              <b>OLX — оголошення як міні-лендінг</b>
+              <div class="pMeta">Ціль: пошук → оголошення → повідомлення/дзвінок.</div>
+            </div>
+          </div>
+          <div class="pTag">OLX</div>
+        </div>
+
+        <div class="pBody">
+          OLX продає через: <b>заголовок</b> + <b>фото 1</b> + <b>опис по блоках</b> + <b>довіра</b>.
+        </div>
+
+        <details open>
+          <summary>Заголовок (формула) <span class="badge">1 рядок</span></summary>
+          <p>[Ключове слово] + [вигода/задача] + [доставка/Україна].</p>
+          <p>Приклад: “3D панелі для стін • швидкий ремонт • доставка по Україні”.</p>
+        </details>
+
+        <details>
+          <summary>Фото (що має бути) <span class="badge">набір</span></summary>
+          <p>1) Преміум-обкладинка (фон + логотип).</p>
+          <p>2) 3–6 реальних фото/прикладів.</p>
+          <p>3) 1 інфо-картинка (розміри/умови/CTA).</p>
+        </details>
+
+        <details>
+          <summary>Опис по блоках <span class="badge">копіюй</span></summary>
+          <p>— Що це: коротко.</p>
+          <p>— Вигоди: 3–5 пунктів.</p>
+          <p>— Характеристики: списком.</p>
+          <p>— Доставка/оплата/повернення.</p>
+          <p>— CTA: “Пишіть ‘ПІДБІР’ — підберу варіанти”.</p>
+        </details>
+      </div>
+
+      <!-- Facebook -->
+      <div class="pCard" data-tags="fb">
+        <div class="pHead">
+          <div class="pName">
+            <div class="pLogo"><i data-lucide="users"></i></div>
+            <div class="pTitle">
+              <b>Facebook — довіра + швидка комунікація</b>
+              <div class="pMeta">Сторінка/Marketplace. Ціль: “живий бізнес” → написали.</div>
+            </div>
+          </div>
+          <div class="pTag">FB</div>
+        </div>
+
+        <div class="pBody">
+          Facebook любить довіру: сторінка з фото, кнопкою “написати”, постом “як замовити” і відгуками.
+        </div>
+
+        <details open>
+          <summary>Мінімум на сторінці <span class="badge">5 пунктів</span></summary>
+          <p>1) Обкладинка + аватар.</p>
+          <p>2) Кнопка “Написати”.</p>
+          <p>3) 5–10 фото/відео товарів.</p>
+          <p>4) Пост “Як замовити” (закріп).</p>
+          <p>5) Пост “Відгуки/кейси”.</p>
+        </details>
+
+        <details>
+          <summary>Marketplace оголошення <span class="badge">як OLX</span></summary>
+          <p>Заголовок + фото 1 (преміум) + опис по блоках + CTA.</p>
+          <p>Формула CTA: “Пишіть ‘ЦІНА’ — скину варіанти/наявність”.</p>
+        </details>
+      </div>
+
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="info"></i>
+        <div>
+          <b>Як обрати, з чого почати</b>
+          <p>
+            Новачку найкраще: <b>Instagram або TikTok</b> (охоплення) + <b>Telegram</b> (меню/каталог).
+            OLX/Facebook можна підключити як додатковий канал.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Шаблони текстів (копіюй)</h2>
+    <div class="sub">Готові формули для біо, “як замовити”, CTA та міні-опису</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="type"></i></div>
+          <div>
+            <b>УТП (біо) — універсальний шаблон</b>
+            <span>1 рядок, який пояснює “що/доставка/підбір”.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="utp">УТП (біо) — шаблон:
+
+[Категорія/товари] для [кімнати/задачі] • доставка по Україні
+Підбір за 10 хв • Напиши “ПІДБІР”</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyUtp" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="route"></i></div>
+          <div>
+            <b>“Як замовити” — 3 кроки</b>
+            <span>Можна ставити в закріп/опис/пост.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="howto">Як замовити (3 кроки):
+
+1) Напиши “ПІДБІР” (або “ЦІНА”)
+2) Скинь розмір/фото (за потреби)
+3) Отримаєш 3 варіанти + ціни → оформимо доставку</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyHow" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="mouse-pointer-click"></i></div>
+          <div>
+            <b>CTA-слова (короткі)</b>
+            <span>Працюють як тригер: що написати в повідомленні.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="cta">CTA-слова:
+
+ПІДБІР
+ЦІНА
+ФОТО
+НАЯВНІСТЬ
+РОЗМІР</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyCta" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="file-text"></i></div>
+          <div>
+            <b>Міні-опис для оголошення (OLX/FB)</b>
+            <span>Коротко і по блоках: вигоди + умови + CTA.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="ad">Опис (шаблон):
+
+✅ Що це: __________________________
+✅ Для чого: ________________________
+✅ Вигоди:
+— ________________________________
+— ________________________________
+— ________________________________
+
+Умови:
+Доставка по Україні • Оплата зручно • Повернення/гарантія
+
+Пишіть “ПІДБІР” — підберу 3 варіанти за 10 хв.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyAd" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Мінімум, який треба зробити сьогодні</b>
+          <p>
+            1) Заповни біо по шаблону. <br>
+            2) Зроби 3 закріпи/меню. <br>
+            3) Додай умови та відгуки. <br>
+            І вітрина вже почне “продавати”.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Практика + позначити як пройдено</h2>
+    <div class="sub">Зроби 1 платформу “ідеально”, інші — базово. Статус збережеться як у попередніх уроках</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="package"></i></div>
+          <div>
+            <b>Практика уроку (що здати)</b>
+            <span>Скопіюй, заповни, виконай.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="result">Результат уроку (здай собі як “готово”):
+
+1) Обрана платформа №1: ______________________
+2) Біо/опис по формулі (УТП + CTA): ✅ / ⬜
+3) Навігація (каталог/хіти/умови/відгуки): ✅ / ⬜
+4) 3 закріпи / меню зроблено: ✅ / ⬜
+   — Хіти/топ
+   — Як замовити (3 кроки)
+   — Відгуки/кейси
+5) Контакт (TG/Viber/WhatsApp) працює: ✅ / ⬜</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyResult" type="button">
+            <i data-lucide="copy"></i> Скопіювати “результат”
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="flag"></i></div>
+          <div>
+            <b>Позначити урок як пройдено</b>
+            <span>Кнопка змінює статус (localStorage).</span>
+          </div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-start; margin-top:12px;">
+          <button class="btn" id="btnDone" type="button">
+            <i data-lucide="check-circle"></i>
+            Позначити як пройдено
+          </button>
+          <button class="btn ghost" id="btnCopyAll" type="button">
+            <i data-lucide="copy"></i>
+            Скопіювати все важливе
+          </button>
+        </div>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+          <span id="doneText">Статус: не пройдено</span>
+        </div>
+
+        <div class="warn" style="margin-top:12px;">
+          <div class="hrow">
+            <i data-lucide="sparkles"></i>
+            <div>
+              <b>Порада</b>
+              <p>
+                Не розмазуйся по 5 платформах одразу.
+                Зроби <b>1 вітрину ідеально</b> — і тільки потім масштабуй.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m4l1";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+  const btnCopyAll = document.getElementById("btnCopyAll");
+
+  // platform filter
+  const goalRow = document.getElementById("goalRow");
+  const platformWrap = document.getElementById("platforms");
+  const cards = Array.from(platformWrap.querySelectorAll(".pCard"));
+
+  // samples
+  const checklist = document.getElementById("checklist");
+  const brief = document.getElementById("brief");
+  const utp = document.getElementById("utp");
+  const howto = document.getElementById("howto");
+  const cta = document.getElementById("cta");
+  const ad = document.getElementById("ad");
+  const result = document.getElementById("result");
+
+  // copy buttons
+  const copyChecklist = document.getElementById("copyChecklist");
+  const copyBrief = document.getElementById("copyBrief");
+  const copyUtp = document.getElementById("copyUtp");
+  const copyHow = document.getElementById("copyHow");
+  const copyCta = document.getElementById("copyCta");
+  const copyAd = document.getElementById("copyAd");
+  const copyResult = document.getElementById("copyResult");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  async function copyText(btn, text){
+    try{
+      await navigator.clipboard.writeText(text.trim());
+      const prev = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        btn.innerHTML = prev;
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  }
+
+  copyChecklist.addEventListener("click", ()=>copyText(copyChecklist, checklist.textContent));
+  copyBrief.addEventListener("click", ()=>copyText(copyBrief, brief.textContent));
+  copyUtp.addEventListener("click", ()=>copyText(copyUtp, utp.textContent));
+  copyHow.addEventListener("click", ()=>copyText(copyHow, howto.textContent));
+  copyCta.addEventListener("click", ()=>copyText(copyCta, cta.textContent));
+  copyAd.addEventListener("click", ()=>copyText(copyAd, ad.textContent));
+  copyResult.addEventListener("click", ()=>copyText(copyResult, result.textContent));
+
+  btnCopyAll.addEventListener("click", ()=>{
+    const big =
+`Золота формула (6 блоків): що/для кого/довіра/навігація/CTA/контакт
+
+Чекліст:
+${checklist.textContent}
+
+ТЗ на вітрину:
+${brief.textContent}
+
+УТП (біо):
+${utp.textContent}
+
+Як замовити:
+${howto.textContent}
+
+CTA-слова:
+${cta.textContent}
+
+Опис оголошення:
+${ad.textContent}
+
+Результат уроку:
+${result.textContent}`.trim();
+
+    copyText(btnCopyAll, big);
+  });
+
+  // Platform filter (highlight)
+  const goalMap = {
+    "all": { want: [] },
+    "ig":  { want: ["ig"] },
+    "tt":  { want: ["tt"] },
+    "tg":  { want: ["tg"] },
+    "olx": { want: ["olx"] },
+    "fb":  { want: ["fb"] }
+  };
+
+  function setGoal(goal){
+    Array.from(goalRow.querySelectorAll(".pill")).forEach(p=>{
+      p.classList.toggle("active", p.dataset.goal === goal);
+    });
+
+    const want = (goalMap[goal] && goalMap[goal].want) ? goalMap[goal].want : [];
+    if(!want.length){
+      cards.forEach(c=>{ c.classList.remove("dim","focus"); });
+      return;
+    }
+
+    cards.forEach(c=>{
+      const tags = (c.dataset.tags || "").split(/\s+/).filter(Boolean);
+      const hit = want.some(w => tags.includes(w));
+      c.classList.toggle("dim", !hit);
+      c.classList.toggle("focus", hit);
+    });
+  }
+
+  goalRow.addEventListener("click", (e)=>{
+    const pill = e.target.closest(".pill");
+    if(!pill) return;
+    setGoal(pill.dataset.goal || "all");
+  });
+
+  setGoal("all");
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
