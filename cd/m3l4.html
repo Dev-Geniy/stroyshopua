@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m3l4 — Інструменти для творчості підприємця | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff4d4d;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:92ch;
+    }
+    .chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .warn{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .warn .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .warn .hrow i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .warn b{font-size:15px}
+    .warn p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .stats{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+    @media (min-width:760px){ .stats{grid-template-columns:1fr 1fr 1fr} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;padding:14px;position:relative;overflow:hidden;
+    }
+    .stat::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .stat small{
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;position:relative;z-index:1;
+    }
+    .stat small i{width:16px;height:16px;color:var(--accent2)}
+    .stat b{
+      display:block;margin-top:8px;font-size:18px;font-weight:900;
+      color:var(--accent2);position:relative;z-index:1;
+    }
+
+    .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--muted);
+      padding:7px 10px;border-radius:999px;
+      font-size:12px;display:inline-flex;align-items:center;gap:7px;
+      cursor:pointer; user-select:none;
+    }
+    .pill i{width:16px;height:16px;color:var(--accent2)}
+    .pill.active{
+      border-color:rgba(255,179,71,.35);
+      background:rgba(255,179,71,.10);
+      color:rgba(245,245,247,.92);
+    }
+
+    .tools{margin-top:14px;display:grid;grid-template-columns:1fr;gap:12px;}
+    @media (min-width:900px){ .tools{grid-template-columns:1fr 1fr} }
+
+    .tCard{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;
+      position:relative; overflow:hidden;
+    }
+    .tCard::after{
+      content:""; position:absolute; inset:-60px;
+      background:radial-gradient(circle at 0 0, rgba(255,122,26,.10), transparent 55%);
+      opacity:.28; pointer-events:none;
+    }
+    .tHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:1;}
+    .tName{display:flex;gap:10px;align-items:flex-start;}
+    .tLogo{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .tLogo i{width:20px;height:20px;color:var(--accent2)}
+    .tTitle b{font-size:15px}
+    .tMeta{margin-top:2px;color:var(--muted);font-size:12.8px;line-height:1.5}
+    .tTag{
+      font-weight:900;color:var(--accent2);
+      font-size:12.5px;white-space:nowrap;position:relative;z-index:1;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+    }
+    .tBody{position:relative;z-index:1;margin-top:10px;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+    .linkbar{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;position:relative;z-index:1;}
+
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;position:relative;z-index:1;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.6px;color:rgba(245,245,247,.92);
+      line-height:1.65;white-space:pre-wrap;
+    }
+
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn.ghost{
+      background:rgba(0,0,0,.20);
+      border:1px dashed rgba(255,255,255,.22);
+      color:rgba(245,245,247,.92);
+      box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    /* filtering */
+    .dim{opacity:.42; filter:saturate(.6); transform:scale(.995); transition:.18s ease;}
+    .focus{outline:1px solid rgba(255,179,71,.25); box-shadow:0 0 0 3px rgba(255,179,71,.06);}
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 3 • Урок 4 — Інструменти для творчості</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Інструменти для творчості підприємця: швидко, красиво, технологічно</h1>
+    <p class="lead">
+      Урок 4 — зберемо твій <b>креатив-стек</b> (набір інструментів) для контенту та “упаковки” бізнесу:
+      дизайн, відео, AI для ідей, озвучка, товарні фото, порядок у файлах і система повторювання.
+      <br><br>
+      Творчість = не “натхнення”. Це <b>процес</b>: ідея → чернетка → преміум-оформлення → публікація → повтор.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="clock"></i> 20–30 хв</div>
+      <div class="chip"><i data-lucide="target"></i> Результат: свій креатив-стек + 1 контент-пак</div>
+      <div class="chip"><i data-lucide="sparkles"></i> Фокус: швидкість + стиль + системність</div>
+    </div>
+
+    <div class="highlight" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Формула “1 ідея → 10 одиниць контенту”</b>
+          <p>
+            Береш 1 тему/товар і переформатовуєш у різні формати: відео, карусель, сторіс, пост, оголошення, FAQ, банер.
+            Так ти не вигоряєш і завжди маєш що постити.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Творчий підхід: як мислить підприємець</h2>
+    <div class="sub">Ти не “вигадуєш шедевр”. Ти будуєш конвеєр: ідея → шаблон → варіації</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="repeat-2"></i></div>
+          <div>
+            <b>Система</b>
+            <span>1 шаблон → 10 варіацій. Не роби кожен раз “з нуля”.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="layers"></i></div>
+          <div>
+            <b>Переформат</b>
+            <span>1 тема → Reels + карусель + TG + OLX. Економиш час.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="scan-eye"></i></div>
+          <div>
+            <b>Стиль</b>
+            <span>Одна палітра, один шрифт, одні плашки, логотип в куті.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Головна помилка</b>
+          <p>
+            Витрачати 2 години на “ідеальний дизайн” без системи. Краще: 30 хв на шаблон + потім 10 швидких варіацій.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Твій креатив-стек: обери рівень</h2>
+    <div class="sub">Натисни рівень — і сторінка підсвітить інструменти, які тобі потрібні</div>
+
+    <div class="pillrow" id="goalRow">
+      <div class="pill active" data-goal="all"><i data-lucide="sparkles"></i> Показати всі</div>
+      <div class="pill" data-goal="start"><i data-lucide="zap"></i> Старт</div>
+      <div class="pill" data-goal="pro"><i data-lucide="crown"></i> Преміум</div>
+      <div class="pill" data-goal="wow"><i data-lucide="wand-2"></i> Вау-tech</div>
+      <div class="pill" data-goal="system"><i data-lucide="list-checks"></i> Система</div>
+    </div>
+
+    <div class="tools" id="tools">
+      <!-- AI: ChatGPT/Gemini -->
+      <div class="tCard" data-tags="start pro wow system">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="bot"></i></div>
+            <div class="tTitle">
+              <b>AI (ChatGPT / Gemini)</b>
+              <div class="tMeta">Ідеї, hooks, сценарії, тексти, оголошення, структури постів.</div>
+            </div>
+          </div>
+          <div class="tTag">AI</div>
+        </div>
+
+        <div class="tBody">
+          Використовуй AI як “креативного директора”: став задачі, давай контекст, отримуй варіанти, відсіюй найкраще.
+        </div>
+
+        <details>
+          <summary>Покроково: як витягувати сильні ідеї <span class="badge">5 кроків</span></summary>
+          <p>1) Напиши контекст: ніша, товар, країна, платформи, стиль, CTA.</p>
+          <p>2) Попроси 30 тем + 30 hooks (гачків).</p>
+          <p>3) Вибери 7–10 тем на тиждень.</p>
+          <p>4) Попроси 5 сценаріїв відео + 5 постів для TG.</p>
+          <p>5) Збережи в папку Week_1 (тексти + сценарії).</p>
+        </details>
+      </div>
+
+      <!-- Canva -->
+      <div class="tCard" data-tags="start pro system">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="layout-template"></i></div>
+            <div class="tTitle">
+              <b>Canva</b>
+              <div class="tMeta">Шаблони, бренд-стиль, каруселі, банери, сторіс, швидкі креативи.</div>
+            </div>
+          </div>
+          <div class="tTag">Дизайн</div>
+        </div>
+
+        <div class="tBody">
+          Твоя сила: зробити 1 “рамку/шаблон” у стилі бренду і просто міняти фото + текст.
+        </div>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.canva.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Canva
+          </a>
+        </div>
+
+        <details>
+          <summary>Покроково: шаблон під 10 креативів <span class="badge">6 кроків</span></summary>
+          <p>1) Create a design → 1080×1350 (4:5) або 1080×1920 (9:16).</p>
+          <p>2) Зроби фон (темний/градієнт) + 1 плашку під заголовок.</p>
+          <p>3) Додай місце під фото товару + логотип в кут.</p>
+          <p>4) Збережи як “Template_01”.</p>
+          <p>5) Дублюй сторінку 10 разів (Duplicate page).</p>
+          <p>6) Міняй фото/текст, експортуй PNG.</p>
+        </details>
+      </div>
+
+      <!-- CapCut -->
+      <div class="tCard" data-tags="start pro system">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="video"></i></div>
+            <div class="tTitle">
+              <b>CapCut</b>
+              <div class="tMeta">Монтаж відео, авто-субтитри, шаблони, швидкі ролики для TikTok/Reels.</div>
+            </div>
+          </div>
+          <div class="tTag">Відео</div>
+        </div>
+
+        <div class="tBody">
+          Робиш коротко: 10–20 сек, 1 думка, субтитри, CTA наприкінці.
+        </div>
+
+        <details>
+          <summary>Покроково: ролик за 15 хв <span class="badge">7 кроків</span></summary>
+          <p>1) New project → додай відео/фото.</p>
+          <p>2) Обріж зайве (залиш “мʼясо”).</p>
+          <p>3) Text → Auto captions → Create.</p>
+          <p>4) Зроби 1 стиль субтитрів (читабельно, не дрібно).</p>
+          <p>5) Додай 1 титр: “Напиши ‘ПІДБІР’ — підберу варіанти”.</p>
+          <p>6) Музика/звук тихо (не перекривай голос).</p>
+          <p>7) Export 1080p.</p>
+        </details>
+      </div>
+
+      <!-- Notion -->
+      <div class="tCard" data-tags="start pro system">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="notebook-text"></i></div>
+            <div class="tTitle">
+              <b>Notion</b>
+              <div class="tMeta">Контент-план, база ідей, чеклісти, календар, “все в одному місці”.</div>
+            </div>
+          </div>
+          <div class="tTag">План</div>
+        </div>
+
+        <div class="tBody">
+          Це твій “мозок”: ідеї не губляться, ти бачиш статуси та прогрес.
+        </div>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.notion.so/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Notion
+          </a>
+        </div>
+
+        <details>
+          <summary>Покроково: контент-база за 10 хв <span class="badge">5 кроків</span></summary>
+          <p>1) Створи сторінку “Контент”.</p>
+          <p>2) Додай Database (таблиця).</p>
+          <p>3) Поля: Дата / Платформа / Тема / Формат / Hook / CTA / Статус / Лінк на файл.</p>
+          <p>4) Статус: Ідея → В роботі → Готово → Опубліковано.</p>
+          <p>5) Щотижня додавай 7–10 рядків і просто виконуй.</p>
+        </details>
+      </div>
+
+      <!-- Photoroom -->
+      <div class="tCard" data-tags="start pro system">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="image"></i></div>
+            <div class="tTitle">
+              <b>Photoroom</b>
+              <div class="tMeta">Товарні фото “як у маркетплейсі”: фон, чистка, тінь, підготовка креативів.</div>
+            </div>
+          </div>
+          <div class="tTag">Фото</div>
+        </div>
+
+        <div class="tBody">
+          Дуже корисно, коли треба швидко зробити “чистий” або “преміум” фон під товар.
+        </div>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://www.photoroom.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Photoroom
+          </a>
+        </div>
+
+        <details>
+          <summary>Покроково: преміум-фото за 5 хв <span class="badge">5 кроків</span></summary>
+          <p>1) Upload фото товару.</p>
+          <p>2) Background remover (фон прибере автоматично).</p>
+          <p>3) Постав фон: темний/градієнт/студійний.</p>
+          <p>4) Додай легку тінь (щоб товар “стояв”).</p>
+          <p>5) Export PNG/JPG (1080–2000px).</p>
+        </details>
+      </div>
+
+      <!-- Adobe Firefly -->
+      <div class="tCard" data-tags="pro wow system">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="sparkles"></i></div>
+            <div class="tTitle">
+              <b>Adobe Firefly</b>
+              <div class="tMeta">Generative Fill/Expand: прибрати зайве, розширити кадр, зробити фон “дорогим”.</div>
+            </div>
+          </div>
+          <div class="tTag">AI Pro</div>
+        </div>
+
+        <div class="tBody">
+          Коли хочеш “преміум” редагування без довгого фотошопу: запит → варіанти → вибір.
+        </div>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://firefly.adobe.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Firefly
+          </a>
+        </div>
+
+        <details>
+          <summary>Покроково: Generative Fill <span class="badge">4 кроки</span></summary>
+          <p>1) Завантаж фото → обери Generative Fill.</p>
+          <p>2) Виділи область (фон/зайвий об’єкт).</p>
+          <p>3) Промт: “premium dark studio background, soft light, orange accents”.</p>
+          <p>4) Обери найкращий варіант → Download.</p>
+        </details>
+      </div>
+
+      <!-- Runway -->
+      <div class="tCard" data-tags="wow pro">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="clapperboard"></i></div>
+            <div class="tTitle">
+              <b>Runway</b>
+              <div class="tMeta">AI-відео: короткі “кінематографічні” вставки, B-roll, фони, стиль.</div>
+            </div>
+          </div>
+          <div class="tTag">Вау</div>
+        </div>
+
+        <div class="tBody">
+          Добре для “ефекту”: 3–6 секундні вставки, які піднімають сприйняття ролика.
+        </div>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://runwayml.com/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити Runway
+          </a>
+        </div>
+
+        <details>
+          <summary>Покроково: вставка у відео <span class="badge">5 кроків</span></summary>
+          <p>1) Обери Text-to-Video або Image-to-Video.</p>
+          <p>2) Напиши короткий промт (стиль + світло + рух камери).</p>
+          <p>3) Згенеруй 3–5 варіантів.</p>
+          <p>4) Вибери найкращий і скачай 5–10 сек.</p>
+          <p>5) Встав у CapCut як B-roll між сценами.</p>
+        </details>
+      </div>
+
+      <!-- ElevenLabs -->
+      <div class="tCard" data-tags="wow pro">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="mic"></i></div>
+            <div class="tTitle">
+              <b>ElevenLabs</b>
+              <div class="tMeta">Озвучка: коли соромишся голосу або треба рівний “профі” звук.</div>
+            </div>
+          </div>
+          <div class="tTag">Voice</div>
+        </div>
+
+        <div class="tBody">
+          Ти можеш зробити 10 роликів з однаковим стилем озвучки і не витрачати час на перезаписи.
+        </div>
+
+        <div class="linkbar">
+          <a class="btn secondary" href="https://elevenlabs.io/" target="_blank" rel="noopener">
+            <i data-lucide="external-link"></i> Відкрити ElevenLabs
+          </a>
+        </div>
+
+        <details>
+          <summary>Покроково: озвучити сценарій <span class="badge">4 кроки</span></summary>
+          <p>1) Встав текст сценарію.</p>
+          <p>2) Обери голос/тон (спокійний, впевнений).</p>
+          <p>3) Згенеруй аудіо і скачай.</p>
+          <p>4) Додай у CapCut (voice-over) + субтитри.</p>
+        </details>
+      </div>
+
+      <!-- Google Drive structure -->
+      <div class="tCard" data-tags="start system">
+        <div class="tHead">
+          <div class="tName">
+            <div class="tLogo"><i data-lucide="folder-tree"></i></div>
+            <div class="tTitle">
+              <b>Порядок у файлах (Drive/PC)</b>
+              <div class="tMeta">Шаблони, тижні, готове. Менше хаосу — більше швидкості.</div>
+            </div>
+          </div>
+          <div class="tTag">Система</div>
+        </div>
+
+        <div class="tBody">
+          Коли порядок — ти робиш контент в 2–3 рази швидше, бо не шукаєш “де воно лежить”.
+        </div>
+
+        <details>
+          <summary>Покроково: структура папок <span class="badge">1 хв</span></summary>
+          <p>Створи папки:</p>
+          <p>— 01_Templates (шаблони Canva, субтитри)</p>
+          <p>— 02_Products (фото/відео товарів)</p>
+          <p>— 03_Video (проєкти/експорти)</p>
+          <p>— 04_Week_1 (готовий пакет на тиждень)</p>
+          <p>— 05_Published (архів)</p>
+        </details>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="info"></i>
+        <div>
+          <b>Порада</b>
+          <p>
+            Якщо ти новачок — почни з <b>Canva + CapCut + Notion + AI</b>. Це вже дає “профі” результат.
+            Вау-інструменти підключай, коли є стабільний контент-ритм.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Промти: творчі рішення (копіюй)</h2>
+    <div class="sub">Готові промти для фото, відео, тексту і “дорогої подачі”</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="image"></i></div>
+          <div>
+            <b>Промт: преміум-фон для товару (AI)</b>
+            <span>Підходить для Firefly/інших редакторів з generative fill.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pPhoto">Заміни фон позаду товару на преміальний студійний фон:
+— темний графіт/чорний з м’яким світлом
+— легкі помаранчеві акценти (не багато)
+— реалістична тінь під товаром
+— без тексту, без водяних знаків
+— чисто і дорого, як для каталогу</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyPhoto" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="video"></i></div>
+          <div>
+            <b>Промт: B-roll вставка (Runway)</b>
+            <span>Коротка “дорога” сцена 5–8 сек для ролика.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pBroll">Product showcase, premium studio lighting, dark graphite background with warm orange accents,
+soft reflections, cinematic, shallow depth of field, slow camera push-in, clean, 9:16, no text</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyBroll" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="zap"></i></div>
+          <div>
+            <b>Промт: 30 ідей “не як у всіх”</b>
+            <span>Креативні кути подачі під твої товари/нішy.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pIdeas">Згенеруй 30 креативних ідей контенту для ніші декоративних будматеріалів.
+Хочу НЕ банально: порівняння, міфи, “помилки”, до/після, нестандартні рішення, підбір під задачі, лайфхаки.
+Для кожної ідеї: формат (відео/карусель/пост), hook (1 рядок), що показати в кадрі, CTA.
+Мова: українська. Без води.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyIdeas" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="mouse-pointer-click"></i></div>
+          <div>
+            <b>Промт: текст для креативу (коротко)</b>
+            <span>Потім краще перенести в Canva і перевірити граматику.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pText">Зроби 10 коротких варіантів УТП (до 7 слів) для товару [назва].
+Стиль: просто, конкретно, вигода. Без води.
+Додай 5 варіантів CTA (2–3 слова) типу “ПІДБІР”, “ЦІНА”, “ФОТО”.
+Мова: українська.</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyText" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn" style="margin-top:14px;">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Про граматику</b>
+          <p>
+            Якщо AI дав помилки в коротких фразах — це нормально. Фінальний текст на креатив краще нанести в Canva і підправити.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Практика: зроби 1 контент-пак (шаблон)</h2>
+    <div class="sub">1 товар або 1 категорія → фото + відео + текст + план. Це твій “перший пакет”</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="package"></i></div>
+          <div>
+            <b>Контент-пак (1 тема → 10 форматів)</b>
+            <span>Скопіюй і заповни під себе. Потім просто повторюй щотижня.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="pack">Контент-пак (Week_1) — шаблон:
+
+Тема/товар: ________________________
+Ціль: заявки / підбір / продаж
+
+1) Відео 9:16 (10–20 сек)
+— Hook: ________________________
+— 3 кадри що показати: 1) ___ 2) ___ 3) ___
+— CTA: “Напиши ‘ПІДБІР’…”
+
+2) Креатив 4:5 (пост)
+— Заголовок (до 7 слів): ________________________
+— 2 вигоди (✅): ________________________
+— CTA (2–3 слова): ________________________
+
+3) Telegram-пост
+— Заголовок: ________________________
+— 6–10 рядків + CTA: ________________________
+
+4) OLX (якщо треба)
+— Заголовок: ________________________
+— Опис по блоках: ________________________
+
+Файли:
+— /04_Week_1/ (папка)
+— Відео.mp4 + Креатив1.png + Тексти.txt</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyPack" type="button">
+            <i data-lucide="copy"></i> Скопіювати шаблон
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="clipboard-check"></i></div>
+          <div>
+            <b>Чекліст уроку</b>
+            <span>Мінімум, який робить тебе швидким і системним.</span>
+          </div>
+        </div>
+
+        <div class="sample" id="checklist">Чекліст (М3 Урок 4):
+
+1) Я обрав базовий стек: Canva + CapCut + Notion + AI — ✅ / ⬜
+2) Зробив структуру папок (Templates/Products/Week_1) — ✅ / ⬜
+3) Зробив 1 шаблон в Canva (пост/сторіс) — ✅ / ⬜
+4) Зробив 1 шаблон субтитрів в CapCut — ✅ / ⬜
+5) Зробив 1 преміум-фото товару (фон + тінь) — ✅ / ⬜
+6) Зробив 1 відео 9:16 (10–20 сек) — ✅ / ⬜
+7) Зробив 1 TG-пост + CTA — ✅ / ⬜
+8) Зібрав папку Week_1 (готове) — ✅ / ⬜</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyChecklist" type="button">
+            <i data-lucide="copy"></i> Скопіювати чекліст
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Результат уроку: що здати</h2>
+    <div class="sub">Фінальна контрольна точка — щоб було видно прогрес</div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="check-circle-2"></i>
+        <div>
+          <b>Що має бути готово після уроку</b>
+          <p>
+            1) Обраний креатив-стек (мінімум 3 інструменти).<br>
+            2) 1 шаблон Canva + 1 стиль субтитрів CapCut.<br>
+            3) 1 контент-пак (відео + 1–2 креативи + тексти) у папці Week_1.<br>
+            4) Список 10 ідей на наступний тиждень.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid two" style="margin-top:14px;">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="file-text"></i></div>
+          <div>
+            <b>Шаблон “10 ідей на тиждень”</b>
+            <span>Щоб ніколи не було “що постити?”</span>
+          </div>
+        </div>
+
+        <div class="sample" id="ideas10">10 ідей на тиждень (шаблон):
+
+1) Помилка при виборі: ________________________
+2) До/після: ________________________
+3) Міф/правда: ________________________
+4) Підбір під задачу: ________________________
+5) Огляд товару: ________________________
+6) Порівняння 2 варіантів: ________________________
+7) FAQ: доставка/оплата/розміри: ________________________
+8) Реальні фото/відео: ________________________
+9) “Секрет” монтажу/встановлення: ________________________
+10) Кейc/відгук: ________________________</div>
+
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyIdeas10" type="button">
+            <i data-lucide="copy"></i> Скопіювати
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="flag"></i></div>
+          <div>
+            <b>Позначити урок як пройдено</b>
+            <span>Статус зберігається в localStorage, як у попередніх уроках.</span>
+          </div>
+        </div>
+
+        <div class="actions" style="justify-content:flex-start; margin-top:12px;">
+          <button class="btn" id="btnDone" type="button">
+            <i data-lucide="check-circle"></i>
+            Позначити як пройдено
+          </button>
+          <button class="btn ghost" id="btnCopyAll" type="button">
+            <i data-lucide="copy"></i>
+            Скопіювати все важливе
+          </button>
+        </div>
+
+        <div style="margin-top:12px;color:var(--muted);font-size:13px;">
+          <span id="doneText">Статус: не пройдено</span>
+        </div>
+
+        <div class="warn" style="margin-top:12px;">
+          <div class="hrow">
+            <i data-lucide="sparkles"></i>
+            <div>
+              <b>Порада</b>
+              <p>
+                Зроби 1 раз шаблони — і далі твоя творчість стає швидкою.
+                У бізнесі виграє не “найталановитіший”, а той, хто <b>регулярно робить</b>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m3l4";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+  const btnCopyAll = document.getElementById("btnCopyAll");
+
+  // Filter
+  const goalRow = document.getElementById("goalRow");
+  const toolsWrap = document.getElementById("tools");
+  const toolCards = Array.from(toolsWrap.querySelectorAll(".tCard"));
+
+  // Samples
+  const pPhoto = document.getElementById("pPhoto");
+  const pBroll = document.getElementById("pBroll");
+  const pIdeas = document.getElementById("pIdeas");
+  const pText = document.getElementById("pText");
+  const pack = document.getElementById("pack");
+  const checklist = document.getElementById("checklist");
+  const ideas10 = document.getElementById("ideas10");
+
+  // Copy buttons
+  const copyPhoto = document.getElementById("copyPhoto");
+  const copyBroll = document.getElementById("copyBroll");
+  const copyIdeas = document.getElementById("copyIdeas");
+  const copyText = document.getElementById("copyText");
+  const copyPack = document.getElementById("copyPack");
+  const copyChecklist = document.getElementById("copyChecklist");
+  const copyIdeas10 = document.getElementById("copyIdeas10");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+
+    if(window.lucide) lucide.createIcons();
+  }
+
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  async function copyTextToClipboard(btn, text){
+    try{
+      await navigator.clipboard.writeText(text.trim());
+      const prev = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        btn.innerHTML = prev;
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  }
+
+  copyPhoto.addEventListener("click", ()=>copyTextToClipboard(copyPhoto, pPhoto.textContent));
+  copyBroll.addEventListener("click", ()=>copyTextToClipboard(copyBroll, pBroll.textContent));
+  copyIdeas.addEventListener("click", ()=>copyTextToClipboard(copyIdeas, pIdeas.textContent));
+  copyText.addEventListener("click", ()=>copyTextToClipboard(copyText, pText.textContent));
+  copyPack.addEventListener("click", ()=>copyTextToClipboard(copyPack, pack.textContent));
+  copyChecklist.addEventListener("click", ()=>copyTextToClipboard(copyChecklist, checklist.textContent));
+  copyIdeas10.addEventListener("click", ()=>copyTextToClipboard(copyIdeas10, ideas10.textContent));
+
+  btnCopyAll.addEventListener("click", ()=>{
+    const big =
+`Промт: преміум-фон для товару
+${pPhoto.textContent}
+
+Промт: B-roll вставка (Runway)
+${pBroll.textContent}
+
+Промт: 30 ідей “не як у всіх”
+${pIdeas.textContent}
+
+Промт: УТП + CTA (коротко)
+${pText.textContent}
+
+Контент-пак (Week_1)
+${pack.textContent}
+
+Чекліст уроку
+${checklist.textContent}
+
+10 ідей на тиждень
+${ideas10.textContent}`.trim();
+
+    copyTextToClipboard(btnCopyAll, big);
+  });
+
+  // Filtering tools
+  const goalMap = {
+    "all":    { want: [] },
+    "start":  { want: ["start"] },
+    "pro":    { want: ["pro"] },
+    "wow":    { want: ["wow"] },
+    "system": { want: ["system"] }
+  };
+
+  function setGoal(goal){
+    Array.from(goalRow.querySelectorAll(".pill")).forEach(p=>{
+      p.classList.toggle("active", p.dataset.goal === goal);
+    });
+
+    const want = (goalMap[goal] && goalMap[goal].want) ? goalMap[goal].want : [];
+    if(!want.length){
+      toolCards.forEach(c=>{ c.classList.remove("dim","focus"); });
+      return;
+    }
+
+    toolCards.forEach(c=>{
+      const tags = (c.dataset.tags || "").split(/\s+/).filter(Boolean);
+      const hit = want.some(w => tags.includes(w));
+      c.classList.toggle("dim", !hit);
+      c.classList.toggle("focus", hit);
+    });
+  }
+
+  goalRow.addEventListener("click", (e)=>{
+    const pill = e.target.closest(".pill");
+    if(!pill) return;
+    setGoal(pill.dataset.goal || "all");
+  });
+
+  setGoal("all");
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
