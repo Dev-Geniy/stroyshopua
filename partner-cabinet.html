@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Особистий кабінет партнера | Samostroy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 18px 40px rgba(0,0,0,.55);
+      --r:18px;
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --good:#5ce3a0;
+      --danger:#ff4e6d;
+
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+      --glass:rgba(255,255,255,.04);
+
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 0 0, rgba(255,179,71,.12), transparent 55%),
+        radial-gradient(circle at 90% 10%, rgba(106,167,255,.08), transparent 50%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:18px}
+
+    /* ===== Topbar ===== */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(5,5,9,.66);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar .wrap{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; min-width:0;
+    }
+    .logo{
+      width:42px; height:42px; border-radius:16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      display:grid; place-items:center;
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+      flex:0 0 auto;
+      position:relative; overflow:hidden;
+    }
+    .logo::after{
+      content:""; position:absolute; inset:-40px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,179,71,.20), transparent 55%);
+      pointer-events:none;
+    }
+    .logo i{width:20px;height:20px;color:var(--accent2); position:relative; z-index:1}
+    .brandTxt{display:flex; flex-direction:column; line-height:1.05; min-width:0}
+    .brandTxt small{
+      color:var(--muted); font-size:11.5px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .brandTxt b{
+      font-size:14.5px; font-weight:900;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .topActions{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--ink);
+      border-radius:999px;
+      padding:10px 13px;
+      font-weight:900;
+      font-size:13px;
+      display:inline-flex; align-items:center; gap:8px;
+      cursor:pointer;
+      text-decoration:none;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.05)}
+    .btn i{width:18px;height:18px}
+    .btn.primary{
+      background: var(--grad);
+      color:#0b0b10;
+      border:none;
+      box-shadow:0 16px 30px rgba(0,0,0,.35);
+    }
+    .btn.primary:hover{transform: translateY(-1px) scale(1.01)}
+    .btn.ghost{background:transparent}
+    .btn.tg i{color:#6aa7ff}
+
+    /* ===== Hero ===== */
+    .hero{
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background: rgba(17,19,28,.75);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::after{
+      content:""; position:absolute; inset:-40px;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(255,179,71,.18), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(106,167,255,.10), transparent 50%);
+      pointer-events:none;
+    }
+    .heroIn{
+      position:relative; z-index:1;
+      padding:18px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      align-items:center;
+    }
+    @media (max-width: 900px){
+      .heroIn{grid-template-columns:1fr}
+    }
+    .hero h1{
+      margin:0;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .hero p{
+      margin:10px 0 0;
+      color: rgba(245,245,247,.88);
+      line-height:1.75;
+      max-width: 85ch;
+      font-size:14.5px;
+    }
+    .heroBadges{
+      display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:7px;
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size:12px;
+    }
+    .badge i{width:16px;height:16px;color:var(--accent2)}
+    .heroCard{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      border-radius:18px;
+      padding:14px;
+    }
+    .heroCard b{
+      display:flex; align-items:center; gap:8px;
+      font-weight:900; font-size:13.5px;
+    }
+    .heroCard b i{width:16px;height:16px;color:var(--accent2)}
+    .heroCard ul{
+      margin:10px 0 0;
+      padding-left:18px;
+      color: rgba(245,245,247,.90);
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    /* ===== Section head ===== */
+    .section{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background: rgba(17,19,28,.70);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .section::after{
+      content:""; position:absolute; inset:-40px;
+      background: radial-gradient(circle at 0 0, rgba(255,179,71,.12), transparent 55%);
+      pointer-events:none;
+    }
+    .sectionIn{position:relative; z-index:1; padding:16px}
+    .head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .head h2{
+      margin:0;
+      font-size:18px;
+      font-weight:900;
+    }
+    .head p{
+      margin:0;
+      color: var(--muted);
+      font-size:13.3px;
+      line-height:1.6;
+      max-width: 90ch;
+    }
+
+    /* ===== Categories ===== */
+    .catsDesktop{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 980px){
+      .catsDesktop{grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 680px){
+      .catsDesktop{display:none}
+    }
+
+    .catsMobile{
+      display:none;
+      gap:8px;
+      overflow:auto;
+      padding-bottom:8px;
+      -webkit-overflow-scrolling:touch;
+    }
+    .catsMobile::-webkit-scrollbar{height:6px}
+    .catsMobile::-webkit-scrollbar-thumb{background: rgba(255,255,255,.12); border-radius:999px}
+    @media (max-width: 680px){
+      .catsMobile{display:flex}
+    }
+
+    .catCard{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      border-radius:18px;
+      overflow:hidden;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      min-height: 132px;
+      position:relative;
+    }
+    .catCard:hover{transform: translateY(-2px); border-color: rgba(255,179,71,.35)}
+    .catArt{
+      height:88px;
+      position:relative;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,179,71,.22), transparent 55%),
+        radial-gradient(circle at 85% 30%, rgba(106,167,255,.12), transparent 50%),
+        linear-gradient(135deg, rgba(255,122,26,.18), rgba(0,0,0,.0));
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .catArt::after{
+      content:""; position:absolute; inset:-80px;
+      background: conic-gradient(from 200deg, rgba(255,179,71,.0), rgba(255,179,71,.12), rgba(106,167,255,.10), rgba(255,179,71,.0));
+      opacity:.7;
+      transform: rotate(0deg);
+      animation: spin 14s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .catArt i{
+      width:34px;height:34px;
+      color: var(--accent2);
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
+      position:relative; z-index:1;
+    }
+    .catName{
+      padding:10px 12px 12px;
+      font-weight:900;
+      font-size:14px;
+      line-height:1.2;
+    }
+    .catMeta{
+      padding:0 12px 12px;
+      color: var(--muted);
+      font-size:12px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 9px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background: rgba(255,255,255,.03);
+      font-size:11.5px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .pill i{width:14px;height:14px;color:rgba(255,179,71,.9)}
+
+    /* mobile chips */
+    .catChip{
+      flex:0 0 auto;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      color: var(--ink);
+      border-radius:999px;
+      padding:9px 12px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px;
+      user-select:none;
+      transition: background .15s ease, transform .15s ease, border-color .15s ease;
+      white-space:nowrap;
+    }
+    .catChip:hover{transform: translateY(-1px); background: rgba(255,255,255,.05)}
+    .catChip i{width:16px;height:16px;color:var(--accent2)}
+    .catChip.active{
+      background: rgba(255,122,26,.16);
+      border-color: rgba(255,179,71,.32);
+    }
+
+    /* ===== Loader ===== */
+    .loaderRow{
+      margin-top:12px;
+      display:flex; align-items:center; gap:10px;
+      color: var(--muted);
+      font-size:13px;
+    }
+    .spinner{
+      width:18px;height:18px; border-radius:50%;
+      border:2px solid rgba(255,255,255,.18);
+      border-top-color: rgba(255,179,71,.9);
+      animation: spin .9s linear infinite;
+    }
+    .hide{display:none!important}
+
+    /* ===== After catalog sections ===== */
+    .grid3{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width: 980px){
+      .grid3{grid-template-columns:1fr}
+    }
+    .bigCard{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      border-radius:22px;
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .bigCard::after{
+      content:""; position:absolute; inset:-60px;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,179,71,.16), transparent 55%),
+        radial-gradient(circle at 90% 30%, rgba(106,167,255,.10), transparent 55%);
+      pointer-events:none;
+    }
+    .bigCardIn{position:relative; z-index:1}
+    .mega{
+      margin:0;
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .bigDesc{
+      margin:10px 0 0;
+      color: rgba(245,245,247,.88);
+      line-height:1.7;
+      font-size:14px;
+    }
+    .bigCard .btn{margin-top:12px}
+
+    .infoGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    @media (max-width: 980px){
+      .infoGrid{grid-template-columns:1fr}
+    }
+    .info{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius:18px;
+      padding:12px;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .info i{width:18px;height:18px;color:var(--accent2); margin-top:1px}
+    .info b{display:block; font-size:13.2px; font-weight:900}
+    .info span{display:block; color:var(--muted); font-size:12.5px; line-height:1.55; margin-top:3px}
+
+    /* ===== Modal (full screen) ===== */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+      z-index:90;
+    }
+    .modal{
+      position:fixed; inset:10px;
+      z-index:100;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(12,13,18,.86);
+      box-shadow: 0 26px 70px rgba(0,0,0,.72);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    @media (max-width: 680px){
+      .modal{inset:0; border-radius:0}
+    }
+
+    .modalTop{
+      padding:12px 12px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .modalTitle{
+      display:flex; align-items:center; gap:10px; min-width:0;
+    }
+    .modalTitle .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: var(--accent2);
+      box-shadow: 0 0 0 6px rgba(255,179,71,.14);
+      flex:0 0 auto;
+    }
+    .modalTitle b{
+      font-weight:900;
+      font-size:14.8px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      max-width: 52vw;
+    }
+    .modalTitle small{color:var(--muted); font-size:12px}
+
+    .modalTools{
+      display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    }
+    .field{
+      display:flex; align-items:center; gap:8px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      border-radius:999px;
+      padding:9px 11px;
+      color: var(--muted);
+    }
+    .field i{width:16px;height:16px;color:rgba(255,179,71,.9)}
+    .field input{
+      border:none; outline:none; background:transparent;
+      color: var(--ink);
+      font-weight:700;
+      font-size:13px;
+      width: 210px;
+      max-width: 46vw;
+    }
+    .field select{
+      border:none; outline:none; background:transparent;
+      color: var(--ink);
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+    }
+
+    .iconBtn{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color: var(--ink);
+      border-radius:14px;
+      padding:10px 11px;
+      cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight:900;
+      font-size:13px;
+      user-select:none;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .iconBtn:hover{transform: translateY(-1px); background: rgba(255,255,255,.05); border-color: rgba(255,179,71,.35)}
+    .iconBtn i{width:18px;height:18px;color:var(--accent2)}
+    .iconBtn.danger i{color: var(--danger)}
+
+    .modalBody{
+      padding:12px;
+      overflow:auto;
+      flex:1;
+    }
+
+    .prodGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 980px){
+      .prodGrid{grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 640px){
+      .prodGrid{grid-template-columns: 1fr}
+    }
+
+    .pCard{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+      position:relative;
+      transform: translateY(6px);
+      opacity:0;
+      transition: transform .25s ease, opacity .25s ease, border-color .15s ease;
+    }
+    .pCard.show{transform: translateY(0); opacity:1}
+    .pCard:hover{border-color: rgba(255,179,71,.30)}
+
+    .pTop{
+      padding:10px 10px 8px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .pTitle{
+      font-weight:900;
+      font-size:13.5px;
+      line-height:1.25;
+      margin:0;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .pCopyMini{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      border-radius:12px;
+      padding:8px;
+      cursor:pointer;
+      flex:0 0 auto;
+    }
+    .pCopyMini i{width:18px;height:18px;color:var(--accent2)}
+    .pCopyMini:hover{border-color: rgba(255,179,71,.35)}
+    .pImg{
+      width:100%;
+      aspect-ratio: 16/10;
+      background: rgba(255,255,255,.03);
+      border-top:1px solid rgba(255,255,255,.08);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:block;
+      object-fit:cover;
+    }
+
+    .pBottom{padding:10px}
+    .pRow{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .pPrice{
+      font-weight:900;
+      font-size:14px;
+      color: rgba(245,245,247,.95);
+    }
+    .pSub{
+      margin-top:8px;
+      color: rgba(245,245,247,.78);
+      font-size:12.8px;
+      line-height:1.6;
+      display:-webkit-box;
+      -webkit-line-clamp:3; /* 2-3 строки */
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height: 60px;
+    }
+    .pBadge{
+      position:absolute;
+      left:10px; top:10px;
+      padding:6px 8px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:11px;
+      letter-spacing:.2px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.38);
+      color: var(--accent2);
+      display:none;
+    }
+    .pCard.sale .pBadge{display:inline-flex}
+
+    .pMeta{
+      margin-top:8px;
+      display:flex; gap:8px; flex-wrap:wrap;
+      color: var(--muted);
+      font-size:11.8px;
+    }
+    .chipMini{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:6px 8px;
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+
+    .modalFoot{
+      padding:12px;
+      border-top:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .muted{color:var(--muted); font-size:12.5px}
+
+    /* ===== Toast ===== */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(0,0,0,.78);
+      border:1px solid rgba(255,255,255,.14);
+      color: var(--ink);
+      padding:10px 12px;
+      border-radius:14px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.55);
+      z-index:200;
+      opacity:0;
+      transition: opacity .18s ease, transform .18s ease;
+      font-weight:900;
+      font-size:13px;
+      pointer-events:none;
+      max-width: min(520px, 92vw);
+      text-align:center;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
+
+    /* ===== Skeleton cards (while loading) ===== */
+    .skeletonGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 980px){.skeletonGrid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width: 680px){.skeletonGrid{grid-template-columns:1fr}}
+    .sk{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.16);
+      border-radius:18px;
+      overflow:hidden;
+      position:relative;
+    }
+    .sk::after{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      transform: translateX(-100%);
+      animation: shimmer 1.1s linear infinite;
+    }
+    @keyframes shimmer{to{transform: translateX(100%)}}
+    .sk .a{height:88px; background: rgba(255,255,255,.03); border-bottom:1px solid rgba(255,255,255,.06)}
+    .sk .b{height:44px; margin:10px; border-radius:12px; background: rgba(255,255,255,.04)}
+    .sk .c{height:14px; margin:0 10px 12px; border-radius:999px; background: rgba(255,255,255,.03)}
+  </style>
+</head>
+
+<body>
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo"><i data-lucide="sparkles"></i></div>
+        <div class="brandTxt">
+          <small>Samostroy • Partner Hub</small>
+          <b>Особистий кабінет партнера</b>
+        </div>
+      </div>
+
+      <div class="topActions">
+        <a class="btn" href="/tools/CGPRO.html"><i data-lucide="wand-2"></i> CGPRO</a>
+        <button class="btn tg" id="tgBtn"><i data-lucide="send"></i> Telegram</button>
+        <a class="btn primary" href="https://samostroy.shop" target="_blank" rel="noopener"><i data-lucide="globe"></i> Samostroy.shop</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="heroIn">
+        <div>
+          <h1>Каталог з копіюванням: заголовок • ціна • опис</h1>
+          <p>
+            Обирай категорію — відкриється модальне вікно на весь екран.
+            У кожному товарі є окремі кнопки копіювання для заголовка, ціни та повного опису (хоч показуємо тільки 2–3 рядки).
+          </p>
+          <div class="heroBadges">
+            <span class="badge"><i data-lucide="layers"></i> Категорії з XML</span>
+            <span class="badge"><i data-lucide="copy"></i> Копіювання 1 кліком</span>
+            <span class="badge"><i data-lucide="search"></i> Пошук у модалці</span>
+            <span class="badge"><i data-lucide="arrow-up-down"></i> Сортування</span>
+          </div>
+        </div>
+
+        <div class="heroCard">
+          <b><i data-lucide="rocket"></i> Швидкий сценарій</b>
+          <ul>
+            <li>Вибрав категорію</li>
+            <li>Відкрив товар</li>
+            <li>Скопіював заголовок + ціну + опис</li>
+            <li>Вставив у оголошення / маркетплейс</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catalog -->
+    <section class="section" id="catalog">
+      <div class="sectionIn">
+        <div class="head">
+          <div>
+            <h2>Каталог товарів по категоріях</h2>
+            <p>ПК: 3 “картинки” в ряд. Моб: тільки назви категорій в ряд (скролл).</p>
+          </div>
+          <div class="loaderRow" id="catalogLoader">
+            <span class="spinner"></span>
+            <span>Завантажуємо товари з <b>products.xml</b>…</span>
+          </div>
+        </div>
+
+        <!-- Desktop: 3 cards row -->
+        <div class="catsDesktop" id="catsDesktop"></div>
+
+        <!-- Mobile: name chips row -->
+        <div class="catsMobile" id="catsMobile"></div>
+
+        <!-- skeleton while loading -->
+        <div class="skeletonGrid" id="catsSkeleton" style="margin-top:12px">
+          <div class="sk"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+          <div class="sk"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+          <div class="sk"><div class="a"></div><div class="b"></div><div class="c"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- After catalog: Boards / Marketplaces / Conditions -->
+    <section class="section">
+      <div class="sectionIn">
+        <div class="head">
+          <div>
+            <h2>Інструменти та умови</h2>
+            <p>Після каталогу — швидкі переходи + блок “Умови співпраці” з інфографікою.</p>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <div class="bigCard">
+            <div class="bigCardIn">
+              <h3 class="mega">Дошки оголошень</h3>
+              <p class="bigDesc">Список платформ + рекомендації, як викладати оголошення, щоб отримувати заявки.</p>
+              <a class="btn primary" href="/tools/boards.html"><i data-lucide="megaphone"></i> Перейти</a>
+            </div>
+          </div>
+
+          <div class="bigCard">
+            <div class="bigCardIn">
+              <h3 class="mega">Маркетплейси</h3>
+              <p class="bigDesc">Збірка маркетплейсів України + підказки по підключенню та швидкому старту.</p>
+              <a class="btn primary" href="/tools/marketplaces.html"><i data-lucide="store"></i> Перейти</a>
+            </div>
+          </div>
+
+          <div class="bigCard">
+            <div class="bigCardIn">
+              <h3 class="mega">Умови співпраці</h3>
+              <p class="bigDesc">Логістика, відправки, дохідність та доставка — коротко і наочно.</p>
+
+              <div class="infoGrid">
+                <div class="info">
+                  <i data-lucide="map-pin"></i>
+                  <div>
+                    <b>Поставки</b>
+                    <span>Склади: <b>м. Дніпро</b> та <b>м. Вінниця</b>. Швидке комплектування замовлень.</span>
+                  </div>
+                </div>
+
+                <div class="info">
+                  <i data-lucide="percent"></i>
+                  <div>
+                    <b>Проценти доходу</b>
+                    <span>Партнерська націнка залежить від категорії та об’єму. Орієнтир: <b>10–35%</b>.</span>
+                  </div>
+                </div>
+
+                <div class="info">
+                  <i data-lucide="truck"></i>
+                  <div>
+                    <b>Доставка</b>
+                    <span>Відправка: <b>Нова Пошта</b> та <b>Укрпошта</b>. Пакування та маркування під відправку.</span>
+                  </div>
+                </div>
+
+                <div class="info">
+                  <i data-lucide="shield-check"></i>
+                  <div>
+                    <b>Підтримка</b>
+                    <span>Менеджер допоможе з підбором, фото/описами, та оптимізацією оголошень.</span>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn" id="copyTermsBtn"><i data-lucide="copy"></i> Скопіювати умови текстом</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Fullscreen Category Modal -->
+  <div class="overlay hide" id="modalOverlay"></div>
+  <div class="modal hide" id="catModal" role="dialog" aria-modal="true" aria-label="Категорія">
+    <div class="modalTop">
+      <div class="modalTitle">
+        <span class="dot"></span>
+        <div>
+          <b id="modalCatName">Категорія</b>
+          <div><small id="modalCatCount">0 товарів</small></div>
+        </div>
+      </div>
+
+      <div class="modalTools">
+        <div class="field">
+          <i data-lucide="search"></i>
+          <input id="modalSearch" placeholder="Пошук у цій категорії…" />
+        </div>
+
+        <div class="field">
+          <i data-lucide="arrow-up-down"></i>
+          <select id="modalSort">
+            <option value="default">Сортування: як є</option>
+            <option value="price_asc">Ціна ↑</option>
+            <option value="price_desc">Ціна ↓</option>
+            <option value="title_asc">Назва A→Я</option>
+            <option value="title_desc">Назва Я→A</option>
+          </select>
+        </div>
+
+        <button class="iconBtn danger" id="modalClose"><i data-lucide="x"></i> Закрити</button>
+      </div>
+    </div>
+
+    <div class="modalBody">
+      <div class="loaderRow" id="modalLoader">
+        <span class="spinner"></span>
+        <span>Готуємо товари…</span>
+      </div>
+
+      <div class="prodGrid" id="prodGrid"></div>
+    </div>
+
+    <div class="modalFoot">
+      <div class="muted" id="modalHint">
+        Підказка: кнопка копіювання в описі копіює <b>повний текст</b>, навіть якщо видно лише 2–3 рядки.
+      </div>
+      <button class="iconBtn" id="loadMoreBtn"><i data-lucide="plus"></i> Показати ще</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Скопійовано ✅</div>
+
+  <script>
+    /* ============================================================
+      1) НАСТРОЙКИ
+    ============================================================ */
+    const TELEGRAM_USERNAME = 'manager_samostroy_shop';
+    const XML_FEED_URL = 'products.xml';
+
+    // куда ведут кнопки
+    const BOARDS_URL = '/tools/boards.html';
+    const MARKETPLACES_URL = '/tools/marketplaces.html';
+
+    /* ============================================================
+      2) КАТЕГОРИИ ПО КЛЮЧЕВЫМ СЛОВАМ (твой массив)
+    ============================================================ */
+    const CATEGORY_KEYWORDS = [
+      { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D', 'Декоративна 3D панель'] },
+      { name: 'ПВХ панелі і плити', keywords: ['ПВХ панель', 'ПВХ плита', 'ПВХ'] },
+      { name: 'Стенові панелі', keywords: ['Панель стінова', 'Панель-рейка', 'Панель рейка'] },
+
+      { name: 'Покриття вінілове', keywords: ['Покриття вінілове самоклеюче'] },
+
+      { name: 'Плитка', keywords: ['Вінілова плитка', 'Вінілова плита', 'ПВХ плитка', 'Поліуретанова плитка', 'Алюмінієва плитка', 'LVT плитка', 'Плитка під ковролін'] },
+      { name: 'Плитка вінілова', keywords: ['Вінілова плитка', 'Вінілова плита'] },
+      { name: 'ПВХ плитка', keywords: ['ПВХ плитка'] },
+      { name: 'Поліуретанова плитка', keywords: ['Поліуретанова плитка'] },
+      { name: 'Алюмінієва плитка', keywords: ['Алюмінієва плитка'] },
+      { name: 'LVT плитка', keywords: ['LVT плитка'] },
+      { name: 'Плитка під ковролін', keywords: ['плитка під ковролін'] },
+
+      { name: 'PET плитка', keywords: ['Стінова PET плитка', 'PET мозаіка', 'PET плитка у рулоні'] },
+      { name: 'PET мозаіка', keywords: ['PET мозаіка'] },
+      { name: 'PET плитка у рулоні', keywords: ['PET плитка у рулоні'] },
+      { name: 'Профілі та декор', keywords: ['Профіль', 'Рейка декоративна', 'Молдинг'] },
+
+      { name: 'Плінтуси', keywords: ['Плінтус РР', 'Плінтус вініловий', 'Плінтус'] },
+
+      { name: 'Самоклеюча плівка', keywords: ['Плівка самоклеюча', 'Плівка', 'Плівка віконна'] },
+
+      { name: 'Шпалери', keywords: ['Шпалери'] },
+      { name: 'Теплі шпалери', keywords: ['Теплі шпалери'] },
+
+      { name: 'Мозаїка з декоративного скла', keywords: ['Мозаїка з декоративного скла'] },
+
+      { name: 'Підлогове вінілове покриття', keywords: ['Вінілове покриття', 'Напольное виниловое покрытие'] },
+      { name: 'Покриття вінілове самоклеюче 3D рейки', keywords: ['Покриття вінілове самоклеюче 3D рейки'] },
+
+      { name: 'Підлога-пазл', keywords: ['Підлога пазл', 'Підлога-пазл', 'Підлога-пазл плюшевий'] },
+      { name: 'Підлога-пазл плюшевий', keywords: ['Підлога-пазл плюшевий'] },
+
+      { name: 'Килимки термо (дитячі)', keywords: ['Килимок дитячий', 'Термокилимок', 'Килимок', 'Дитячий'] },
+      { name: 'Килимки вологопоглинаючі', keywords: ['Вологопоглинаючий килимок'] },
+
+      { name: 'Дзеркала', keywords: ['Дзеркало', 'Дзеркала', 'Дзеркало акрилове', 'Дзеркальний декор'] },
+
+      { name: 'Екошкіра у рулоні', keywords: ['Екошкіра', 'Шкіра'] },
+
+      { name: 'Манікюр', keywords: ['Манікюр'] },
+
+      { name: 'Контейнери для зберігання', keywords: ['Контейнер для зберігання'] },
+
+      { name: 'Меблі для дому та саду', keywords: ['Набір мебелів складний', 'Меблі', 'Тумба', 'Стелаж', 'Садовий стіл', 'Стіл','Етажерка','Полиця-органайзер','Шафа', 'Надувне крісло', 'Крісло', 'Диван', 'Надувний диван', 'Набір мебелів','Комплект надувних меблів'] },
+    ];
+
+    /* ============================================================
+      3) Категория по title (как у тебя)
+    ============================================================ */
+    function getCategoryFromTitle(title) {
+      const lower = (title || '').toLowerCase();
+      for (const group of CATEGORY_KEYWORDS) {
+        for (const key of group.keywords) {
+          if (lower.includes(key.toLowerCase())) {
+            return group.name;
+          }
+        }
+      }
+      return 'Інше';
+    }
+
+    /* ============================================================
+      4) ТЕСТОВЫЕ ТОВАРЫ (если XML не загрузится)
+    ============================================================ */
+    const DEFAULT_PRODUCTS = [
+      {
+        id:1,
+        title:'Уцінка Ковролін SoftLux 4м — кремовий',
+        category: getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
+        price:279,
+        sku:'14417',
+        img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+        unit:'м',
+        full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні. Додатково: щільність, зносостійкість, догляд, рекомендації по укладці.'
+      },
+      {
+        id:2,
+        title:'Плівка біла матова 0.45м',
+        category: getCategoryFromTitle('Плівка біла матова 0.45м'),
+        price:59,
+        sku:'14418',
+        img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+        unit:'м',
+        full:'Матовий білий відтінок. Підходить для фасадів меблів, дверей, підвіконь. Легко клеїться, можна різати під розмір. Рекомендація: знежирити поверхню перед наклеюванням.'
+      },
+      {
+        id:3,
+        title:'Шпалери Modern Stone',
+        category: getCategoryFromTitle('Шпалери Modern Stone'),
+        price:129,
+        sku:'14419',
+        img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
+        unit:'м',
+        full:'Шпалери з ефектом натурального каменю. Текстурована поверхня під камінь. Підходить для акцентних стін у вітальні, коридорі, кухні.'
+      }
+    ];
+
+    let PRODUCTS = [...DEFAULT_PRODUCTS];
+
+    /* ============================================================
+      5) UI refs
+    ============================================================ */
+    const catsDesktopEl = document.getElementById('catsDesktop');
+    const catsMobileEl = document.getElementById('catsMobile');
+    const catsSkeleton = document.getElementById('catsSkeleton');
+    const catalogLoader = document.getElementById('catalogLoader');
+
+    const modalOverlay = document.getElementById('modalOverlay');
+    const catModal = document.getElementById('catModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalCatName = document.getElementById('modalCatName');
+    const modalCatCount = document.getElementById('modalCatCount');
+    const modalSearch = document.getElementById('modalSearch');
+    const modalSort = document.getElementById('modalSort');
+    const modalLoader = document.getElementById('modalLoader');
+    const prodGrid = document.getElementById('prodGrid');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+    const toast = document.getElementById('toast');
+
+    /* ============================================================
+      6) Helpers
+    ============================================================ */
+    function money(n){ return `${Number(n||0)} грн`; }
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=>toast.classList.remove('show'), 1600);
+    }
+
+    async function copyText(text){
+      const t = (text ?? '').toString().trim();
+      if(!t){ showToast('Немає що копіювати'); return; }
+
+      try{
+        await navigator.clipboard.writeText(t);
+      }catch(e){
+        const ta = document.createElement('textarea');
+        ta.value = t;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+      showToast('Скопійовано ✅');
+    }
+
+    function openTelegram(msg){
+      const url = `https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(msg||'')}`;
+      window.open(url, '_blank');
+    }
+
+    function iconForCategory(name){
+      const n = (name||'').toLowerCase();
+      if(n.includes('3d')) return 'cube';
+      if(n.includes('плитк')) return 'layout-grid';
+      if(n.includes('плівк')) return 'layers';
+      if(n.includes('шпалер')) return 'panel-top';
+      if(n.includes('пазл')) return 'puzzle';
+      if(n.includes('килим')) return 'square';
+      if(n.includes('дзерк')) return 'frame';
+      if(n.includes('мебл')) return 'sofa';
+      if(n.includes('контейнер')) return 'package';
+      if(n.includes('плінт')) return 'ruler';
+      return 'sparkles';
+    }
+
+    function isSaleTitle(title){
+      return (title||'').toLowerCase().includes('уцін');
+    }
+
+    function shortFromFull(full){
+      const s = (full||'').replace(/\s+/g,' ').trim();
+      if(!s) return 'Опис недоступний';
+      // просто обрежем по символам, а UI сам ограничит 2-3 строки
+      return s.length > 160 ? (s.slice(0,160) + '…') : s;
+    }
+
+    /* ============================================================
+      7) LOAD PRODUCTS FROM XML (как у тебя, адаптировано)
+    ============================================================ */
+    async function loadProductsFromXML(){
+      try{
+        const res = await fetch(XML_FEED_URL, { cache:'no-store' });
+        if(!res.ok) throw new Error('Bad status: ' + res.status);
+
+        const text = await res.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, 'application/xml');
+
+        const items = Array.from(xml.getElementsByTagName('item'));
+        if(!items.length){
+          console.warn('XML: не знайдено <item>. Використовую дефолтні.');
+          PRODUCTS = [...DEFAULT_PRODUCTS];
+          return;
+        }
+
+        const get = (node, tagName) => {
+          const el = node.getElementsByTagName(tagName)[0];
+          return el ? (el.textContent || '').trim() : '';
+        };
+
+        const placeholderImg = 'https://via.placeholder.com/800x500?text=Samostroy';
+
+        PRODUCTS = items.map((node, index) => {
+          const rawId = get(node, 'g:id') || get(node, 'id') || String(index+1);
+          const numericId = Number((rawId||'').replace(/\D/g,'')) || (index+1);
+
+          const title = get(node, 'title') || get(node, 'g:title') || `Товар ${numericId}`;
+          const description = get(node, 'description') || get(node, 'g:description') || '';
+
+          const priceText = get(node, 'g:price') || get(node, 'price') || '0';
+          const price = parseFloat(
+            priceText.replace(',', '.').replace(/[^\d.]/g,'')
+          ) || 0;
+
+          const img = get(node, 'g:image_link') || get(node, 'image_link') || get(node,'g:additional_image_link') || placeholderImg;
+
+          const availability = (get(node, 'g:availability') || '').toLowerCase();
+          if(availability && availability !== 'in stock') return null;
+
+          const category = getCategoryFromTitle(title);
+
+          return {
+            id: numericId,
+            title,
+            category,
+            price,
+            sku: rawId,
+            img,
+            unit:'шт',
+            full: description || 'Опис товару з XML-прайсу недоступний.'
+          };
+        }).filter(Boolean);
+
+        if(!PRODUCTS.length){
+          console.warn('XML завантажено, але товари не сформувалися. Дефолтні.');
+          PRODUCTS = [...DEFAULT_PRODUCTS];
+        }
+      }catch(err){
+        console.error('Помилка завантаження XML:', err);
+        PRODUCTS = [...DEFAULT_PRODUCTS];
+        showToast('Не вдалося прочитати products.xml — показуємо тестові товари.');
+      }
+    }
+
+    /* ============================================================
+      8) CATEGORIES LIST + COUNTS
+    ============================================================ */
+    function buildCategoryStats(){
+      const counts = new Map();
+      PRODUCTS.forEach(p=>{
+        const c = p.category || 'Інше';
+        counts.set(c, (counts.get(c) || 0) + 1);
+      });
+
+      // порядок: как в CATEGORY_KEYWORDS + потом "Інше" если есть
+      const ordered = [];
+      CATEGORY_KEYWORDS.forEach(g=>{
+        if(counts.has(g.name)) ordered.push(g.name);
+      });
+      if(counts.has('Інше')) ordered.push('Інше');
+
+      // если в XML появились категории, которых нет в списке (на всякий случай)
+      for(const k of counts.keys()){
+        if(!ordered.includes(k)) ordered.push(k);
+      }
+
+      return { ordered, counts };
+    }
+
+    function renderCategories(){
+      const { ordered, counts } = buildCategoryStats();
+
+      catsDesktopEl.innerHTML = '';
+      catsMobileEl.innerHTML = '';
+
+      ordered.forEach(name=>{
+        const count = counts.get(name) || 0;
+        const icon = iconForCategory(name);
+
+        // Desktop card (with "picture")
+        const card = document.createElement('div');
+        card.className = 'catCard';
+        card.dataset.cat = name;
+
+        card.innerHTML = `
+          <div class="catArt"><i data-lucide="${icon}"></i></div>
+          <div class="catName">${name}</div>
+          <div class="catMeta">
+            <span class="pill"><i data-lucide="package"></i> ${count} шт</span>
+            <span class="pill"><i data-lucide="expand"></i> Відкрити</span>
+          </div>
+        `;
+        card.addEventListener('click', ()=> openCategoryModal(name));
+        catsDesktopEl.appendChild(card);
+
+        // Mobile chip (only name)
+        const chip = document.createElement('button');
+        chip.className = 'catChip';
+        chip.type = 'button';
+        chip.dataset.cat = name;
+        chip.innerHTML = `<i data-lucide="${icon}"></i> ${name}`;
+        chip.addEventListener('click', ()=>{
+          document.querySelectorAll('.catChip').forEach(x=>x.classList.remove('active'));
+          chip.classList.add('active');
+          openCategoryModal(name);
+        });
+        catsMobileEl.appendChild(chip);
+      });
+
+      if(window.lucide) window.lucide.createIcons();
+    }
+
+    /* ============================================================
+      9) MODAL: open category and render products
+    ============================================================ */
+    const PAGE_SIZE = 24;
+    let modalCategory = null;
+    let modalList = [];
+    let modalVisible = PAGE_SIZE;
+
+    function openCategoryModal(catName){
+      modalCategory = catName;
+      modalSearch.value = '';
+      modalSort.value = 'default';
+      modalVisible = PAGE_SIZE;
+
+      // фильтруем товары по вычисленной category
+      modalList = PRODUCTS.filter(p => (p.category || 'Інше') === catName);
+
+      modalCatName.textContent = catName;
+      modalCatCount.textContent = `${modalList.length} товарів`;
+
+      modalOverlay.classList.remove('hide');
+      catModal.classList.remove('hide');
+      document.body.style.overflow = 'hidden';
+
+      modalLoader.classList.remove('hide');
+      prodGrid.innerHTML = '';
+
+      // маленькая пауза чтобы показать "готовим"
+      setTimeout(()=>{
+        modalLoader.classList.add('hide');
+        applyModalFiltersAndRender();
+      }, 120);
+
+      if(window.lucide) window.lucide.createIcons();
+      modalSearch.focus({preventScroll:true});
+    }
+
+    function closeCategoryModal(){
+      modalOverlay.classList.add('hide');
+      catModal.classList.add('hide');
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeCategoryModal);
+    modalOverlay.addEventListener('click', closeCategoryModal);
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && !catModal.classList.contains('hide')) closeCategoryModal();
+    });
+
+    function applyModalFiltersAndRender(){
+      let list = [...modalList];
+
+      const q = modalSearch.value.trim().toLowerCase();
+      if(q){
+        list = list.filter(p => (p.title||'').toLowerCase().includes(q) || (p.full||'').toLowerCase().includes(q));
+      }
+
+      const sort = modalSort.value;
+      if(sort === 'price_asc') list.sort((a,b)=>(a.price||0)-(b.price||0));
+      if(sort === 'price_desc') list.sort((a,b)=>(b.price||0)-(a.price||0));
+      if(sort === 'title_asc') list.sort((a,b)=>(a.title||'').localeCompare((b.title||''), 'uk'));
+      if(sort === 'title_desc') list.sort((a,b)=>(b.title||'').localeCompare((a.title||''), 'uk'));
+
+      // render slice
+      const toShow = list.slice(0, modalVisible);
+      renderModalProducts(toShow);
+
+      // load more
+      if(modalVisible >= list.length) loadMoreBtn.classList.add('hide');
+      else loadMoreBtn.classList.remove('hide');
+
+      // обновляем счетчик
+      modalCatCount.textContent = `${list.length} товарів`;
+
+      // сохраняем "текущий отфильтрованный список"
+      applyModalFiltersAndRender._list = list;
+    }
+
+    modalSearch.addEventListener('input', ()=>{
+      modalVisible = PAGE_SIZE;
+      applyModalFiltersAndRender();
+    });
+
+    modalSort.addEventListener('change', ()=>{
+      modalVisible = PAGE_SIZE;
+      applyModalFiltersAndRender();
+    });
+
+    loadMoreBtn.addEventListener('click', ()=>{
+      modalVisible += PAGE_SIZE;
+      applyModalFiltersAndRender();
+    });
+
+    function renderModalProducts(list){
+      prodGrid.innerHTML = '';
+
+      list.forEach((p, idx)=>{
+        const card = document.createElement('article');
+        card.className = 'pCard' + (isSaleTitle(p.title) ? ' sale' : '');
+        card.dataset.id = p.id;
+
+        const descShort = shortFromFull(p.full);
+
+        card.innerHTML = `
+          <span class="pBadge">УЦІНКА</span>
+
+          <div class="pTop">
+            <h3 class="pTitle">${escapeHtml(p.title)}</h3>
+            <button class="pCopyMini" type="button" title="Копіювати заголовок" data-copy="title">
+              <i data-lucide="copy"></i>
+            </button>
+          </div>
+
+          <img class="pImg" src="${escapeAttr(p.img)}" alt="${escapeAttr(p.title)}" loading="lazy" />
+
+          <div class="pBottom">
+            <div class="pRow">
+              <div class="pPrice">${money(p.price)}${p.unit ? ` / ${escapeHtml(p.unit)}` : ''}</div>
+              <button class="pCopyMini" type="button" title="Копіювати ціну" data-copy="price">
+                <i data-lucide="copy"></i>
+              </button>
+            </div>
+
+            <div class="pSub">${escapeHtml(descShort)}</div>
+
+            <div class="pRow" style="margin-top:10px">
+              <div class="pMeta">
+                <span class="chipMini">SKU: ${escapeHtml(p.sku || '-')}</span>
+                <span class="chipMini">${escapeHtml(p.category || 'Інше')}</span>
+              </div>
+              <button class="pCopyMini" type="button" title="Копіювати повний опис" data-copy="desc">
+                <i data-lucide="copy"></i>
+              </button>
+            </div>
+          </div>
+        `;
+
+        prodGrid.appendChild(card);
+
+        // анимация появления
+        requestAnimationFrame(()=> setTimeout(()=>card.classList.add('show'), 30 + idx*18));
+      });
+
+      if(window.lucide) window.lucide.createIcons();
+    }
+
+    // Делегирование кликов по копированию
+    prodGrid.addEventListener('click', (e)=>{
+      const btn = e.target.closest('[data-copy]');
+      if(!btn) return;
+
+      const card = e.target.closest('.pCard');
+      if(!card) return;
+
+      const id = Number(card.dataset.id);
+      const p = PRODUCTS.find(x => x.id === id);
+      if(!p) return;
+
+      const type = btn.getAttribute('data-copy');
+
+      if(type === 'title') copyText(p.title);
+      if(type === 'price') copyText(money(p.price));
+      if(type === 'desc') copyText(p.full || '');
+    });
+
+    /* ============================================================
+      10) Misc buttons
+    ============================================================ */
+    document.getElementById('tgBtn').addEventListener('click', ()=>{
+      openTelegram('Привіт! Потрібна консультація по товарах/партнерству.');
+    });
+
+    document.getElementById('copyTermsBtn').addEventListener('click', ()=>{
+      const text =
+        `Умови співпраці Samostroy:\n`+
+        `— Поставки зі складів: м. Дніпро та м. Вінниця\n`+
+        `— Дохід партнера: орієнтир 10–35% (залежить від категорії та об’єму)\n`+
+        `— Доставка: Нова Пошта та Укрпошта\n`+
+        `— Підтримка менеджера: допомога з підбором, контентом, оголошеннями\n`;
+      copyText(text);
+    });
+
+    /* ============================================================
+      11) Safe escaping (чтобы XML-тексты не ломали HTML)
+    ============================================================ */
+    function escapeHtml(str){
+      return (str ?? '').toString()
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+    }
+    function escapeAttr(str){ return escapeHtml(str).replaceAll('\n',' '); }
+
+    /* ============================================================
+      12) INIT
+    ============================================================ */
+    (async function init(){
+      // проставим ссылки в карточках (если захочешь менять)
+      const boardsBtn = document.querySelector('a[href="/tools/boards.html"]');
+      const marketsBtn = document.querySelector('a[href="/tools/marketplaces.html"]');
+      if(boardsBtn) boardsBtn.href = BOARDS_URL;
+      if(marketsBtn) marketsBtn.href = MARKETPLACES_URL;
+
+      if(window.lucide) window.lucide.createIcons();
+
+      await loadProductsFromXML();
+
+      // убираем скелет/лоадер
+      catsSkeleton.classList.add('hide');
+      catalogLoader.classList.add('hide');
+
+      renderCategories();
+      showToast('Каталог готовий');
+    })();
+  </script>
+</body>
+</html>
