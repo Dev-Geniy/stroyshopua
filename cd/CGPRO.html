@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Samostroy • Content Generator PRO</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff5c77;
+      --info:#6aa7ff;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:1180px;margin:0 auto;padding:0 14px;}
+    header{
+      position:sticky;top:0;z-index:80;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{
+      height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:0;}
+    .logo{
+      width:42px;height:42px;border-radius:16px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .logo i{width:20px;height:20px;color:var(--accent2)}
+    .title{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .title small{
+      color:var(--muted);font-size:11.8px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .title b{
+      font-size:13.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .topActions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;}
+    .pill{
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .pill i{width:16px;height:16px;color:var(--accent2)}
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:11px 14px;
+      font-weight:900;font-size:13.2px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn.ghost{
+      background:transparent;border:1px solid rgba(255,255,255,.16);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+    @media (max-width:720px){
+      .pill{display:none}
+      .h{height:auto;padding:10px 0}
+    }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::after{
+      content:"";position:absolute;inset:-40px;
+      background:
+        radial-gradient(circle at 0 0, rgba(255,179,71,.18), transparent 55%),
+        radial-gradient(circle at 90% 10%, rgba(106,167,255,.10), transparent 50%);
+      opacity:.9;pointer-events:none;
+    }
+    h1{
+      position:relative;z-index:1;
+      margin:0 0 10px;
+      font-size:clamp(30px,4.6vw,48px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      position:relative;z-index:1;
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.9;max-width:98ch;
+    }
+    .chips{
+      position:relative;z-index:1;
+      margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;
+    }
+    .chip{
+      padding:8px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .layout{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    @media (min-width:980px){
+      .layout{grid-template-columns:420px 1fr}
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:22px;
+      padding:14px;
+    }
+    .panelHead{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+      margin-bottom:10px;
+    }
+    .panelHead b{
+      font-size:14px;
+      display:flex;align-items:center;gap:9px;
+    }
+    .panelHead b i{width:18px;height:18px;color:var(--accent2)}
+    .panelHead small{
+      color:var(--muted);
+      display:block;
+      margin-top:2px;
+      font-size:12.6px;
+      line-height:1.5;
+    }
+
+    .section{
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:12px;
+      margin-top:12px;
+    }
+    .section:first-child{border-top:none;padding-top:0;margin-top:0}
+    .secTitle{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .secTitle b{
+      font-size:13.2px;
+      font-weight:900;
+      display:flex;align-items:center;gap:8px;
+    }
+    .secTitle b i{width:16px;height:16px;color:var(--accent2)}
+    .secTitle .hintTag{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+    .secBody{margin-top:10px;display:none}
+    .section.open .secBody{display:block}
+
+    label{
+      display:block;
+      color:var(--muted);
+      font-size:12.5px;
+      margin:10px 0 6px;
+    }
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--ink);
+      outline:none;
+      font-family:inherit;
+      font-size:14px;
+    }
+    textarea{min-height:92px;resize:vertical}
+    input::placeholder, textarea::placeholder{color:rgba(154,160,179,.75)}
+    .row{display:grid;grid-template-columns:1fr;gap:10px}
+    @media (min-width:980px){
+      .row.two{grid-template-columns:1fr 1fr}
+      .row.three{grid-template-columns:1fr 1fr 1fr}
+    }
+
+    .micro{
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.6;
+      margin-top:8px;
+    }
+    .micro b{color:rgba(245,245,247,.92)}
+    .kbd{
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      padding:2px 6px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.25);
+      color:rgba(245,245,247,.92);
+      white-space:nowrap;
+    }
+
+    .tabs{
+      display:flex;gap:8px;flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .tab{
+      padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.20);
+      color:var(--muted);
+      font-size:12.5px;
+      cursor:pointer;
+      display:flex;align-items:center;gap:8px;
+    }
+    .tab i{width:16px;height:16px;color:var(--accent2)}
+    .tab.active{
+      color:#0b0b10;
+      background:var(--grad);
+      border-color:transparent;
+      font-weight:900;
+    }
+    .tab.active i{color:#0b0b10}
+
+    .outArea{margin-top:12px}
+    .outTop{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;
+      padding:12px;
+    }
+    .outTop b{font-size:13.6px}
+    .outTop small{color:var(--muted);font-size:12.5px;line-height:1.5}
+    .outBtns{display:flex;gap:10px;flex-wrap:wrap}
+    .toast{
+      position:fixed;
+      bottom:16px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(17,19,28,.92);
+      border:1px solid rgba(255,255,255,.14);
+      padding:10px 12px;
+      border-radius:14px;
+      color:rgba(245,245,247,.92);
+      font-size:13px;
+      display:none;
+      z-index:200;
+      box-shadow:0 18px 40px rgba(0,0,0,.45);
+      max-width:92vw;
+    }
+
+    .kpis{
+      margin-top:12px;
+      display:grid;grid-template-columns:1fr;gap:10px;
+    }
+    @media (min-width:760px){ .kpis{grid-template-columns:1fr 1fr 1fr} }
+    .kpi{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .kpi::after{
+      content:"";position:absolute;inset:-30px;
+      background:radial-gradient(circle at 0 0, rgba(255,255,255,.10), transparent 55%);
+      opacity:.55;pointer-events:none;
+    }
+    .kpi small{
+      position:relative;z-index:1;
+      color:var(--muted);display:flex;align-items:center;gap:8px;
+      font-size:12.5px;
+    }
+    .kpi small i{width:16px;height:16px;color:var(--accent2)}
+    .kpi b{
+      position:relative;z-index:1;
+      display:block;margin-top:8px;
+      font-size:18px;font-weight:900;
+      color:var(--accent2);
+    }
+
+    .tableWrap{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;
+      overflow:hidden;
+    }
+    table{width:100%;border-collapse:collapse}
+    th,td{
+      padding:10px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-size:13px;
+      vertical-align:top;
+    }
+    th{
+      color:var(--muted);
+      font-weight:700;
+      text-align:left;
+      background:rgba(255,255,255,.03);
+    }
+    tr:last-child td{border-bottom:none}
+    tr.rowBtn{cursor:pointer}
+    tr.rowBtn:hover td{background:rgba(255,255,255,.03)}
+    .tag{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:11.5px;color:var(--muted);
+      padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);
+      white-space:nowrap;
+    }
+    .tag i{width:14px;height:14px;color:var(--accent2)}
+    .miniText{color:var(--muted);font-size:12.5px;line-height:1.55;margin-top:8px}
+
+    .block{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:18px;
+      padding:12px;
+    }
+    .blockHead{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .blockHead b{font-size:13.6px;display:flex;align-items:center;gap:8px}
+    .blockHead b i{width:16px;height:16px;color:var(--accent2)}
+    .mono{
+      margin-top:10px;
+      border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;
+      padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.6px;
+      color:rgba(245,245,247,.92);
+      line-height:1.65;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .drawer{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.55);
+      display:none;align-items:flex-end;justify-content:center;
+      z-index:150;
+      padding:12px;
+    }
+    .sheet{
+      width:min(980px, 98vw);
+      max-height:86vh;
+      overflow:auto;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(17,19,28,.96);
+      border-radius:22px;
+      box-shadow:0 26px 60px rgba(0,0,0,.55);
+      padding:14px;
+    }
+    .sheetTop{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      padding-bottom:10px;
+      margin-bottom:10px;
+    }
+    .sheetTop b{font-size:15px}
+    .sheetTop small{color:var(--muted);display:block;margin-top:4px;line-height:1.5}
+    .closeX{
+      width:40px;height:40px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+    }
+    .closeX i{width:18px;height:18px;color:var(--accent2)}
+    .twoCols{
+      display:grid;grid-template-columns:1fr;gap:12px;
+    }
+    @media (min-width:980px){ .twoCols{grid-template-columns:1fr 1fr} }
+
+    footer{
+      margin-top:18px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+    .mutedLink{
+      color:var(--muted);text-decoration:none;border-bottom:1px dashed rgba(255,255,255,.25)
+    }
+    .mutedLink:hover{color:rgba(245,245,247,.92);border-bottom-color:rgba(255,255,255,.4)}
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="brand">
+        <div class="logo" title="Content Generator PRO"><i data-lucide="wand-2"></i></div>
+        <div class="title">
+          <small>Samostroy • інструмент для TikTok / Reels / Shorts</small>
+          <b>Content Generator PRO — план, скрипти, CTA, хештеги, експорт</b>
+        </div>
+      </div>
+
+      <div class="topActions">
+        <div class="pill" id="statePill"><i data-lucide="save"></i><span>Стан: не збережено</span></div>
+        <button class="btn secondary" id="btnQuickStart" type="button"><i data-lucide="sparkles"></i> Швидкий старт</button>
+        <button class="btn" id="btnGenerate" type="button"><i data-lucide="wand-2"></i> Згенерувати</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Зроби контент системою — і перестань думати “що знімати завтра”</h1>
+    <p class="lead">
+      Це окрема сторінка-генератор. Вона бере твої налаштування та видає <b>готовий календар</b> (7/14/30 днів),
+      <b>гачки</b>, <b>скрипти</b>, <b>текст на екрані</b>, <b>список кадрів</b>, <b>підпис</b>, <b>CTA в дірект</b>,
+      <b>шаблон відповіді</b> і <b>експорт</b> у TXT/CSV/JSON.
+      <br><br>
+      Для новачка: просто зроби 3 кроки — <span class="kbd">1) товар</span> → <span class="kbd">2) CTA-слово</span> → <span class="kbd">3) Згенерувати</span>.
+    </p>
+    <div class="chips">
+      <div class="chip"><i data-lucide="calendar-days"></i> План 7/14/30 днів</div>
+      <div class="chip"><i data-lucide="film"></i> Скрипт + кадри + текст</div>
+      <div class="chip"><i data-lucide="message-circle"></i> CTA + DM-відповідь</div>
+      <div class="chip"><i data-lucide="download"></i> Експорт (TXT/CSV/JSON)</div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <!-- LEFT: SETTINGS -->
+    <aside class="panel">
+      <div class="panelHead">
+        <div>
+          <b><i data-lucide="sliders-horizontal"></i> Налаштування генератора</b>
+          <small>Порада: відкривай блоки зліва і заповнюй зверху вниз. Можна лишити все “за замовчуванням”.</small>
+        </div>
+        <button class="btn ghost" id="btnReset" type="button" title="Скинути налаштування"><i data-lucide="rotate-ccw"></i></button>
+      </div>
+
+      <!-- Section: Project -->
+      <div class="section open" data-sec="project">
+        <div class="secTitle">
+          <b><i data-lucide="folder"></i> Проєкт (збереження)</b>
+          <span class="hintTag">важливо</span>
+        </div>
+        <div class="secBody">
+          <label for="projectName">Назва проєкту</label>
+          <input id="projectName" placeholder="Напр.: Панелі / OLX / Київ" />
+
+          <div class="row two">
+            <div>
+              <label for="projectSelect">Завантажити збережений</label>
+              <select id="projectSelect"></select>
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button class="btn secondary" id="btnLoadProject" type="button"><i data-lucide="folder-open"></i> Завантажити</button>
+            </div>
+          </div>
+
+          <div class="row two">
+            <button class="btn" id="btnSaveProject" type="button"><i data-lucide="save"></i> Зберегти проєкт</button>
+            <button class="btn secondary" id="btnDeleteProject" type="button"><i data-lucide="trash-2"></i> Видалити</button>
+          </div>
+
+          <div class="micro">
+            <b>Що зберігається:</b> твої налаштування + останній згенерований план (у браузері).
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Basics -->
+      <div class="section open" data-sec="basics">
+        <div class="secTitle">
+          <b><i data-lucide="target"></i> Основа (обовʼязково)</b>
+          <span class="hintTag">3 поля</span>
+        </div>
+        <div class="secBody">
+          <div class="row two">
+            <div>
+              <label for="platform">Платформа</label>
+              <select id="platform">
+                <option value="TikTok">TikTok</option>
+                <option value="Reels (Instagram)">Reels (Instagram)</option>
+                <option value="YouTube Shorts">YouTube Shorts</option>
+                <option value="TikTok + Reels">TikTok + Reels</option>
+              </select>
+            </div>
+            <div>
+              <label for="language">Мова контенту</label>
+              <select id="language">
+                <option value="uk">Українська</option>
+                <option value="ru">Русский</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="product">Товар / ніша (простими словами)</label>
+          <input id="product" placeholder="Напр.: 3D панелі / вінілові панелі / пазли-килимки" />
+
+          <label for="ctaWord">CTA-слово для діректу (1 слово)</label>
+          <input id="ctaWord" placeholder="Напр.: ХОЧУ" />
+
+          <div class="row two">
+            <div>
+              <label for="region">Регіон (опційно)</label>
+              <input id="region" placeholder="Напр.: Україна / Київ / Львів" />
+            </div>
+            <div>
+              <label for="goal">Головна ціль</label>
+              <select id="goal">
+                <option value="messages">Повідомлення (заявки)</option>
+                <option value="comments">Коментарі + обговорення</option>
+                <option value="reach">Охоплення (перегляди)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="micro">
+            <b>Як працює CTA-слово:</b> у відео кажеш “Напиши <span class="kbd">слово</span> — скину варіанти/прорахунок”.
+            Люди пишуть слово → ти відповідаєш шаблоном (генератор дасть готовий текст).
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Audience & Offer -->
+      <div class="section" data-sec="audience">
+        <div class="secTitle">
+          <b><i data-lucide="users"></i> Аудиторія + офер (щоб було “влучно”)</b>
+          <span class="hintTag">сильно підвищує</span>
+        </div>
+        <div class="secBody">
+          <div class="row two">
+            <div>
+              <label for="audience">Кому продаєш?</label>
+              <select id="audience">
+                <option value="homeowners">Власники квартир/будинків</option>
+                <option value="renters">Орендарі (швидко/дешево)</option>
+                <option value="designers">Дизайнери/майстри</option>
+                <option value="biz">B2B (магазини/партнери)</option>
+              </select>
+            </div>
+            <div>
+              <label for="priceLevel">Позиціонування</label>
+              <select id="priceLevel">
+                <option value="value">Вигідно/розумна ціна</option>
+                <option value="mid">Середній сегмент</option>
+                <option value="premium">Преміум/дорого виглядає</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="offer">Твій офер (1-2 речення)</label>
+          <textarea id="offer" placeholder="Напр.: Підберу панелі під вашу площу, скину фото/відео вживу, прорахую доставку."></textarea>
+
+          <div class="row two">
+            <div>
+              <label for="proof">Довіра (що є?)</label>
+              <select id="proof">
+                <option value="basic">Фото/відео вживу</option>
+                <option value="reviews">Відгуки/кейси</option>
+                <option value="guarantee">Гарантія/обмін</option>
+                <option value="all">Все разом</option>
+              </select>
+            </div>
+            <div>
+              <label for="objection">Головне заперечення</label>
+              <select id="objection">
+                <option value="price">Ціна</option>
+                <option value="quality">Якість/як виглядає вживу</option>
+                <option value="installation">Монтаж/складність</option>
+                <option value="delivery">Доставка/терміни/оплата</option>
+                <option value="fit">Чи підійде (кухня/ванна/стіна)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="micro">
+            Якщо офер пустий — генератор підставить універсальний шаблон під твій товар.
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Plan -->
+      <div class="section open" data-sec="plan">
+        <div class="secTitle">
+          <b><i data-lucide="calendar"></i> План (скільки і коли)</b>
+          <span class="hintTag">календар</span>
+        </div>
+        <div class="secBody">
+          <div class="row three">
+            <div>
+              <label for="planDays">Період</label>
+              <select id="planDays">
+                <option value="7">7 днів</option>
+                <option value="14" selected>14 днів</option>
+                <option value="30">30 днів</option>
+              </select>
+            </div>
+            <div>
+              <label for="pace">Темп</label>
+              <select id="pace">
+                <option value="daily">1 відео щодня</option>
+                <option value="5wk">5 відео/тиждень (пн-пт)</option>
+                <option value="3wk">3 відео/тиждень (пн/ср/пт)</option>
+              </select>
+            </div>
+            <div>
+              <label for="lengthSec">Тривалість відео</label>
+              <select id="lengthSec">
+                <option value="12">10–15 сек</option>
+                <option value="20" selected>15–25 сек</option>
+                <option value="35">25–40 сек</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row two">
+            <div>
+              <label for="timeSlot">Час публікації (підказка)</label>
+              <select id="timeSlot">
+                <option value="evening" selected>Вечір (18:00–22:00)</option>
+                <option value="noon">День (12:00–16:00)</option>
+                <option value="morning">Ранок (08:00–11:00)</option>
+              </select>
+            </div>
+            <div>
+              <label for="style">Тон подачі</label>
+              <select id="style">
+                <option value="friendly" selected>Дружньо і просто</option>
+                <option value="expert">Експертно і впевнено</option>
+                <option value="energetic">Енергійно/швидко</option>
+                <option value="calm">Спокійно/преміально</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="productsList">Список товарів (опційно, по 1 на рядок)</label>
+          <textarea id="productsList" placeholder="Якщо хочеш ротацію:
+3D панелі
+Вінілові панелі
+Пазли-килимки"></textarea>
+          <div class="micro">Якщо список заповнений — генератор буде чергувати товари, щоб контент не “заїдав”.</div>
+        </div>
+      </div>
+
+      <!-- Section: Filming Constraints -->
+      <div class="section" data-sec="shoot">
+        <div class="secTitle">
+          <b><i data-lucide="video"></i> Зйомка (обмеження)</b>
+          <span class="hintTag">для сорому</span>
+        </div>
+        <div class="secBody">
+          <div class="row two">
+            <div>
+              <label for="face">Обличчя в кадрі</label>
+              <select id="face">
+                <option value="no" selected>Без обличчя (руки/товар)</option>
+                <option value="yes">Можна обличчя</option>
+              </select>
+            </div>
+            <div>
+              <label for="voice">Голос</label>
+              <select id="voice">
+                <option value="no" selected>Без голосу (текст на екрані)</option>
+                <option value="yes">Можна голос/озвучка</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="tools">Що є для зйомки?</label>
+          <select id="tools">
+            <option value="phone" selected>Телефон + світло кімнати</option>
+            <option value="ring">Телефон + кільцева лампа</option>
+            <option value="tripod">Телефон + штатив</option>
+            <option value="full">Світло + штатив + фон</option>
+          </select>
+
+          <div class="micro">
+            Генератор автоматично адаптує скрипти: якщо <b>без голосу</b> — дасть сильні титри,
+            якщо <b>без обличчя</b> — дасть кадри “руки + товар”.
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Advanced -->
+      <div class="section" data-sec="advanced">
+        <div class="secTitle">
+          <b><i data-lucide="sparkles"></i> PRO-опції (супер)</b>
+          <span class="hintTag">optional</span>
+        </div>
+        <div class="secBody">
+          <div class="row two">
+            <div>
+              <label for="seed">Варіативність (seed)</label>
+              <input id="seed" placeholder="Залиш порожнім — буде випадково" />
+              <div class="micro">Однаковий seed = однакові ідеї. Зручно для повторів.</div>
+            </div>
+            <div>
+              <label for="focusSeries">Фокус серій</label>
+              <select id="focusSeries">
+                <option value="balanced" selected>Баланс (результат/довіра/FAQ)</option>
+                <option value="sales">Більше продажних (результат+ціна)</option>
+                <option value="trust">Більше довіри (вживу+кейси)</option>
+                <option value="faq">Більше FAQ/заперечень</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row two">
+            <div>
+              <label for="hashtagsMode">Хештеги</label>
+              <select id="hashtagsMode">
+                <option value="smart" selected>Розумні (ніша + контент + регіон)</option>
+                <option value="minimal">Мінімум (5–8)</option>
+                <option value="wide">Ширше (12–18)</option>
+              </select>
+            </div>
+            <div>
+              <label for="ctaMode">CTA-стиль</label>
+              <select id="ctaMode">
+                <option value="soft" selected>Мʼяко (порадити/підказати)</option>
+                <option value="direct">Прямо (ціна/прорахунок)</option>
+                <option value="bonus">З бонусом (чек-лист/підбір)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section open" data-sec="actions">
+        <div class="secTitle">
+          <b><i data-lucide="play"></i> Дії</b>
+          <span class="hintTag">натисни</span>
+        </div>
+        <div class="secBody">
+          <div class="row two">
+            <button class="btn" id="btnGenerate2" type="button"><i data-lucide="wand-2"></i> Згенерувати</button>
+            <button class="btn secondary" id="btnCopyAll" type="button"><i data-lucide="copy"></i> Скопіювати все</button>
+          </div>
+          <div class="row two">
+            <button class="btn secondary" id="btnDownloadTxt" type="button"><i data-lucide="download"></i> Завантажити TXT</button>
+            <button class="btn secondary" id="btnDownloadCsv" type="button"><i data-lucide="file-spreadsheet"></i> Завантажити CSV</button>
+          </div>
+          <button class="btn secondary" id="btnDownloadJson" type="button" style="width:100%"><i data-lucide="braces"></i> Завантажити JSON (проєкт)</button>
+
+          <div class="micro">
+            Порада: спочатку згенеруй → потім відкрий вкладку <b>“Скрипти”</b> і вибери 4 відео на тиждень для пачки зйомки.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT: OUTPUT -->
+    <section class="panel">
+      <div class="panelHead">
+        <div>
+          <b><i data-lucide="layout-template"></i> Результати</b>
+          <small>План можна натискати: клік по рядку відкриє деталі (гачки, скрипт, кадри, опис, CTA, DM).</small>
+        </div>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-tab="plan"><i data-lucide="calendar-days"></i> План</div>
+        <div class="tab" data-tab="scripts"><i data-lucide="file-text"></i> Скрипти</div>
+        <div class="tab" data-tab="batch"><i data-lucide="clapperboard"></i> Пачка-зйомка</div>
+        <div class="tab" data-tab="dm"><i data-lucide="message-square"></i> DM / відповіді</div>
+        <div class="tab" data-tab="export"><i data-lucide="download"></i> Експорт</div>
+      </div>
+
+      <div class="outArea">
+        <div class="outTop">
+          <div>
+            <b id="outTitle">План не згенеровано</b>
+            <small id="outSubtitle">Заповни 2 поля (товар + CTA-слово) і натисни “Згенерувати”.</small>
+          </div>
+          <div class="outBtns">
+            <button class="btn secondary" id="btnRegenerate" type="button"><i data-lucide="refresh-cw"></i> Перегенерувати</button>
+            <button class="btn secondary" id="btnCopyTab" type="button"><i data-lucide="copy"></i> Скопіювати вкладку</button>
+          </div>
+        </div>
+
+        <div class="kpis" id="kpis" style="display:none;">
+          <div class="kpi"><small><i data-lucide="video"></i> Відео у плані</small><b id="kpiVideos">—</b></div>
+          <div class="kpi"><small><i data-lucide="timer"></i> Орієнтир часу</small><b id="kpiTime">—</b></div>
+          <div class="kpi"><small><i data-lucide="layers-3"></i> Серії/рубрики</small><b id="kpiSeries">—</b></div>
+        </div>
+
+        <!-- TAB CONTENTS -->
+        <div id="tab_plan" class="tabPane"></div>
+        <div id="tab_scripts" class="tabPane" style="display:none;"></div>
+        <div id="tab_batch" class="tabPane" style="display:none;"></div>
+        <div id="tab_dm" class="tabPane" style="display:none;"></div>
+        <div id="tab_export" class="tabPane" style="display:none;"></div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    © <span id="year"></span> Content Generator PRO.
+    <span style="opacity:.6">•</span>
+    <a class="mutedLink" href="#" id="btnHelpFooter">Підказки використання</a>
+  </footer>
+</main>
+
+<!-- Drawer (details) -->
+<div class="drawer" id="drawer">
+  <div class="sheet">
+    <div class="sheetTop">
+      <div>
+        <b id="dTitle">Деталі</b>
+        <small id="dSub">—</small>
+      </div>
+      <div class="closeX" id="btnCloseDrawer" title="Закрити"><i data-lucide="x"></i></div>
+    </div>
+
+    <div class="twoCols">
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="zap"></i> Гачки (3 варіанти)</b>
+          <button class="btn secondary" id="btnCopyHooks" type="button"><i data-lucide="copy"></i> Копіювати</button>
+        </div>
+        <div class="mono" id="dHooks">—</div>
+      </div>
+
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="file-text"></i> Скрипт (структура)</b>
+          <button class="btn secondary" id="btnCopyScript" type="button"><i data-lucide="copy"></i> Копіювати</button>
+        </div>
+        <div class="mono" id="dScript">—</div>
+      </div>
+
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="type"></i> Текст на екрані</b>
+          <button class="btn secondary" id="btnCopyOnscreen" type="button"><i data-lucide="copy"></i> Копіювати</button>
+        </div>
+        <div class="mono" id="dOnscreen">—</div>
+      </div>
+
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="camera"></i> Список кадрів (що зняти)</b>
+          <button class="btn secondary" id="btnCopyShots" type="button"><i data-lucide="copy"></i> Копіювати</button>
+        </div>
+        <div class="mono" id="dShots">—</div>
+      </div>
+
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="align-left"></i> Опис (caption) + CTA</b>
+          <button class="btn secondary" id="btnCopyCaption" type="button"><i data-lucide="copy"></i> Копіювати</button>
+        </div>
+        <div class="mono" id="dCaption">—</div>
+      </div>
+
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="hash"></i> Хештеги</b>
+          <button class="btn secondary" id="btnCopyHashtags" type="button"><i data-lucide="copy"></i> Копіювати</button>
+        </div>
+        <div class="mono" id="dHashtags">—</div>
+      </div>
+
+      <div class="block" style="grid-column:1/-1">
+        <div class="blockHead">
+          <b><i data-lucide="message-square"></i> DM-скрипт (відповідь клієнту)</b>
+          <button class="btn secondary" id="btnCopyDM" type="button"><i data-lucide="copy"></i> Копіювати</button>
+        </div>
+        <div class="mono" id="dDM">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Скопійовано ✅</div>
+
+<script>
+"use strict";
+
+/* ===============================
+   STORAGE KEYS
+================================ */
+const STATE_KEY = "sa_content_generator_pro_state_v1";
+const PROJECTS_KEY = "sa_content_generator_pro_projects_v1";
+
+/* ===============================
+   DOM
+================================ */
+const yearEl = document.getElementById("year");
+yearEl.textContent = new Date().getFullYear();
+
+const statePill = document.getElementById("statePill");
+
+const btnGenerate = document.getElementById("btnGenerate");
+const btnGenerate2 = document.getElementById("btnGenerate2");
+const btnRegenerate = document.getElementById("btnRegenerate");
+const btnReset = document.getElementById("btnReset");
+
+const btnCopyAll = document.getElementById("btnCopyAll");
+const btnCopyTab = document.getElementById("btnCopyTab");
+
+const btnDownloadTxt = document.getElementById("btnDownloadTxt");
+const btnDownloadCsv = document.getElementById("btnDownloadCsv");
+const btnDownloadJson = document.getElementById("btnDownloadJson");
+
+const btnQuickStart = document.getElementById("btnQuickStart");
+const btnHelpFooter = document.getElementById("btnHelpFooter");
+
+const outTitle = document.getElementById("outTitle");
+const outSubtitle = document.getElementById("outSubtitle");
+const kpis = document.getElementById("kpis");
+const kpiVideos = document.getElementById("kpiVideos");
+const kpiTime = document.getElementById("kpiTime");
+const kpiSeries = document.getElementById("kpiSeries");
+
+const tabPlan = document.getElementById("tab_plan");
+const tabScripts = document.getElementById("tab_scripts");
+const tabBatch = document.getElementById("tab_batch");
+const tabDM = document.getElementById("tab_dm");
+const tabExport = document.getElementById("tab_export");
+
+const tabs = document.getElementById("tabs");
+
+// Settings inputs
+const projectName = document.getElementById("projectName");
+const projectSelect = document.getElementById("projectSelect");
+const btnSaveProject = document.getElementById("btnSaveProject");
+const btnLoadProject = document.getElementById("btnLoadProject");
+const btnDeleteProject = document.getElementById("btnDeleteProject");
+
+const platformEl = document.getElementById("platform");
+const languageEl = document.getElementById("language");
+const productEl = document.getElementById("product");
+const ctaWordEl = document.getElementById("ctaWord");
+const regionEl = document.getElementById("region");
+const goalEl = document.getElementById("goal");
+
+const audienceEl = document.getElementById("audience");
+const priceLevelEl = document.getElementById("priceLevel");
+const offerEl = document.getElementById("offer");
+const proofEl = document.getElementById("proof");
+const objectionEl = document.getElementById("objection");
+
+const planDaysEl = document.getElementById("planDays");
+const paceEl = document.getElementById("pace");
+const lengthSecEl = document.getElementById("lengthSec");
+const timeSlotEl = document.getElementById("timeSlot");
+const styleEl = document.getElementById("style");
+const productsListEl = document.getElementById("productsList");
+
+const faceEl = document.getElementById("face");
+const voiceEl = document.getElementById("voice");
+const toolsEl = document.getElementById("tools");
+
+const seedEl = document.getElementById("seed");
+const focusSeriesEl = document.getElementById("focusSeries");
+const hashtagsModeEl = document.getElementById("hashtagsMode");
+const ctaModeEl = document.getElementById("ctaMode");
+
+// Drawer
+const drawer = document.getElementById("drawer");
+const btnCloseDrawer = document.getElementById("btnCloseDrawer");
+const dTitle = document.getElementById("dTitle");
+const dSub = document.getElementById("dSub");
+const dHooks = document.getElementById("dHooks");
+const dScript = document.getElementById("dScript");
+const dOnscreen = document.getElementById("dOnscreen");
+const dShots = document.getElementById("dShots");
+const dCaption = document.getElementById("dCaption");
+const dHashtags = document.getElementById("dHashtags");
+const dDM = document.getElementById("dDM");
+
+const btnCopyHooks = document.getElementById("btnCopyHooks");
+const btnCopyScript = document.getElementById("btnCopyScript");
+const btnCopyOnscreen = document.getElementById("btnCopyOnscreen");
+const btnCopyShots = document.getElementById("btnCopyShots");
+const btnCopyCaption = document.getElementById("btnCopyCaption");
+const btnCopyHashtags = document.getElementById("btnCopyHashtags");
+const btnCopyDM = document.getElementById("btnCopyDM");
+
+const toast = document.getElementById("toast");
+
+/* ===============================
+   UI: Collapsible sections
+================================ */
+document.querySelectorAll(".section .secTitle").forEach(t=>{
+  t.addEventListener("click", ()=>{
+    const sec = t.closest(".section");
+    sec.classList.toggle("open");
+  });
+});
+
+/* ===============================
+   Utilities
+================================ */
+function showToast(msg){
+  toast.textContent = msg || "Готово ✅";
+  toast.style.display = "block";
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=> toast.style.display="none", 1200);
+}
+
+async function copyToClipboard(text){
+  try{
+    await navigator.clipboard.writeText(String(text || "").trim());
+    showToast("Скопійовано ✅");
+  }catch(e){
+    alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+  }
+}
+
+function safeStr(v, fallback){
+  const s = String(v ?? "").trim();
+  return s ? s : fallback;
+}
+
+function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+function slugify(s){
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[’'"]/g,"")
+    .replace(/[^a-zа-яёіїє0-9]+/gi,"")
+    .slice(0, 24);
+}
+
+/* ===============================
+   Seeded random (deterministic)
+================================ */
+function xmur3(str){
+  for(var i=0, h=1779033703 ^ str.length; i<str.length; i++){
+    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+    h = h << 13 | h >>> 19;
+  }
+  return function(){
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^= h >>> 16) >>> 0;
+  };
+}
+function sfc32(a,b,c,d){
+  return function(){
+    a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0;
+    var t = (a + b) | 0;
+    a = b ^ b >>> 9;
+    b = c + (c << 3) | 0;
+    c = (c << 21 | c >>> 11);
+    d = d + 1 | 0;
+    t = t + d | 0;
+    c = c + t | 0;
+    return (t >>> 0) / 4294967296;
+  };
+}
+function makeRand(seed){
+  const s = String(seed || (Date.now()+"_"+Math.random()));
+  const seedFn = xmur3(s);
+  const rand = sfc32(seedFn(), seedFn(), seedFn(), seedFn());
+  rand._seed = s;
+  return rand;
+}
+function pick(rand, arr, i){
+  if(!arr || !arr.length) return "";
+  const idx = (typeof i === "number") ? (i % arr.length) : Math.floor(rand() * arr.length);
+  return arr[idx];
+}
+
+/* ===============================
+   Multilanguage helpers
+================================ */
+function t(lang, uk, ru){
+  return lang === "ru" ? ru : uk;
+}
+
+/* ===============================
+   Config
+================================ */
+function getConfig(){
+  const lang = languageEl.value;
+
+  const productsList = String(productsListEl.value || "")
+    .split("\n")
+    .map(s=>s.trim())
+    .filter(Boolean);
+
+  const cfg = {
+    projectName: safeStr(projectName.value, ""),
+    platform: platformEl.value,
+    lang,
+    product: safeStr(productEl.value, t(lang, "3D панелі / декор-панелі", "3D панели / декор-панели")),
+    ctaWord: safeStr(ctaWordEl.value, t(lang, "ХОЧУ", "ХОЧУ")).toUpperCase(),
+    region: safeStr(regionEl.value, ""),
+    goal: goalEl.value,
+
+    audience: audienceEl.value,
+    priceLevel: priceLevelEl.value,
+    offer: safeStr(offerEl.value, ""),
+    proof: proofEl.value,
+    objection: objectionEl.value,
+
+    planDays: parseInt(planDaysEl.value, 10),
+    pace: paceEl.value,
+    lengthSec: parseInt(lengthSecEl.value, 10),
+    timeSlot: timeSlotEl.value,
+    style: styleEl.value,
+    productsList,
+
+    face: faceEl.value,
+    voice: voiceEl.value,
+    tools: toolsEl.value,
+
+    seed: safeStr(seedEl.value, ""),
+    focusSeries: focusSeriesEl.value,
+    hashtagsMode: hashtagsModeEl.value,
+    ctaMode: ctaModeEl.value,
+  };
+  return cfg;
+}
+
+function setConfig(cfg){
+  if(!cfg) return;
+
+  projectName.value = cfg.projectName || "";
+  platformEl.value = cfg.platform || "TikTok";
+  languageEl.value = cfg.lang || "uk";
+  productEl.value = cfg.product || "";
+  ctaWordEl.value = cfg.ctaWord || "";
+  regionEl.value = cfg.region || "";
+  goalEl.value = cfg.goal || "messages";
+
+  audienceEl.value = cfg.audience || "homeowners";
+  priceLevelEl.value = cfg.priceLevel || "value";
+  offerEl.value = cfg.offer || "";
+  proofEl.value = cfg.proof || "basic";
+  objectionEl.value = cfg.objection || "price";
+
+  planDaysEl.value = String(cfg.planDays || 14);
+  paceEl.value = cfg.pace || "daily";
+  lengthSecEl.value = String(cfg.lengthSec || 20);
+  timeSlotEl.value = cfg.timeSlot || "evening";
+  styleEl.value = cfg.style || "friendly";
+  productsListEl.value = (cfg.productsList || []).join("\n");
+
+  faceEl.value = cfg.face || "no";
+  voiceEl.value = cfg.voice || "no";
+  toolsEl.value = cfg.tools || "phone";
+
+  seedEl.value = cfg.seed || "";
+  focusSeriesEl.value = cfg.focusSeries || "balanced";
+  hashtagsModeEl.value = cfg.hashtagsMode || "smart";
+  ctaModeEl.value = cfg.ctaMode || "soft";
+}
+
+/* ===============================
+   Offer defaults
+================================ */
+function defaultOffer(cfg){
+  const lang = cfg.lang;
+  const p = cfg.product;
+  const region = cfg.region ? (" ("+cfg.region+")") : "";
+  const baseUk = `Підберу ${p} під вашу площу, скину відео/фото вживу, порахую кількість і доставку${region}.`;
+  const baseRu = `Подберу ${p} под вашу площадь, пришлю видео/фото вживую, посчитаю количество и доставку${region}.`;
+  return t(lang, baseUk, baseRu);
+}
+
+/* ===============================
+   Series library
+================================ */
+function buildSeriesLibrary(cfg, rand){
+  const lang = cfg.lang;
+  const p = cfg.product;
+
+  const series = [
+    {
+      id:"A_before_after",
+      name: t(lang, "До/Після (результат)", "До/После (результат)"),
+      type:"result",
+      topicIdeas: [
+        t(lang,"Кут кімнати: було → стало","Угол комнаты: было → стало"),
+        t(lang,"1 стіна/фрагмент: було → стало","1 стена/фрагмент: было → стало"),
+        t(lang,"Швидке оновлення за 1 день","Быстрое обновление за 1 день"),
+        t(lang,"Маленька зона дає вау-ефект","Маленькая зона даёт вау-эффект"),
+        t(lang,"Результат без пилу і ремонту","Результат без пыли и ремонта"),
+      ]
+    },
+    {
+      id:"B_live_texture",
+      name: t(lang,"Вживу / фактура (довіра)","Вживую / фактура (доверие)"),
+      type:"trust",
+      topicIdeas: [
+        t(lang,"Крупний план: текстура і рельєф","Крупный план: текстура и рельеф"),
+        t(lang,"Під світлом: як грає поверхня","Под светом: как играет поверхность"),
+        t(lang,"З відстані 2 м: як виглядає в кімнаті","С расстояния 2 м: как выглядит в комнате"),
+        t(lang,"Товщина/стик/рівність","Толщина/стык/ровность"),
+        t(lang,"Що приїде: упаковка/комплект","Что приедет: упаковка/комплект"),
+      ]
+    },
+    {
+      id:"C_faq",
+      name: t(lang,"FAQ / заперечення (продаж)","FAQ / возражения (продажа)"),
+      type:"faq",
+      topicIdeas: [
+        t(lang,"Чи підійде для кухні/ванни?","Подойдет для кухни/ванны?"),
+        t(lang,"Чи можна на нерівні стіни?","Можно на неровные стены?"),
+        t(lang,"Скільки потрібно на 5 м²?","Сколько нужно на 5 м²?"),
+        t(lang,"Монтаж складний? 3 кроки","Монтаж сложный? 3 шага"),
+        t(lang,"Доставка/оплата/терміни","Доставка/оплата/сроки"),
+      ]
+    },
+    {
+      id:"D_mistakes",
+      name: t(lang,"Помилки (навчання)","Ошибки (обучение)"),
+      type:"learn",
+      topicIdeas: [
+        t(lang,"ТОП-3 помилки при монтажі","ТОП-3 ошибки при монтаже"),
+        t(lang,"Чому “відпадає” (і як зробити правильно)","Почему “отпадает” (и как правильно)"),
+        t(lang,"Який клей/основа потрібні","Какой клей/основа нужны"),
+        t(lang,"Як не зіпсувати вигляд стиками","Как не испортить вид стыками"),
+        t(lang,"Підготовка поверхні за 2 хв","Подготовка поверхности за 2 мин"),
+      ]
+    },
+    {
+      id:"E_price_calc",
+      name: t(lang,"Ціна / прорахунок (прямі продажі)","Цена / расчёт (прямые продажи)"),
+      type:"sales",
+      topicIdeas: [
+        t(lang,"Скільки коштує оновити 5 м²","Сколько стоит обновить 5 м²"),
+        t(lang,"Бюджетний vs дорожчий варіант (порівняння)","Бюджетный vs дороже (сравнение)"),
+        t(lang,"На що впливає ціна (матеріал/фактура)","На что влияет цена (материал/фактура)"),
+        t(lang,"Як не переплатити: 2 поради","Как не переплатить: 2 совета"),
+        t(lang,"Готовий підбір під ваш бюджет","Готовый подбор под ваш бюджет"),
+      ]
+    },
+    {
+      id:"F_story",
+      name: t(lang,"Міні-історія / кейс (соцдоказ)","Мини-история / кейс (соцдоказ)"),
+      type:"trust",
+      topicIdeas: [
+        t(lang,"Клієнт хотів ‘дорого’ без ремонту — що підібрали","Клиент хотел ‘дорого’ без ремонта — что подобрали"),
+        t(lang,"Як змінили кімнату за 1 вечір","Как изменили комнату за 1 вечер"),
+        t(lang,"До/після + питання клієнта + рішення","До/после + вопрос клиента + решение"),
+        t(lang,"Кейс: маленька площа — сильний ефект","Кейс: маленькая площадь — сильный эффект"),
+        t(lang,"Що люди питають найчастіше (і чому)","Что спрашивают чаще всего (и почему)"),
+      ]
+    }
+  ];
+
+  // Apply focus preference by weighting
+  const focus = cfg.focusSeries;
+  let pool = [];
+
+  function addMany(id, times){
+    const s = series.find(x=>x.id===id);
+    if(!s) return;
+    for(let i=0;i<times;i++) pool.push(s);
+  }
+
+  if(focus === "sales"){
+    addMany("A_before_after", 4);
+    addMany("E_price_calc", 4);
+    addMany("C_faq", 3);
+    addMany("B_live_texture", 2);
+    addMany("D_mistakes", 1);
+    addMany("F_story", 2);
+  }else if(focus === "trust"){
+    addMany("B_live_texture", 4);
+    addMany("F_story", 4);
+    addMany("A_before_after", 3);
+    addMany("C_faq", 2);
+    addMany("D_mistakes", 2);
+    addMany("E_price_calc", 1);
+  }else if(focus === "faq"){
+    addMany("C_faq", 5);
+    addMany("D_mistakes", 3);
+    addMany("B_live_texture", 2);
+    addMany("A_before_after", 2);
+    addMany("E_price_calc", 2);
+    addMany("F_story", 1);
+  }else{
+    // balanced
+    addMany("A_before_after", 3);
+    addMany("B_live_texture", 3);
+    addMany("C_faq", 3);
+    addMany("D_mistakes", 2);
+    addMany("E_price_calc", 2);
+    addMany("F_story", 2);
+  }
+
+  return {series, pool};
+}
+
+/* ===============================
+   Hook generator
+================================ */
+function buildHooks(cfg, seriesName, topic, rand){
+  const lang = cfg.lang;
+  const p = cfg.product;
+
+  const patternsUk = [
+    `Онови простір за 1 день: ${topic.toLowerCase()}…`,
+    `90% роблять помилку: ${topic.toLowerCase()} — покажу як правильно`,
+    `Як виглядає ${p} вживу? Дивись близько 👇`,
+    `До/після, яке реально змінює кімнату: ${topic.toLowerCase()}`,
+    `Питання №1 від людей: “${topic.replace(/\?$/,"")}?” — відповідаю`,
+    `Скільки це коштує? ${topic.replace(/\?$/,"")} — покажу на прикладі`,
+    `Швидкий лайфхак: ${topic.toLowerCase()} за 15 секунд`,
+    `Рішення без пилу і ремонту: ${topic.toLowerCase()}`
+  ];
+
+  const patternsRu = [
+    `Обнови пространство за 1 день: ${topic.toLowerCase()}…`,
+    `90% делают ошибку: ${topic.toLowerCase()} — покажу как правильно`,
+    `Как выглядит ${p} вживую? Смотри ближе 👇`,
+    `До/после, которое реально меняет комнату: ${topic.toLowerCase()}`,
+    `Вопрос №1: “${topic.replace(/\?$/,"")}?” — отвечаю`,
+    `Сколько это стоит? ${topic.replace(/\?$/,"")} — покажу на примере`,
+    `Быстрый лайфхак: ${topic.toLowerCase()} за 15 секунд`,
+    `Решение без пыли и ремонта: ${topic.toLowerCase()}`
+  ];
+
+  const arr = (lang === "ru") ? patternsRu : patternsUk;
+
+  // Pick 3 distinct-ish
+  const h1 = pick(rand, arr, 0 + Math.floor(rand()*arr.length));
+  const h2 = pick(rand, arr, 3 + Math.floor(rand()*arr.length));
+  const h3 = pick(rand, arr, 6 + Math.floor(rand()*arr.length));
+
+  return [h1, h2, h3].map(s=>s.replace(/\s+/g," ").trim());
+}
+
+/* ===============================
+   On-screen text generator
+================================ */
+function buildOnscreen(cfg, topic){
+  const lang = cfg.lang;
+  const cta = cfg.ctaWord;
+  const soft = cfg.ctaMode === "soft";
+  const bonus = cfg.ctaMode === "bonus";
+
+  const line1 = t(lang, "Швидко • Просто • Красиво", "Быстро • Просто • Красиво");
+  const line2 = topic.replace(/\s+/g," ").trim();
+
+  let line3 = "";
+  if(bonus){
+    line3 = t(lang, `Напиши “${cta}” — підбір + прорахунок`, `Напиши “${cta}” — подбор + расчёт`);
+  }else if(soft){
+    line3 = t(lang, `Напиши “${cta}” — підкажу варіант`, `Напиши “${cta}” — подскажу вариант`);
+  }else{
+    line3 = t(lang, `Напиши “${cta}” — ціна/прорахунок`, `Напиши “${cta}” — цена/расчёт`);
+  }
+
+  return [line1, line2, line3];
+}
+
+/* ===============================
+   Shots list generator (adapt to no-face/no-voice)
+================================ */
+function buildShots(cfg, seriesType, topic){
+  const lang = cfg.lang;
+  const noFace = cfg.face === "no";
+  const noVoice = cfg.voice === "no";
+
+  const base = [];
+  const add = (uk, ru) => base.push(t(lang, uk, ru));
+
+  add("Кадр 1: найкращий крупний план (фактура/деталь)", "Кадр 1: лучший крупный план (фактура/деталь)");
+  add("Кадр 2: загальний вид (кімната/стіна/підлога) — 1–2 сек", "Кадр 2: общий вид (комната/стена/пол) — 1–2 сек");
+
+  if(seriesType === "result"){
+    add("Кадр 3: “До” (1 сек)", "Кадр 3: “До” (1 сек)");
+    add("Кадр 4: “Після” (2 сек) — повільний пан", "Кадр 4: “После” (2 сек) — медленный пан");
+    add("Кадр 5: деталь/стик/кут під світлом", "Кадр 5: деталь/стык/угол под светом");
+  }else if(seriesType === "trust"){
+    add("Кадр 3: рукою по поверхні (рельєф)", "Кадр 3: рукой по поверхности (рельеф)");
+    add("Кадр 4: під кутом світла (видно текстуру)", "Кадр 4: под углом света (видно текстуру)");
+    add("Кадр 5: з відстані 2 м (як в кімнаті)", "Кадр 5: с расстояния 2 м (как в комнате)");
+  }else if(seriesType === "faq"){
+    add("Кадр 3: текст питання на екрані (1 сек)", "Кадр 3: текст вопроса на экране (1 сек)");
+    add("Кадр 4: показуєш відповідь візуально (клей/монтаж/приклад)", "Кадр 4: показываешь ответ визуально (клей/монтаж/пример)");
+    add("Кадр 5: фінальний результат/деталь", "Кадр 5: финальный результат/деталь");
+  }else if(seriesType === "learn"){
+    add("Кадр 3: “помилка” (показати приклад)", "Кадр 3: “ошибка” (показать пример)");
+    add("Кадр 4: “як правильно” (2 кроки)", "Кадр 4: “как правильно” (2 шага)");
+    add("Кадр 5: короткий результат", "Кадр 5: короткий результат");
+  }else if(seriesType === "sales"){
+    add("Кадр 3: площа/рулетка/візуально 1–2 м²", "Кадр 3: площадь/рулетка/визуально 1–2 м²");
+    add("Кадр 4: “ціна/варіант” (титр + товар в кадрі)", "Кадр 4: “цена/вариант” (титр + товар в кадре)");
+    add("Кадр 5: фінальна красива картинка", "Кадр 5: финальная красивая картинка");
+  }else{
+    add("Кадр 3: ситуація клієнта (титр)", "Кадр 3: ситуация клиента (титр)");
+    add("Кадр 4: що підібрали (візуал)", "Кадр 4: что подобрали (визуал)");
+    add("Кадр 5: результат/до-після", "Кадр 5: результат/до-после");
+  }
+
+  add("Кадр 6: CTA на екрані (1 сек)", "Кадр 6: CTA на экране (1 сек)");
+
+  if(noFace){
+    base.push(t(lang, "Фішка: знімай руки + товар + інтер’єр (без обличчя).", "Фишка: снимай руки + товар + интерьер (без лица)."));
+  }
+  if(noVoice){
+    base.push(t(lang, "Фішка: роби сильні титри (3 рядки) + показуй візуально.", "Фишка: делай сильные титры (3 строки) + показывай визуально."));
+  }
+  return base;
+}
+
+/* ===============================
+   Script generator
+================================ */
+function buildScript(cfg, seriesName, topic, hooks){
+  const lang = cfg.lang;
+  const p = cfg.product;
+  const len = cfg.lengthSec;
+  const cta = cfg.ctaWord;
+
+  const style = cfg.style;
+  const tone =
+    style === "expert" ? t(lang, "впевнено, коротко", "уверенно, коротко")
+    : style === "energetic" ? t(lang, "швидко, енергійно", "быстро, энергично")
+    : style === "calm" ? t(lang, "спокійно, преміально", "спокойно, премиально")
+    : t(lang, "дружньо, просто", "дружелюбно, просто");
+
+  const voiceMode = cfg.voice === "yes"
+    ? t(lang, "Озвучка/голос: можна", "Озвучка/голос: можно")
+    : t(lang, "Озвучка/голос: не потрібно (титри)", "Озвучка/голос: не нужно (титры)");
+
+  const offer = cfg.offer ? cfg.offer : defaultOffer(cfg);
+
+  const structureUk =
+`Тривалість: ~${len} сек • Тон: ${tone}
+${voiceMode}
+
+0–2с (Гачок): ${hooks[0]}
+2–6с (Показ): покажи ${topic.toLowerCase()} максимально близько (фактура/до-після/деталь).
+6–12с (Перевага): 1–2 вигоди простими словами (без “води”).
+12–18с (Довіра): коротко — що є по довірі (вживу/відгуки/гарантія/обмін).
+18–${len}с (CTA): “Напиши ‘${cta}’ — ${offer}”`;
+
+  const structureRu =
+`Длительность: ~${len} сек • Тон: ${tone}
+${voiceMode}
+
+0–2с (Хук): ${hooks[0]}
+2–6с (Показ): покажи ${topic.toLowerCase()} максимально близко (фактура/до-после/деталь).
+6–12с (Польза): 1–2 выгоды простыми словами (без “воды”).
+12–18с (Доверие): коротко — что есть по доверию (вживую/отзывы/гарантия/обмен).
+18–${len}с (CTA): “Напиши ‘${cta}’ — ${offer}”`;
+
+  return t(lang, structureUk, structureRu);
+}
+
+/* ===============================
+   Caption + CTA generator
+================================ */
+function buildCaption(cfg, topic){
+  const lang = cfg.lang;
+  const p = cfg.product;
+  const cta = cfg.ctaWord;
+
+  const offer = cfg.offer ? cfg.offer : defaultOffer(cfg);
+
+  const proofLine =
+    cfg.proof === "reviews" ? t(lang,"Є відгуки/приклади — скину в дірект.","Есть отзывы/примеры — пришлю в директ.")
+    : cfg.proof === "guarantee" ? t(lang,"Є обмін/гарантія — підкажу умови.","Есть обмен/гарантия — подскажу условия.")
+    : cfg.proof === "all" ? t(lang,"Є відео вживу + приклади + умови обміну.","Есть видео вживую + примеры + условия обмена.")
+    : t(lang,"Скину відео/фото вживу — щоб було видно фактуру.","Пришлю видео/фото вживую — чтобы было видно фактуру.");
+
+  const ctaLine =
+    cfg.ctaMode === "bonus"
+      ? t(lang, `Напиши “${cta}” — зроблю підбір + прорахунок під твою площу ✅`, `Напиши “${cta}” — сделаю подбор + расчёт под твою площадь ✅`)
+      : cfg.ctaMode === "direct"
+      ? t(lang, `Напиши “${cta}” — скажу ціну та порахую кількість ✅`, `Напиши “${cta}” — скажу цену и посчитаю количество ✅`)
+      : t(lang, `Напиши “${cta}” — підкажу варіант і як краще зробити ✅`, `Напиши “${cta}” — подскажу вариант и как лучше сделать ✅`);
+
+  const regionLine = cfg.region ? (t(lang,"Регіон: ","Регион: ")+cfg.region) : "";
+
+  const uk =
+`${topic}
+• ${t(lang,"Товар: ","Товар: ")}${p}
+• ${proofLine}
+${regionLine ? ("• " + regionLine) : ""}
+
+${ctaLine}
+`;
+
+  const ru =
+`${topic}
+• ${t(lang,"Товар: ","Товар: ")}${p}
+• ${proofLine}
+${regionLine ? ("• " + regionLine) : ""}
+
+${ctaLine}
+`;
+
+  return t(lang, uk, ru).trim();
+}
+
+/* ===============================
+   Hashtags generator (generic, not "trending")
+================================ */
+function buildHashtags(cfg, topic){
+  const lang = cfg.lang;
+  const mode = cfg.hashtagsMode;
+
+  const baseUk = ["#інтерєр","#ремонт","#декор","#дім","#корисно","#лайфхак","#україна","#дропшипінг"];
+  const baseRu = ["#интерьер","#ремонт","#декор","#дом","#полезно","#лайфхак","#украина","#дропшиппинг"];
+
+  const pSlug = "#" + slugify(cfg.product);
+  const tSlug = "#" + slugify(topic);
+
+  const regionSlug = cfg.region ? ("#" + slugify(cfg.region)) : "";
+
+  let tags = (lang==="ru") ? baseRu.slice() : baseUk.slice();
+  tags.push(pSlug);
+  tags.push(tSlug);
+  if(regionSlug) tags.push(regionSlug);
+
+  // add content-intent tags
+  const intent = cfg.goal;
+  const extraUk = {
+    messages:["#ціна","#підбір","#замовлення","#доставка"],
+    comments:["#порада","#питання","#думка","#обговорення"],
+    reach:["#відео","#рілс","#тікток","#рекомендації"]
+  };
+  const extraRu = {
+    messages:["#цена","#подбор","#заказ","#доставка"],
+    comments:["#совет","#вопрос","#мнение","#обсуждение"],
+    reach:["#видео","#рилс","#тикток","#рекомендации"]
+  };
+
+  const extra = (lang==="ru") ? (extraRu[intent]||[]) : (extraUk[intent]||[]);
+  tags = tags.concat(extra);
+
+  // length control
+  if(mode === "minimal") tags = tags.slice(0, 8);
+  if(mode === "wide") tags = tags.slice(0, 18);
+  if(mode === "smart") tags = tags.slice(0, 12);
+
+  // unique
+  tags = Array.from(new Set(tags)).filter(Boolean);
+
+  return tags.join(" ");
+}
+
+/* ===============================
+   DM reply generator
+================================ */
+function buildDM(cfg){
+  const lang = cfg.lang;
+  const p = cfg.product;
+  const cta = cfg.ctaWord;
+
+  const offer = cfg.offer ? cfg.offer : defaultOffer(cfg);
+
+  const q1 = t(lang,"1) Яка площа (м²) і що саме хочеш оновити?","1) Какая площадь (м²) и что именно хочешь обновить?");
+  const q2 = t(lang,"2) Місто/область для доставки?","2) Город/область для доставки?");
+  const q3 = t(lang,"3) Є фото місця/стіни/підлоги? (скинь — підберу точніше)","3) Есть фото места/стены/пола? (скинь — подберу точнее)");
+
+  const greet = t(lang,"Привіт! 👋 Дякую за повідомлення.","Привет! 👋 Спасибо за сообщение.");
+  const ctaLine = t(lang, `Бачу слово “${cta}” — супер ✅`, `Вижу слово “${cta}” — супер ✅`);
+  const value = t(lang, `Підберу ${p} під твою задачу і порахую кількість/доставку.`, `Подберу ${p} под твою задачу и посчитаю количество/доставку.`);
+  const ask = t(lang,"Підкажи, будь ласка:","Подскажи, пожалуйста:");
+  const close = t(lang,"Відповіси — і я одразу скину 2–3 варіанти з ціною ✅","Ответишь — и я сразу пришлю 2–3 варианта с ценой ✅");
+
+  return `${greet}\n${ctaLine}\n${value}\n\n${ask}\n${q1}\n${q2}\n${q3}\n\n${close}`;
+}
+
+/* ===============================
+   Calendar (pace)
+================================ */
+function isPostingDay(dayIndex1, pace){
+  // dayIndex1 is 1..N
+  if(pace === "daily") return true;
+  // Assume Day 1 is Monday style. For practical use it's okay.
+  const dow = ((dayIndex1 - 1) % 7) + 1; // 1..7
+  if(pace === "5wk") return dow <= 5; // Mon-Fri
+  if(pace === "3wk") return (dow === 1 || dow === 3 || dow === 5);
+  return true;
+}
+
+/* ===============================
+   Build plan items
+================================ */
+function buildPlan(cfg){
+  const rand = makeRand(cfg.seed || "");
+  // store seed back so regeneration can reuse
+  cfg._seedUsed = rand._seed;
+
+  const lib = buildSeriesLibrary(cfg, rand);
+
+  // product rotation
+  const products = (cfg.productsList && cfg.productsList.length) ? cfg.productsList : [cfg.product];
+
+  const plan = [];
+  let videoCount = 0;
+  let prodIdx = 0;
+
+  for(let day=1; day<=cfg.planDays; day++){
+    if(!isPostingDay(day, cfg.pace)){
+      plan.push({
+        day,
+        isPause:true,
+        label: t(cfg.lang,"Пауза / відповіді / сторіс","Пауза / ответы / сторис"),
+        product: products[prodIdx % products.length]
+      });
+      continue;
+    }
+
+    const useProduct = products[prodIdx % products.length];
+    prodIdx++;
+
+    // pick a series from weighted pool
+    const s = pick(rand, lib.pool);
+
+    // pick topic from series ideas
+    const topic = pick(rand, s.topicIdeas);
+
+    const hooks = buildHooks({...cfg, product: useProduct}, s.name, topic, rand);
+    const onscreen = buildOnscreen(cfg, topic);
+    const shots = buildShots(cfg, s.type, topic);
+    const script = buildScript({...cfg, product: useProduct}, s.name, topic, hooks);
+    const caption = buildCaption({...cfg, product: useProduct}, topic);
+    const hashtags = buildHashtags({...cfg, product: useProduct}, topic);
+    const dm = buildDM({...cfg, product: useProduct});
+
+    const item = {
+      id: `${day}_${slugify(s.id)}_${slugify(topic)}`,
+      day,
+      isPause:false,
+      seriesId:s.id,
+      seriesName:s.name,
+      seriesType:s.type,
+      product: useProduct,
+      topic,
+      hooks,
+      onscreen,
+      shots,
+      script,
+      caption,
+      hashtags,
+      dm,
+      meta:{
+        platform: cfg.platform,
+        goal: cfg.goal,
+        timeSlot: cfg.timeSlot,
+        lengthSec: cfg.lengthSec,
+        face: cfg.face,
+        voice: cfg.voice
+      }
+    };
+    plan.push(item);
+    videoCount++;
+  }
+
+  return {plan, videoCount, seedUsed: cfg._seedUsed};
+}
+
+/* ===============================
+   Rendering
+================================ */
+let CURRENT = {
+  cfg: null,
+  plan: [],
+  videoCount: 0,
+  seedUsed: "",
+  activeTab: "plan"
+};
+
+function renderKPIs(){
+  const cfg = CURRENT.cfg;
+  const videos = CURRENT.videoCount;
+
+  kpis.style.display = "grid";
+  kpiVideos.textContent = String(videos);
+
+  // time estimate: each video ~ 8 min shooting+edit (beginner). plus batching.
+  const per = cfg.voice === "yes" ? 10 : 8;
+  const est = Math.max(1, Math.round((videos * per) / 60 * 10) / 10);
+  const estText = t(cfg.lang, `${est} год (орієнтир)`, `${est} ч (ориентир)`);
+  kpiTime.textContent = estText;
+
+  // series count
+  const seriesSet = new Set(CURRENT.plan.filter(x=>!x.isPause).map(x=>x.seriesName));
+  kpiSeries.textContent = String(seriesSet.size);
+}
+
+function renderPlanTab(){
+  const cfg = CURRENT.cfg;
+  const plan = CURRENT.plan;
+
+  const headerNote = t(cfg.lang,
+    `Натисни рядок — відкриються деталі (гачки, скрипт, кадри, опис, DM).`,
+    `Нажми строку — откроются детали (хуки, скрипт, кадры, описание, DM).`
+  );
+
+  let html = `
+    <div class="miniText">${headerNote}</div>
+    <div class="tableWrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:70px">${t(cfg.lang,"День","День")}</th>
+            <th>${t(cfg.lang,"Що знімаємо","Что снимаем")}</th>
+            <th style="width:170px">${t(cfg.lang,"Серія","Серия")}</th>
+            <th style="width:140px">${t(cfg.lang,"Товар","Товар")}</th>
+            <th style="width:130px">${t(cfg.lang,"CTA","CTA")}</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  plan.forEach(item=>{
+    if(item.isPause){
+      html += `
+        <tr>
+          <td><b>${item.day}</b></td>
+          <td colspan="4" style="color:var(--muted)">
+            <span class="tag"><i data-lucide="coffee"></i> ${t(cfg.lang,"Пауза","Пауза")}</span>
+            &nbsp; ${item.label}
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    html += `
+      <tr class="rowBtn" data-open="${item.id}">
+        <td><b>${item.day}</b></td>
+        <td>
+          <b style="font-size:13.4px">${item.topic}</b>
+          <div class="miniText">
+            <span class="tag"><i data-lucide="clock"></i> ~${cfg.lengthSec}s</span>
+            <span class="tag"><i data-lucide="upload"></i> ${cfg.timeSlot}</span>
+          </div>
+        </td>
+        <td>${item.seriesName}</td>
+        <td>${item.product}</td>
+        <td><span class="tag"><i data-lucide="message-circle"></i> ${cfg.ctaWord}</span></td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table></div>`;
+
+  tabPlan.innerHTML = html;
+
+  // bind open row
+  tabPlan.querySelectorAll("[data-open]").forEach(row=>{
+    row.addEventListener("click", ()=>{
+      const id = row.getAttribute("data-open");
+      const item = CURRENT.plan.find(x=>x.id===id);
+      if(item) openDrawer(item);
+    });
+  });
+
+  if(window.lucide) lucide.createIcons();
+}
+
+function renderScriptsTab(){
+  const cfg = CURRENT.cfg;
+  const plan = CURRENT.plan.filter(x=>!x.isPause);
+
+  let html = `
+    <div class="miniText">
+      ${t(cfg.lang,"Тут — швидкий список. Обери 4 відео на тиждень і зніми пачкою.","Здесь — быстрый список. Выбери 4 видео в неделю и сними пачкой.")}
+    </div>
+  `;
+
+  plan.slice(0, 999).forEach(item=>{
+    const hooksText = item.hooks.map((h,i)=>`${i+1}) ${h}`).join("\n");
+    const ons = item.onscreen.map((l,i)=>`${i+1}) ${l}`).join("\n");
+    html += `
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="file-text"></i> День ${item.day}: ${item.topic}</b>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn secondary" data-copy="mini_${item.id}"><i data-lucide="copy"></i> Copy</button>
+            <button class="btn secondary" data-open2="${item.id}"><i data-lucide="maximize-2"></i> Деталі</button>
+          </div>
+        </div>
+        <div class="mono" id="mini_${item.id}">ГАЧКИ:
+${hooksText}
+
+ТЕКСТ НА ЕКРАНІ:
+${ons}
+
+СКРИПТ:
+${item.script}</div>
+      </div>
+    `;
+  });
+
+  tabScripts.innerHTML = html;
+
+  tabScripts.querySelectorAll("[data-copy]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-copy");
+      const el = document.getElementById(id);
+      if(el) copyToClipboard(el.textContent);
+    });
+  });
+  tabScripts.querySelectorAll("[data-open2]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-open2");
+      const item = CURRENT.plan.find(x=>x.id===id);
+      if(item) openDrawer(item);
+    });
+  });
+
+  if(window.lucide) lucide.createIcons();
+}
+
+function renderBatchTab(){
+  const cfg = CURRENT.cfg;
+  const plan = CURRENT.plan.filter(x=>!x.isPause);
+
+  // Group by series name
+  const groups = {};
+  plan.forEach(item=>{
+    groups[item.seriesName] = groups[item.seriesName] || [];
+    groups[item.seriesName].push(item);
+  });
+
+  const how = t(cfg.lang,
+`Пачка-зйомка = 60–120 хв і контент на тиждень.
+1) Обери 4 відео
+2) Зніми всі “кадри” разом
+3) Потім збереш ролики в CapCut/Editor.`,
+`Пачка-съёмка = 60–120 мин и контент на неделю.
+1) Выбери 4 видео
+2) Сними все “кадры” вместе
+3) Потом соберёшь ролики в CapCut/Editor.`
+  );
+
+  let html = `
+    <div class="miniText">${how}</div>
+    <div class="block">
+      <div class="blockHead">
+        <b><i data-lucide="clapperboard"></i> Шаблон батчингу (копіюй)</b>
+        <button class="btn secondary" id="copyBatchTemplate"><i data-lucide="copy"></i> Копіювати</button>
+      </div>
+      <div class="mono" id="batchTemplate">${t(cfg.lang,
+`Чек-лист пачка-зйомки (1–2 години):
+[ ] Обрав 4 відео з плану (Дні: __, __, __, __)
+[ ] Підготував місце/світло (за можливості)
+[ ] Зняв B-roll:
+    — крупні плани фактури
+    — загальний вид
+    — “до/після” (якщо є)
+    — монтаж/клей/кріплення
+    — упаковка/комплект
+[ ] Додав титри (3 рядки) + CTA-слово
+[ ] Опублікував у вибраний час
+[ ] Через 24 год подивився: де більше повідомлень`,
+`Чек-лист пачка-съёмки (1–2 часа):
+[ ] Выбрал 4 видео из плана (Дни: __, __, __, __)
+[ ] Подготовил место/свет (по возможности)
+[ ] Снял B-roll:
+    — крупные планы фактуры
+    — общий вид
+    — “до/после” (если есть)
+    — монтаж/клей/крепление
+    — упаковка/комплект
+[ ] Добавил титры (3 строки) + CTA-слово
+[ ] Опубликовал в выбранное время
+[ ] Через 24 ч посмотрел: где больше сообщений`
+      )}</div>
+    </div>
+  `;
+
+  Object.keys(groups).forEach(seriesName=>{
+    const items = groups[seriesName];
+    const list = items.map(i=>`• День ${i.day}: ${i.topic} (${i.product})`).join("\n");
+    html += `
+      <div class="block">
+        <div class="blockHead">
+          <b><i data-lucide="layers-3"></i> ${seriesName} — ідеї в плані</b>
+          <button class="btn secondary" data-copygrp="${slugify(seriesName)}"><i data-lucide="copy"></i> Copy</button>
+        </div>
+        <div class="mono" id="grp_${slugify(seriesName)}">${list}</div>
+      </div>
+    `;
+  });
+
+  tabBatch.innerHTML = html;
+
+  const copyBatchTemplate = document.getElementById("copyBatchTemplate");
+  copyBatchTemplate.addEventListener("click", ()=>{
+    const el = document.getElementById("batchTemplate");
+    copyToClipboard(el.textContent);
+  });
+
+  tabBatch.querySelectorAll("[data-copygrp]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const key = btn.getAttribute("data-copygrp");
+      const el = document.getElementById("grp_"+key);
+      if(el) copyToClipboard(el.textContent);
+    });
+  });
+
+  if(window.lucide) lucide.createIcons();
+}
+
+function renderDMTab(){
+  const cfg = CURRENT.cfg;
+  const dm = buildDM(cfg);
+
+  const note = t(cfg.lang,
+    "Це твій універсальний шаблон відповіді. Відправляй тим, хто написав CTA-слово.",
+    "Это твой универсальный шаблон ответа. Отправляй тем, кто написал CTA-слово."
+  );
+
+  const pin = t(cfg.lang,
+    `Коментар для закріплення під відео:\n“Напиши в дірект слово ‘${cfg.ctaWord}’ — підберу і порахую ✅”`,
+    `Комментарий для закрепа под видео:\n“Напиши в директ слово ‘${cfg.ctaWord}’ — подберу и посчитаю ✅”`
+  );
+
+  tabDM.innerHTML = `
+    <div class="miniText">${note}</div>
+
+    <div class="block">
+      <div class="blockHead">
+        <b><i data-lucide="message-square"></i> DM-відповідь (copy/paste)</b>
+        <button class="btn secondary" id="copyDMMain"><i data-lucide="copy"></i> Копіювати</button>
+      </div>
+      <div class="mono" id="dmMain">${dm}</div>
+    </div>
+
+    <div class="block">
+      <div class="blockHead">
+        <b><i data-lucide="pin"></i> Закріплений коментар</b>
+        <button class="btn secondary" id="copyPin"><i data-lucide="copy"></i> Копіювати</button>
+      </div>
+      <div class="mono" id="pinMain">${pin}</div>
+    </div>
+
+    <div class="block">
+      <div class="blockHead">
+        <b><i data-lucide="shield-check"></i> Міні-скрипт “довіра” (1 повідомлення)</b>
+        <button class="btn secondary" id="copyTrustMsg"><i data-lucide="copy"></i> Копіювати</button>
+      </div>
+      <div class="mono" id="trustMsg">${
+        t(cfg.lang,
+`Щоб було спокійно ✅
+— Скину відео/фото вживу (фактура видно)
+— Підкажу монтаж/клей (як правильно)
+— Порахую кількість під вашу площу
+Напиши: площа + місто + фото місця 🙂`,
+`Чтобы было спокойно ✅
+— Пришлю видео/фото вживую (фактура видна)
+— Подскажу монтаж/клей (как правильно)
+— Посчитаю количество под вашу площадь
+Напиши: площадь + город + фото места 🙂`
+        )
+      }</div>
+    </div>
+  `;
+
+  document.getElementById("copyDMMain").addEventListener("click", ()=> copyToClipboard(document.getElementById("dmMain").textContent));
+  document.getElementById("copyPin").addEventListener("click", ()=> copyToClipboard(document.getElementById("pinMain").textContent));
+  document.getElementById("copyTrustMsg").addEventListener("click", ()=> copyToClipboard(document.getElementById("trustMsg").textContent));
+
+  if(window.lucide) lucide.createIcons();
+}
+
+function buildAllTextExport(){
+  const cfg = CURRENT.cfg;
+  const plan = CURRENT.plan;
+
+  const head =
+`${t(cfg.lang,"ПРОЄКТ","ПРОЕКТ")}: ${cfg.projectName || "-"}
+${t(cfg.lang,"ПЛАТФОРМА","ПЛАТФОРМА")}: ${cfg.platform}
+${t(cfg.lang,"МОВА","ЯЗЫК")}: ${cfg.lang === "ru" ? "RU" : "UA"}
+${t(cfg.lang,"ТОВАР","ТОВАР")}: ${cfg.product}
+${t(cfg.lang,"CTA-СЛОВО","CTA-СЛОВО")}: ${cfg.ctaWord}
+${cfg.region ? (t(cfg.lang,"РЕГІОН","РЕГИОН")+": "+cfg.region) : ""}
+${t(cfg.lang,"ПЕРІОД","ПЕРИОД")}: ${cfg.planDays} ${t(cfg.lang,"днів","дней")}
+${t(cfg.lang,"ТЕМП","ТЕМП")}: ${cfg.pace}
+${t(cfg.lang,"ТРИВАЛІСТЬ","ДЛИТЕЛЬНОСТЬ")}: ~${cfg.lengthSec}s
+Seed: ${CURRENT.seedUsed}
+
+==========================
+${t(cfg.lang,"ПЛАН","ПЛАН")}
+==========================\n`;
+
+  const lines = plan.map(item=>{
+    if(item.isPause){
+      return `День ${item.day}: ${t(cfg.lang,"Пауза","Пауза")} — ${item.label}`;
+    }
+    return `День ${item.day} — ${item.topic}
+Серія: ${item.seriesName}
+Товар: ${item.product}
+Гачки:
+- ${item.hooks[0]}
+- ${item.hooks[1]}
+- ${item.hooks[2]}
+Текст на екрані:
+- ${item.onscreen[0]}
+- ${item.onscreen[1]}
+- ${item.onscreen[2]}
+Скрипт:
+${item.script}
+Опис:
+${item.caption}
+Хештеги:
+${item.hashtags}
+
+DM:
+${item.dm}
+--------------------------`;
+  }).join("\n\n");
+
+  return head + lines;
+}
+
+function buildCsv(){
+  const cfg = CURRENT.cfg;
+  const plan = CURRENT.plan;
+
+  const cols = [
+    "day","is_pause","platform","product","series","topic","hook1","hook2","hook3",
+    "cta","length_sec","time_slot","caption","hashtags"
+  ];
+
+  const esc = (v)=>{
+    const s = String(v ?? "");
+    const clean = s.replace(/\r?\n/g, " ").replace(/\s+/g, " ").trim();
+    return `"${clean.replace(/"/g,'""')}"`;
+  };
+
+  const rows = [cols.join(",")];
+
+  plan.forEach(item=>{
+    if(item.isPause){
+      rows.push([
+        item.day, "1", esc(cfg.platform), esc(item.product), esc("PAUSE"), esc(item.label),
+        esc(""), esc(""), esc(""),
+        esc(cfg.ctaWord), cfg.lengthSec, esc(cfg.timeSlot), esc(""), esc("")
+      ].join(","));
+      return;
+    }
+
+    rows.push([
+      item.day, "0",
+      esc(cfg.platform),
+      esc(item.product),
+      esc(item.seriesName),
+      esc(item.topic),
+      esc(item.hooks[0]),
+      esc(item.hooks[1]),
+      esc(item.hooks[2]),
+      esc(cfg.ctaWord),
+      cfg.lengthSec,
+      esc(cfg.timeSlot),
+      esc(item.caption),
+      esc(item.hashtags)
+    ].join(","));
+  });
+
+  return rows.join("\n");
+}
+
+function renderExportTab(){
+  const cfg = CURRENT.cfg;
+
+  const txt = buildAllTextExport();
+  const csv = buildCsv();
+  const json = JSON.stringify({cfg: CURRENT.cfg, plan: CURRENT.plan, seedUsed: CURRENT.seedUsed}, null, 2);
+
+  tabExport.innerHTML = `
+    <div class="miniText">
+      ${t(cfg.lang,
+        "Тут можна швидко скопіювати все або завантажити файл. TXT зручно кидати собі в нотатки/Telegram.",
+        "Тут можно быстро скопировать всё или скачать файл. TXT удобно сохранить в заметки/Telegram."
+      )}
+    </div>
+
+    <div class="block">
+      <div class="blockHead">
+        <b><i data-lucide="file-text"></i> TXT (весь проєкт)</b>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn secondary" id="copyTxtAll"><i data-lucide="copy"></i> Copy</button>
+          <button class="btn secondary" id="dlTxt"><i data-lucide="download"></i> TXT</button>
+        </div>
+      </div>
+      <div class="mono" id="txtAll">${txt}</div>
+    </div>
+
+    <div class="block">
+      <div class="blockHead">
+        <b><i data-lucide="file-spreadsheet"></i> CSV (для Excel/Sheets)</b>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn secondary" id="copyCsv"><i data-lucide="copy"></i> Copy</button>
+          <button class="btn secondary" id="dlCsv"><i data-lucide="download"></i> CSV</button>
+        </div>
+      </div>
+      <div class="mono" id="csvAll">${csv}</div>
+    </div>
+
+    <div class="block">
+      <div class="blockHead">
+        <b><i data-lucide="braces"></i> JSON (налаштування + план)</b>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn secondary" id="copyJson"><i data-lucide="copy"></i> Copy</button>
+          <button class="btn secondary" id="dlJson"><i data-lucide="download"></i> JSON</button>
+        </div>
+      </div>
+      <div class="mono" id="jsonAll">${json}</div>
+    </div>
+  `;
+
+  document.getElementById("copyTxtAll").addEventListener("click", ()=> copyToClipboard(document.getElementById("txtAll").textContent));
+  document.getElementById("copyCsv").addEventListener("click", ()=> copyToClipboard(document.getElementById("csvAll").textContent));
+  document.getElementById("copyJson").addEventListener("click", ()=> copyToClipboard(document.getElementById("jsonAll").textContent));
+
+  document.getElementById("dlTxt").addEventListener("click", ()=> downloadFile("content_plan.txt", txt, "text/plain;charset=utf-8"));
+  document.getElementById("dlCsv").addEventListener("click", ()=> downloadFile("content_plan.csv", csv, "text/csv;charset=utf-8"));
+  document.getElementById("dlJson").addEventListener("click", ()=> downloadFile("content_project.json", json, "application/json;charset=utf-8"));
+
+  if(window.lucide) lucide.createIcons();
+}
+
+/* ===============================
+   Drawer open
+================================ */
+let CURRENT_ITEM = null;
+
+function openDrawer(item){
+  CURRENT_ITEM = item;
+  drawer.style.display = "flex";
+
+  dTitle.textContent = `День ${item.day}: ${item.topic}`;
+  dSub.textContent = `${item.seriesName} • ${item.product} • ${item.meta.platform} • ~${item.meta.lengthSec}s`;
+
+  dHooks.textContent = item.hooks.map((h,i)=>`${i+1}) ${h}`).join("\n");
+  dScript.textContent = item.script;
+  dOnscreen.textContent = item.onscreen.map((l,i)=>`${i+1}) ${l}`).join("\n");
+  dShots.textContent = item.shots.map((s,i)=>`• ${s}`).join("\n");
+  dCaption.textContent = item.caption;
+  dHashtags.textContent = item.hashtags;
+  dDM.textContent = item.dm;
+
+  if(window.lucide) lucide.createIcons();
+}
+
+function closeDrawer(){
+  drawer.style.display = "none";
+  CURRENT_ITEM = null;
+}
+
+btnCloseDrawer.addEventListener("click", closeDrawer);
+drawer.addEventListener("click", (e)=>{
+  if(e.target === drawer) closeDrawer();
+});
+
+btnCopyHooks.addEventListener("click", ()=> CURRENT_ITEM && copyToClipboard(dHooks.textContent));
+btnCopyScript.addEventListener("click", ()=> CURRENT_ITEM && copyToClipboard(dScript.textContent));
+btnCopyOnscreen.addEventListener("click", ()=> CURRENT_ITEM && copyToClipboard(dOnscreen.textContent));
+btnCopyShots.addEventListener("click", ()=> CURRENT_ITEM && copyToClipboard(dShots.textContent));
+btnCopyCaption.addEventListener("click", ()=> CURRENT_ITEM && copyToClipboard(dCaption.textContent));
+btnCopyHashtags.addEventListener("click", ()=> CURRENT_ITEM && copyToClipboard(dHashtags.textContent));
+btnCopyDM.addEventListener("click", ()=> CURRENT_ITEM && copyToClipboard(dDM.textContent));
+
+/* ===============================
+   Tabs
+================================ */
+function setTab(name){
+  CURRENT.activeTab = name;
+
+  // buttons
+  tabs.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active", t.getAttribute("data-tab") === name);
+  });
+
+  // panes
+  const panes = {
+    plan: tabPlan,
+    scripts: tabScripts,
+    batch: tabBatch,
+    dm: tabDM,
+    export: tabExport
+  };
+  Object.keys(panes).forEach(k=> panes[k].style.display = (k===name) ? "block" : "none");
+
+  // title text
+  const cfg = CURRENT.cfg;
+  if(!cfg || !CURRENT.plan.length){
+    outTitle.textContent = t(languageEl.value, "План не згенеровано", "План не сгенерирован");
+    outSubtitle.textContent = t(languageEl.value, "Заповни товар + CTA і натисни “Згенерувати”.", "Заполни товар + CTA и нажми “Сгенерировать”.");
+    kpis.style.display = "none";
+    return;
+  }
+
+  const titleMap = {
+    plan: t(cfg.lang,"Календар контенту","Календарь контента"),
+    scripts: t(cfg.lang,"Скрипти та заготовки","Скрипты и заготовки"),
+    batch: t(cfg.lang,"Пачка-зйомка","Пачка-съёмка"),
+    dm: t(cfg.lang,"DM/відповіді","DM/ответы"),
+    export: t(cfg.lang,"Експорт","Экспорт")
+  };
+
+  outTitle.textContent = titleMap[name] || "—";
+  outSubtitle.textContent = `${cfg.platform} • ${cfg.planDays} ${t(cfg.lang,"днів","дней")} • CTA: ${cfg.ctaWord} • Seed: ${CURRENT.seedUsed}`;
+}
+
+tabs.addEventListener("click", (e)=>{
+  const tab = e.target.closest(".tab");
+  if(!tab) return;
+  const name = tab.getAttribute("data-tab");
+  setTab(name);
+});
+
+/* ===============================
+   Generate workflow
+================================ */
+function validateMinimal(cfg){
+  // minimal: product + ctaWord
+  const p = String(cfg.product || "").trim();
+  const cta = String(cfg.ctaWord || "").trim();
+  return p.length > 1 && cta.length > 0;
+}
+
+function renderAll(){
+  renderKPIs();
+  renderPlanTab();
+  renderScriptsTab();
+  renderBatchTab();
+  renderDMTab();
+  renderExportTab();
+  setTab(CURRENT.activeTab || "plan");
+}
+
+function generate(){
+  const cfg = getConfig();
+
+  if(!validateMinimal(cfg)){
+    alert(t(cfg.lang,
+      "Заповни, будь ласка: Товар і CTA-слово. Це мінімум 🙂",
+      "Заполни, пожалуйста: Товар и CTA-слово. Это минимум 🙂"
+    ));
+    return;
+  }
+
+  // if offer empty, keep empty; generator will use default on the fly
+  const result = buildPlan(cfg);
+
+  CURRENT.cfg = cfg;
+  CURRENT.plan = result.plan;
+  CURRENT.videoCount = result.videoCount;
+  CURRENT.seedUsed = result.seedUsed;
+
+  // Save state automatically
+  saveState();
+
+  renderAll();
+  showToast(t(cfg.lang,"Згенеровано ✅","Сгенерировано ✅"));
+  if(window.lucide) lucide.createIcons();
+}
+
+btnGenerate.addEventListener("click", generate);
+btnGenerate2.addEventListener("click", generate);
+
+btnRegenerate.addEventListener("click", ()=>{
+  // if seed empty, regenerate will naturally change; if seed set, it will be same.
+  if(!seedEl.value.trim()){
+    seedEl.value = ""; // keep empty, so new random each time
+  }
+  generate();
+});
+
+btnCopyTab.addEventListener("click", ()=>{
+  const cfg = CURRENT.cfg;
+  if(!cfg || !CURRENT.plan.length){
+    copyToClipboard(t(languageEl.value,"Немає результатів. Спочатку згенеруй план.","Нет результатов. Сначала сгенерируй план."));
+    return;
+  }
+  const active = CURRENT.activeTab;
+
+  if(active === "plan"){
+    copyToClipboard(tabPlan.textContent);
+  }else if(active === "scripts"){
+    copyToClipboard(tabScripts.textContent);
+  }else if(active === "batch"){
+    copyToClipboard(tabBatch.textContent);
+  }else if(active === "dm"){
+    copyToClipboard(tabDM.textContent);
+  }else{
+    copyToClipboard(tabExport.textContent);
+  }
+});
+
+btnCopyAll.addEventListener("click", ()=>{
+  const cfg = CURRENT.cfg;
+  if(!cfg || !CURRENT.plan.length){
+    copyToClipboard(t(languageEl.value,"Немає результатів. Спочатку згенеруй.","Нет результатов. Сначала сгенерируй."));
+    return;
+  }
+  copyToClipboard(buildAllTextExport());
+});
+
+function downloadFile(filename, text, mime){
+  const blob = new Blob([text], {type: mime || "text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+btnDownloadTxt.addEventListener("click", ()=>{
+  const cfg = CURRENT.cfg;
+  if(!cfg || !CURRENT.plan.length) return alert(t(languageEl.value,"Спочатку згенеруй план 🙂","Сначала сгенерируй план 🙂"));
+  downloadFile("content_plan.txt", buildAllTextExport(), "text/plain;charset=utf-8");
+});
+btnDownloadCsv.addEventListener("click", ()=>{
+  const cfg = CURRENT.cfg;
+  if(!cfg || !CURRENT.plan.length) return alert(t(languageEl.value,"Спочатку згенеруй план 🙂","Сначала сгенерируй план 🙂"));
+  downloadFile("content_plan.csv", buildCsv(), "text/csv;charset=utf-8");
+});
+btnDownloadJson.addEventListener("click", ()=>{
+  const cfg = CURRENT.cfg;
+  if(!cfg || !CURRENT.plan.length) return alert(t(languageEl.value,"Спочатку згенеруй план 🙂","Сначала сгенерируй план 🙂"));
+  const json = JSON.stringify({cfg: CURRENT.cfg, plan: CURRENT.plan, seedUsed: CURRENT.seedUsed}, null, 2);
+  downloadFile("content_project.json", json, "application/json;charset=utf-8");
+});
+
+/* ===============================
+   Quick start / Help
+================================ */
+function openHelp(){
+  const lang = languageEl.value;
+  const msg = t(lang,
+`ШВИДКИЙ СТАРТ (3 кроки)
+1) Впиши Товар і CTA-слово
+2) Натисни “Згенерувати”
+3) Відкрий “План” → клік по рядку → копіюй гачок/скрипт/кадри
+
+МІНІ-ПРАВИЛА (щоб було більше заявок)
+• 1 CTA-слово на 3–4 дні (не міняй щодня)
+• Для новачка головна метрика — ПОВІДОМЛЕННЯ
+• Знімай без обличчя: руки + товар + “до/після”
+• Зріз результатів: через 24 год
+
+Якщо хочеш: заповни “Офер” і “Заперечення” — буде точніше.`,
+`БЫСТРЫЙ СТАРТ (3 шага)
+1) Впиши Товар и CTA-слово
+2) Нажми “Сгенерировать”
+3) Открой “План” → клик по строке → копируй хук/скрипт/кадры
+
+МИНИ-ПРАВИЛА (чтобы было больше заявок)
+• 1 CTA-слово на 3–4 дня (не меняй каждый день)
+• Для новичка главная метрика — СООБЩЕНИЯ
+• Снимай без лица: руки + товар + “до/после”
+• Срез результатов: через 24 ч
+
+Если хочешь: заполни “Оффер” и “Возражение” — будет точнее.`
+  );
+  alert(msg);
+}
+
+btnQuickStart.addEventListener("click", openHelp);
+btnHelpFooter.addEventListener("click", (e)=>{ e.preventDefault(); openHelp(); });
+
+/* ===============================
+   Reset
+================================ */
+function resetAll(){
+  const lang = languageEl.value || "uk";
+  if(!confirm(t(lang,"Скинути налаштування сторінки?","Сбросить настройки страницы?"))) return;
+
+  // defaults
+  setConfig({
+    platform:"TikTok",
+    lang:"uk",
+    product:"",
+    ctaWord:"",
+    region:"",
+    goal:"messages",
+    audience:"homeowners",
+    priceLevel:"value",
+    offer:"",
+    proof:"basic",
+    objection:"price",
+    planDays:14,
+    pace:"daily",
+    lengthSec:20,
+    timeSlot:"evening",
+    style:"friendly",
+    productsList:[],
+    face:"no",
+    voice:"no",
+    tools:"phone",
+    seed:"",
+    focusSeries:"balanced",
+    hashtagsMode:"smart",
+    ctaMode:"soft",
+    projectName:""
+  });
+
+  CURRENT = {cfg:null, plan:[], videoCount:0, seedUsed:"", activeTab:"plan"};
+  localStorage.removeItem(STATE_KEY);
+  statePill.innerHTML = '<i data-lucide="save"></i><span>Стан: не збережено</span>';
+  kpis.style.display = "none";
+
+  tabPlan.innerHTML = "";
+  tabScripts.innerHTML = "";
+  tabBatch.innerHTML = "";
+  tabDM.innerHTML = "";
+  tabExport.innerHTML = "";
+
+  setTab("plan");
+  outTitle.textContent = t(lang,"План не згенеровано","План не сгенерирован");
+  outSubtitle.textContent = t(lang,"Заповни товар + CTA і натисни “Згенерувати”.","Заполни товар + CTA и нажми “Сгенерировать”.");
+
+  if(window.lucide) lucide.createIcons();
+}
+
+btnReset.addEventListener("click", resetAll);
+
+/* ===============================
+   State save/restore
+================================ */
+function saveState(){
+  try{
+    const cfg = getConfig();
+    const state = {
+      cfg,
+      activeTab: CURRENT.activeTab,
+      seedUsed: CURRENT.seedUsed,
+      plan: CURRENT.plan,
+      videoCount: CURRENT.videoCount,
+      ts: Date.now()
+    };
+    localStorage.setItem(STATE_KEY, JSON.stringify(state));
+    statePill.innerHTML = '<i data-lucide="save"></i><span>Стан: збережено</span>';
+    if(window.lucide) lucide.createIcons();
+  }catch(e){}
+}
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STATE_KEY);
+    if(!raw) return false;
+    const st = JSON.parse(raw);
+    if(!st || !st.cfg) return false;
+
+    setConfig(st.cfg);
+
+    CURRENT.cfg = st.cfg;
+    CURRENT.plan = st.plan || [];
+    CURRENT.videoCount = st.videoCount || 0;
+    CURRENT.seedUsed = st.seedUsed || "";
+    CURRENT.activeTab = st.activeTab || "plan";
+
+    statePill.innerHTML = '<i data-lucide="save"></i><span>Стан: збережено</span>';
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+/* ===============================
+   Projects (save/load multiple)
+================================ */
+function loadProjects(){
+  try{
+    const raw = localStorage.getItem(PROJECTS_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  }catch(e){
+    return [];
+  }
+}
+function saveProjects(arr){
+  localStorage.setItem(PROJECTS_KEY, JSON.stringify(arr));
+}
+
+function refreshProjectSelect(){
+  const projects = loadProjects();
+  projectSelect.innerHTML = "";
+
+  const opt0 = document.createElement("option");
+  opt0.value = "";
+  opt0.textContent = t(languageEl.value,"— обери проєкт —","— выбери проект —");
+  projectSelect.appendChild(opt0);
+
+  projects
+    .sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0))
+    .forEach(p=>{
+      const o = document.createElement("option");
+      o.value = p.id;
+      const d = new Date(p.updatedAt || p.createdAt || Date.now());
+      const stamp = `${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+      o.textContent = `${p.name || t(languageEl.value,"Без назви","Без названия")} • ${stamp}`;
+      projectSelect.appendChild(o);
+    });
+}
+
+function saveProject(){
+  const cfg = getConfig();
+  const name = safeStr(cfg.projectName, t(cfg.lang,"Мій проєкт","Мой проект"));
+
+  const projects = loadProjects();
+
+  // if selected exists, update, else new
+  const selectedId = projectSelect.value;
+  const id = selectedId || ("p_" + Date.now() + "_" + Math.floor(Math.random()*9999));
+
+  const existingIdx = projects.findIndex(x=>x.id===id);
+  const payload = {
+    id,
+    name,
+    createdAt: existingIdx >= 0 ? projects[existingIdx].createdAt : Date.now(),
+    updatedAt: Date.now(),
+    cfg: cfg,
+    snapshot: {
+      plan: CURRENT.plan || [],
+      videoCount: CURRENT.videoCount || 0,
+      seedUsed: CURRENT.seedUsed || ""
+    }
+  };
+
+  if(existingIdx >= 0) projects[existingIdx] = payload;
+  else projects.push(payload);
+
+  saveProjects(projects);
+  refreshProjectSelect();
+  projectSelect.value = id;
+
+  saveState();
+  showToast(t(cfg.lang,"Проєкт збережено ✅","Проект сохранен ✅"));
+}
+
+function loadProject(){
+  const id = projectSelect.value;
+  if(!id) return;
+
+  const projects = loadProjects();
+  const p = projects.find(x=>x.id===id);
+  if(!p) return;
+
+  setConfig(p.cfg || {});
+  projectName.value = p.name || "";
+
+  // restore snapshot if exists
+  if(p.snapshot){
+    CURRENT.plan = p.snapshot.plan || [];
+    CURRENT.videoCount = p.snapshot.videoCount || 0;
+    CURRENT.seedUsed = p.snapshot.seedUsed || "";
+  }else{
+    CURRENT.plan = [];
+    CURRENT.videoCount = 0;
+    CURRENT.seedUsed = "";
+  }
+  CURRENT.cfg = getConfig();
+
+  saveState();
+  if(CURRENT.plan.length){
+    renderAll();
+  }else{
+    setTab("plan");
+  }
+  showToast(t(languageEl.value,"Проєкт завантажено ✅","Проект загружен ✅"));
+}
+
+function deleteProject(){
+  const id = projectSelect.value;
+  if(!id) return;
+
+  if(!confirm(t(languageEl.value,"Видалити вибраний проєкт?","Удалить выбранный проект?"))) return;
+
+  const projects = loadProjects().filter(x=>x.id!==id);
+  saveProjects(projects);
+
+  refreshProjectSelect();
+  projectSelect.value = "";
+
+  showToast(t(languageEl.value,"Видалено ✅","Удалено ✅"));
+}
+
+btnSaveProject.addEventListener("click", saveProject);
+btnLoadProject.addEventListener("click", loadProject);
+btnDeleteProject.addEventListener("click", deleteProject);
+
+/* ===============================
+   Auto-save state on input change (light)
+================================ */
+let autosaveTimer = null;
+document.querySelectorAll("input,select,textarea").forEach(el=>{
+  el.addEventListener("input", ()=>{
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(()=> saveState(), 300);
+  });
+});
+
+/* ===============================
+   Init
+================================ */
+function init(){
+  // default config if nothing
+  const ok = loadState();
+  if(!ok){
+    setConfig({
+      platform:"TikTok",
+      lang:"uk",
+      product:"",
+      ctaWord:"",
+      region:"",
+      goal:"messages",
+      audience:"homeowners",
+      priceLevel:"value",
+      offer:"",
+      proof:"basic",
+      objection:"price",
+      planDays:14,
+      pace:"daily",
+      lengthSec:20,
+      timeSlot:"evening",
+      style:"friendly",
+      productsList:[],
+      face:"no",
+      voice:"no",
+      tools:"phone",
+      seed:"",
+      focusSeries:"balanced",
+      hashtagsMode:"smart",
+      ctaMode:"soft",
+      projectName:""
+    });
+    setTab("plan");
+  }else{
+    if(CURRENT.plan && CURRENT.plan.length){
+      renderAll();
+    }else{
+      setTab(CURRENT.activeTab || "plan");
+    }
+  }
+
+  refreshProjectSelect();
+  if(window.lucide) lucide.createIcons();
+}
+
+init();
+
+/* ===============================
+   Extra buttons
+================================ */
+btnCopyTab.addEventListener("click", ()=>{ /* already bound above */ });
+
+/* Copy tab content helper */
+function currentTabText(){
+  const active = CURRENT.activeTab;
+  if(active === "plan") return tabPlan.textContent;
+  if(active === "scripts") return tabScripts.textContent;
+  if(active === "batch") return tabBatch.textContent;
+  if(active === "dm") return tabDM.textContent;
+  return tabExport.textContent;
+}
+
+/* Export tab copy / download also available in right side */
+</script>
+</body>
+</html>
