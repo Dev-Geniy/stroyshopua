@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lessons:[
         {id:"m4l1", title:"Що має бути на продаючій вітрині",    url:"cd/m4l1.html"},
         {id:"m4l2", title:"Психологія клієнта та довіра",        url:"cd/m4l2.html"},
-        {id:"m4l3", title:"Картки товарів, які продають",        url:"cd/m4l3.html"},
+        {id:"m4l3", title:"Аналітика і тестування креативів",        url:"cd/m4l3.html"},
         {id:"m4l4", title:"Як підняти конверсію",                url:"cd/m4l4.html"}
       ]
     },
