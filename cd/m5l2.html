@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>m5l2 — Контент-план на 14 днів + серії (без вигорання) | Samostroy Academy</title>
+
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --bg2:#080913;
+      --card:#11131c;
+      --card2:#151822;
+      --ink:#f5f5f7;
+      --muted:#9aa0b3;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 16px 36px rgba(0,0,0,.55);
+
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --grad:linear-gradient(135deg,#ff7a1a,#ffb347);
+
+      --ok:#5ce3a0;
+      --bad:#ff5c77;
+      --info:#6aa7ff;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,122,26,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(168,85,247,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      background-attachment:fixed;
+      min-height:100vh;
+    }
+
+    .wrap{max-width:980px;margin:0 auto;padding:0 14px;}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(5,5,9,.82);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .h{height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .h-left{display:flex;align-items:center;gap:10px;min-width:0;}
+    .icon{
+      width:40px;height:40px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;
+      text-decoration:none;color:inherit;
+    }
+    .icon:hover{background:rgba(255,255,255,.08)}
+    .icon i{width:18px;height:18px;color:var(--accent2)}
+    .crumb{display:flex;flex-direction:column;line-height:1.1;min-width:0;}
+    .crumb small{
+      color:var(--muted);font-size:11.5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .crumb b{
+      font-size:12.8px;font-weight:900;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .status-pill{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:8px;white-space:nowrap;
+    }
+    .status-pill i{width:16px;height:16px;color:var(--accent2)}
+    @media (max-width:520px){ .status-pill{display:none;} }
+
+    main{padding:18px 0 44px}
+
+    .hero{
+      border:1px solid var(--line);
+      background:rgba(17,19,28,.78);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::after{
+      content:"";position:absolute;inset:-40px;
+      background:
+        radial-gradient(circle at 0 0, rgba(255,179,71,.18), transparent 55%),
+        radial-gradient(circle at 90% 10%, rgba(106,167,255,.10), transparent 50%);
+      opacity:.85;pointer-events:none;
+    }
+    h1{
+      position:relative;z-index:1;
+      margin:0 0 10px;
+      font-size:clamp(30px,5.2vw,46px);
+      font-weight:900;letter-spacing:-.03em;
+      background:var(--grad);
+      -webkit-background-clip:text;color:transparent;
+      line-height:1.05;
+    }
+    .lead{
+      position:relative;z-index:1;
+      margin:0;color:rgba(245,245,247,.90);
+      font-size:15px;line-height:1.85;max-width:92ch;
+    }
+    .chips{position:relative;z-index:1;margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-size:12px;display:flex;align-items:center;gap:7px;
+    }
+    .chip i{width:16px;height:16px;color:var(--accent2)}
+
+    .sec{
+      margin-top:58px;padding-top:36px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .sec:first-of-type{margin-top:34px;padding-top:0;border-top:none;}
+    .sec h2{
+      margin:0;
+      font-size:clamp(34px,6.2vw,62px);
+      font-weight:900;letter-spacing:-.03em;line-height:1.02;
+    }
+    .sec .sub{
+      margin:14px 0 18px;color:var(--muted);
+      font-size:14px;line-height:1.7;max-width:92ch;
+    }
+    .text{
+      margin:0 0 14px;color:rgba(245,245,247,.92);
+      font-size:15px;line-height:1.9;max-width:92ch;
+    }
+
+    .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px;}
+    @media (min-width:900px){
+      .grid.two{grid-template-columns:1fr 1fr}
+      .grid.three{grid-template-columns:1fr 1fr 1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:18px;padding:14px;
+    }
+    .top{display:flex;gap:12px;align-items:flex-start;}
+    .ico{
+      width:46px;height:46px;border-radius:18px;border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .ico i{width:20px;height:20px;color:var(--accent2)}
+    .card b{display:block;font-size:14px}
+    .card span{display:block;margin-top:4px;color:var(--muted);font-size:13.5px;line-height:1.6}
+
+    .flow{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.20);
+      border-radius:20px;padding:14px;margin-top:14px;
+    }
+    .flowhead{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:12.5px;}
+    .flowhead i{width:16px;height:16px;color:var(--accent2)}
+    .flowline{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px;}
+    @media (min-width:900px){ .flowline{grid-template-columns:1fr 1fr 1fr} }
+    .step{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      border-radius:16px;padding:12px;
+      display:flex;gap:12px;align-items:flex-start;
+    }
+    .mini{
+      width:40px;height:40px;border-radius:16px;border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+    }
+    .mini i{width:18px;height:18px;color:var(--accent2)}
+    .step b{font-size:14px}
+    .step span{display:block;margin-top:4px;color:var(--muted);font-size:13.3px;line-height:1.55}
+
+    .sample{
+      margin-top:12px;border:1px dashed rgba(255,255,255,.22);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;padding:12px;
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;color:rgba(245,245,247,.92);line-height:1.6;white-space:pre-wrap;
+    }
+
+    .actions{
+      margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;
+      align-items:center;justify-content:space-between;
+    }
+    .btn{
+      border:none;cursor:pointer;border-radius:999px;padding:12px 16px;
+      font-weight:900;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;
+      background:var(--grad);color:#0b0b10;box-shadow:0 14px 26px rgba(0,0,0,.30);
+      text-decoration:none;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.06);border:1px solid var(--line);
+      color:var(--ink);box-shadow:none;
+    }
+    .btn i{width:18px;height:18px}
+
+    .highlight{
+      border:1px solid rgba(92,227,160,.20);
+      background:rgba(92,227,160,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .highlight .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .highlight .hrow i{width:20px;height:20px;color:var(--ok); margin-top:2px}
+    .highlight b{font-size:15px}
+    .highlight p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .warn{
+      border:1px solid rgba(255,92,119,.22);
+      background:rgba(255,92,119,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .warn .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .warn .hrow i{width:20px;height:20px;color:var(--bad); margin-top:2px}
+    .warn b{font-size:15px}
+    .warn p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .infoBox{
+      border:1px solid rgba(106,167,255,.22);
+      background:rgba(106,167,255,.08);
+      border-radius:22px;
+      padding:16px;
+      margin-top:14px;
+    }
+    .infoBox .hrow{display:flex;gap:12px;align-items:flex-start;}
+    .infoBox .hrow i{width:20px;height:20px;color:var(--info); margin-top:2px}
+    .infoBox b{font-size:15px}
+    .infoBox p{margin:10px 0 0;color:rgba(245,245,247,.92);font-size:14px;line-height:1.75}
+
+    .qa{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;padding:14px;margin-top:14px;
+    }
+    details{border-top:1px solid rgba(255,255,255,.10);padding-top:12px;margin-top:12px;}
+    details:first-child{border-top:none;padding-top:0;margin-top:0}
+    summary{
+      cursor:pointer;list-style:none;font-weight:900;font-size:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:8px 0 0;color:var(--muted);font-size:13.5px;line-height:1.7}
+    .badge{
+      font-size:11px;color:var(--muted);padding:3px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);white-space:nowrap;
+    }
+
+    .task{
+      border:1px solid rgba(255,179,71,.22);
+      background:rgba(255,179,71,.08);
+      border-radius:22px;padding:16px;margin-top:14px;
+    }
+    .taskhead{display:flex;gap:12px;align-items:flex-start;}
+    .taskhead i{width:20px;height:20px;color:var(--accent2); margin-top:2px}
+    .taskhead b{font-size:15px}
+    .task p{
+      margin:10px 0 0;font-size:14px;line-height:1.75;color:rgba(245,245,247,.92);
+    }
+
+    .form{
+      margin-top:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;
+      padding:14px;
+    }
+    .row{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    @media (min-width:900px){
+      .row.two{grid-template-columns:1fr 1fr}
+      .row.three{grid-template-columns:1fr 1fr 1fr}
+    }
+    label{
+      display:block;
+      color:var(--muted);
+      font-size:12.5px;
+      margin-bottom:6px;
+    }
+    input, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--ink);
+      outline:none;
+      font-family:inherit;
+      font-size:14px;
+    }
+    input::placeholder{color:rgba(154,160,179,.75)}
+    .hint{
+      color:var(--muted);
+      font-size:12.8px;
+      margin-top:8px;
+      line-height:1.6;
+    }
+
+    footer{
+      margin-top:34px;border-top:1px solid rgba(255,255,255,.10);
+      padding:16px 0 22px;text-align:center;color:var(--muted);font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <div class="h">
+      <div class="h-left">
+        <a class="icon" href="../course-dropshipping.html" title="Назад до курсу">
+          <i data-lucide="arrow-left"></i>
+        </a>
+        <div class="crumb">
+          <small>Samostroy Academy • Дропшипінг з нуля</small>
+          <b>Модуль 5 • Урок 2 — Контент-план на 14 днів + серії (без вигорання)</b>
+        </div>
+      </div>
+
+      <div class="status-pill">
+        <i data-lucide="sparkles"></i>
+        <span id="pillText">Статус: не пройдено</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Контент-план на 14 днів: серії, які дають стабільність (і не “зжирають” тебе)</h1>
+    <p class="lead">
+      Найбільша проблема новачка — не “як зняти”, а <b>що знімати завтра</b>.
+      Серії вирішують це: ти береш 3 теми та крутиш їх по колу.
+      <br><br>
+      У результаті ти маєш <b>готовий план на 14 днів</b>, знімаєш <b>пачкою</b> (1–2 години),
+      і кожне відео веде до <b>повідомлень</b>.
+    </p>
+
+    <div class="chips">
+      <div class="chip"><i data-lucide="calendar"></i> План: 14 днів</div>
+      <div class="chip"><i data-lucide="layers-3"></i> 3 серії → 14 ідей</div>
+      <div class="chip"><i data-lucide="message-circle"></i> CTA: 1 слово в дірект</div>
+    </div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="sec">
+    <h2>1. Чому “серії” — це секрет стабільності</h2>
+    <div class="sub">Серія = тема + повторюваний формат + простий CTA.</div>
+
+    <p class="text">
+      Коли ти робиш “рандомні” відео — ти кожного разу починаєш з нуля. А серії дають систему:
+      ти вже знаєш <b>що знімати</b>, і аудиторія звикає до твоєї подачі.
+    </p>
+
+    <div class="flow">
+      <div class="flowhead">
+        <i data-lucide="route"></i>
+        <span>Як серія виглядає “по-людськи”</span>
+      </div>
+
+      <div class="flowline">
+        <div class="step">
+          <div class="mini"><i data-lucide="bookmark"></i></div>
+          <div>
+            <b>Тема</b>
+            <span>Наприклад: “До/Після”, “Монтаж”, “FAQ”.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="video"></i></div>
+          <div>
+            <b>Однакова подача</b>
+            <span>Одна схема кадрів, титрів і ритм.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="message-square"></i></div>
+          <div>
+            <b>Один CTA</b>
+            <span>Наприклад: “Напиши ‘ХОЧУ’ — підберу”.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <div class="hrow">
+        <i data-lucide="shield-check"></i>
+        <div>
+          <b>Чому партнеру Samostroy.shop це дає швидкий результат</b>
+          <p>
+            Товари вже є. Твоя задача — зробити подачу, яка повторювано приводить людей у дірект.
+            Серії — найкоротший шлях до цього.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="sec">
+    <h2>2. Вибираємо 3 серії для старту (без фантазії)</h2>
+    <div class="sub">Тобі не потрібно 20 рубрик. Потрібно 3, але сильні.</div>
+
+    <div class="grid three">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="sparkles"></i></div>
+          <div>
+            <b>Серія A — “До/Після”</b>
+            <span>Максимум “вау”. Швидко пояснює цінність.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="camera"></i></div>
+          <div>
+            <b>Серія B — “Вживу / фактура”</b>
+            <span>Довіра: як виглядає, блиск, рельєф, товщина.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="help-circle"></i></div>
+          <div>
+            <b>Серія C — “FAQ / заперечення”</b>
+            <span>Знімає страхи: ціна, монтаж, доставка, “чи підійде?”.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="infoBox">
+      <div class="hrow">
+        <i data-lucide="target"></i>
+        <div>
+          <b>Як обрати серії, якщо у тебе інший товар</b>
+          <p>
+            Правило просте: <b>1 серія про результат</b>, <b>1 серія про довіру</b>, <b>1 серія про питання/страхи</b>.
+            Це підходить під будь-яку нішу.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="copy"></i></div>
+        <div>
+          <b>Список ідей для кожної серії (копіюй)</b>
+          <span>Це твої “підказки”, коли “нема що знімати”.</span>
+        </div>
+      </div>
+
+      <div class="sample" id="ideasText">Серія A (До/Після):
+— Кут кімнати “до” → “після”
+— 1 стіна/фрагмент “до” → “після”
+— 5 хв роботи → результат
+— “Оновлення без пилу”
+
+Серія B (Вживу/фактура):
+— Крупний план рельєфу (рукою)
+— Під світлом (видно текстуру)
+— З відстані 1–2 м (як виглядає в кімнаті)
+— “Ось чому виглядає дорого”
+
+Серія C (FAQ/заперечення):
+— “Чи підійде на кухню/ванну?”
+— “Чи можна на нерівні стіни?”
+— “Скільки потрібно на 5 м²?”
+— “Як доглядати/чи миється?”
+— “Доставка/оплата/терміни?”</div>
+
+      <div class="actions" style="justify-content:flex-start;">
+        <button class="btn secondary" id="copyIdeasBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати ідеї
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="sec">
+    <h2>3. Готовий план на 14 днів (ротація A/B/C)</h2>
+    <div class="sub">Ти просто чергуєш серії. Це працює навіть без натхнення.</div>
+
+    <p class="text">
+      План виглядає так: <b>A → B → C</b> і знову по колу.
+      Важливо: 14 днів — це не “вічність”. Це тест, щоб зібрати статистику і знайти переможців.
+    </p>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="calendar-days"></i></div>
+        <div>
+          <b>Шаблон плану (14 днів)</b>
+          <span>Скопіюй у нотатки або Google Sheets. Заповнюється за 10 хв.</span>
+        </div>
+      </div>
+
+      <div class="sample" id="planTemplate">ДЕНЬ | СЕРІЯ | ТЕМА/ІДЕЯ | ГАЧОК (1 рядок) | CTA (1 слово) | ПРИМІТКА
+1 | A | До/Після | “Оновлення за 1 день…” | ХОЧУ |
+2 | B | Фактура вживу | “Ось як виглядає вживу…” | ВЖИВУ |
+3 | C | FAQ: чи можна в кухню? | “Підійде для кухні?” | FAQ |
+4 | A | До/Після (інший ракурс) | “Результат без ремонту…” | ХОЧУ |
+5 | B | Товщина/рельєф | “Дивись на текстуру…” | ВЖИВУ |
+6 | C | FAQ: монтаж складний? | “Монтаж за 3 кроки…” | МОНТАЖ |
+7 | A | До/Після (швидкий монтаж) | “5 хв — і вже вау…” | ХОЧУ |
+8 | B | Під світлом | “Блиск/рельєф під кутом…” | ВЖИВУ |
+9 | C | FAQ: скільки на 5 м²? | “Порахую під вашу площу…” | ЦІНА |
+10 | A | До/Після (малий фрагмент) | “Ось так змінює кут…” | ХОЧУ |
+11 | B | З відстані 2 м | “Як виглядає в кімнаті…” | ВЖИВУ |
+12 | C | FAQ: доставка/терміни | “Доставка 1–2 дні…” | ДОСТАВКА |
+13 | A | До/Після (інша кімната) | “Ще один приклад…” | ХОЧУ |
+14 | C | FAQ: догляд/миття | “Чи можна мити?” | FAQ |</div>
+
+      <div class="actions" style="justify-content:flex-start;">
+        <button class="btn secondary" id="copyPlanBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати шаблон
+        </button>
+      </div>
+    </div>
+
+    <div class="warn">
+      <div class="hrow">
+        <i data-lucide="alert-triangle"></i>
+        <div>
+          <b>Помилка, яка вбиває план</b>
+          <p>
+            Не міняй CTA щодня. Новачку краще: <b>1–2 CTA на тиждень</b>.
+            Тоді ти розумієш, що реально веде в повідомлення.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="sec">
+    <h2>4. Як знімати пачкою (1–2 години = контент на тиждень)</h2>
+    <div class="sub">Це і є “без вигорання”: не щодня знімати, а раз на тиждень.</div>
+
+    <div class="flow">
+      <div class="flowhead">
+        <i data-lucide="workflow"></i>
+        <span>План батчингу (пачка-зйомка)</span>
+      </div>
+
+      <div class="flowline">
+        <div class="step">
+          <div class="mini"><i data-lucide="clipboard-list"></i></div>
+          <div>
+            <b>Крок 1 — Підготовка</b>
+            <span>Список 6 ідей + 1 CTA + 1 товар.</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="camera"></i></div>
+          <div>
+            <b>Крок 2 — Знімаєш B-roll</b>
+            <span>Фактура, світло, ракурси, упаковка (10–15 коротких кліпів).</span>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="mini"><i data-lucide="scissors"></i></div>
+          <div>
+            <b>Крок 3 — Збираєш 6 роликів</b>
+            <span>Під кожну ідею — 1 ролик. Текст на екрані + CTA.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <div class="top">
+        <div class="ico"><i data-lucide="check-square"></i></div>
+        <div>
+          <b>Чек-лист пачка-зйомки (копіюй)</b>
+          <span>Збережи собі і користуйся кожного тижня.</span>
+        </div>
+      </div>
+
+      <div class="sample" id="batchText">Чек-лист зйомки (1–2 години):
+[ ] Обрав 1 товар (вау-ефект)
+[ ] Вибрав 1 CTA (слово): __________
+[ ] Зробив 10–15 коротких кліпів:
+    — крупний план фактури
+    — під світлом
+    — з відстані 2 м
+    — монтаж/клей/кріплення
+    — упаковка/комплект
+[ ] Зібрав 6 відео під серії A/B/C
+[ ] Додав текст на екрані (3 рядки)
+[ ] Додав CTA у відео + опис + 1 коментар</div>
+
+      <div class="actions" style="justify-content:flex-start;">
+        <button class="btn secondary" id="copyBatchBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати чек-лист
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="sec">
+    <h2>5. Перепакування: 1 відео → 3 версії (без нової зйомки)</h2>
+    <div class="sub">Це економить час і множить шанси потрапити в рекомендації.</div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="zap"></i></div>
+          <div>
+            <b>Версія 1 — інший гачок</b>
+            <span>Те саме відео, але перший рядок інший.</span>
+          </div>
+        </div>
+        <div class="sample" id="rep1">Приклад гачків:
+— “Оновлення за 1 день…”
+— “Рішення без пилу…”
+— “До/після, яке змінює кімнату…”</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyRep1" type="button"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="type"></i></div>
+          <div>
+            <b>Версія 2 — інший текст на екрані</b>
+            <span>Один кліп → 3 різні “сенси”.</span>
+          </div>
+        </div>
+        <div class="sample" id="rep2">Текст-на-екрані (3 рядки):
+1) “Було / Стало”
+2) “Без ремонту і пилу”
+3) “Напиши ‘ХОЧУ’ — підберу”</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyRep2" type="button"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="message-square"></i></div>
+          <div>
+            <b>Версія 3 — інший CTA</b>
+            <span>Змінюєш тільки слово, щоб люди писали.</span>
+          </div>
+        </div>
+        <div class="sample" id="rep3">CTA-слова:
+“ХОЧУ” / “ВЖИВУ” / “ЦІНА” / “МОНТАЖ” / “FAQ”
+Вибери 1 слово на 3–4 дні, щоб зібрати статистику.</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyRep3" type="button"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="top">
+          <div class="ico"><i data-lucide="repeat-2"></i></div>
+          <div>
+            <b>Супер-план</b>
+            <span>1 зйомка → 6 відео → перепакування → 12–18 роликів.</span>
+          </div>
+        </div>
+        <div class="sample" id="rep4">Алгоритм:
+1) Зняв 10–15 кліпів (B-roll)
+2) Зібрав 6 відео (A/B/C)
+3) Перепакував 2 найкращих у 3 версії
+= 6 + (2×3) = 12 відео</div>
+        <div class="actions" style="justify-content:flex-start;">
+          <button class="btn secondary" id="copyRep4" type="button"><i data-lucide="copy"></i> Скопіювати</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="sec">
+    <h2>6. Генератор плану на 14 днів (під твій товар)</h2>
+    <div class="sub">Заповни 3 поля → отримай готовий текст плану → скопіюй.</div>
+
+    <div class="form">
+      <div class="row three">
+        <div>
+          <label for="platform">Платформа</label>
+          <select id="platform">
+            <option value="TikTok">TikTok</option>
+            <option value="Reels (Instagram)">Reels (Instagram)</option>
+            <option value="TikTok + Reels">TikTok + Reels</option>
+          </select>
+        </div>
+        <div>
+          <label for="product">Товар/категорія (простими словами)</label>
+          <input id="product" type="text" placeholder="Напр.: 3D панелі / вінілові панелі / пазли" />
+        </div>
+        <div>
+          <label for="ctaWord">CTA-слово (1 слово для діректу)</label>
+          <input id="ctaWord" type="text" placeholder="Напр.: ХОЧУ" />
+        </div>
+      </div>
+
+      <div class="row two">
+        <div>
+          <label for="goal">Ціль на 14 днів</label>
+          <select id="goal">
+            <option value="повідомлення">Повідомлення (заявки)</option>
+            <option value="коментарі">Коментарі + обговорення</option>
+            <option value="охоплення">Охоплення (більше переглядів)</option>
+          </select>
+        </div>
+        <div>
+          <label for="pace">Темп</label>
+          <select id="pace">
+            <option value="1">1 відео на день</option>
+            <option value="5">5 відео на тиждень (пн-пт)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hint">
+        Порада: якщо не знаєш що писати — залиш “3D панелі” і “ХОЧУ”. Потім заміниш.
+      </div>
+
+      <div class="actions" style="justify-content:flex-start;margin-top:12px;">
+        <button class="btn" id="genBtn" type="button"><i data-lucide="wand-2"></i> Згенерувати план</button>
+        <button class="btn secondary" id="resetBtn" type="button"><i data-lucide="rotate-ccw"></i> Скинути</button>
+        <button class="btn secondary" id="copyGenBtn" type="button"><i data-lucide="copy"></i> Скопіювати план</button>
+      </div>
+
+      <div class="sample" id="genOut">Натисни “Згенерувати план” — тут з’явиться твій план на 14 днів.</div>
+      <div class="hint" id="savedHint" style="display:none;">План збережено у браузері ✅ (відкриєш сторінку — він буде тут)</div>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="sec">
+    <h2>7. Практика: зроби “систему” за 60 хв</h2>
+    <div class="sub">Це найсильніший урок, бо ти виходиш з готовим планом і першими відео.</div>
+
+        <div class="qa">
+      <details open>
+        <summary>Що робити, якщо “нема ідей”? <span class="badge">рішення</span></summary>
+        <p>Повернись до 3 серій: A (результат), B (довіра), C (FAQ). Ідеї в цьому уроці вже є — просто вибирай 1 на день.</p>
+      </details>
+      <details>
+        <summary>Скільки відео на день треба? <span class="badge">старт</span></summary>
+        <p>Новачку достатньо 1 відео на день. Якщо важко — 5 на тиждень (пн-пт). Важливіше регулярність, ніж героїзм.</p>
+      </details>
+      <details>
+        <summary>Як зрозуміти, що серія “працює”? <span class="badge">метрика</span></summary>
+        <p>Для старту головне: повідомлення. Подивись через 24 години: яка серія дала більше звернень у дірект.</p>
+      </details>
+    </div>
+    
+    <div class="task">
+      <div class="taskhead">
+        <i data-lucide="clipboard-check"></i>
+        <div>
+          <b>Твоє завдання (60 хв)</b>
+          <div class="sub" style="margin:6px 0 0;">План → 4 відео → 1 CTA → зріз через 24 год</div>
+        </div>
+      </div>
+
+      <p>
+        Зроби по кроках:
+        <br>1) Обери <b>1 товар</b> і <b>1 CTA-слово</b>
+        <br>2) Склади план на 14 днів (шаблон або генератор)
+        <br>3) Зніми <b>4 відео</b> на тиждень: A, B, C, A
+        <br>4) Публікуй в один і той самий час (наскільки можливо)
+        <br>5) Через 24 год подивись: де більше <b>повідомлень</b>
+      </p>
+
+      <div class="sample" id="practiceLog">Мій старт (швидкий запис):
+Товар: ______________________
+CTA-слово: __________________
+Платформа: TikTok / Reels
+
+Відео 1 (A До/Після): ______________________
+Відео 2 (B Вживу): ________________________
+Відео 3 (C FAQ): __________________________
+Відео 4 (A До/Після): ______________________
+
+Зріз 24 год:
+— повідомлення #1: ___
+— повідомлення #2: ___
+— повідомлення #3: ___
+— повідомлення #4: ___
+Висновок (що працює): _____________________</div>
+
+      <div class="actions">
+        <button class="btn secondary" id="copyPracticeBtn" type="button">
+          <i data-lucide="copy"></i>
+          Скопіювати журнал
+        </button>
+
+        <button class="btn" id="btnDone" type="button">
+          <i data-lucide="check-circle"></i>
+          Позначити як пройдено
+        </button>
+      </div>
+
+      <p style="margin-top:10px;color:rgba(245,245,247,.85)">
+        <b>Порада:</b> якщо соромно — знімай “руки + товар”, або знімання товару в інтер’єрі без обличчя.
+        Головне — <b>серія + регулярність</b>.
+      </p>
+    </div>
+
+    <div style="margin-top:12px; color:var(--muted); font-size:13px;">
+      <span id="doneText">Статус: не пройдено</span>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Academy. Усі права захищено.
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  const DS_KEY = "sa_ds_zero_v1";
+  const LESSON_ID = "m5l2";
+  const PLAN_KEY = "sa_m5l2_plan_text_v1";
+
+  const yearEl = document.getElementById("year");
+  const pillText = document.getElementById("pillText");
+  const doneText = document.getElementById("doneText");
+  const btnDone = document.getElementById("btnDone");
+
+  // Copy blocks
+  const ideasText = document.getElementById("ideasText");
+  const copyIdeasBtn = document.getElementById("copyIdeasBtn");
+
+  const planTemplate = document.getElementById("planTemplate");
+  const copyPlanBtn = document.getElementById("copyPlanBtn");
+
+  const batchText = document.getElementById("batchText");
+  const copyBatchBtn = document.getElementById("copyBatchBtn");
+
+  const rep1 = document.getElementById("rep1");
+  const rep2 = document.getElementById("rep2");
+  const rep3 = document.getElementById("rep3");
+  const rep4 = document.getElementById("rep4");
+  const copyRep1 = document.getElementById("copyRep1");
+  const copyRep2 = document.getElementById("copyRep2");
+  const copyRep3 = document.getElementById("copyRep3");
+  const copyRep4 = document.getElementById("copyRep4");
+
+  const practiceLog = document.getElementById("practiceLog");
+  const copyPracticeBtn = document.getElementById("copyPracticeBtn");
+
+  // Generator
+  const platformEl = document.getElementById("platform");
+  const productEl = document.getElementById("product");
+  const ctaWordEl = document.getElementById("ctaWord");
+  const goalEl = document.getElementById("goal");
+  const paceEl = document.getElementById("pace");
+
+  const genBtn = document.getElementById("genBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const copyGenBtn = document.getElementById("copyGenBtn");
+  const genOut = document.getElementById("genOut");
+  const savedHint = document.getElementById("savedHint");
+
+  yearEl.textContent = new Date().getFullYear();
+
+  function loadDs(){
+    try{
+      const raw = localStorage.getItem(DS_KEY);
+      if(!raw) return { completedLessons: [] };
+      const obj = JSON.parse(raw);
+      if(!obj || !Array.isArray(obj.completedLessons)) return { completedLessons: [] };
+      return obj;
+    }catch(e){
+      return { completedLessons: [] };
+    }
+  }
+  function saveDs(ds){
+    localStorage.setItem(DS_KEY, JSON.stringify(ds));
+  }
+  function isDone(){
+    const ds = loadDs();
+    return new Set(ds.completedLessons).has(LESSON_ID);
+  }
+  function setUI(done){
+    pillText.textContent = "Статус: " + (done ? "пройдено" : "не пройдено");
+    doneText.textContent = "Статус: " + (done ? "пройдено ✅" : "не пройдено");
+
+    if(done){
+      btnDone.classList.add("secondary");
+      btnDone.innerHTML = '<i data-lucide="rotate-ccw"></i> Відмінити проходження';
+    }else{
+      btnDone.classList.remove("secondary");
+      btnDone.innerHTML = '<i data-lucide="check-circle"></i> Позначити як пройдено';
+    }
+    if(window.lucide) lucide.createIcons();
+  }
+  function toggleDone(){
+    const ds = loadDs();
+    const set = new Set(ds.completedLessons || []);
+    if(set.has(LESSON_ID)) set.delete(LESSON_ID);
+    else set.add(LESSON_ID);
+    ds.completedLessons = Array.from(set);
+    saveDs(ds);
+    setUI(set.has(LESSON_ID));
+  }
+
+  async function copyText(el, btn, labelDefault){
+    try{
+      await navigator.clipboard.writeText(el.textContent.trim());
+      btn.innerHTML = '<i data-lucide="check"></i> Скопійовано';
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>{
+        btn.innerHTML = '<i data-lucide="copy"></i> ' + labelDefault;
+        if(window.lucide) lucide.createIcons();
+      }, 1200);
+    }catch(e){
+      alert("Не вдалося скопіювати. Скопіюй вручну 🙂");
+    }
+  }
+
+  // Generator helpers
+  function safeVal(v, fallback){
+    const s = String(v || "").trim();
+    return s ? s : fallback;
+  }
+
+  function buildPlan(platform, product, ctaWord, goal, pace){
+    const p = safeVal(product, "3D панелі / декор-панелі");
+    const cta = safeVal(ctaWord, "ХОЧУ").toUpperCase();
+
+    const goalLine =
+      goal === "повідомлення" ? "Ціль: більше повідомлень (заявок у дірект)"
+      : goal === "коментарі" ? "Ціль: більше коментарів та обговорення"
+      : "Ціль: більше охоплення (перегляди)";
+
+    const seriesA = [
+      "До/Після (кут кімнати)",
+      "До/Після (1 стіна/фрагмент)",
+      "До/Після (швидкий монтаж 5–10 хв)",
+      "До/Після (інший ракурс/кімната)",
+      "До/Після (малий фрагмент → вау-ефект)"
+    ];
+    const seriesB = [
+      "Фактура вживу (рукою по рельєфу)",
+      "Під світлом (видно текстуру/блиск)",
+      "З відстані 2 м (як в кімнаті)",
+      "Товщина/рівність/стик",
+      "Упаковка/комплект (що приїде)"
+    ];
+    const seriesC = [
+      "FAQ: чи підійде для кухні/ванни?",
+      "FAQ: чи можна на нерівні стіни?",
+      "FAQ: скільки потрібно на 5 м²?",
+      "FAQ: монтаж складний чи ні?",
+      "FAQ: доставка/оплата/терміни?"
+    ];
+
+    const hookA = [
+      "“Оновлення за 1 день без ремонту…”",
+      "“До/після, яке змінює кімнату…”",
+      "“Без пилу і бруду — дивись результат…”"
+    ];
+    const hookB = [
+      "“Ось як виглядає вживу…”",
+      "“Дивись на фактуру під світлом…”",
+      "“Так виглядає з відстані 2 м…”"
+    ];
+    const hookC = [
+      "“Найчастіше питання: …”",
+      "“Можна/не можна? Відповідаю…”",
+      "“Щоб не зробити помилку — дивись…”"
+    ];
+
+    function pick(arr, i){ return arr[i % arr.length]; }
+
+    const is5 = pace === "5";
+    const days = [];
+
+    for(let d=1; d<=14; d++){
+      // Якщо темп 5/тиждень — пропускаємо вихідні (умовно: 6,7,13,14 як “паузи”)
+      if(is5 && (d===6 || d===7 || d===13 || d===14)){
+        days.push(`День ${d}: ПАУЗА / сторіс / відповіді в діректі (під ${p})`);
+        continue;
+      }
+
+      const mod = (d-1) % 3; // 0=A,1=B,2=C
+      let series = "A", idea = "", hook = "";
+      if(mod === 0){
+        series = "A";
+        idea = pick(seriesA, d-1);
+        hook = pick(hookA, d-1);
+      }else if(mod === 1){
+        series = "B";
+        idea = pick(seriesB, d-1);
+        hook = pick(hookB, d-1);
+      }else{
+        series = "C";
+        idea = pick(seriesC, d-1);
+        hook = pick(hookC, d-1);
+      }
+
+      const ctaLine = `CTA: “Напиши ‘${cta}’ — підкажу/підберу під ${p}”`;
+      const line = `День ${d} | Серія ${series} | ${idea}\nГачок: ${hook}\n${ctaLine}\n`;
+      days.push(line);
+    }
+
+    const header =
+`ПЛАН НА 14 ДНІВ — ${platform}
+Товар/категорія: ${p}
+CTA-слово: ${cta}
+${goalLine}
+
+Правило: чергуємо серії A → B → C (результат → довіра → FAQ).
+Зріз через 24 год: дивимось, де більше звернень/реакцій.
+
+`;
+
+    return header + days.join("\n");
+  }
+
+  function savePlan(text){
+    localStorage.setItem(PLAN_KEY, text);
+    savedHint.style.display = "block";
+  }
+  function loadPlan(){
+    try{
+      const t = localStorage.getItem(PLAN_KEY);
+      return t ? t : "";
+    }catch(e){
+      return "";
+    }
+  }
+  function clearPlan(){
+    localStorage.removeItem(PLAN_KEY);
+    savedHint.style.display = "none";
+  }
+
+  // Bindings
+  btnDone.addEventListener("click", toggleDone);
+  setUI(isDone());
+
+  copyIdeasBtn.addEventListener("click", ()=> copyText(ideasText, copyIdeasBtn, "Скопіювати ідеї"));
+  copyPlanBtn.addEventListener("click", ()=> copyText(planTemplate, copyPlanBtn, "Скопіювати шаблон"));
+  copyBatchBtn.addEventListener("click", ()=> copyText(batchText, copyBatchBtn, "Скопіювати чек-лист"));
+
+  copyRep1.addEventListener("click", ()=> copyText(rep1, copyRep1, "Скопіювати"));
+  copyRep2.addEventListener("click", ()=> copyText(rep2, copyRep2, "Скопіювати"));
+  copyRep3.addEventListener("click", ()=> copyText(rep3, copyRep3, "Скопіювати"));
+  copyRep4.addEventListener("click", ()=> copyText(rep4, copyRep4, "Скопіювати"));
+
+  copyPracticeBtn.addEventListener("click", ()=> copyText(practiceLog, copyPracticeBtn, "Скопіювати журнал"));
+
+  genBtn.addEventListener("click", ()=>{
+    const txt = buildPlan(
+      platformEl.value,
+      productEl.value,
+      ctaWordEl.value,
+      goalEl.value,
+      paceEl.value
+    );
+    genOut.textContent = txt;
+    savePlan(txt);
+    if(window.lucide) lucide.createIcons();
+  });
+
+  resetBtn.addEventListener("click", ()=>{
+    platformEl.value = "TikTok";
+    productEl.value = "";
+    ctaWordEl.value = "";
+    goalEl.value = "повідомлення";
+    paceEl.value = "1";
+    genOut.textContent = "Натисни “Згенерувати план” — тут з’явиться твій план на 14 днів.";
+    clearPlan();
+    if(window.lucide) lucide.createIcons();
+  });
+
+  copyGenBtn.addEventListener("click", async ()=>{
+    // копіюємо саме згенерований текст
+    await copyText(genOut, copyGenBtn, "Скопіювати план");
+  });
+
+  // Restore saved plan
+  const saved = loadPlan();
+  if(saved){
+    genOut.textContent = saved;
+    savedHint.style.display = "block";
+  }
+
+  if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
