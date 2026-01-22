@@ -28,6 +28,11 @@
       --danger:#ff4d4d;
 
       --max:1240px;
+
+      /* dropdown theme */
+      --ddBg:#0f1120;
+      --ddBg2:#14172a;
+      --ddLine:rgba(255,255,255,.12);
     }
 
     *{box-sizing:border-box}
@@ -37,13 +42,10 @@
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
       color:var(--ink);
       overflow-x:hidden;
-      background: #050509; /* base */
+      background: #050509;
     }
 
-    /* ============================================================
-       ✅ 1) FIXED BACKGROUND (не скроллится)
-       ВАЖНО: фон рисуем псевдо-элементом fixed
-    ============================================================ */
+    /* fixed background */
     body::before{
       content:"";
       position:fixed;
@@ -59,7 +61,7 @@
 
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
-    button,input,select{font-family:inherit}
+    button,input,select,textarea{font-family:inherit}
     .wrap{max-width:var(--max);margin:0 auto;padding:0 18px}
     .hidden{display:none !important;}
     code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; opacity:.85;}
@@ -78,7 +80,6 @@
       box-shadow:var(--shadow);
     }
 
-    /* ====== buttons ====== */
     .btn{
       display:inline-flex;align-items:center;justify-content:center;
       gap:8px;
@@ -106,7 +107,6 @@
     }
     .btnGhost{background:transparent}
 
-    /* ====== loader + toast ====== */
     .loader{
       position:fixed;inset:0;
       display:grid;place-items:center;
@@ -123,7 +123,6 @@
       box-shadow: 0 20px 60px rgba(255,122,26,.18);
     }
     @keyframes spin{to{transform:rotate(360deg)}}
-    .loader.hide{display:none}
 
     .toast{
       position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
@@ -139,9 +138,7 @@
     }
     .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
 
-    /* ============================================================
-       LOGIN
-    ============================================================ */
+    /* LOGIN */
     .loginPage{
       min-height:100vh;
       display:grid;
@@ -210,13 +207,31 @@
       padding:10px 12px;
       display:flex;align-items:center;gap:10px;
       color:var(--muted);
+      transition:.2s ease;
     }
     .field i{width:18px;height:18px;opacity:.85}
-    .field input, .field select{
+    .field input, .field select, .field textarea{
       width:100%;
       border:0;outline:none;background:transparent;
       color:var(--ink);
       font-size:14px;
+      resize:none;
+    }
+
+    /* ✅ focus glow for all fields */
+    .field:focus-within{
+      border-color: rgba(255,122,26,.35);
+      box-shadow: 0 0 0 5px rgba(255,122,26,.12);
+    }
+
+    /* ✅ attention pulse (only when empty) */
+    .field.attention{
+      border-color: rgba(255,122,26,.22);
+      animation: softPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes softPulse{
+      0%,100%{ box-shadow: 0 0 0 0 rgba(255,122,26,0); }
+      50%{    box-shadow: 0 0 0 7px rgba(255,122,26,.12); }
     }
 
     .avatarPick{
@@ -246,9 +261,52 @@
     .loginActions{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
     .loginActions .btn{flex:1}
 
-    /* ============================================================
-       APP TOPBAR
-    ============================================================ */
+    /* ✅ custom file picker (stylish + pulse) */
+    .fileInput{
+      position:absolute;
+      left:-9999px;
+      width:1px;height:1px;
+      opacity:0;
+      pointer-events:none;
+    }
+    .filePick{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      border-radius:16px;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+    }
+    .filePick:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.18);
+    }
+    .filePick i{width:18px;height:18px;opacity:.9}
+    .filePickTitle{font-weight:800;font-size:13px;color:var(--ink)}
+    .filePickMeta{
+      margin-left:auto;
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:45%;
+    }
+    .filePick.pulse{
+      border-color: rgba(255,122,26,.28);
+      box-shadow: 0 0 0 0 rgba(255,122,26,0);
+      animation: filePulse 1.6s ease-in-out infinite;
+    }
+    @keyframes filePulse{
+      0%,100%{ box-shadow: 0 0 0 0 rgba(255,122,26,0); }
+      50%{    box-shadow: 0 0 0 7px rgba(255,122,26,.14); }
+    }
+
+    /* APP TOPBAR */
     .topbar{
       position:sticky;top:0;z-index:120;
       backdrop-filter: blur(12px);
@@ -272,7 +330,6 @@
     .brandText span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
     .topActions{display:flex;align-items:center;gap:10px}
 
-    /* mobile topbar: ONLY 3 buttons row */
     @media (max-width:680px){
       .brand{display:none;}
       .topActions{
@@ -292,9 +349,7 @@
 
     .section{padding:18px 0}
 
-    /* ============================================================
-       CABINET HEADER / GRID
-    ============================================================ */
+    /* CABINET HEADER / GRID */
     .cabHead{padding:18px;border-radius:26px}
 
     .row2{
@@ -369,19 +424,14 @@
       display:flex;
       flex-direction:column;
     }
-
-    /* ============================================================
-       ✅ 2) NEWS на ПК во всю высоту контейнера
-       newsList занимает весь остаток высоты (flex:1) + scroll
-    ============================================================ */
     .newsList{
       margin-top:10px;
       display:flex;
       flex-direction:column;
       gap:8px;
       overflow:auto;
-      flex: 1;         /* ключ: растягиваем */
-      min-height: 0;   /* ключ: чтобы overflow работал корректно */
+      flex: 1;
+      min-height: 0;
       padding-right:4px;
     }
     .newsItem{
@@ -409,9 +459,7 @@
     }
     .newsItem i{width:16px;height:16px;opacity:.85}
 
-    /* ============================================================
-       CATEGORIES
-    ============================================================ */
+    /* CATEGORIES */
     .catsHead{
       margin-top:14px;
       display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
@@ -536,9 +584,7 @@
     }
     .catChip small{color:var(--muted);font-weight:700}
 
-    /* ============================================================
-       MODAL
-    ============================================================ */
+    /* MODALS */
     .overlay{
       position:fixed;inset:0;
       background: rgba(0,0,0,.65);
@@ -633,18 +679,43 @@
       -webkit-box-orient:vertical;
       overflow:hidden;
     }
+
+    /* ✅ Copy mini — accent like primary button */
     .copyMini{
       flex:0 0 auto;
-      border:1px solid var(--line);
-      background: rgba(0,0,0,.25);
-      width:34px;height:34px;
+      width:36px;height:36px;
       border-radius:12px;
       display:grid;place-items:center;
       cursor:pointer;
+      user-select:none;
       transition:.2s ease;
+      position:relative;
+
+      border:1px solid rgba(255,122,26,.28);
+      background: linear-gradient(135deg, rgba(255,122,26,.20), rgba(0,0,0,.22));
+      box-shadow: 0 10px 26px rgba(255,122,26,.14);
+      color: rgba(255,210,170,.95); /* lucide = currentColor */
     }
-    .copyMini:hover{border-color:rgba(255,255,255,.18);transform:translateY(-1px)}
-    .copyMini i{width:16px;height:16px;opacity:.9}
+    .copyMini::before{
+      content:"";
+      position:absolute;
+      inset:6px;
+      border-radius:10px;
+      background: rgba(0,0,0,.18);
+      filter: blur(.2px);
+      opacity:.9;
+    }
+    .copyMini i{width:16px;height:16px;opacity:1;position:relative;z-index:1}
+    .copyMini:hover{
+      transform:translateY(-1px);
+      border-color: rgba(255,122,26,.42);
+      box-shadow: 0 14px 34px rgba(255,122,26,.22);
+    }
+    .copyMini:active{
+      transform:translateY(0);
+      box-shadow: 0 8px 18px rgba(255,122,26,.16);
+    }
+
     .pImg{
       margin:10px 12px 0;
       border-radius:14px;
@@ -685,9 +756,7 @@
       text-align:center;
     }
 
-    /* ============================================================
-       ✅ 4) SECTION: куда выкладывать рекламу (2 колонки)
-    ============================================================ */
+    /* ADS */
     .adsGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -736,9 +805,7 @@
     }
     .adsLink i{width:16px;height:16px;opacity:.85}
 
-    /* ============================================================
-       ✅ 5) FOOTER
-    ============================================================ */
+    /* FOOTER */
     footer{
       margin-top:16px;
       padding:18px 0 26px;
@@ -772,6 +839,179 @@
       text-align:center;
     }
 
+    /* ORDER MODAL (higher z-index than category modal) */
+    #orderOverlay{ z-index: 175; }
+    #orderModal{ z-index: 185; }
+
+    /* CABINET HOW modal (highest) */
+    #cabHelpOverlay{
+      z-index: 230;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(12px);
+    }
+    #cabHelpModal{ z-index: 240; }
+
+    /* ORDER TIP (over order modal) */
+    #orderTipOverlay{
+      z-index: 195;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(12px);
+    }
+    #orderTipModal{
+      z-index: 205;
+      position:fixed;
+      inset: 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .tipCard{
+      pointer-events:auto;
+      width:min(860px, calc(100% - 24px));
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(12,12,18,.92);
+      border-radius:22px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.75);
+      padding:16px;
+    }
+    .tipHead{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .tipHead b{
+      font-size:16px;letter-spacing:-.2px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .tipText{
+      margin-top:10px;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:13px;
+      white-space:pre-line;
+    }
+
+    /* order form layout */
+    .oGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .oRow{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:8px;
+      margin-top:10px;
+    }
+    .oLabel{
+      display:flex;align-items:center;gap:10px;
+      font-weight:800;
+      font-size:13px;
+    }
+    .helpBtn{
+      width:26px;height:26px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      display:grid;place-items:center;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .helpBtn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.20)}
+    .helpBtn i{width:16px;height:16px;opacity:.9}
+
+    .oActions{
+      display:flex;gap:10px;flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .oActions .btn{flex:1}
+
+    /* ✅ Dark dropdown styling (select options) */
+    .field select{
+      color: var(--ink);
+      background: transparent;
+      color-scheme: dark;
+    }
+    .field select option,
+    .field select optgroup{
+      background: var(--ddBg);
+      color: var(--ink);
+    }
+    .field select option:checked{
+      background: var(--ddBg2);
+    }
+
+    /* ✅ CABINET HOW content (infographic) */
+    .howHero{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .howHeroCard{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:14px;
+    }
+    .howHeroCard h3{
+      margin:0 0 10px;
+      display:flex;align-items:center;gap:10px;
+      font-size:16px;
+      letter-spacing:-.2px;
+    }
+    .howHeroCard h3 i{width:18px;height:18px}
+    .howSteps{margin:0;padding-left:18px;color:var(--muted);line-height:1.6}
+    .howSteps b{color:var(--ink)}
+    .howBullets{margin:0;padding-left:18px;color:var(--muted);line-height:1.6}
+    .howBullets b{color:var(--ink)}
+
+    .howGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    .howCard{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      border-radius:18px;
+      padding:14px;
+    }
+    .howCard h4{
+      margin:0 0 8px;
+      display:flex;align-items:center;gap:10px;
+      font-size:14px;
+    }
+    .howCard h4 i{width:18px;height:18px}
+    .howCard p{margin:0}
+
+    .howMini{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color:var(--muted);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    }
+    .howFooterNote{
+      margin-top:12px;
+      border:1px solid rgba(255,122,26,.20);
+      background: linear-gradient(135deg, rgba(255,122,26,.10), rgba(0,0,0,.18));
+      border-radius:18px;
+      padding:12px 14px;
+      display:flex;gap:10px;align-items:flex-start;
+      color:var(--muted);
+    }
+    .howFooterNote i{width:18px;height:18px;color:rgba(255,210,170,.95);margin-top:1px}
+    .howFooterNote b{color:var(--ink)}
+
+    @media (max-width:900px){
+      .howHero{grid-template-columns:1fr}
+      .howGrid{grid-template-columns:1fr}
+    }
+
     /* responsive */
     @media (max-width:1100px){
       .row2{grid-template-columns: 1fr; }
@@ -798,6 +1038,7 @@
         gap:0;
       }
       .iconBtn i{margin:0}
+      .oGrid{grid-template-columns: 1fr;}
     }
   </style>
 </head>
@@ -822,7 +1063,7 @@
           <h1 class="h1" style="margin-top:12px;">Партнерський <span class="grad">кабінет</span></h1>
           <p>
             Введи ім’я, завантаж аватар — і побачиш ЛК: профіль, новини, категорії з анімаціями,
-            модалка з фільтрами й копіюванням.
+            модалки з фільтрами й копіюванням, та “куди викладати рекламу”.
           </p>
 
           <div class="loginFeature">
@@ -837,21 +1078,25 @@
           <div class="muted" style="margin-top:8px;">Заповни поля — після цього відкриється кабінет.</div>
 
           <form id="loginForm" class="form">
-            <div class="field">
+            <div class="field attention">
               <i data-lucide="user"></i>
               <input id="loginName" type="text" placeholder="Ваше ім’я (обов’язково)" required minlength="2" maxlength="40">
             </div>
 
             <div class="avatarPick">
               <div class="avatarPreview" id="loginAvatarPreview">
-                <div class="ph" id="loginAvatarLetters">A</div>
+                <div class="ph" id="loginAvatarLetters">P</div>
               </div>
 
               <div class="avatarTools">
-                <div class="field" style="margin:0;">
+                <input id="loginAvatar" class="fileInput" type="file" accept="image/*">
+
+                <label for="loginAvatar" class="filePick pulse" id="filePickBtn">
                   <i data-lucide="upload"></i>
-                  <input id="loginAvatar" type="file" accept="image/*">
-                </div>
+                  <span class="filePickTitle">Обрати фото</span>
+                  <span class="filePickMeta" id="filePickMeta">файл не вибрано</span>
+                </label>
+
                 <div class="hint">Фото необов’язкове. Якщо не завантажиш — буде плейсхолдер з літерами.</div>
               </div>
             </div>
@@ -885,9 +1130,9 @@
           </div>
 
           <nav class="topActions">
-            <a class="btn btnPrimary" href="#" id="btnCgpro"><i data-lucide="sparkles"></i> CGPRO</a>
-            <a class="btn btnBlue" href="#" id="btnTg"><i data-lucide="send"></i> Telegram</a>
-            <a class="btn" href="#" id="btnShop"><i data-lucide="store"></i> Samostroy.shop</a>
+            <a class="btn btnPrimary" href="#" id="btnOrder"><i data-lucide="clipboard-plus"></i> Замовлення</a>
+            <a class="btn btnBlue" href="#" id="btnTg"><i data-lucide="send"></i> Менеджер</a>
+            <a class="btn" href="#" id="btnShop"><i data-lucide="store"></i> Магазин</a>
           </nav>
         </div>
       </div>
@@ -921,8 +1166,6 @@
                 <div class="profileMeta">
                   <span id="cabMetaLine">Профіль збережено на цьому пристрої</span>
                 </div>
-
-                <!-- ✅ 2) Убрали кнопки под фото -->
               </div>
             </div>
 
@@ -958,7 +1201,7 @@
       </div>
     </section>
 
-    <!-- ✅ 4) SECTION: куда выкладывать рекламу -->
+    <!-- ADS -->
     <section class="section">
       <div class="wrap">
         <div class="glass" style="padding:18px;">
@@ -1012,6 +1255,7 @@
             <div class="footLinks">
               <a href="#" id="footShop"><span>Samostroy.shop</span><i data-lucide="external-link"></i></a>
               <a href="#" id="footTg"><span>Telegram менеджер</span><i data-lucide="send"></i></a>
+              <a href="#" id="footCgpro"><span>CGPRO інструмент</span><i data-lucide="sparkles"></i></a>
               <a href="#" id="footXml"><span>XML / products.xml</span><i data-lucide="file-code-2"></i></a>
             </div>
           </div>
@@ -1088,6 +1332,271 @@
         <div id="modalEmpty" class="empty hidden">Нічого не знайдено за вашими фільтрами.</div>
       </div>
     </section>
+
+    <!-- CABINET HOW modal -->
+    <div id="cabHelpOverlay" class="overlay hidden"></div>
+    <section id="cabHelpModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modalTop">
+        <div class="modalTitleRow">
+          <div class="modalTitle">
+            <i data-lucide="help-circle"></i>
+            <b>Як користуватися партнерським кабінетом</b>
+          </div>
+          <button class="iconBtn" id="btnCloseCabHelp" type="button">
+            <i data-lucide="x"></i> Закрити
+          </button>
+        </div>
+
+        <div class="muted" style="padding:0 2px;">
+          Інфографіка + детальні кроки по всьому функціоналу (каталог, копіювання, майданчики, замовлення).
+        </div>
+      </div>
+
+      <div class="modalBody">
+        <div class="howHero">
+          <div class="howHeroCard">
+            <h3><i data-lucide="zap"></i> Швидкий старт (60 секунд)</h3>
+            <ol class="howSteps">
+              <li><b>Обери категорію</b> — на ПК плитки з фото, на мобільному список.</li>
+              <li><b>У модалці</b> користуйся пошуком, сортуванням та ціною “від/до”.</li>
+              <li><b>Копіюй</b> назву/ціну/повний опис (опис копіюється без HTML).</li>
+              <li><b>Нижче</b> — готові майданчики для реклами (клік → відкриває сайт).</li>
+              <li><b>Замовлення</b> — кнопка “Замовлення” зверху: 2 кроки → Telegram менеджеру.</li>
+            </ol>
+          </div>
+
+          <div class="howHeroCard">
+            <h3><i data-lucide="sparkles"></i> Чому це вигідно</h3>
+            <ul class="howBullets">
+              <li><b>Економія часу:</b> копіювання в 1 клік, без ручних правок.</li>
+              <li><b>Менше помилок:</b> опис очищається → вставляється “чисто” у оголошення.</li>
+              <li><b>Швидше продажі:</b> майданчики вже зібрані — не потрібно гуглити.</li>
+              <li><b>Все під рукою:</b> профіль зберігається локально → швидкий вхід.</li>
+              <li><b>Профі-рутина:</b> 5–10 оголошень/день + оновлення → стабільний потік заявок.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="howGrid">
+          <div class="howCard">
+            <h4><i data-lucide="layout-grid"></i> Категорії та каталог</h4>
+            <p class="muted">Натисни категорію → відкриється модалка з товарами. Картинки категорій змінюються у <code>CATEGORY_IMAGES</code>.</p>
+            <div class="howMini">
+              <span class="tag">ПК: 3 в ряд</span>
+              <span class="tag">Моб: список</span>
+              <span class="tag">Швидко + красиво</span>
+            </div>
+          </div>
+
+          <div class="howCard">
+            <h4><i data-lucide="filter"></i> Фільтри та пошук</h4>
+            <p class="muted">Пошук по назві, сортування, фільтр ціни “від/до”. Це допомагає за секунди знаходити потрібне.</p>
+            <div class="howMini">
+              <span class="tag">Пошук</span>
+              <span class="tag">Ціна</span>
+              <span class="tag">A→Я</span>
+            </div>
+          </div>
+
+          <div class="howCard">
+            <h4><i data-lucide="copy"></i> Копіювання</h4>
+            <p class="muted">Маленькі іконки копіюють назву/ціну. Велика кнопка — повний опис (без HTML). Після копіювання з’явиться Toast.</p>
+            <div class="howMini">
+              <span class="tag">Без HTML</span>
+              <span class="tag">1 клік</span>
+              <span class="tag">Toast ✅</span>
+            </div>
+          </div>
+
+          <div class="howCard">
+            <h4><i data-lucide="megaphone"></i> Де рекламуватись</h4>
+            <p class="muted">Нижче — дошки + маркетплейси. Клік відкриває платформу. Є кнопки “Копіювати списки”.</p>
+            <div class="howMini">
+              <span class="tag">OLX</span>
+              <span class="tag">Prom</span>
+              <span class="tag">Rozetka</span>
+              <span class="tag">Facebook</span>
+            </div>
+          </div>
+
+          <div class="howCard">
+            <h4><i data-lucide="clipboard-plus"></i> Створити замовлення</h4>
+            <p class="muted">Кнопка “Замовлення” → 2 кроки (партнер → клієнт/доставка) → Telegram менеджеру з готовим текстом.</p>
+            <div class="howMini">
+              <span class="tag">2 кроки</span>
+              <span class="tag">Telegram</span>
+              <span class="tag">Швидко</span>
+            </div>
+          </div>
+
+          <div class="howCard">
+            <h4><i data-lucide="download"></i> Інструменти</h4>
+            <p class="muted">У футері є “Експорт профілю” (json) та “Очистити кеш”. Це зручно для переносів/скидання.</p>
+            <div class="howMini">
+              <span class="tag">Експорт</span>
+              <span class="tag">Кеш</span>
+              <span class="tag">Контроль</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="howFooterNote">
+          <i data-lucide="thumbs-up"></i>
+          <div>
+            <b>Міні-стратегія на 7 днів:</b> щодня 5–10 оголошень + 2–3 різні заголовки (A/B тест),
+            оновлення старих оголошень, і стабільно відповідай швидко — так ти максимально швидко “розкрутиш” продажі.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ ORDER MODAL -->
+    <div id="orderOverlay" class="overlay hidden"></div>
+    <section id="orderModal" class="modal hidden" aria-modal="true" role="dialog">
+      <div class="modalTop">
+        <div class="modalTitleRow">
+          <div class="modalTitle">
+            <i data-lucide="clipboard-plus"></i>
+            <b>Створити замовлення</b>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="iconBtn" id="btnOrderClose" type="button"><i data-lucide="x"></i> Закрити</button>
+          </div>
+        </div>
+
+        <div class="muted" id="orderStepHint" style="margin-top:2px;">
+          Крок 1/2 — дані партнера (ваші).
+        </div>
+      </div>
+
+      <div class="modalBody">
+        <!-- step 1 -->
+        <div id="orderStep1">
+          <div class="oRow">
+            <div class="oLabel">Ваше ім’я (партнер)</div>
+            <div class="field"><i data-lucide="user"></i>
+              <input id="oPartnerName" type="text" placeholder="Ваше ім’я" minlength="2" maxlength="60" required>
+            </div>
+          </div>
+
+          <div class="oRow">
+            <div class="oLabel">Ваш телефон</div>
+            <div class="field"><i data-lucide="phone"></i>
+              <input id="oPartnerPhone" type="tel" placeholder="+380..." maxlength="30" required>
+            </div>
+            <div class="hint">Ці дані підуть менеджеру разом із замовленням.</div>
+          </div>
+
+          <div class="oActions">
+            <button class="btn btnPrimary" id="btnOrderNext" type="button"><i data-lucide="check-circle-2"></i> Далі</button>
+            <button class="btn btnGhost" id="btnOrderCancel1" type="button"><i data-lucide="x-circle"></i> Скасувати</button>
+          </div>
+        </div>
+
+        <!-- step 2 -->
+        <div id="orderStep2" class="hidden">
+          <div class="muted">Крок 2/2 — дані клієнта та доставка.</div>
+
+          <div class="oGrid">
+            <div>
+              <div class="oLabel">Прізвище</div>
+              <div class="field"><i data-lucide="id-card"></i>
+                <input id="oClientLast" type="text" placeholder="Прізвище" required>
+              </div>
+            </div>
+            <div>
+              <div class="oLabel">Ім’я</div>
+              <div class="field"><i data-lucide="id-card"></i>
+                <input id="oClientFirst" type="text" placeholder="Ім’я" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="oRow">
+            <div class="oLabel">Телефон клієнта</div>
+            <div class="field"><i data-lucide="phone"></i>
+              <input id="oClientPhone" type="tel" placeholder="+380..." maxlength="30" required>
+            </div>
+          </div>
+
+          <div class="oGrid">
+            <div>
+              <div class="oLabel">Місто</div>
+              <div class="field"><i data-lucide="map-pin"></i>
+                <input id="oCity" type="text" placeholder="Напр. Київ" required>
+              </div>
+            </div>
+            <div>
+              <div class="oLabel">Пошта</div>
+              <div class="field"><i data-lucide="truck"></i>
+                <select id="oCarrier" required>
+                  <option value="Нова Пошта">Нова Пошта</option>
+                  <option value="Укрпошта">Укрпошта</option>
+                  <option value="Meest">Meest</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="oRow">
+            <div class="oLabel">Номер відділення</div>
+            <div class="field"><i data-lucide="home"></i>
+              <input id="oBranch" type="text" placeholder="Напр. 12" required>
+            </div>
+          </div>
+
+          <div class="oGrid">
+            <div>
+              <div class="oLabel">
+                Товар
+                <button class="helpBtn" id="btnHelp" type="button" title="Підказка">
+                  <i data-lucide="help-circle"></i>
+                </button>
+              </div>
+              <div class="field"><i data-lucide="package"></i>
+                <input id="oProduct" type="text" placeholder="Встав заголовок товару з артикулом" required>
+              </div>
+            </div>
+
+            <div>
+              <div class="oLabel">Ціна продажу</div>
+              <div class="field"><i data-lucide="badge-dollar-sign"></i>
+                <input id="oSalePrice" type="number" min="0" placeholder="Напр. 999" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="oRow">
+            <div class="oLabel">Додатково (уточнення)</div>
+            <div class="field"><i data-lucide="message-square"></i>
+              <textarea id="oNotes" rows="3" placeholder="Колір, розмір, коментарі…"></textarea>
+            </div>
+          </div>
+
+          <div class="oActions">
+            <button class="btn btnGhost" id="btnOrderBack" type="button"><i data-lucide="arrow-left"></i> Назад</button>
+            <button class="btn btnPrimary" id="btnOrderSend" type="button"><i data-lucide="send"></i> Відправити в Telegram</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ ORDER TIP OVERLAY -->
+    <div id="orderTipOverlay" class="overlay hidden"></div>
+    <div id="orderTipModal" class="hidden">
+      <div class="tipCard">
+        <div class="tipHead">
+          <b><i data-lucide="help-circle"></i> Підказка: “Товар і ціна продажу”</b>
+          <button class="iconBtn" id="btnHelpClose" type="button"><i data-lucide="x"></i> Закрити</button>
+        </div>
+        <div class="tipText" id="helpText">
+!ВАЖЛИВО:
+• вкажіть ціну, по якій ти продали товар
+• у полі "Товар" вставте заголовок з сайту, де в кінці є артикул (наприклад SW-00000748)
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1101,6 +1610,7 @@
     ============================================================ */
     const TELEGRAM_USERNAME = 'manager_samostroy_shop';
     const XML_FEED_URL = 'products.xml';
+    const CGPRO_URL = 'https://samostroy.shop/tools/CGPRO.html';
 
     function showToast(msg){
       const t = document.getElementById('toast');
@@ -1165,23 +1675,18 @@
     }
 
     /* ============================================================
-       3) CATEGORIES (добавили Рейка)
+       3) CATEGORIES
     ============================================================ */
     const CATEGORY_KEYWORDS = [
       { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D', 'Декоративна 3D панель'] },
       { name: 'ПВХ панелі і плити', keywords: ['ПВХ панель', 'ПВХ плита', 'ПВХ'] },
       { name: 'Стенові панелі', keywords: ['Панель стінова', 'Панель-рейка', 'Панель рейка'] },
-
-      /* ✅ NEW: Рейка */
       { name: 'Рейка', keywords: ['рейка', 'Рейка', 'панель-рейка', 'панель рейка', 'декоративна рейка'] },
-
       { name: 'Покриття вінілове', keywords: ['Покриття вінілове самоклеюче'] },
       { name: 'Плитка', keywords: ['Вінілова плитка', 'Вінілова плита', 'ПВХ плитка', 'Поліуретанова плитка', 'Алюмінієва плитка', 'LVT плитка', 'Плитка під ковролін'] },
       { name: 'PET плитка', keywords: ['Стінова PET плитка', 'PET мозаіка', 'PET плитка у рулоні'] },
-
       { name: 'Профілі та декор', keywords: ['Профіль', 'Рейка декоративна', 'Молдинг', 'молдинг', 'Молдинги'] },
       { name: 'Молдинг', keywords: ['Молдинг', 'молдинг'] },
-
       { name: 'Штукатурка', keywords: ['штукатурка', 'Штукатурка'] },
       { name: 'Плінтуси', keywords: ['Плінтус РР', 'Плінтус вініловий', 'Плінтус'] },
       { name: 'Самоклеюча плівка', keywords: ['Плівка самоклеюча', 'Плівка', 'Плівка віконна'] },
@@ -1203,7 +1708,7 @@
     }
 
     /* ============================================================
-       4) CATEGORY IMAGES (замени на свои)
+       4) CATEGORY IMAGES
     ============================================================ */
     const CATEGORY_IMAGES = {
       "3D панелі": "https://via.placeholder.com/900x520?text=3D+Panels",
@@ -1437,7 +1942,7 @@
             <div class="shine"></div>
           </div>
           <div class="catName">
-            <span>${name}</span>
+            <span>${escapeAttr(name)}</span>
             <small>${count} шт</small>
           </div>
           <div class="catMeta">
@@ -1467,7 +1972,7 @@
     }
 
     /* ============================================================
-       9) MODAL
+       9) CATEGORY MODAL
     ============================================================ */
     const catOverlay = document.getElementById('catOverlay');
     const catModal   = document.getElementById('catModal');
@@ -1482,7 +1987,22 @@
 
     let modalBaseList  = [];
 
+    function anyModalOpen(){
+      return (
+        !catModal.classList.contains('hidden') ||
+        !orderModal.classList.contains('hidden') ||
+        !cabHelpModal.classList.contains('hidden') ||
+        !orderTipOverlay.classList.contains('hidden')
+      );
+    }
+    function syncBodyLock(){
+      document.body.style.overflow = anyModalOpen() ? 'hidden' : '';
+    }
+
     function openCategoryModal(name){
+      // якщо відкрита “Як користуватися” — закриємо
+      closeCabHelp();
+
       modalCatTitle.textContent = name;
       modalBaseList = PRODUCTS.filter(p => (p.category || 'Інше') === name);
 
@@ -1494,7 +2014,7 @@
       renderModalProducts();
       catOverlay.classList.remove('hidden');
       catModal.classList.remove('hidden');
-      document.body.style.overflow='hidden';
+      syncBodyLock();
 
       if(window.lucide) lucide.createIcons();
       setTimeout(()=>fSearch.focus(), 30);
@@ -1502,11 +2022,10 @@
     function closeCategoryModal(){
       catOverlay.classList.add('hidden');
       catModal.classList.add('hidden');
-      document.body.style.overflow='';
+      syncBodyLock();
     }
     document.getElementById('btnCloseModal').addEventListener('click', closeCategoryModal);
     catOverlay.addEventListener('click', closeCategoryModal);
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeCategoryModal(); });
 
     function applyFilters(list){
       let out = [...list];
@@ -1559,7 +2078,6 @@
 
           <div style="padding:0 12px 14px;display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn btnPrimary" type="button" style="flex:1" data-copy="full"><i data-lucide="file-text"></i> Копіювати опис</button>
-            <button class="btn" type="button" style="flex:1" data-copy="sku"><i data-lucide="hash"></i> Артикул</button>
           </div>
         `;
 
@@ -1572,7 +2090,6 @@
           const type = btn.dataset.copy;
           if(type === 'title') copyText(p.title || '');
           if(type === 'price') copyText(String(p.price || ''));
-          if(type === 'sku')   copyText(String(p.sku || ''));
           if(type === 'full')  copyText(full || '');
         });
 
@@ -1611,6 +2128,10 @@
     const loginAvatar = document.getElementById('loginAvatar');
     const loginAvatarPreview = document.getElementById('loginAvatarPreview');
 
+    const nameFieldWrap = loginName.closest('.field');
+    const filePickMeta = document.getElementById('filePickMeta');
+    const filePickBtn  = document.getElementById('filePickBtn');
+
     let pendingAvatarDataUrl = null;
 
     function initials(name){
@@ -1619,6 +2140,20 @@
       const first = parts[0][0] || '';
       const second = (parts[1]?.[0] || parts[0]?.[1] || '');
       return (first + second).toUpperCase();
+    }
+
+    function syncNameAttention(){
+      nameFieldWrap.classList.toggle('attention', !loginName.value.trim());
+    }
+
+    function syncFilePickUI(fileOrFake){
+      if(fileOrFake && typeof fileOrFake === 'object' && fileOrFake.name){
+        filePickMeta.textContent = fileOrFake.name;
+        filePickBtn.classList.remove('pulse');
+      }else{
+        filePickMeta.textContent = 'файл не вибрано';
+        filePickBtn.classList.add('pulse');
+      }
     }
 
     function setLoginAvatarPreview(name, dataUrl){
@@ -1636,6 +2171,7 @@
     }
 
     loginName.addEventListener('input', ()=>{
+      syncNameAttention();
       if(!pendingAvatarDataUrl){
         setLoginAvatarPreview(loginName.value, null);
       }
@@ -1643,6 +2179,8 @@
 
     loginAvatar.addEventListener('change', ()=>{
       const file = loginAvatar.files && loginAvatar.files[0];
+      syncFilePickUI(file);
+
       if(!file){
         pendingAvatarDataUrl = null;
         setLoginAvatarPreview(loginName.value, null);
@@ -1672,10 +2210,16 @@
     function showLogin(){
       app.classList.add('hidden');
       loginPage.classList.remove('hidden');
-      document.body.style.overflow='';
+
       loginName.value = '';
+      loginAvatar.value = '';
       pendingAvatarDataUrl = null;
+
       setLoginAvatarPreview('Partner', null);
+      syncNameAttention();
+      syncFilePickUI(null);
+
+      syncBodyLock();
       if(window.lucide) lucide.createIcons();
     }
 
@@ -1712,6 +2256,7 @@
       const name = loginName.value.trim();
       if(name.length < 2){
         showToast('Введи ім’я (мін. 2 символи)');
+        syncNameAttention();
         return;
       }
       const profile = { name, avatar: pendingAvatarDataUrl || null, ts: Date.now() };
@@ -1734,21 +2279,27 @@
     document.getElementById('btnEditProfile').addEventListener('click', ()=>{
       const prof = loadProfile();
       if(!prof){ showLogin(); return; }
+
       app.classList.add('hidden');
       loginPage.classList.remove('hidden');
 
       loginName.value = prof.name || '';
+      loginAvatar.value = '';
       pendingAvatarDataUrl = prof.avatar || null;
+
       setLoginAvatarPreview(loginName.value, pendingAvatarDataUrl);
+      syncNameAttention();
+      if(prof.avatar){
+        syncFilePickUI({ name: 'фото збережено' });
+      }else{
+        syncFilePickUI(null);
+      }
+
       showToast('Онови дані та натисни “Увійти”');
       if(window.lucide) lucide.createIcons();
     });
 
     /* topbar links */
-    document.getElementById('btnCgpro').addEventListener('click', (e)=>{
-      e.preventDefault();
-      showToast('CGPRO — додай посилання тут');
-    });
     document.getElementById('btnTg').addEventListener('click', (e)=>{
       e.preventDefault();
       const prof = loadProfile();
@@ -1762,8 +2313,9 @@
     /* footer links */
     document.getElementById('footShop').addEventListener('click', (e)=>{ e.preventDefault(); window.open('https://samostroy.shop','_blank'); });
     document.getElementById('footTg').addEventListener('click', (e)=>{ e.preventDefault(); openTelegram('Привіт! Потрібна допомога по партнерському кабінету.'); });
+    document.getElementById('footCgpro').addEventListener('click', (e)=>{ e.preventDefault(); window.open(CGPRO_URL,'_blank'); });
     document.getElementById('footXml').addEventListener('click', (e)=>{ e.preventDefault(); showToast('Файл: products.xml (лежить поруч з index.html)'); });
-    document.getElementById('footHow').addEventListener('click', (e)=>{ e.preventDefault(); alert('Як користуватись:\\n1) Вибери категорію\\n2) У модалці використовуй пошук/ціну/сортування\\n3) Копіюй назву/ціну/опис\\n4) Нижче є списки площадок для реклами'); });
+
     document.getElementById('footLogout').addEventListener('click', (e)=>{ e.preventDefault(); document.getElementById('btnLogout').click(); });
 
     document.getElementById('toolExportProfile').addEventListener('click', ()=>{
@@ -1780,14 +2332,219 @@
     });
 
     document.getElementById('toolClearCache').addEventListener('click', ()=>{
-      // очищаем только наш профиль, товары в xml не трогаем
       clearProfile();
       showToast('Кеш очищено (профіль)');
       showLogin();
     });
 
     /* ============================================================
-       11) APP START
+       11) ORDER FLOW (2 steps -> Telegram prefilled)
+    ============================================================ */
+    const orderOverlay = document.getElementById('orderOverlay');
+    const orderModal   = document.getElementById('orderModal');
+    const orderStepHint = document.getElementById('orderStepHint');
+
+    const orderStep1 = document.getElementById('orderStep1');
+    const orderStep2 = document.getElementById('orderStep2');
+
+    const oPartnerName  = document.getElementById('oPartnerName');
+    const oPartnerPhone = document.getElementById('oPartnerPhone');
+
+    const oClientLast  = document.getElementById('oClientLast');
+    const oClientFirst = document.getElementById('oClientFirst');
+    const oClientPhone = document.getElementById('oClientPhone');
+    const oCity        = document.getElementById('oCity');
+    const oCarrier     = document.getElementById('oCarrier');
+    const oBranch      = document.getElementById('oBranch');
+    const oProduct     = document.getElementById('oProduct');
+    const oSalePrice   = document.getElementById('oSalePrice');
+    const oNotes       = document.getElementById('oNotes');
+
+    let orderDraft = {};
+
+    function openOrderModal(){
+      // если открыта модалка категории — закроем
+      if(!catModal.classList.contains('hidden')) closeCategoryModal();
+      // если открыта “Как пользоваться” — закроем
+      closeCabHelp();
+
+      const prof = loadProfile();
+      const name = prof?.name || 'Партнер';
+
+      // reset
+      orderDraft = {};
+      orderStep1.classList.remove('hidden');
+      orderStep2.classList.add('hidden');
+      orderStepHint.textContent = 'Крок 1/2 — дані партнера (ваші).';
+
+      oPartnerName.value = name;
+      oPartnerPhone.value = '';
+
+      // clear step2
+      oClientLast.value = '';
+      oClientFirst.value = '';
+      oClientPhone.value = '';
+      oCity.value = '';
+      oCarrier.value = 'Нова Пошта';
+      oBranch.value = '';
+      oProduct.value = '';
+      oSalePrice.value = '';
+      oNotes.value = '';
+
+      orderOverlay.classList.remove('hidden');
+      orderModal.classList.remove('hidden');
+      syncBodyLock();
+
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>oPartnerPhone.focus(), 60);
+    }
+
+    function closeOrderModal(){
+      orderOverlay.classList.add('hidden');
+      orderModal.classList.add('hidden');
+      syncBodyLock();
+    }
+
+    document.getElementById('btnOrder').addEventListener('click', (e)=>{
+      e.preventDefault();
+      openOrderModal();
+    });
+
+    document.getElementById('btnOrderClose').addEventListener('click', closeOrderModal);
+    document.getElementById('btnOrderCancel1').addEventListener('click', closeOrderModal);
+    orderOverlay.addEventListener('click', closeOrderModal);
+
+    document.getElementById('btnOrderNext').addEventListener('click', ()=>{
+      const name = oPartnerName.value.trim();
+      const phone = oPartnerPhone.value.trim();
+
+      if(name.length < 2){ showToast('Вкажи ім’я партнера'); return; }
+      if(phone.length < 6){ showToast('Вкажи телефон партнера'); return; }
+
+      orderDraft.partnerName = name;
+      orderDraft.partnerPhone = phone;
+
+      orderStep1.classList.add('hidden');
+      orderStep2.classList.remove('hidden');
+      orderStepHint.textContent = 'Крок 2/2 — дані клієнта та доставка.';
+
+      if(window.lucide) lucide.createIcons();
+      setTimeout(()=>oClientLast.focus(), 50);
+    });
+
+    document.getElementById('btnOrderBack').addEventListener('click', ()=>{
+      orderStep2.classList.add('hidden');
+      orderStep1.classList.remove('hidden');
+      orderStepHint.textContent = 'Крок 1/2 — дані партнера (ваші).';
+      setTimeout(()=>oPartnerPhone.focus(), 50);
+    });
+
+    document.getElementById('btnOrderSend').addEventListener('click', ()=>{
+      const last  = oClientLast.value.trim();
+      const first = oClientFirst.value.trim();
+      const cphone = oClientPhone.value.trim();
+      const city  = oCity.value.trim();
+      const carrier = oCarrier.value;
+      const branch  = oBranch.value.trim();
+      const product = oProduct.value.trim();
+      const salePrice = String(oSalePrice.value || '').trim();
+      const notes = oNotes.value.trim();
+
+      if(last.length < 2 || first.length < 2){ showToast('Вкажи ПІБ клієнта'); return; }
+      if(cphone.length < 6){ showToast('Вкажи телефон клієнта'); return; }
+      if(city.length < 2){ showToast('Вкажи місто'); return; }
+      if(branch.length < 1){ showToast('Вкажи відділення'); return; }
+      if(product.length < 2){ showToast('Вкажи товар'); return; }
+      if(!salePrice || Number(salePrice) <= 0){ showToast('Вкажи ціну продажу'); return; }
+
+      const msg =
+`🧾 НОВЕ ЗАМОВЛЕННЯ (партнер)
+
+👤 Партнер: ${orderDraft.partnerName}
+📞 Тел партнера: ${orderDraft.partnerPhone}
+
+👥 Клієнт: ${last} ${first}
+📞 Тел клієнта: ${cphone}
+
+🚚 Доставка: ${carrier}
+🏙 Місто: ${city}
+🏤 Відділення: ${branch}
+
+📦 Товар: ${product}
+💰 Ціна продажу: ${salePrice} грн
+
+📝 Додатково: ${notes || '-'}
+`;
+
+      showToast('Відкриваю Telegram…');
+      openTelegram(msg);
+      closeOrderModal();
+    });
+
+    /* ============================================================
+       12) CABINET HOW (overlay + modal)
+    ============================================================ */
+    const cabHelpOverlay = document.getElementById('cabHelpOverlay');
+    const cabHelpModal   = document.getElementById('cabHelpModal');
+
+    function openCabHelp(){
+      // закрываем подсказку заказа если открыта
+      closeOrderTip();
+
+      cabHelpOverlay.classList.remove('hidden');
+      cabHelpModal.classList.remove('hidden');
+      syncBodyLock();
+      if(window.lucide) lucide.createIcons();
+    }
+    function closeCabHelp(){
+      cabHelpOverlay.classList.add('hidden');
+      cabHelpModal.classList.add('hidden');
+      syncBodyLock();
+    }
+
+    document.getElementById('footHow').addEventListener('click', (e)=>{
+      e.preventDefault();
+      openCabHelp();
+    });
+    document.getElementById('btnCloseCabHelp').addEventListener('click', closeCabHelp);
+    cabHelpOverlay.addEventListener('click', closeCabHelp);
+
+    /* ============================================================
+       13) ORDER TIP (for order modal fields)
+    ============================================================ */
+    const orderTipOverlay = document.getElementById('orderTipOverlay');
+    const orderTipModal   = document.getElementById('orderTipModal');
+
+    function openOrderTip(){
+      orderTipOverlay.classList.remove('hidden');
+      orderTipModal.classList.remove('hidden');
+      syncBodyLock();
+      if(window.lucide) lucide.createIcons();
+    }
+    function closeOrderTip(){
+      orderTipOverlay.classList.add('hidden');
+      orderTipModal.classList.add('hidden');
+      syncBodyLock();
+    }
+
+    document.getElementById('btnHelp').addEventListener('click', openOrderTip);
+    document.getElementById('btnHelpClose').addEventListener('click', closeOrderTip);
+    orderTipOverlay.addEventListener('click', closeOrderTip);
+
+    /* ============================================================
+       14) ESC handler (close topmost first)
+    ============================================================ */
+    document.addEventListener('keydown', (e)=>{
+      if(e.key !== 'Escape') return;
+
+      if(!cabHelpModal.classList.contains('hidden')) return closeCabHelp();
+      if(!orderTipOverlay.classList.contains('hidden')) return closeOrderTip();
+      if(!orderModal.classList.contains('hidden')) return closeOrderModal();
+      if(!catModal.classList.contains('hidden')) return closeCategoryModal();
+    });
+
+    /* ============================================================
+       15) APP START
     ============================================================ */
     function setLoader(on){
       const loader = document.getElementById('loader');
