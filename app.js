@@ -413,7 +413,7 @@ function renderNews(){
 }
 
 /* ============================================================
-   7) ADS LISTS
+   7) ADS LISTS 
 ============================================================ */
 const BOARDS = [
   { name: "OLX", url: "https://www.olx.ua/" },
@@ -1374,7 +1374,7 @@ async function startApp(profile){
     { type:'text', value:
       " — міжнародний інтернет-магазин і постачальник з партнерами по всій Україні та за її межами.\n" +
       "Ми допомагаємо партнерам зростати: будуємо процеси, підказуємо робочі моделі продажів, даємо інструменти та підтримку, щоб заробіток стабільно збільшувався.\n\n" +
-      "Зараз ви у партнерському кабінеті — тут зібрано все необхідне для старту: добірки товарів, інструкції, підказки та готові рішення.\n" +
+      "Тут зібрано все необхідне для старту і заробітку: добірки товарів, інструкції, підказки та готові рішення.\n" +
       "Також у нас є Академія з навчанням: базовий курс допоможе новачкам стартувати з нуля, а поглиблені теми — системно прокачають тих, хто вже продає.\n\n" +
       "Буду радий бути на зв’язку. Напишіть — відповім і підкажу найкращий шлях під вашу ситуацію."
     }
@@ -1482,5 +1482,363 @@ async function startApp(profile){
       a.appendChild(document.createTextNode(linkText[i]));
       await sleep(randDelay(base, jitter));
     }
+  }
+})();
+
+/* ========================= 🅰️ℹ️ Support (Pollinations, no key) ========================= */
+(() => {
+  const overlay = document.getElementById("aiSupOverlay");
+  const modal   = document.getElementById("aiSupModal");
+  const titleEl = document.getElementById("aiSupTitle");
+  const chipEl  = document.getElementById("aiSupChip");
+  const chatEl  = document.getElementById("aiSupChat");
+  const inputEl = document.getElementById("aiSupInput");
+  const sendBtn = document.getElementById("aiSupSend");
+  const closeBtn= document.getElementById("aiSupClose");
+  const resetBtn= document.getElementById("aiSupReset");
+
+  if(!overlay || !modal || !chatEl || !inputEl || !sendBtn) return;
+
+  const COOLDOWN_MS = 6500;
+  let lastCallAt = 0;
+  let queue = Promise.resolve();
+
+  const MAX_TA_H = 140;
+  function autosizeTA(){
+    inputEl.style.height = "auto";
+    inputEl.style.height = Math.min(inputEl.scrollHeight, MAX_TA_H) + "px";
+  }
+  inputEl.addEventListener("input", autosizeTA);
+
+  let state = {
+    topic: "",
+    kb: "",
+    messages: [] // {role:'user'|'assistant', content:string}
+  };
+
+  // open from any element with data-aihelp
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-aihelp]");
+    if(!btn) return;
+
+    const cfg = {
+      title: btn.dataset.aiTitle || "AI-підказка",
+      topic: btn.dataset.aiTopic || "Тема",
+      first: btn.dataset.aiFirst || "Поясни коротко і по кроках.",
+      kbId:  btn.dataset.aiKb || ""
+    };
+    openSupport(cfg);
+  });
+
+  // close
+  overlay.addEventListener("click", closeSupport);
+  closeBtn?.addEventListener("click", closeSupport);
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape" && !modal.classList.contains("hidden")) closeSupport();
+  });
+
+  // send
+  sendBtn.addEventListener("click", sendUser);
+  inputEl.addEventListener("keydown", (e) => {
+    if(e.key === "Enter" && !e.shiftKey){
+      e.preventDefault();
+      sendUser();
+    }
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    state.messages = [];
+    renderChat(true);
+    inputEl.value = "";
+    autosizeTA();
+    inputEl.focus();
+  });
+
+  function openSupport(cfg){
+    // если открыт хаб-модал (#aiModal) — закрываем его, чтобы не было двух оверлеев
+    const hub = document.getElementById("aiModal");
+    const hubOv= document.getElementById("aiOverlay");
+    if(hub && !hub.classList.contains("hidden")){
+      hub.classList.add("hidden");
+      hubOv?.classList.add("hidden");
+    }
+
+    titleEl.textContent = cfg.title;
+    chipEl.textContent  = cfg.topic || "Тема";
+    state.topic = cfg.topic || "";
+    state.kb = readKb(cfg.kbId);
+
+    state.messages = [];
+    overlay.classList.remove("hidden");
+    modal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+
+    addMsg("user", cfg.first);
+    renderChat(true);
+    askAI();
+
+    inputEl.value = "";
+    autosizeTA();
+    inputEl.focus();
+
+    if(window.lucide?.createIcons) window.lucide.createIcons();
+  }
+
+  function closeSupport(){
+    overlay.classList.add("hidden");
+    modal.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+  function readKb(kbId){
+    if(!kbId) return "";
+    const tpl = document.getElementById(kbId);
+    if(!tpl) return "";
+    const txt = (tpl.content?.textContent || "").trim();
+    return truncate(txt, 1800);
+  }
+
+  function sendUser(){
+    const text = (inputEl.value || "").trim();
+    if(!text) return;
+    inputEl.value = "";
+    autosizeTA();
+    addMsg("user", text);
+    renderChat(true);
+    askAI();
+  }
+
+  function addMsg(role, content){
+    state.messages.push({ role, content: String(content || "") });
+  }
+
+  function renderChat(scrollBottom=false){
+    chatEl.innerHTML = "";
+    for(const m of state.messages){
+      chatEl.appendChild(renderMsg(m));
+    }
+    if(window.lucide?.createIcons) window.lucide.createIcons();
+    if(scrollBottom) chatEl.scrollTop = chatEl.scrollHeight;
+  }
+
+  function renderMsg(m){
+    const row = document.createElement("div");
+    row.className = "aiMsg";
+
+    const ava = document.createElement("div");
+    ava.className = "aiAva";
+    ava.innerHTML = `<i data-lucide="${m.role === "user" ? "user" : "bot"}"></i>`;
+
+    const bub = document.createElement("div");
+    bub.className = "aiBubble" + (m.role === "user" ? " user" : "");
+
+    if(m.role === "user"){
+      bub.textContent = m.content;
+    }else{
+      const html = renderMarkdownSafe(cleanAssistantText(m.content));
+      bub.innerHTML = `<div class="md">${html}</div>`;
+    }
+
+    row.appendChild(ava);
+    row.appendChild(bub);
+    return row;
+  }
+
+  function cleanAssistantText(s){
+    // убираем “эмодзи-цифры” как страховка
+    return String(s || "")
+      .replace(/[0-9]️⃣/g, "")
+      .replace(/🔟/g, "10")
+      .replace(/\r\n/g, "\n");
+  }
+
+  function buildSystem(){
+    return [
+      "Ти AI-підтримка Samostroy Partner Cabinet.",
+      `Тема: ${state.topic}.`,
+      "Відповідай коротко і по кроках, як наставник для новачка.",
+      "Не використовуй Markdown-таблиці. Форматуй відповідь списками та короткими блоками.",
+      "Не використовуй емодзі-цифри.",
+      "Якщо точні ціни/тарифи невідомі — скажи, що вони змінюються і де перевірити.",
+      "",
+      "БАЗА ЗНАНЬ:",
+      state.kb || "(база знань не задана)"
+    ].join("\n");
+  }
+
+  function buildMessagesForAI(){
+    // нужно: последние 3 предыдущих + текущее (итого 4)
+    const tail = state.messages.slice(-4);
+    const msgs = [{ role:"system", content: buildSystem() }];
+    for(const m of tail){
+      msgs.push({ role: m.role, content: m.content });
+    }
+    return msgs;
+  }
+
+  async function askAI(){
+    setBusy(true);
+    showTyping();
+
+    queue = queue.then(async () => {
+      const wait = COOLDOWN_MS - (Date.now() - lastCallAt);
+      if(wait > 0) await new Promise(r => setTimeout(r, wait));
+      lastCallAt = Date.now();
+
+      try{
+        return await pollinationsPOST(buildMessagesForAI());
+      }catch(_){
+        const prompt = buildPromptForGET();
+        return await pollinationsGET(prompt);
+      }
+    }).then((answer) => {
+      hideTyping();
+      addMsg("assistant", (answer || "").trim() || "Вибач, не отримав відповідь. Спробуй ще раз.");
+      renderChat(true);
+    }).catch((err) => {
+      hideTyping();
+      addMsg("assistant", "Помилка: " + (err?.message || String(err)));
+      renderChat(true);
+    }).finally(() => {
+      setBusy(false);
+      inputEl.focus();
+    });
+
+    await queue;
+  }
+
+  function buildPromptForGET(){
+    const tail = state.messages.slice(-4);
+    let p = buildSystem() + "\n\n";
+    for(const m of tail){
+      p += (m.role === "user" ? "КОРИСТУВАЧ: " : "AI: ") + m.content + "\n";
+    }
+    p += "\nAI:";
+    return truncate(p, 1800);
+  }
+
+  async function pollinationsPOST(messages){
+    const r = await fetch("https://text.pollinations.ai/openai", {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        model: "openai",
+        temperature: 0.6,
+        max_tokens: 450,
+        messages
+      })
+    });
+    if(!r.ok){
+      const t = await r.text().catch(()=> "");
+      throw new Error(`POST HTTP ${r.status} ${t}`.trim());
+    }
+    const data = await r.json();
+    return data?.choices?.[0]?.message?.content || "";
+  }
+
+  async function pollinationsGET(prompt){
+    const url = "https://text.pollinations.ai/" + encodeURIComponent(prompt) + "?model=mistral&temperature=0.6";
+    const r = await fetch(url);
+    if(!r.ok){
+      const t = await r.text().catch(()=> "");
+      throw new Error(`GET HTTP ${r.status} ${t}`.trim());
+    }
+    return await r.text();
+  }
+
+  function setBusy(b){
+    sendBtn.disabled = b;
+    inputEl.disabled = b;
+    if(resetBtn) resetBtn.disabled = b;
+  }
+
+  function showTyping(){
+    const t = document.createElement("div");
+    t.className = "aiTyping";
+    t.id = "aiTyping";
+    t.textContent = "AI друкує…";
+    chatEl.appendChild(t);
+    chatEl.scrollTop = chatEl.scrollHeight;
+  }
+  function hideTyping(){
+    const t = document.getElementById("aiTyping");
+    if(t) t.remove();
+  }
+
+  function truncate(s, n){
+    s = String(s || "");
+    return s.length > n ? s.slice(0, n-1) + "…" : s;
+  }
+
+  /* ===== safe mini-markdown (lists, paragraphs, code, tables but we запрещаем в system) ===== */
+  function escapeHtml(s){
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+  function inlineFmt(text){
+    let t = escapeHtml(text);
+    t = t.replace(/`([^`]+)`/g, (_, c) => `<code>${escapeHtml(c)}</code>`);
+    t = t.replace(/\*\*([^\*]+)\*\*/g, "<strong>$1</strong>");
+    t = t.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
+    return t;
+  }
+  function isUl(line){ return /^\s*[-•]\s+/.test(line); }
+  function isOl(line){ return /^\s*\d+[.)]\s+/.test(line); }
+
+  function renderMarkdownSafe(src){
+    let s = String(src || "").replace(/\r\n/g, "\n").replace(/<br\s*\/?>/gi, "\n");
+    s = s.replace(/<\/?[^>]+>/g, "");
+    if(s.length > 12000) s = s.slice(0, 12000) + "…";
+
+    const lines = s.split("\n");
+    let i = 0;
+    const out = [];
+
+    while(i < lines.length){
+      if(!lines[i].trim()){ i++; continue; }
+
+      if(isUl(lines[i])){
+        const items = [];
+        while(i < lines.length && isUl(lines[i])){
+          items.push(lines[i].replace(/^\s*[-•]\s+/, ""));
+          i++;
+        }
+        out.push(`<ul>${items.map(x => `<li>${inlineFmt(x)}</li>`).join("")}</ul>`);
+        continue;
+      }
+
+      if(isOl(lines[i])){
+        const items = [];
+        while(i < lines.length && isOl(lines[i])){
+          items.push(lines[i].replace(/^\s*\d+[.)]\s+/, ""));
+          i++;
+        }
+        out.push(`<ol>${items.map(x => `<li>${inlineFmt(x)}</li>`).join("")}</ol>`);
+        continue;
+      }
+
+      if(lines[i].trim().startsWith("```")){
+        i++;
+        const buf = [];
+        while(i < lines.length && !lines[i].trim().startsWith("```")){
+          buf.push(lines[i]); i++;
+        }
+        if(i < lines.length) i++;
+        out.push(`<pre><code>${escapeHtml(buf.join("\n"))}</code></pre>`);
+        continue;
+      }
+
+      const buf = [];
+      while(i < lines.length && lines[i].trim() && !isUl(lines[i]) && !isOl(lines[i]) && !lines[i].trim().startsWith("```")){
+        buf.push(lines[i]); i++;
+      }
+      out.push(`<p>${inlineFmt(buf.join("\n")).replace(/\n/g, "<br>")}</p>`);
+    }
+
+    return out.join("\n");
   }
 })();
