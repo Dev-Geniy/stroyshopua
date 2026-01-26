@@ -386,6 +386,7 @@ code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Libera
 
 /* CABINET HEADER / GRID */
 .cabHead{padding:18px;border-radius:26px}
+
 .row2{
   display:grid;
   grid-template-columns: 320px 1fr;
@@ -2406,4 +2407,428 @@ body.modal-open{
   text-shadow:
     0 10px 30px rgba(0,0,0,.55),
     0 0 22px rgba(255,122,34,.12);      /* чуть слабее */
+}
+
+/* 🅰️ℹ️ */
+/* =========================
+   AI Support — modern compact UI (ONE source of truth)
+   ========================= */
+.aiSupModal{
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+  max-height: 86vh;           /* щоб на малих екранах не вилазило */
+}
+
+/* top */
+.aiSupTop{
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+}
+.aiSupTopRow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.aiSupTopLeft{display:flex;align-items:center;gap:10px;min-width:0}
+.aiSupTopLeft b{font-size:13px;letter-spacing:.2px;white-space:nowrap}
+.aiSupChip{
+  font-size: 11px;
+  color: rgba(255,255,255,.78);
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  max-width: 48vw;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.aiSupTopRight{display:flex;align-items:center;gap:8px}
+
+.aiIconBtn{
+  width: 32px;
+  height: 32px;
+  display:grid;
+  place-items:center;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: #f5f5f7;
+  cursor: pointer;
+}
+.aiIconBtn:hover{filter:brightness(1.12)}
+.aiIconBtn:active{transform:translateY(1px)}
+.aiIconBtn svg{width:18px;height:18px}
+
+/* body */
+.aiSupBody{
+  flex: 1;
+  display:flex;
+  flex-direction:column;
+  min-height: 0;              /* критично для flex-scroll */
+}
+
+/* scroll only here */
+.aiSupChat{
+  flex: 1;
+  min-height: 0;
+  overflow:auto;
+  padding: 12px;
+}
+.aiSupChat::-webkit-scrollbar{width:8px}
+.aiSupChat::-webkit-scrollbar-thumb{background: rgba(255,255,255,.14);border-radius:10px}
+.aiSupChat::-webkit-scrollbar-track{background: transparent}
+
+/* messages */
+.aiMsg{display:flex;gap:10px;margin:10px 0;align-items:flex-start;}
+.aiAva{
+  width: 30px;
+  height: 30px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  flex:0 0 auto;
+}
+.aiAva svg{width:18px;height:18px;opacity:.9}
+
+.aiBubble{
+  max-width: 860px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+  line-height: 1.45;
+  font-size: 13px;
+}
+.aiBubble.user{
+  border-color: rgba(255,122,24,.30);
+  background: rgba(255,122,24,.10);
+}
+
+/* composer pinned */
+.aiSupComposer{
+  position: sticky;
+  bottom: 0;
+  padding: 10px 12px 12px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(8,8,14,.30), rgba(8,8,14,.92));
+  backdrop-filter: blur(10px);
+}
+.aiInputWrap{
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.20);
+}
+
+/* НОРМАЛЬНЕ поле вводу (не крихітне) */
+#aiSupInput{
+  width: 100%;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #f5f5f7;
+  padding: 14px 48px 14px 14px; /* місце під кнопку справа */
+  font-size: 13px;
+  line-height: 1.35;
+  min-height: 52px;            /* ключ: нормальна висота */
+  max-height: 160px;
+}
+#aiSupInput:focus{box-shadow: 0 0 0 3px rgba(255,122,24,.10)}
+
+.aiSendBtn{
+  position:absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,122,24,.38);
+  background: rgba(255,122,24,.18);
+  color: #f5f5f7;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+}
+.aiSendBtn:hover{filter:brightness(1.15)}
+.aiSendBtn:active{transform:translateY(1px)}
+.aiSendBtn:disabled{opacity:.45;cursor:not-allowed}
+.aiSendBtn svg{width:18px;height:18px}
+
+.aiSupHint{
+  margin-top: 8px;
+  font-size: 11px;
+  color: rgba(255,255,255,.55);
+}
+
+/* typing */
+.aiTyping{
+  color: rgba(255,255,255,.65);
+  font-size: 12px;
+  padding: 6px 0 0 40px;
+}
+
+/* Markdown styles (assistant only) */
+.aiBubble .md p{margin:0 0 8px}
+.aiBubble .md p:last-child{margin-bottom:0}
+.aiBubble .md ul, .aiBubble .md ol{margin:6px 0 6px 18px; padding:0}
+.aiBubble .md li{margin:4px 0}
+.aiBubble .md code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+}
+.aiBubble .md pre{
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  overflow:auto;
+}
+.aiBubble .md .tableWrap{overflow:auto;border-radius:12px}
+.aiBubble .md table{
+  width:100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 12px;
+}
+.aiBubble .md th, .aiBubble .md td{
+  border: 1px solid rgba(255,255,255,.10);
+  padding: 6px 8px;
+  vertical-align: top;
+}
+.aiBubble .md th{background: rgba(255,255,255,.05)}
+
+/* =========================
+   Help buttons "?" reusable
+   ========================= */
+.aiHelpBtn{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: #f5f5f7;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+}
+.aiHelpBtn:hover{filter:brightness(1.12)}
+.aiHelpBtn:active{transform:translateY(1px)}
+.aiHelpBtn svg{width:18px;height:18px}
+
+.aiHelpBtn{
+  display:inline-flex;          /* важно для одной линии */
+  align-items:center;
+  justify-content:center;
+  vertical-align: middle;       /* если рядом с текстом без контейнера */
+}
+
+.aiPulse{
+  animation: aiPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes aiPulse{
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,122,24,.0); filter: brightness(1); }
+  50%      { box-shadow: 0 0 0 8px rgba(255,122,24,.10); filter: brightness(1.12); }
+}
+
+/* при наведении — не мигает, чтобы не раздражало */
+.aiHelpBtn:hover{ animation: none; }
+
+.aiHelpBtn{ position: relative; }
+
+.aiHelpBtn::after{
+  content: attr(data-tip);
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+
+  background: rgba(0,0,0,.82);
+  border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.92);
+
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: .15s opacity, .15s transform;
+  z-index: 50;
+}
+
+.aiHelpBtn::before{
+  content: "";
+  position: absolute;
+  right: 14px;
+  bottom: calc(100% + 4px);
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+
+  background: rgba(0,0,0,.82);
+  border-left: 1px solid rgba(255,255,255,.12);
+  border-top: 1px solid rgba(255,255,255,.12);
+
+  opacity: 0;
+  transform-origin: center;
+  pointer-events: none;
+  transition: .15s opacity;
+  z-index: 49;
+}
+
+.aiHelpBtn:hover::after,
+.aiHelpBtn:hover::before{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Класс для обёртывания */
+.hRow{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:0 0 10px;
+}
+.hRow > span{min-width:0}
+
+
+/* ===== AI HUB (cards inside #aiModal) ===== */
+.aiHubIntro{ padding: 2px 2px 12px; }
+
+.aiHubSection{ margin-top: 10px; }
+.aiHubHead{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 10px; }
+
+.aiHubGrid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 12px;
+}
+@media (max-width: 920px){
+  .aiHubGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 560px){
+  .aiHubGrid{ grid-template-columns: 1fr; }
+}
+
+.aiSvcCard{
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  overflow: hidden;
+  box-shadow: 0 14px 34px rgba(0,0,0,.35);
+}
+
+.aiSvcMain{
+  width:100%;
+  text-align:left;
+  background: transparent;
+  border:0;
+  color: inherit;
+  cursor:pointer;
+  padding: 14px 44px 14px 14px; /* справа место под external-link */
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.aiSvcMain:hover{ filter: brightness(1.06); }
+
+.aiSvcIco{
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  flex: 0 0 auto;
+}
+.aiSvcTitle{ font-weight: 800; font-size: 14px; letter-spacing:.2px; }
+.aiSvcSub{ font-size: 12px; color: rgba(255,255,255,.65); margin-top: 3px; }
+
+.aiSvcGo{
+  position:absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: #f5f5f7;
+  transition: .15s filter, .15s transform;
+}
+.aiSvcGo:hover{ filter: brightness(1.12); }
+.aiSvcGo:active{ transform: translateY(1px); }
+
+/* ===== Help button (inline with text) ===== */
+.aiHelpBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: #f5f5f7;
+  cursor:pointer;
+  transition: .15s filter, .15s transform;
+  vertical-align: middle;
+}
+.aiHelpBtn:hover{ filter: brightness(1.12); }
+.aiHelpBtn:active{ transform: translateY(1px); }
+
+/* чтобы заголовок + кнопка были в одну линию */
+.aiInlineRow{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ===== Tooltip через data-tip ===== */
+.aiHelpBtn[data-tip]{ position: relative; }
+.aiHelpBtn[data-tip]::after{
+  content: attr(data-tip);
+  position:absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  transform: translateY(6px);
+  opacity: 0;
+  pointer-events:none;
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255,255,255,.92);
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(10px);
+  transition: .18s opacity, .18s transform;
+}
+.aiHelpBtn[data-tip]:hover::after{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Pulse (легкое мигание) ===== */
+.aiPulse{
+  box-shadow: 0 0 0 rgba(255,122,24,0);
+  animation: aiPulse 1.8s infinite;
+}
+@keyframes aiPulse{
+  0%   { box-shadow: 0 0 0 0 rgba(255,122,24,.0); }
+  55%  { box-shadow: 0 0 0 10px rgba(255,122,24,.10); }
+  100% { box-shadow: 0 0 0 18px rgba(255,122,24,0); }
 }
