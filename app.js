@@ -1842,3 +1842,998 @@ async function startApp(profile){
     return out.join("\n");
   }
 })();
+
+(() => {
+  const root = document.getElementById('incomeCalc');
+  if (!root) return;
+
+  // --------- Options (можешь менять числа) ----------
+  const marginOpts = [
+    { label: '+10%', profit: 200, note: 'Базовий старт' },
+    { label: '+20%', profit: 400, note: 'Сильніше' },
+    { label: '+30%', profit: 600, note: 'Топ' },
+    { label: '+40%', profit: 800, note: 'Максимум' },
+  ];
+
+  const posOpts = [
+    { label: '10',   mult: 1.0 },
+    { label: '25',   mult: 1.4 },
+    { label: '50',   mult: 2.0 },
+    { label: '100',  mult: 2.8 },
+    { label: '500+', mult: 4.0 },
+  ];
+
+  // Режимы: “Обережно/Реалістично/Максимум”
+  const modeBase = {
+    safe: 0.85,
+    real: 1.00,
+    max:  1.25
+  };
+
+  const boosterMult = {
+    channels: { safe: 1.15, real: 1.35, max: 1.60 },
+    speed:    { safe: 1.10, real: 1.20, max: 1.35 },
+    refresh:  { safe: 1.08, real: 1.15, max: 1.25 },
+    scripts:  { safe: 1.06, real: 1.12, max: 1.20 },
+  };
+
+  // --------- State ----------
+  const state = {
+    mode: 'real',
+    orders: 5,
+    marginIdx: 1, // +20%
+    posIdx: 1,    // 25
+    boosters: {
+      channels: false,
+      speed: false,
+      refresh: false,
+      scripts: false
+    }
+  };
+
+  // --------- Elements ----------
+  const ordersRange = document.getElementById('ordersRange');
+  const ordersVal   = document.getElementById('ordersVal');
+
+  const marginLabel = document.getElementById('marginLabel');
+  const marginMeta  = document.getElementById('marginMeta');
+
+  const posLabel = document.getElementById('posLabel');
+  const posMeta  = document.getElementById('posMeta');
+
+  const kpiDay   = document.getElementById('kpiDay');
+  const kpiWeek  = document.getElementById('kpiWeek');
+  const kpiMonth = document.getElementById('kpiMonth');
+
+  const kpiLevel    = document.getElementById('kpiLevel');
+  const kpiLevelSub = document.getElementById('kpiLevelSub');
+
+  const nextText = document.getElementById('nextText');
+  const planList = document.getElementById('planList');
+
+  const bChannels = document.getElementById('bChannels');
+  const bSpeed    = document.getElementById('bSpeed');
+  const bRefresh  = document.getElementById('bRefresh');
+  const bScripts  = document.getElementById('bScripts');
+
+  const modeBtns = root.querySelectorAll('.modeBtn');
+
+  const canvas = document.getElementById('calcChart');
+  const ctx = canvas.getContext('2d');
+
+  // --------- Helpers ----------
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+
+  function formatUAH(n){
+    const val = Math.round(n);
+    return val.toLocaleString('uk-UA') + ' грн';
+  }
+
+  function animateText(el, to, fmt = formatUAH){
+    const fromRaw = Number(el.dataset.num || 0);
+    const toRaw = Number(to);
+    el.dataset.num = String(toRaw);
+
+    const dur = 520;
+    const t0 = performance.now();
+
+    function step(t){
+      const p = clamp((t - t0) / dur, 0, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const cur = fromRaw + (toRaw - fromRaw) * eased;
+      el.textContent = fmt(cur);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function calcDaily(){
+    const m = marginOpts[state.marginIdx];
+    const p = posOpts[state.posIdx];
+
+    let mult = modeBase[state.mode] * p.mult;
+
+    for (const key of Object.keys(state.boosters)){
+      if (state.boosters[key]) mult *= boosterMult[key][state.mode];
+    }
+
+    const daily = state.orders * m.profit * mult;
+
+    return Math.max(0, daily);
+  }
+
+  function build30DaysSeries(dailyFinal){
+    // Быстрый рост в "Максимум", медленнее в "Обережно"
+    const rampDays = (state.mode === 'max') ? 6 : (state.mode === 'safe' ? 14 : 9);
+    const start = dailyFinal * (state.mode === 'max' ? 0.65 : (state.mode === 'safe' ? 0.80 : 0.72));
+
+    const arr = [];
+    for (let d = 1; d <= 30; d++){
+      const factor = 1 - Math.exp(-d / rampDays);
+      const val = start + (dailyFinal - start) * factor;
+      arr.push(val);
+    }
+    return arr;
+  }
+
+  function sum(arr){ return arr.reduce((a,b)=>a+b,0); }
+
+  function levelByMonth(month){
+    if (month >= 100000) return {name:'Business', sub:'ти на бізнес-рівні, масштабуй команду'};
+    if (month >= 60000)  return {name:'Pro',      sub:'зміцни процеси та автоматизуй відповіді'};
+    if (month >= 30000)  return {name:'Grow',     sub:'додай позиції та канали, тримай регулярність'};
+    if (month >= 10000)  return {name:'Stable',   sub:'закріпи стабільність: щоденний темп'};
+    return {name:'Start', sub:'обери 10–25 позицій і зроби перші 5–10 оголошень'};
+  }
+
+  function bestNextStep(){
+    const base = calcDaily();
+
+    const candidates = [];
+
+    // + позиции (если есть куда)
+    if (state.posIdx < posOpts.length - 1){
+      const old = state.posIdx;
+      state.posIdx = old + 1;
+      candidates.push({ id:'pos', title:`Підніми активні позиції до ${posOpts[state.posIdx].label}`, delta: calcDaily() - base });
+      state.posIdx = old;
+    }
+
+    // бустеры
+    for (const key of Object.keys(state.boosters)){
+      if (!state.boosters[key]){
+        state.boosters[key] = true;
+        const nameMap = {
+          channels: 'Додай 2 канали: дошки + маркетплейси',
+          speed: 'Постав відповідь “до 5 хв” (шаблони/скрипти)',
+          refresh: 'Оновлюй/публікуй щодня (регулярність)',
+          scripts: 'Зроби 3–5 скриптів відповідей',
+        };
+        candidates.push({ id:key, title: nameMap[key], delta: calcDaily() - base });
+        state.boosters[key] = false;
+      }
+    }
+
+    // + маржа (если есть куда)
+    if (state.marginIdx < marginOpts.length - 1){
+      const old = state.marginIdx;
+      state.marginIdx = old + 1;
+      candidates.push({ id:'margin', title:`Підніми маржу до ${marginOpts[state.marginIdx].label}`, delta: calcDaily() - base });
+      state.marginIdx = old;
+    }
+
+    candidates.sort((a,b)=>b.delta - a.delta);
+    const best = candidates[0];
+
+    if (!best || best.delta <= 0){
+      return 'Ти вже налаштував сильну модель. Тримай регулярність і масштабуй позиції/канали.';
+    }
+
+    const pct = Math.round((best.delta / base) * 100);
+    return `${best.title}. Це дасть приблизно <b>+${pct}%</b> до результату в цьому режимі.`;
+  }
+
+  function makePlan(){
+    const items = [];
+
+    items.push('День 1: обери нішу + 10 товарів під попит <span>(почни з простого)</span>.');
+    items.push('День 2: зроби 5–10 оголошень з 2 варіантами заголовків <span>(A/B)</span>.');
+    items.push('День 3: налаштуй шаблони відповідей + швидкість “до 5 хв” <span>(менше втрат)</span>.');
+
+    if (!state.boosters.channels) items.push('День 4: додай 2-й канал: маркетплейс або ще 1 дошку <span>(масштаб)</span>.');
+    else items.push('День 4: посили 2 канали — стабільні оновлення + якісні фото <span>(довіра)</span>.');
+
+    if (!state.boosters.refresh) items.push('День 5: оновлюй оголошення щодня + додай ще 10 позицій <span>(більше показів)</span>.');
+    else items.push('День 5: додай 10–25 позицій і тримай щоденний темп <span>(стабільність)</span>.');
+
+    items.push('День 6: відфільтруй топ-товари: залиш 20% найкращих <span>(ефект Парето)</span>.');
+    items.push('День 7: повтори цикл: ще +10 оголошень або +10 позицій <span>(план = результат)</span>.');
+
+    planList.innerHTML = items.map(t => `<li>${t}</li>`).join('');
+  }
+
+  function updateLadder(monthValue){
+    const items = root.querySelectorAll('.ladderItem');
+    items.forEach(it => {
+      const goal = Number(it.getAttribute('data-goal') || 0);
+      const p = clamp((monthValue / goal) * 100, 0, 100);
+      const fill = it.querySelector('.ladderFill');
+      if (fill) fill.style.width = p + '%';
+    });
+  }
+
+  // --------- Chart ----------
+  function resizeCanvas(){
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    const rect = canvas.getBoundingClientRect();
+    canvas.width  = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function drawChart(series){
+    resizeCanvas();
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+
+    ctx.clearRect(0,0,w,h);
+
+    const pad = 14;
+    const maxV = Math.max(...series) * 1.08;
+    const minV = Math.min(...series) * 0.92;
+
+    // grid
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(255,255,255,.08)';
+    for (let i=0;i<=4;i++){
+      const y = pad + (h - pad*2) * (i/4);
+      ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w-pad, y); ctx.stroke();
+    }
+
+    const xStep = (w - pad*2) / (series.length - 1);
+
+    // line
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255,122,26,.92)';
+    ctx.beginPath();
+    series.forEach((v, i) => {
+      const x = pad + i * xStep;
+      const t = (v - minV) / (maxV - minV || 1);
+      const y = (h - pad) - t * (h - pad*2);
+      if (i === 0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // last point
+    const last = series[series.length - 1];
+    const t = (last - minV) / (maxV - minV || 1);
+    const x = pad + (series.length - 1) * xStep;
+    const y = (h - pad) - t * (h - pad*2);
+    ctx.fillStyle = 'rgba(255,178,74,.95)';
+    ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2); ctx.fill();
+  }
+
+  // --------- UI update ----------
+  function syncDials(){
+    const m = marginOpts[state.marginIdx];
+    marginLabel.textContent = m.label;
+    marginMeta.textContent  = `≈ ${m.profit} грн/замовлення`;
+
+    const p = posOpts[state.posIdx];
+    posLabel.textContent = p.label;
+    posMeta.textContent  = `множник продажів ×${p.mult}`;
+
+    ordersVal.textContent = String(state.orders);
+  }
+
+  function syncBoosters(){
+    bChannels.checked = !!state.boosters.channels;
+    bSpeed.checked    = !!state.boosters.speed;
+    bRefresh.checked  = !!state.boosters.refresh;
+    bScripts.checked  = !!state.boosters.scripts;
+  }
+
+  function updateAll(){
+    syncDials();
+    syncBoosters();
+
+    const daily = calcDaily();
+    const series30 = build30DaysSeries(daily);
+    const month = sum(series30);
+    const week  = sum(series30.slice(0,7));
+
+    animateText(kpiDay, daily);
+    animateText(kpiWeek, week);
+    animateText(kpiMonth, month);
+
+    const lvl = levelByMonth(month);
+    kpiLevel.textContent = lvl.name;
+    kpiLevelSub.textContent = lvl.sub;
+
+    updateLadder(month);
+
+    nextText.innerHTML = bestNextStep();
+    makePlan();
+    drawChart(series30);
+
+    // icons if lucide exists
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    }
+  }
+
+  // --------- Events ----------
+  ordersRange.addEventListener('input', () => {
+    state.orders = Number(ordersRange.value);
+    updateAll();
+  });
+
+  root.querySelectorAll('.dialBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dial = btn.dataset.dial;
+      const dir = Number(btn.dataset.dir || 0);
+
+      if (dial === 'margin'){
+        state.marginIdx = clamp(state.marginIdx + dir, 0, marginOpts.length - 1);
+      } else if (dial === 'pos'){
+        state.posIdx = clamp(state.posIdx + dir, 0, posOpts.length - 1);
+      }
+      updateAll();
+    });
+  });
+
+  // wheel scroll on dial cards
+  document.getElementById('marginDial').addEventListener('wheel', (e) => {
+    e.preventDefault();
+    state.marginIdx = clamp(state.marginIdx + (e.deltaY > 0 ? 1 : -1), 0, marginOpts.length - 1);
+    updateAll();
+  }, { passive:false });
+
+  document.getElementById('posDial').addEventListener('wheel', (e) => {
+    e.preventDefault();
+    state.posIdx = clamp(state.posIdx + (e.deltaY > 0 ? 1 : -1), 0, posOpts.length - 1);
+    updateAll();
+  }, { passive:false });
+
+  bChannels.addEventListener('change', () => { state.boosters.channels = bChannels.checked; updateAll(); });
+  bSpeed.addEventListener('change',    () => { state.boosters.speed    = bSpeed.checked;    updateAll(); });
+  bRefresh.addEventListener('change',  () => { state.boosters.refresh  = bRefresh.checked;  updateAll(); });
+  bScripts.addEventListener('change',  () => { state.boosters.scripts  = bScripts.checked;  updateAll(); });
+
+  modeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      modeBtns.forEach(b => b.classList.remove('isActive'));
+      btn.classList.add('isActive');
+      state.mode = btn.dataset.mode || 'real';
+      updateAll();
+    });
+  });
+
+  window.addEventListener('resize', () => {
+    // легкое обновление графика без пересчёта KPI анимации
+    const daily = calcDaily();
+    const series30 = build30DaysSeries(daily);
+    drawChart(series30);
+  });
+
+  // init
+  ordersRange.value = String(state.orders);
+  updateAll();
+})();
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ---------- open/close ----------
+  const openBtns = document.querySelectorAll('#btnSales, [data-open-sales="sales"]');
+  const overlay = document.getElementById('salesOverlay');
+  const modal   = document.getElementById('salesModal');
+  const btnClose = document.getElementById('btnSalesClose');
+
+  // если на странице нет модалки — просто выходим
+  if (!openBtns.length || !overlay || !modal || !btnClose) return;
+
+  const open = () => {
+    overlay.classList.remove('hidden');
+    modal.classList.remove('hidden');
+    render();
+    if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+  };
+
+  const close = () => {
+    overlay.classList.add('hidden');
+    modal.classList.add('hidden');
+    clearEditMode();
+  };
+
+  openBtns.forEach(b => b.addEventListener('click', open));
+  btnClose.addEventListener('click', close);
+  overlay.addEventListener('click', close);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) close();
+  });
+
+  // ---------- storage keys ----------
+  const LS_DEALS   = 'ss_sales_deals_v2';
+  const LS_DAILY   = 'ss_sales_daily_v2';
+  const LS_MONTHLY = 'ss_sales_monthly_v2';
+
+  // ---------- elements ----------
+  const monthInput = document.getElementById('salesMonth');
+  const searchInput = document.getElementById('salesSearch');
+  const statusFilter = document.getElementById('salesStatusFilter');
+
+  const form   = document.getElementById('salesForm');
+  const tbody  = document.getElementById('salesTbody');
+  const dailyTbody = document.getElementById('dailyTbody');
+  const monthlyTbody = document.getElementById('monthlyTbody');
+
+  const cards = document.getElementById('salesCards');
+  const dailyCards = document.getElementById('dailyCards');
+  const monthlyCards = document.getElementById('monthlyCards');
+
+  const stOrders = document.getElementById('stOrders');
+  const stRev    = document.getElementById('stRev');
+  const stCost   = document.getElementById('stCost');
+  const stProfit = document.getElementById('stProfit');
+
+  const btnExportDeals = document.getElementById('salesExportDeals');
+  const btnExportDaily = document.getElementById('salesExportDaily');
+  const btnExportMonthly = document.getElementById('salesExportMonthly');
+  const btnClearMonth = document.getElementById('salesClearMonth');
+
+  const btnSave = document.getElementById('salesSaveBtn');
+  const btnCancel = document.getElementById('salesCancelEdit');
+
+  const fDate    = document.getElementById('fDate');
+  const fChannel = document.getElementById('fChannel');
+  const fItem    = document.getElementById('fItem');
+  const fClient  = document.getElementById('fClient');
+  const fQty     = document.getElementById('fQty');
+  const fRevenue = document.getElementById('fRevenue');
+  const fCost    = document.getElementById('fCost');
+  const fAds     = document.getElementById('fAds');
+  const fStatus  = document.getElementById('fStatus');
+
+  // ---------- helpers ----------
+  const isMobile = () => window.matchMedia('(max-width:680px)').matches;
+
+  const todayISO = () => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  };
+
+  const toMonth  = (isoDate) => (isoDate || '').slice(0,7);
+
+  const currentMonthDefault = () => {
+    const d = new Date();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    return `${d.getFullYear()}-${m}`;
+  };
+
+  const fmtUAH = (n) => {
+    const v = Math.round(Number(n) || 0);
+    return v.toLocaleString('uk-UA') + ' грн';
+  };
+
+  const num = (v) => Number(v || 0) || 0;
+
+  const safe = (s) =>
+    String(s ?? '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+
+  const calcProfit = (r) => num(r.revenue) - num(r.cost) - num(r.ads);
+  const calcSpend  = (r) => num(r.cost) + num(r.ads);
+
+  const debounce = (fn, ms=120) => {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn(...args), ms);
+    };
+  };
+
+  // ---------- state ----------
+  let deals = [];
+  let editId = null;
+
+  // ---------- load/save ----------
+  const load = () => {
+    try{
+      deals = JSON.parse(localStorage.getItem(LS_DEALS) || '[]');
+      if (!Array.isArray(deals)) deals = [];
+    } catch { deals = []; }
+
+    // normalize/migrate
+    deals = deals.map(d => ({
+      id: d.id ?? Date.now(),
+      date: d.date || todayISO(),
+      channel: d.channel || 'Інше',
+      item: d.item || '',
+      client: d.client || '',
+      qty: Math.max(1, num(d.qty || 1)),
+      revenue: Math.max(0, num(d.revenue)),
+      cost: Math.max(0, num(d.cost)),
+      ads: Math.max(0, num(d.ads)),
+      status: d.status || 'У роботі'
+    }));
+  };
+
+  const save = () => localStorage.setItem(LS_DEALS, JSON.stringify(deals));
+
+  const getFilterMonth = () => monthInput.value || currentMonthDefault();
+
+  const matchSearch = (d, q) => {
+    if (!q) return true;
+    const hay = [
+      d.date, d.channel, d.item, d.client, d.status,
+      String(d.qty), String(d.revenue), String(d.cost), String(d.ads)
+    ].join(' ').toLowerCase();
+    return hay.includes(q.toLowerCase());
+  };
+
+  const getFilteredDeals = () => {
+    const m = getFilterMonth();
+    const q = (searchInput.value || '').trim();
+    const st = statusFilter.value;
+
+    return deals
+      .filter(d => toMonth(d.date) === m)
+      .filter(d => st === 'all' ? true : d.status === st)
+      .filter(d => matchSearch(d, q));
+  };
+
+  // ---------- summaries ----------
+  const buildDailySummary = (list) => {
+    const map = new Map();
+    for (const d of list){
+      const key = d.date;
+      if (!map.has(key)){
+        map.set(key, { date: key, orders: 0, revenue: 0, spend: 0, profit: 0 });
+      }
+      const x = map.get(key);
+      x.orders += num(d.qty);
+      x.revenue += num(d.revenue);
+      x.spend += calcSpend(d);
+      x.profit += calcProfit(d);
+    }
+    return Array.from(map.values()).sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  };
+
+  const buildMonthlySummaryAll = () => {
+    const map = new Map();
+    for (const d of deals){
+      const m = toMonth(d.date);
+      if (!m) continue;
+      if (!map.has(m)){
+        map.set(m, { month: m, orders: 0, revenue: 0, spend: 0, profit: 0 });
+      }
+      const x = map.get(m);
+      x.orders += num(d.qty);
+      x.revenue += num(d.revenue);
+      x.spend += calcSpend(d);
+      x.profit += calcProfit(d);
+    }
+    return Array.from(map.values()).sort((a,b) => (b.month||'').localeCompare(a.month||''));
+  };
+
+  // ---------- render (stats) ----------
+  const renderStats = (list) => {
+    const orders = list.reduce((a,d)=> a + num(d.qty), 0);
+    const rev = list.reduce((a,d)=> a + num(d.revenue), 0);
+    const spend = list.reduce((a,d)=> a + calcSpend(d), 0);
+    const prof = list.reduce((a,d)=> a + calcProfit(d), 0);
+
+    stOrders.textContent = String(orders);
+    stRev.textContent = fmtUAH(rev);
+    stCost.textContent = fmtUAH(spend);
+    stProfit.textContent = fmtUAH(prof);
+  };
+
+  // ---------- render tables ----------
+  const renderDealsTable = (list) => {
+    if (!tbody) return;
+
+    if (!list.length){
+      tbody.innerHTML = `<tr><td colspan="11" class="muted" style="padding:14px;">Немає записів за умовами фільтра.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list
+      .sort((a,b) => (b.date||'').localeCompare(a.date||''))
+      .map(d => {
+        const p = calcProfit(d);
+        const pClass = p >= 0 ? 'salesProfitPos' : 'salesProfitNeg';
+        const rowClass = (editId && String(editId) === String(d.id)) ? 'salesRowEditing' : '';
+        return `
+          <tr data-id="${d.id}" class="${rowClass}">
+            <td>${safe(d.date)}</td>
+            <td>${safe(d.channel)}</td>
+            <td style="max-width:320px;">
+              <b style="display:block;line-height:1.25;">${safe(d.item) || '—'}</b>
+            </td>
+            <td style="max-width:320px;">
+              <span class="muted" style="display:block;line-height:1.25;">${safe(d.client) || '—'}</span>
+            </td>
+            <td>${num(d.qty)}</td>
+            <td>${fmtUAH(d.revenue)}</td>
+            <td>${fmtUAH(d.cost)}</td>
+            <td>${fmtUAH(d.ads)}</td>
+            <td class="${pClass}">${fmtUAH(p)}</td>
+            <td>${safe(d.status)}</td>
+            <td>
+              <button class="salesDel" type="button" data-del="${d.id}" title="Видалити">×</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+  };
+
+  const renderDailyTable = (daily) => {
+    if (!dailyTbody) return;
+
+    if (!daily.length){
+      dailyTbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px;">Немає даних для підсумку за день.</td></tr>`;
+      return;
+    }
+    dailyTbody.innerHTML = daily.map(x => `
+      <tr>
+        <td>${safe(x.date)}</td>
+        <td><b>${x.orders}</b></td>
+        <td>${fmtUAH(x.revenue)}</td>
+        <td>${fmtUAH(x.spend)}</td>
+        <td class="${x.profit >= 0 ? 'salesProfitPos' : 'salesProfitNeg'}">${fmtUAH(x.profit)}</td>
+      </tr>
+    `).join('');
+  };
+
+  const renderMonthlyTable = (months) => {
+    if (!monthlyTbody) return;
+
+    if (!months.length){
+      monthlyTbody.innerHTML = `<tr><td colspan="5" class="muted" style="padding:14px;">Немає даних для підсумку за місяць.</td></tr>`;
+      return;
+    }
+    const slice = months.slice(0, 12);
+    monthlyTbody.innerHTML = slice.map(x => `
+      <tr>
+        <td><b>${safe(x.month)}</b></td>
+        <td>${x.orders}</td>
+        <td>${fmtUAH(x.revenue)}</td>
+        <td>${fmtUAH(x.spend)}</td>
+        <td class="${x.profit >= 0 ? 'salesProfitPos' : 'salesProfitNeg'}">${fmtUAH(x.profit)}</td>
+      </tr>
+    `).join('');
+  };
+
+  // ---------- render mobile cards ----------
+  const renderDealsCards = (list) => {
+    if (!cards) return;
+
+    if (!list.length){
+      cards.innerHTML = `<div class="muted" style="padding:10px;">Немає записів за умовами фільтра.</div>`;
+      return;
+    }
+
+    cards.innerHTML = list
+      .sort((a,b) => (b.date||'').localeCompare(a.date||''))
+      .map(d => {
+        const profit = calcProfit(d);
+        const pClass = profit >= 0 ? 'salesProfitPos' : 'salesProfitNeg';
+
+        return `
+          <div class="dealCard">
+            <div class="dealTop">
+              <div class="dealDate">${safe(d.date)}</div>
+              <div class="dealStatus">${safe(d.status)}</div>
+              <div class="dealProfit ${pClass}">${fmtUAH(profit)}</div>
+            </div>
+
+            <div class="dealMain">
+              <b>${safe(d.item) || '—'}</b>
+              <span class="muted">${safe(d.client) || '—'}</span>
+            </div>
+
+            <div class="dealMeta">
+              <span class="metaPill">Канал: <b>${safe(d.channel)}</b></span>
+              <span class="metaPill">К-сть: <b>${num(d.qty)}</b></span>
+              <span class="metaPill">Виручка: <b>${fmtUAH(d.revenue)}</b></span>
+              <span class="metaPill">Витрати: <b>${fmtUAH(calcSpend(d))}</b></span>
+            </div>
+
+            <div class="dealBtns">
+              <button class="dealBtn" type="button" data-edit="${d.id}">
+                <i data-lucide="pencil"></i> Редагувати
+              </button>
+              <button class="dealBtn danger" type="button" data-del="${d.id}">
+                <i data-lucide="trash-2"></i> Видалити
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+  };
+
+  const renderDailyCards = (daily) => {
+    if (!dailyCards) return;
+
+    if (!daily.length){
+      dailyCards.innerHTML = `<div class="muted" style="padding:10px;">Немає даних для підсумку за день.</div>`;
+      return;
+    }
+
+    dailyCards.innerHTML = daily.map(x => `
+      <div class="dealCard">
+        <div class="dealTop">
+          <div class="dealDate">${safe(x.date)}</div>
+          <div class="dealStatus">День</div>
+          <div class="dealProfit ${x.profit >= 0 ? 'salesProfitPos' : 'salesProfitNeg'}">${fmtUAH(x.profit)}</div>
+        </div>
+        <div class="dealMeta" style="margin-top:10px;">
+          <span class="metaPill">Замовлення: <b>${x.orders}</b></span>
+          <span class="metaPill">Виручка: <b>${fmtUAH(x.revenue)}</b></span>
+          <span class="metaPill">Витрати: <b>${fmtUAH(x.spend)}</b></span>
+        </div>
+      </div>
+    `).join('');
+  };
+
+  const renderMonthlyCards = (months) => {
+    if (!monthlyCards) return;
+
+    if (!months.length){
+      monthlyCards.innerHTML = `<div class="muted" style="padding:10px;">Немає даних для підсумку за місяць.</div>`;
+      return;
+    }
+
+    const slice = months.slice(0, 12);
+    monthlyCards.innerHTML = slice.map(x => `
+      <div class="dealCard">
+        <div class="dealTop">
+          <div class="dealDate">${safe(x.month)}</div>
+          <div class="dealStatus">Місяць</div>
+          <div class="dealProfit ${x.profit >= 0 ? 'salesProfitPos' : 'salesProfitNeg'}">${fmtUAH(x.profit)}</div>
+        </div>
+        <div class="dealMeta" style="margin-top:10px;">
+          <span class="metaPill">Замовлення: <b>${x.orders}</b></span>
+          <span class="metaPill">Виручка: <b>${fmtUAH(x.revenue)}</b></span>
+          <span class="metaPill">Витрати: <b>${fmtUAH(x.spend)}</b></span>
+        </div>
+      </div>
+    `).join('');
+  };
+
+  // ---------- edit mode ----------
+  function setEditMode(id){
+    const d = deals.find(x => String(x.id) === String(id));
+    if (!d) return;
+
+    editId = d.id;
+
+    fDate.value = d.date || todayISO();
+    fChannel.value = d.channel || 'Інше';
+    fItem.value = d.item || '';
+    fClient.value = d.client || '';
+    fQty.value = Math.max(1, num(d.qty || 1));
+    fRevenue.value = num(d.revenue);
+    fCost.value = num(d.cost);
+    fAds.value = num(d.ads);
+    fStatus.value = d.status || 'У роботі';
+
+    btnSave.innerHTML = `<i data-lucide="save"></i> Зберегти`;
+    btnCancel.classList.remove('hidden');
+
+    render();
+  }
+
+  function clearEditMode(){
+    editId = null;
+    btnSave.innerHTML = `<i data-lucide="save"></i> Додати`;
+    btnCancel.classList.add('hidden');
+
+    // оставим дату + канал (так быстрее заносить повторные сделки)
+    fItem.value = '';
+    fClient.value = '';
+    fQty.value = 1;
+    fRevenue.value = '';
+    fCost.value = '';
+    fAds.value = '';
+  }
+
+  btnCancel.addEventListener('click', clearEditMode);
+
+  // row click / delete (desktop table)
+  tbody.addEventListener('click', (e) => {
+    const delBtn = e.target.closest('[data-del]');
+    if (delBtn){
+      e.stopPropagation();
+      const id = delBtn.getAttribute('data-del');
+      deals = deals.filter(d => String(d.id) !== String(id));
+      save();
+      render();
+      return;
+    }
+
+    const row = e.target.closest('tr[data-id]');
+    if (!row) return;
+    setEditMode(row.getAttribute('data-id'));
+  });
+
+  // edit/delete (mobile cards)
+  if (cards){
+    cards.addEventListener('click', (e) => {
+      const delBtn = e.target.closest('[data-del]');
+      if (delBtn){
+        const id = delBtn.getAttribute('data-del');
+        deals = deals.filter(d => String(d.id) !== String(id));
+        save();
+        render();
+        return;
+      }
+      const editBtn = e.target.closest('[data-edit]');
+      if (editBtn){
+        setEditMode(editBtn.getAttribute('data-edit'));
+      }
+    });
+  }
+
+  // add/update
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const date = fDate.value || todayISO();
+    const qty = Math.max(1, num(fQty.value || 1));
+    const revenue = Math.max(0, num(fRevenue.value));
+    const cost = Math.max(0, num(fCost.value));
+    const ads = Math.max(0, num(fAds.value));
+
+    const item = (fItem.value || '').trim();
+    const client = (fClient.value || '').trim();
+
+    const payload = {
+      date,
+      channel: fChannel.value || 'Інше',
+      item,
+      client,
+      qty,
+      revenue,
+      cost,
+      ads,
+      status: fStatus.value || 'У роботі'
+    };
+
+    if (editId){
+      deals = deals.map(d => String(d.id) === String(editId) ? ({...d, ...payload}) : d);
+      save();
+      clearEditMode();
+      monthInput.value = toMonth(date);
+      render();
+      return;
+    }
+
+    deals.push({ id: Date.now(), ...payload });
+    save();
+
+    // быстрое добавление
+    fDate.value = date;
+    fItem.value = '';
+    fClient.value = '';
+    fQty.value = 1;
+    fRevenue.value = '';
+    fCost.value = '';
+    fAds.value = '';
+
+    monthInput.value = toMonth(date);
+    render();
+  });
+
+  // ---------- render main ----------
+  const render = () => {
+    const list = getFilteredDeals();
+    renderStats(list);
+
+    const daily = buildDailySummary(list);
+    const monthly = buildMonthlySummaryAll();
+
+    if (isMobile()){
+      renderDealsCards(list);
+      renderDailyCards(daily);
+      renderMonthlyCards(monthly);
+    } else {
+      renderDealsTable(list);
+      renderDailyTable(daily);
+      renderMonthlyTable(monthly);
+
+      if (cards) cards.innerHTML = '';
+      if (dailyCards) dailyCards.innerHTML = '';
+      if (monthlyCards) monthlyCards.innerHTML = '';
+    }
+
+    localStorage.setItem(LS_DAILY, JSON.stringify(daily));
+    localStorage.setItem(LS_MONTHLY, JSON.stringify(monthly));
+
+    if (window.lucide && typeof window.lucide.createIcons === 'function'){
+      window.lucide.createIcons();
+    }
+  };
+
+  // filters
+  monthInput.addEventListener('change', render);
+  statusFilter.addEventListener('change', render);
+  searchInput.addEventListener('input', debounce(render, 120));
+
+  // export helpers
+  const downloadCSV = (filename, header, rowsArr) => {
+    const lines = [header.join(',')];
+    const esc = (s) => `"${String(s ?? '').replace(/"/g,'""')}"`;
+    rowsArr.forEach(r => lines.push(r.map(esc).join(',')));
+
+    const csv = lines.join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  btnExportDeals.addEventListener('click', () => {
+    const list = getFilteredDeals().sort((a,b)=> (a.date||'').localeCompare(b.date||''));
+    const header = ['date','channel','item','client','qty','revenue','cost','ads','profit','status'];
+    const rowsArr = list.map(d => [
+      d.date, d.channel, d.item, d.client,
+      String(d.qty), String(d.revenue), String(d.cost), String(d.ads),
+      String(calcProfit(d)), d.status
+    ]);
+    downloadCSV(`deals_${getFilterMonth()}.csv`, header, rowsArr);
+  });
+
+  btnExportDaily.addEventListener('click', () => {
+    const list = getFilteredDeals();
+    const daily = buildDailySummary(list).sort((a,b)=> (a.date||'').localeCompare(b.date||''));
+    const header = ['date','orders','revenue','spend','profit'];
+    const rowsArr = daily.map(x => [
+      x.date, String(x.orders), String(x.revenue), String(x.spend), String(x.profit)
+    ]);
+    downloadCSV(`daily_${getFilterMonth()}.csv`, header, rowsArr);
+  });
+
+  btnExportMonthly.addEventListener('click', () => {
+    const months = buildMonthlySummaryAll().sort((a,b)=> (a.month||'').localeCompare(b.month||''));
+    const header = ['month','orders','revenue','spend','profit'];
+    const rowsArr = months.map(x => [
+      x.month, String(x.orders), String(x.revenue), String(x.spend), String(x.profit)
+    ]);
+    downloadCSV(`monthly_all.csv`, header, rowsArr);
+  });
+
+  btnClearMonth.addEventListener('click', () => {
+    const m = getFilterMonth();
+    const ok = confirm(`Очистити всі угоди за ${m}?`);
+    if (!ok) return;
+
+    deals = deals.filter(d => toMonth(d.date) !== m);
+    save();
+    clearEditMode();
+    render();
+  });
+
+  // init
+  load();
+  monthInput.value = currentMonthDefault();
+  fDate.value = todayISO();
+  render();
+});
