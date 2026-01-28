@@ -104,10 +104,6 @@
     </section>
   </main>
   
-  
-  
-  
-
   <!-- =========================
        APP / CABINET
   ========================== -->
@@ -127,7 +123,7 @@
           </div>
 
           <nav class="topActions">
-            <a class="btn btnPrimary" href="#" id="btnOrder"><i data-lucide="clipboard-plus"></i> Заказ</a>
+            <a class="btn btnPrimary" href="#" id="btnOrder"><i data-lucide="clipboard-plus"></i> Замовлення</a>
             <a class="btn btnBlue" href="#" id="btnTg"><i data-lucide="send"></i> Менеджер</a>
             <a class="btn" href="#" id="btnShop"><i data-lucide="store"></i> Магазин</a>
           </nav>
@@ -184,14 +180,15 @@
                       <div class="qGo">Открыть <i data-lucide="external-link"></i></div>
                     </button>
 
-                    <button type="button" class="qCard" id="navOrder">
-                      <div class="qIcon"><i data-lucide="clipboard-plus"></i></div>
-                      <div class="qBody">
-                        <b>Оформить заказ за 2 минуты</b>
-                        <span>Готовая форма → отправка менеджеру в Telegram.</span>
-                      </div>
-                      <div class="qGo">Заказать <i data-lucide="arrow-right"></i></div>
-                    </button>
+<button type="button" class="qCard" id="btnSales">
+  <div class="qIcon"><i data-lucide="shopping-bag"></i></div>
+  <div class="qBody">
+    <b>Мій облік продажів і прибутку</b>
+    <span>Міні-CRM: записи, підсумки, експорт у CSV.</span>
+  </div>
+  <div class="qGo">Відкрити <i data-lucide="arrow-right"></i></div>
+</button>
+
                   </div>
                 </div>
               </div>
@@ -222,12 +219,20 @@
                     <button type="button" class="miniLink" id="mNavCats">
                       <i data-lucide="package"></i><span>1200+ товарів для вас</span><i data-lucide="arrow-down"></i>
                     </button>
+                    
                     <button type="button" class="miniLink" id="mNavAds">
                       <i data-lucide="megaphone"></i><span> Де рекламувати?</span><i data-lucide="arrow-down"></i>
                     </button>
+                    
                     <button type="button" class="miniLink" id="mNavAi">
                       <i data-lucide="sparkles"></i><span>Ai - асистент</span><i data-lucide="arrow-right"></i>
-                    </button>
+                    </button> 
+                    
+<button type="button" class="miniLink" id="btnSales">
+  <i data-lucide="sparkles"></i><span>Облік продажів</span><i data-lucide="arrow-right"></i>
+</button>
+
+                    
                   </div>
                 </div>
               </div>
@@ -282,7 +287,7 @@
           <div id="catsMobile" class="catsMobile"></div>
         </section>
                   
-        <section class="section">
+<section class="section">
                 <div class="wrap">
         <div class="cabHead glass soonLock">  <!-- УБРАТЬ "soonLock" Чтобы СНЯТЬ ЗАТЕМНЕНИЕ -->
           
@@ -453,9 +458,238 @@
           
       </div>
     </section>
+  
+  <!-- =========================
+     INCOME CALCULATOR — Samostroy
+========================= -->
+<section class="section" id="incomeCalc">
+  <div class="wrap">
+    <div class="calcHead glass">
+      <div class="calcTop">
+        <div>
+          <h2 class="h2" style="margin-top:0;">Калькулятор <span class="grad">доходу</span></h2>
+          <div class="muted">
+            Простий прогноз потенціалу: 3 параметри → результат + підказка “що зробити далі”.
+          </div>
+        </div>
 
-    <section class="academyMini" id="academy-mini">
-  <div class="academyMiniWrap">
+        <div class="calcModes" role="tablist" aria-label="Режим прогнозу">
+          <button type="button" class="modeBtn isActive" data-mode="real" role="tab">Реалістично</button>
+          <button type="button" class="modeBtn" data-mode="safe" role="tab">Обережно</button>
+          <button type="button" class="modeBtn modeMax" data-mode="max" role="tab">Максимум</button>
+        </div>
+      </div>
+
+      <div class="calcGrid">
+        <!-- LEFT: RESULTS -->
+        <div class="calcResults">
+          <div class="calcKpis">
+            <div class="kpiCard">
+              <span>Прибуток / день</span>
+              <b id="kpiDay">0 грн</b>
+              <small id="kpiDaySub">за вибраними параметрами</small>
+            </div>
+            <div class="kpiCard">
+              <span>Прибуток / 30 днів</span>
+              <b id="kpiMonth">0 грн</b>
+              <small id="kpiMonthSub">динаміка з ростом</small>
+            </div>
+            <div class="kpiCard">
+              <span>Прибуток / 7 днів</span>
+              <b id="kpiWeek">0 грн</b>
+              <small>для короткого старту</small>
+            </div>
+            <div class="kpiCard kpiAccent">
+              <span>Рівень</span>
+              <b id="kpiLevel">Start</b>
+              <small id="kpiLevelSub">порада для росту</small>
+            </div>
+          </div>
+
+          <div class="calcChartCard">
+            <div class="chartHead">
+              <b><i data-lucide="line-chart"></i> Динаміка на 30 днів</b>
+              <span class="muted" id="chartMeta">модель-орієнтир</span>
+            </div>
+            <canvas id="calcChart" width="860" height="240" aria-label="Графік доходу" role="img"></canvas>
+          </div>
+
+          <div class="calcLadder">
+            <div class="ladderHead">
+              <b><i data-lucide="trophy"></i> Лестниця цілей (місяць)</b>
+              <span class="muted">побач свій прогрес</span>
+            </div>
+
+            <div class="ladderItem" data-goal="10000">
+              <div class="ladderRow">
+                <b>10 000 грн</b><span class="muted">перший стабільний рівень</span>
+              </div>
+              <div class="ladderBar"><div class="ladderFill"></div></div>
+            </div>
+
+            <div class="ladderItem" data-goal="30000">
+              <div class="ladderRow">
+                <b>30 000 грн</b><span class="muted">вже як “зарплата”</span>
+              </div>
+              <div class="ladderBar"><div class="ladderFill"></div></div>
+            </div>
+
+            <div class="ladderItem" data-goal="60000">
+              <div class="ladderRow">
+                <b>60 000 грн</b><span class="muted">сильне масштабування</span>
+              </div>
+              <div class="ladderBar"><div class="ladderFill"></div></div>
+            </div>
+
+            <div class="ladderItem" data-goal="100000">
+              <div class="ladderRow">
+                <b>100 000+ грн</b><span class="muted">бізнес-рівень</span>
+              </div>
+              <div class="ladderBar"><div class="ladderFill"></div></div>
+            </div>
+          </div>
+
+          <div class="calcNext">
+            <div class="nextHead">
+              <i data-lucide="sparkles"></i>
+              <b>Наступний крок</b>
+            </div>
+            <div class="muted" id="nextText">—</div>
+          </div>
+
+          <div class="calcNote muted">
+            * Це модель-орієнтир. На результат впливають ніша, якість оголошень, швидкість відповіді та регулярність.
+          </div>
+        </div>
+
+        <!-- RIGHT: CONTROLS -->
+        <div class="calcControls">
+          <div class="ctrlCard">
+            <div class="ctrlHead">
+              <b><i data-lucide="sliders-horizontal"></i> Керування</b>
+              <span class="muted">1 хв — і все зрозуміло</span>
+            </div>
+
+            <!-- Orders slider -->
+            <div class="ctrlBlock">
+              <div class="ctrlLabel">
+                <b>Замовлень / день</b>
+                <span class="ctrlValue"><span id="ordersVal">5</span> шт</span>
+              </div>
+              <input id="ordersRange" class="range" type="range" min="1" max="10" value="5" />
+              <div class="rangeMeta">
+                <span class="muted">1</span>
+                <span class="muted">10</span>
+              </div>
+            </div>
+
+            <!-- Dials row -->
+            <div class="dialRow">
+              <!-- Margin dial -->
+              <div class="dialCard" id="marginDial" aria-label="Маржа">
+                <div class="dialTitle">
+                  <b><i data-lucide="percent"></i> Маржа</b>
+                  <span class="muted">прибуток з 1 замовлення</span>
+                </div>
+
+                <div class="dial">
+                  <button type="button" class="dialBtn" data-dial="margin" data-dir="-1" aria-label="Менше">
+                    <i data-lucide="chevron-left"></i>
+                  </button>
+
+                  <div class="dialMid">
+                    <b id="marginLabel">+20%</b>
+                    <span id="marginMeta">≈ 400 грн/замовлення</span>
+                  </div>
+
+                  <button type="button" class="dialBtn" data-dial="margin" data-dir="1" aria-label="Більше">
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Positions dial -->
+              <div class="dialCard" id="posDial" aria-label="Активні позиції">
+                <div class="dialTitle">
+                  <b><i data-lucide="layers"></i> Активні позиції</b>
+                  <span class="muted">скільки товарів одночасно продаєш</span>
+                </div>
+
+                <div class="dial">
+                  <button type="button" class="dialBtn" data-dial="pos" data-dir="-1" aria-label="Менше">
+                    <i data-lucide="chevron-left"></i>
+                  </button>
+
+                  <div class="dialMid">
+                    <b id="posLabel">25</b>
+                    <span id="posMeta">множник продажів ×1.4</span>
+                  </div>
+
+                  <button type="button" class="dialBtn" data-dial="pos" data-dir="1" aria-label="Більше">
+                    <i data-lucide="chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Boosters -->
+            <div class="boostCard">
+              <div class="boostHead">
+                <b><i data-lucide="rocket"></i> Прискорювачі</b>
+                <span class="muted">вмикай — і прогноз зростає</span>
+              </div>
+
+              <div class="boostGrid">
+                <label class="boostItem">
+                  <input type="checkbox" id="bChannels" />
+                  <span class="boostUi"></span>
+                  <span class="boostText">
+                    <b>2 канали продажів</b>
+                    <small>дошки + маркетплейси</small>
+                  </span>
+                </label>
+
+                <label class="boostItem">
+                  <input type="checkbox" id="bSpeed" />
+                  <span class="boostUi"></span>
+                  <span class="boostText">
+                    <b>Відповідь за 5 хв</b>
+                    <small>заявка не “охолоджується”</small>
+                  </span>
+                </label>
+
+                <label class="boostItem">
+                  <input type="checkbox" id="bRefresh" />
+                  <span class="boostUi"></span>
+                  <span class="boostText">
+                    <b>Оновлення щодня</b>
+                    <small>покази + довіра</small>
+                  </span>
+                </label>
+
+                <label class="boostItem">
+                  <input type="checkbox" id="bScripts" />
+                  <span class="boostUi"></span>
+                  <span class="boostText">
+                    <b>Скрипти відповіді</b>
+                    <small>менше часу → більше продажів</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 7-day plan -->
+            <div class="planCard">
+              <div class="planHead">
+                <b><i data-lucide="calendar-check"></i> Простий план на 7 днів</b>
+                <span class="muted">щоб вийти на стабільність</span>
+              </div>
+              <ol class="planList" id="planList"></ol>
+            </div>
+
+              <!-- 🅰️CADEMY -->        
+  <div class="planCard">
+
     <!-- LEFT: маленькое изображение -->
     <div class="academyMiniMedia" aria-hidden="true">
       <div class="academyMiniGlow"></div>
@@ -463,7 +697,7 @@
       <div class="academyMiniFrame">
         <img
           class="academyMiniImg"
-          src="https://i.ibb.co/hFnQW776/unnamed-35.jpg"
+          src="https://i.ibb.co/99mJfybk/unnamed-40.jpg"
           alt="Samostroy Academy"
           decoding="async"
         />
@@ -503,14 +737,20 @@
           <span>для партнерів — безкоштовно</span>
         </div>
       </div>
-
-      <div class="academyMiniCta">
-        <a class="btnAcademyMini" href="https://samostroy.shop/academy.html" target="_blank" rel="noopener">
-          <i data-lucide="play-circle"></i>
-          Перейти до навчання
-        </a>
-        <div class="academyMiniNote">- Заходь! Не відкладай успіх на завтра... </div>
+    </div>
+</div>
+            
+            <!-- CTA -->
+            <div class="calcCta">
+              <a class="btn btnPrimary calcBtn" href="https://samostroy.shop/academy.html" target="_blank" rel="noopener">
+                <i data-lucide="play-circle"></i> ПЕРЕЙТИ В АКАДЕМІЮ
+              </a>
+              <div class="muted" style="font-size:12px;">(для партнерів — безкоштовно)</div>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -530,7 +770,7 @@
             </div>
           </div>
 
-          <div>
+          <div> 
             <h4>Швидкі посилання</h4>
             <div class="footLinks">
               <a href="#" id="footShop"><span>Samostroy.shop (Магазин)</span><i data-lucide="external-link"></i></a>
@@ -1234,7 +1474,281 @@
     </div>
   </div>
 </section>
-      
+                  
+    <!-- 🧾 SALES TRACKER MODAL (CRM) -->
+<!-- 🧾 SALES TRACKER MODAL (CRM) -->
+<div id="salesOverlay" class="overlay hidden"></div>
+
+<section id="salesModal" class="modal hidden" aria-modal="true" role="dialog">
+  <div class="modalTop">
+    <div class="modalTitleRow">
+      <div class="modalTitle">
+        <i data-lucide="bar-chart-3"></i>
+        <b>Міні-CRM: облік продажів і прибутку</b>
+      </div>
+      <button class="iconBtn" id="btnSalesClose" type="button">
+        <i data-lucide="x"></i> Закрити
+      </button>
+    </div>
+
+    <div class="muted" style="padding:0 2px;">
+      Угоди зберігаються у браузері (LocalStorage). Працює як маленька CRM + звіти “день/місяць”.
+    </div>
+  </div>
+
+  <div class="modalBody">
+
+    <!-- hero -->
+    <div class="aiHero salesHero">
+      <div class="aiArt">
+        <img src="https://i.ibb.co/r2t3Sd3v/unnamed-41-removebg-preview.png" alt="Sales" decoding="async">
+      </div>
+      <div class="aiText">
+        <h2 class="h2" style="margin:0;">Зручний контроль прибутку</h2>
+        <div class="muted" style="margin-top:10px;">
+          Додавай угоду → автоматично рахуємо прибуток → формуємо підсумки за день і за місяць.
+        </div>
+        <div class="howMini" style="margin-top:12px;">
+          <span class="tag">Пошук</span>
+          <span class="tag">Фільтри</span>
+          <span class="tag">Редагування</span>
+          <span class="tag">День/Місяць</span>
+          <span class="tag">CSV</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- toolbar -->
+    <div class="salesToolbar">
+      <div class="salesFilterRow">
+        <div class="field" style="margin:0;">
+          <i data-lucide="calendar"></i>
+          <input id="salesMonth" type="month" />
+        </div>
+
+        <div class="field" style="margin:0;">
+          <i data-lucide="search"></i>
+          <input id="salesSearch" type="text" placeholder="Пошук: товар / клієнт / канал / статус…" />
+        </div>
+
+        <div class="field" style="margin:0;">
+          <i data-lucide="filter"></i>
+          <select id="salesStatusFilter">
+            <option value="all">Усі статуси</option>
+            <option value="У роботі">У роботі</option>
+            <option value="Оплачено">Оплачено</option>
+            <option value="Відправлено">Відправлено</option>
+            <option value="Завершено">Завершено</option>
+            <option value="Повернення">Повернення</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="salesActions">
+        <button class="btn btnBlue" type="button" id="salesExportDeals">
+          <i data-lucide="download"></i> CSV (угоди)
+        </button>
+        <button class="btn btnBlue" type="button" id="salesExportDaily">
+          <i data-lucide="download"></i> CSV (день)
+        </button>
+        <button class="btn btnBlue" type="button" id="salesExportMonthly">
+          <i data-lucide="download"></i> CSV (місяць)
+        </button>
+        <button class="btn btnGhost" type="button" id="salesClearMonth">
+          <i data-lucide="trash-2"></i> Очистити місяць
+        </button>
+      </div>
+    </div>
+
+    <!-- stats -->
+    <div class="salesStats">
+      <div class="salesStat">
+        <span>Замовлення (шт.)</span>
+        <b id="stOrders">0</b>
+      </div>
+      <div class="salesStat">
+        <span>Виручка</span>
+        <b id="stRev">0 грн</b>
+      </div>
+      <div class="salesStat">
+        <span>Витрати (собіварт. + реклама)</span>
+        <b id="stCost">0 грн</b>
+      </div>
+      <div class="salesStat salesStatAccent">
+        <span>Прибуток</span>
+        <b id="stProfit">0 грн</b>
+      </div>
+    </div>
+
+    <!-- add/edit form -->
+    <div class="salesCard">
+      <div class="salesCardHead">
+        <b><i data-lucide="plus-circle"></i> <span class="grad">Додати</span> / редагувати угоду</b>
+        <span class="muted">клік по рядку → редагування</span>
+      </div>
+
+      <form id="salesForm" class="salesForm" autocomplete="off">
+        <div class="field">
+          <i data-lucide="calendar-days"></i>
+          <input id="fDate" type="date" />
+        </div>
+
+        <div class="field">
+          <i data-lucide="radio"></i>
+          <select id="fChannel">
+            <option value="OLX">OLX</option>
+            <option value="Prom">Prom</option>
+            <option value="Rozetka">Rozetka</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Telegram">Telegram</option>
+            <option value="Viber">Viber</option>
+            <option value="Інше">Інше</option>
+          </select>
+        </div>
+
+        <div class="field salesSpan2">
+          <i data-lucide="package"></i>
+          <input id="fItem" type="text" placeholder="Товар / позиція (наприклад: Панелі вінілові, SKU 1021)" />
+        </div>
+
+        <div class="field salesSpan2">
+          <i data-lucide="user"></i>
+          <input id="fClient" type="text" placeholder="Клієнт: ПІБ, телефон, місто, пошта/служба, відділення" />
+        </div>
+
+        <div class="field">
+          <i data-lucide="hash"></i>
+          <input id="fQty" type="number" min="1" step="1" value="1" />
+        </div>
+
+        <div class="field">
+          <i data-lucide="banknote"></i>
+          <input id="fRevenue" type="number" min="0" step="1" placeholder="Виручка (грн)" />
+        </div>
+
+        <div class="field">
+          <i data-lucide="receipt"></i>
+          <input id="fCost" type="number" min="0" step="1" placeholder="Собівартість (грн)" />
+        </div>
+
+        <div class="field">
+          <i data-lucide="megaphone"></i>
+          <input id="fAds" type="number" min="0" step="1" placeholder="Реклама (грн)" />
+        </div>
+
+        <div class="field">
+          <i data-lucide="circle-check"></i>
+          <select id="fStatus">
+            <option value="У роботі">У роботі</option>
+            <option value="Оплачено">Оплачено</option>
+            <option value="Відправлено">Відправлено</option>
+            <option value="Завершено">Завершено</option>
+            <option value="Повернення">Повернення</option>
+          </select>
+        </div>
+
+        <div class="salesFormActions salesSpan2">
+          <button class="btn btnPrimary salesSaveBtn" type="submit" id="salesSaveBtn">
+            <i data-lucide="save"></i> Додати
+          </button>
+          <button class="btn btnGhost hidden" type="button" id="salesCancelEdit">
+            <i data-lucide="x-circle"></i> Скасувати
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- TABLE 1: deals -->
+    <div class="salesCard" style="margin-top:12px;">
+      <div class="salesCardHead">
+        <b><i data-lucide="list"></i><span class="grad">Журнал</span> угод</b>
+        <span class="muted">видалення прибирає запис</span>
+      </div>
+
+      <div class="salesTableWrap">
+        <table class="salesTable salesTableDeals">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Канал</th>
+              <th>Товар</th>
+              <th>Клієнт</th>
+              <th>К-сть</th>
+              <th>Виручка</th>
+              <th>Собіварт.</th>
+              <th>Реклама</th>
+              <th>Прибуток</th>
+              <th>Статус</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="salesTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Mobile cards (auto) -->
+      <div class="salesCards" id="salesCards"></div>
+    </div>
+
+    <!-- TABLE 2: daily summary -->
+    <div class="salesCard" style="margin-top:12px;">
+      <div class="salesCardHead">
+        <b><i data-lucide="calendar-check"></i> Підсумок <span class="grad">за день</span></b>
+        <span class="muted">1 рядок = 1 день</span>
+      </div>
+
+      <div class="salesTableWrap">
+        <table class="salesTable salesTableSmall">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Замовлення</th>
+              <th>Виручка</th>
+              <th>Витрати</th>
+              <th>Прибуток</th>
+            </tr>
+          </thead>
+          <tbody id="dailyTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Mobile cards (auto) -->
+      <div class="salesCards salesCardsSmall" id="dailyCards"></div>
+    </div>
+
+    <!-- TABLE 3: monthly summary -->
+    <div class="salesCard" style="margin-top:12px;">
+      <div class="salesCardHead">
+        <b><i data-lucide="calendar-range"></i> Підсумок <span class="grad">за місяць</span></b>
+        <span class="muted">1 рядок = 1 місяць</span>
+      </div>
+
+      <div class="salesTableWrap">
+        <table class="salesTable salesTableSmall">
+          <thead>
+            <tr>
+              <th>Місяць</th>
+              <th>Замовлення</th>
+              <th>Виручка</th>
+              <th>Витрати</th>
+              <th>Прибуток</th>
+            </tr>
+          </thead>
+          <tbody id="monthlyTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- ✅ Mobile cards (auto) -->
+      <div class="salesCards salesCardsSmall" id="monthlyCards"></div>
+
+      <div class="muted" style="margin-top:10px;font-size:12px;line-height:1.45;">
+        Експорт CSV відкривається в Excel.
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ===================== MODALS (desktop tips) ===================== -->
 <div class="ssModal" id="modal-ads-plan" aria-hidden="true">
   <div class="ssOverlay" data-ssclose></div>
@@ -2277,7 +2791,7 @@ Samostroy Partner Cabinet — тема: “Швидкий ремонт свої�
 СТАРТ:
 - Підключення продавця → завантаження товарів → логістика.
 ПЛЮСИ/МІНУСИ: як у маркетплейсів (довіра/вимоги/комісії).
-</template>
+</template> 
 
 <template id="kb-bigl">
 Маркетплейс: Bigl.ua.
