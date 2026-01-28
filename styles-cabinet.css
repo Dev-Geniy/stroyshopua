@@ -2832,3 +2832,643 @@ body.modal-open{
   55%  { box-shadow: 0 0 0 10px rgba(255,122,24,.10); }
   100% { box-shadow: 0 0 0 18px rgba(255,122,24,0); }
 }
+
+/* =========================
+   INCOME CALCULATOR — styles
+========================= */
+.calcHead{ padding:18px; border-radius:26px; }
+.calcTop{
+  display:flex; justify-content:space-between; gap:12px;
+  flex-wrap:wrap; align-items:flex-end;
+}
+.calcModes{ display:flex; gap:8px; flex-wrap:wrap; }
+.modeBtn{
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  color: var(--ink);
+  padding:10px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  cursor:pointer;
+  transition:.2s ease;
+  user-select:none;
+}
+.modeBtn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
+.modeBtn.isActive{
+  border-color: rgba(255,122,26,.35);
+  background: linear-gradient(135deg, rgba(255,122,26,.18), rgba(255,178,74,.08));
+  box-shadow: 0 10px 30px rgba(255,122,26,.12);
+}
+.modeBtn.modeMax{ border-color: rgba(255,178,74,.30); }
+
+.calcGrid{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap:14px;
+}
+
+.calcResults{ min-width:0; }
+.calcKpis{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+}
+.kpiCard{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+  border-radius:18px;
+  padding:14px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.25);
+}
+.kpiCard span{ display:block; color: var(--muted); font-size:12px; }
+.kpiCard b{
+  display:block;
+  margin-top:8px;
+  font-size: 22px;
+  letter-spacing:-.2px;
+}
+.kpiCard small{ display:block; margin-top:6px; color: var(--muted); font-size:12px; line-height:1.35; }
+.kpiCard.kpiAccent{
+  border-color: rgba(255,122,26,.22);
+  background: linear-gradient(135deg, rgba(255,122,26,.12), rgba(0,0,0,.20));
+}
+
+.calcChartCard{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+  border-radius:18px;
+  padding:14px;
+  overflow:hidden;
+}
+.chartHead{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; flex-wrap:wrap; margin-bottom:10px;
+}
+.chartHead b{
+  display:flex; align-items:center; gap:10px;
+  font-size:13px; letter-spacing:-.1px;
+}
+.chartHead b i{ width:18px; height:18px; opacity:.9; }
+#calcChart{
+  width:100%;
+  height:220px;
+  display:block;
+  border-radius:14px;
+  background: rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.calcLadder{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+  border-radius:18px;
+  padding:14px;
+}
+.ladderHead{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; flex-wrap:wrap;
+}
+.ladderHead b{
+  display:flex; align-items:center; gap:10px;
+  font-size:13px;
+}
+.ladderHead b i{ width:18px; height:18px; opacity:.9; }
+.ladderItem{ margin-top:10px; }
+.ladderRow{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px;
+}
+.ladderRow b{ font-size:13px; }
+.ladderRow span{ font-size:12px; }
+.ladderBar{
+  margin-top:8px;
+  height:10px;
+  border-radius:999px;
+  background: rgba(255,255,255,.06);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+}
+.ladderFill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background: linear-gradient(90deg, rgba(255,122,26,.85), rgba(255,178,74,.70));
+  box-shadow: 0 10px 24px rgba(255,122,26,.18);
+  transition: width .35s ease;
+}
+
+.calcNext{
+  margin-top:12px;
+  border:1px solid rgba(255,122,26,.18);
+  background: linear-gradient(135deg, rgba(255,122,26,.10), rgba(0,0,0,.18));
+  border-radius:18px;
+  padding:14px;
+}
+.nextHead{
+  display:flex; align-items:center; gap:10px;
+  font-size:13px; font-weight:900;
+}
+.nextHead i{ width:18px; height:18px; color: rgba(255,210,170,.95); }
+
+.calcNote{ margin-top:12px; font-size:12px; line-height:1.5; }
+
+.calcControls{ min-width:0; }
+.ctrlCard{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.20);
+  border-radius:18px;
+  padding:14px;
+}
+.ctrlHead{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.ctrlHead b{
+  display:flex; align-items:center; gap:10px;
+  font-size:13px;
+}
+.ctrlHead b i{ width:18px; height:18px; opacity:.9; }
+
+.ctrlBlock{ margin-top:12px; }
+.ctrlLabel{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px;
+}
+.ctrlLabel b{ font-size:13px; }
+.ctrlValue{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  border-radius: 999px;
+  padding:6px 10px;
+  font-weight:900;
+  font-size:12px;
+}
+
+.range{
+  width:100%;
+  margin-top:10px;
+  accent-color: var(--accent);
+}
+.rangeMeta{
+  display:flex; justify-content:space-between;
+  margin-top:6px;
+  font-size:12px;
+}
+
+.dialRow{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+}
+.dialCard{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius:18px;
+  padding:12px;
+}
+.dialTitle b{
+  display:flex; align-items:center; gap:8px;
+  font-size:13px;
+}
+.dialTitle b i{ width:18px; height:18px; opacity:.9; }
+.dialTitle span{ display:block; margin-top:6px; font-size:12px; color: var(--muted); line-height:1.35; }
+
+.dial{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns: 44px 1fr 44px;
+  gap:10px;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  border-radius:16px;
+  padding:10px;
+}
+.dialBtn{
+  width:44px; height:44px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: var(--ink);
+  display:grid; place-items:center;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.dialBtn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
+.dialBtn i{ width:18px; height:18px; opacity:.9; }
+
+.dialMid b{ display:block; font-size:18px; letter-spacing:-.2px; }
+.dialMid span{ display:block; margin-top:4px; color: var(--muted); font-size:12px; line-height:1.35; }
+
+.boostCard{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius:18px;
+  padding:12px;
+}
+.boostHead{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.boostHead b{
+  display:flex; align-items:center; gap:10px;
+  font-size:13px;
+}
+.boostHead b i{ width:18px; height:18px; opacity:.9; }
+
+.boostGrid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:10px;
+}
+.boostItem{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  border-radius:16px;
+  padding:10px 12px;
+  cursor:pointer;
+  user-select:none;
+}
+.boostItem input{ position:absolute; left:-9999px; }
+.boostUi{
+  width:44px; height:26px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  position:relative;
+  flex:0 0 auto;
+}
+.boostUi::after{
+  content:"";
+  position:absolute; top:3px; left:3px;
+  width:20px; height:20px;
+  border-radius:50%;
+  background: rgba(245,245,247,.92);
+  transition:.22s ease;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+}
+.boostText b{ display:block; font-size:13px; }
+.boostText small{ display:block; color: var(--muted); font-size:12px; margin-top:3px; line-height:1.35; }
+
+.boostItem input:checked + .boostUi{
+  border-color: rgba(255,122,26,.35);
+  background: linear-gradient(135deg, rgba(255,122,26,.22), rgba(0,0,0,.14));
+}
+.boostItem input:checked + .boostUi::after{
+  left:21px;
+  background: rgba(255,210,170,.98);
+}
+
+.planCard{
+  margin-top:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius:18px;
+  padding:12px;
+}
+.planHead{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; flex-wrap:wrap;
+  margin-bottom:8px;
+}
+.planHead b{
+  display:flex; align-items:center; gap:10px;
+  font-size:13px;
+}
+.planHead b i{ width:18px; height:18px; opacity:.9; }
+.planList{
+  margin:0;
+  padding-left:18px;
+  display:grid;
+  gap:8px;
+  color: rgba(245,245,247,.92);
+}
+.planList li{
+  color: rgba(245,245,247,.90);
+  line-height: 1.45;
+  font-size: 13px;
+}
+.planList li span{ color: var(--muted); }
+
+.calcCta{ margin-top:12px; display:grid; gap:8px; }
+.calcBtn{ width:100%; justify-content:center; }
+
+/* Responsive */
+@media (max-width: 980px){
+  .calcGrid{ grid-template-columns: 1fr; }
+  .dialRow{ grid-template-columns: 1fr; }
+  .calcKpis{ grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 680px){
+  .calcKpis{ grid-template-columns: 1fr; }
+}
+
+/* =========================
+   SALES CRM — unified (add-on)
+========================= */
+.salesHero{ margin-top:2px; }
+
+/* toolbar */
+.salesToolbar{
+  margin-top: 12px;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.salesFilterRow{
+  display:grid;
+  grid-template-columns: 220px 1fr 220px;
+  gap: 10px;
+  align-items:center;
+}
+.salesActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* stats */
+.salesStats{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.salesStat{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  border-radius: 16px;
+  padding: 12px;
+}
+.salesStat span{ display:block; color: var(--muted); font-size: 12px; }
+.salesStat b{ display:block; margin-top: 8px; font-size: 18px; letter-spacing:-.2px; }
+.salesStatAccent{
+  border-color: rgba(255,122,26,.22);
+  background: linear-gradient(135deg, rgba(255,122,26,.10), rgba(0,0,0,.18));
+}
+
+/* cards / blocks */
+.salesCard{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  border-radius: 18px;
+  padding: 12px;
+}
+.salesCardHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom: 10px;
+}
+.salesCardHead b{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size: 13px;
+}
+.salesCardHead b i{ width:18px; height:18px; opacity:.9; }
+
+/* form */
+.salesForm{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.salesSpan2{ grid-column: 1 / -1; }
+.salesFormActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.salesSaveBtn{
+  flex: 1 1 220px;
+  justify-content:center;
+}
+#salesCancelEdit{ flex: 0 0 auto; }
+
+/* table */
+.salesTableWrap{
+  width: 100%;
+  overflow:auto;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.03);
+}
+.salesTable{
+  width:100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 1100px;
+}
+.salesTableSmall{ min-width: 760px; }
+
+.salesTable thead th{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align:left;
+  font-size: 12px;
+  color: rgba(245,245,247,.92);
+  background: rgba(10,10,16,.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  padding: 10px 10px;
+}
+.salesTable tbody td{
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  color: rgba(245,245,247,.90);
+  font-size: 12.5px;
+  vertical-align: top;
+}
+.salesTable tbody tr{ cursor:pointer; }
+.salesTable tbody tr:hover td{ background: rgba(255,255,255,.03); }
+.salesRowEditing td{
+  outline: 1px solid rgba(255,122,26,.18);
+  background: rgba(255,122,26,.06);
+}
+
+.salesProfitPos{ color: rgba(41,209,122,.95); font-weight: 900; }
+.salesProfitNeg{ color: rgba(255,77,77,.95); font-weight: 900; }
+
+.salesDel{
+  width: 38px; height: 38px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: rgba(245,245,247,.92);
+  cursor:pointer;
+  transition: .18s ease;
+}
+.salesDel:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
+.salesDel:active{ transform: translateY(0); }
+
+/* ===== Mobile UX ===== */
+.salesCards{ display:none; }
+.salesCardsSmall{ display:none; }
+
+/* На мобилке: прячем таблицы, показываем карточки */
+@media (max-width:680px){
+  .salesTableWrap{ display:none; }
+  .salesCards, .salesCardsSmall{ display:grid; gap:10px; }
+}
+
+/* Липкая панель фильтров на мобилке */
+@media (max-width:680px){
+  .salesToolbar{
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    padding: 10px 0 12px;
+    background: linear-gradient(180deg, rgba(8,9,19,.92), rgba(8,9,19,.62), transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Упрощаем статистику на мобилке (2 плитки) */
+@media (max-width:680px){
+  .salesStats{ grid-template-columns: 1fr 1fr; }
+  .salesStats .salesStat:nth-child(2),
+  .salesStats .salesStat:nth-child(3){ display:none; }
+}
+
+/* filter row adaptive */
+@media (max-width:1100px){
+  .salesFilterRow{ grid-template-columns: 1fr; }
+}
+@media (max-width:900px){
+  .salesStats{ grid-template-columns: 1fr 1fr; }
+}
+@media (max-width:680px){
+  .salesStats{ grid-template-columns: 1fr 1fr; }
+  .salesActions .btn{ width:100%; justify-content:center; }
+  .salesForm{ grid-template-columns: 1fr; }
+  .salesSpan2{ grid-column:auto; }
+  .salesFormActions{ flex-direction: column; }
+  .salesSaveBtn, #salesCancelEdit{ width:100%; }
+}
+
+/* ===== Mobile deal cards ===== */
+.dealCard{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 14px 34px rgba(0,0,0,.28);
+}
+.dealTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.dealDate{
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: -.2px;
+}
+.dealStatus{
+  font-size: 12px;
+  color: rgba(245,245,247,.92);
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  padding: 6px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.dealProfit{
+  font-weight: 900;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.dealMain{
+  margin-top: 10px;
+  line-height: 1.35;
+}
+.dealMain b{
+  display:block;
+  font-size: 13px;
+}
+.dealMain .muted{
+  display:block;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.dealMeta{
+  margin-top: 10px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.metaPill{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: rgba(245,245,247,.88);
+}
+.dealBtns{
+  margin-top: 10px;
+  display:flex;
+  gap:10px;
+}
+.dealBtn{
+  flex: 1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  padding: 10px 12px;
+  cursor:pointer;
+  transition:.18s ease;
+  font-weight: 900;
+  font-size: 12.5px;
+}
+.dealBtn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.18); }
+.dealBtn:active{ transform: translateY(0); }
+.dealBtn.danger{
+  border-color: rgba(255,77,77,.26);
+  background: rgba(255,77,77,.10);
+}
+
+/* ✅ FIX: Sales CRM — ничего не перекрывает, всё в потоке */
+.salesToolbar{
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ✅ чтобы заголовок таблицы тоже НЕ “висел” поверх строк */
+.salesTable thead th{
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}
+
+/* ✅ оставляем горизонтальный скролл, но без “внутреннего” вертикального слоя */
+.salesTableWrap{
+  overflow-x: auto;
+  overflow-y: visible;
+}
