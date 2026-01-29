@@ -388,7 +388,6 @@ async function loadProductsFromXML(){
 ============================================================ */
 const COMPANY_NEWS = [
   { title: "🔥 Новий товар Штукатурка в рулоні (сьогодні)", url: "https://samostroy.shop" },
-  { title: "💰 Бонус 4.200 грн. кожному партнеру (читай умови, щоб отримати)", url: "https://samostroy.shop/pr-bonus.html" },
   { title: "✅ Ми з'явилися в Facebook", url: "https://www.facebook.com/samostroy.drop" },
   { title: "✅ Ми тепер і в Linkedin", url: "https://www.linkedin.com/in/dev-geniy/" },
   { title: "🎁 Партнерські акції — напиши менеджеру", action: () => openTelegram("Привіт! Хочу дізнатись про акції для партнерів.") },
