@@ -2837,3 +2837,25 @@ document.addEventListener('DOMContentLoaded', () => {
   fDate.value = todayISO();
   render();
 });
+
+  const toggle = document.getElementById('toolsToggle');
+  const panel = document.getElementById('toolsPanel');
+  const overlay = document.getElementById('toolsOverlay');
+
+  function openMenu() {
+    panel.classList.add('active');
+    toggle.classList.add('active');
+    overlay.classList.add('active');
+  }
+
+  function closeMenu() {
+    panel.classList.remove('active');
+    toggle.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+
+  toggle.onclick = () => {
+    panel.classList.contains('active') ? closeMenu() : openMenu();
+  };
+
+  overlay.onclick = closeMenu;
