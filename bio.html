@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Samostroy Shop — офіційні ресурси</title>
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root{
+      --bg:#050509;
+      --card:rgba(255,255,255,0.05);
+      --card2:rgba(255,255,255,0.08);
+      --accent:#ff7a1a;
+      --accent2:#ffb347;
+      --text:#f1f1f4;
+      --muted:#a4a9b7;
+      --radius:20px;
+      --border:rgba(255,255,255,.1);
+      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
+      --shadow:0 20px 50px rgba(0,0,0,.55);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,122,26,.18), transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+
+    a{text-decoration:none;color:inherit}
+
+    main{
+      max-width:520px;
+      margin:0 auto;
+      padding:36px 18px 60px;
+      text-align:center;
+    }
+
+    /* LOGO */
+    .logo{
+      font-size:34px;
+      font-weight:800;
+      background:var(--grad);
+      -webkit-background-clip:text;
+      color:transparent;
+      margin-bottom:6px;
+      letter-spacing:1px;
+    }
+    .subtitle{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:30px;
+    }
+
+    /* BLOCK */
+    .block{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:20px;
+      margin-bottom:20px;
+      box-shadow:var(--shadow);
+    }
+    .block h2{
+      font-size:18px;
+      margin-bottom:12px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+    }
+    .block p{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:14px;
+      line-height:1.45;
+    }
+
+    /* BUTTONS */
+    .btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px;
+      border-radius:16px;
+      background:var(--grad);
+      color:#000;
+      font-weight:700;
+      margin-bottom:10px;
+      transition:.25s;
+      box-shadow:var(--shadow);
+    }
+    .btn:hover{transform:translateY(-3px)}
+
+    .btn.alt{
+      background:transparent;
+      border:1px solid var(--accent);
+      color:var(--accent2);
+      box-shadow:none;
+    }
+
+    .btn-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    /* SOCIALS */
+    .social{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:var(--card2);
+      border:1px solid var(--border);
+      margin-bottom:10px;
+      font-size:14px;
+      transition:.2s;
+    }
+    .social:hover{background:rgba(255,255,255,.12)}
+
+    footer{
+      text-align:center;
+      margin-top:40px;
+      font-size:12px;
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+<main>
+
+  <!-- LOGO -->
+  <div class="logo">Samostroy Shop</div>
+  <div class="subtitle">Офіційні ресурси для клієнтів та партнерів</div>
+
+  <!-- SHOP -->
+  <section class="block">
+    <h2><i data-lucide="shopping-cart"></i> Магазин</h2>
+    <a class="btn" href="https://samostroy.shop">
+      Перейти до магазину
+    </a>
+    <p>Сучасні матеріали для ремонту та декору з доставкою по Україні.</p>
+  </section>
+
+  <!-- WHOLESALE -->
+  <section class="block">
+    <h2><i data-lucide="layers"></i> Для оптовиків</h2>
+    <a class="btn alt" href="https://samostroy.shop/opt.html">
+      Оптові умови співпраці
+    </a>
+    <p>Вигідні ціни, стабільні поставки та персональні умови для постійних клієнтів.</p>
+  </section>
+
+  <!-- DROPSHIPPING -->
+  <section class="block">
+    <h2><i data-lucide="rocket"></i> Стань дропшипером</h2>
+    <div class="btn-row">
+      <a class="btn alt" href="https://samostroy.shop/dropshipping.html">
+        Дропшипінг
+      </a>
+      <a class="btn alt" href="https://samostroy.shop/partner-cabinet.html">
+        Кабінет партнера
+      </a>
+    </div>
+    <p>
+      Продавайте без складу: готові товари, підтримка, навчання та масштабування.
+    </p>
+  </section>
+
+  <!-- ACADEMY -->
+  <section class="block">
+    <h2><i data-lucide="graduation-cap"></i> Академія Samostroy</h2>
+    <a class="btn" href="https://samostroy.shop/academy.html">
+      Перейти до академії
+    </a>
+    <p>Навчальні матеріали, гіди та інструкції для партнерів.</p>
+  </section>
+
+  <!-- SOCIALS -->
+  <section class="block">
+    <h2><i data-lucide="share-2"></i> Слідкуйте за нами</h2>
+
+    <a class="social" href="https://t.me/samostroy_drop"><i data-lucide="send"></i> Telegram</a>
+    <a class="social" href="https://www.tiktok.com/@samostroy_drop"><i data-lucide="music"></i> TikTok</a>
+    <a class="social" href="https://www.facebook.com/samostroy.drop"><i data-lucide="facebook"></i> Facebook</a>
+    <a class="social" href="https://www.instagram.com/samostroy.drop"><i data-lucide="instagram"></i> Instagram</a>
+    <a class="social" href="https://www.threads.com/@samostroy.drop"><i data-lucide="at-sign"></i> Threads</a>
+    <a class="social" href="https://chat.whatsapp.com/InlB5juVrmVIij8BeGY3Z8"><i data-lucide="message-circle"></i> WhatsApp</a>
+    <a class="social" href="https://www.linkedin.com/in/dev-geniy"><i data-lucide="linkedin"></i> LinkedIn</a>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Samostroy Shop
+  </footer>
+
+</main>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  lucide.createIcons();
+</script>
+</body>
+</html>
