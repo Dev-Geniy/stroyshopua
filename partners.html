@@ -3,102 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Партнерська програма — Samostroy Shop</title>
-  
-  <!-- Фавікон -->
+  <title>Партнерський кабінет — Samostroy Shop</title>
+
   <link rel="icon" type="image/png" href="favicon.png">
-  
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- ====================== 🚀 SEO ДЛЯ PARTNERS.HTML — Samostroy Shop ====================== -->
-  <!-- Ключові слова -->
-  <meta name="keywords" content="партнерська програма, партнерка, заробіток онлайн, реферальна програма, Samostroy Shop, партнери, UTM, бонуси, комісія, заробити в інтернеті, пасивний дохід, партнерський кабінет">
+  <meta name="description" content="Партнерський кабінет Samostroy Shop — готовий інструмент для дропшиперів та продавців. Каталог товарів, ціни, маржа, копіювання описів та швидкий старт продажів.">
 
-  <!-- Опис -->
-  <meta name="description" content="Партнерська програма Samostroy Shop — заробляйте на переходах та замовленнях. Отримуйте унікальне посилання, статистику, UTM-розмітку та винагороди. Проста й вигідна система співпраці.">
-
-  <!-- Автор -->
-  <meta name="author" content="Samostroy Shop">
-
-  <!-- Канонічне посилання -->
-  <link rel="canonical" href="https://samostroy.shop/partners.html">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Партнерська програма — Samostroy Shop">
-  <meta property="og:description" content="Отримуйте винагороди за переходи та замовлення. Партнерський кабінет, статистика, UTM-генератор та рівні партнерів. Долучайтесь!">
-  <meta property="og:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-  <meta property="og:url" content="https://samostroy.shop/partners.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="uk_UA">
-
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Партнерська програма — Samostroy Shop">
-  <meta name="twitter:description" content="Заробляйте разом з Samostroy Shop! Унікальні посилання, статистика, винагороди.">
-  <meta name="twitter:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- JSON-LD (Schema.org) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Партнерська програма — Samostroy Shop",
-    "url": "https://samostroy.shop/partners.html",
-    "description": "Партнерська програма Samostroy Shop для заробітку на переходах та покупках.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Samostroy Shop",
-      "logo": "https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png"
-    },
-    "mainEntity": [{
-      "@type": "FAQPage",
-      "name": "Поширені питання про партнерську програму",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Партнери отримують винагороди від переходів та оформлених замовлень."
-      }
-    }]
-  }
-  </script>
-
-  <!-- Robots -->
-  <meta name="robots" content="index, follow">
-
-  <!-- Карта сайту -->
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <style>
-    :root {
+    :root{
       --bg:#050509;
-      --bg2:#0c0d12;
       --card:rgba(255,255,255,0.04);
       --card2:rgba(255,255,255,0.06);
       --accent:#ff7a1a;
       --accent2:#ffb347;
-      --muted:#a4a9b7;
       --text:#f1f1f4;
+      --muted:#a4a9b7;
+      --border:rgba(255,255,255,.1);
       --radius:18px;
-      --border:rgba(255,255,255,0.1);
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
+      --shadow:0 20px 50px rgba(0,0,0,.55);
       --grad:linear-gradient(135deg,var(--accent),var(--accent2));
     }
-
-    *{margin:0;padding:0;box-sizing:border-box;}
+    *{margin:0;padding:0;box-sizing:border-box}
     body{
-      font-family:"Inter",sans-serif;
+      font-family:Inter,sans-serif;
       background:
-        radial-gradient(circle at 20% 10%, rgba(255,122,26,0.16), transparent 55%),
+        radial-gradient(circle at 20% 10%, rgba(255,122,26,.16), transparent 55%),
         var(--bg);
-      color:var(--text); line-height:1.45;
+      color:var(--text);
     }
-    a{text-decoration:none;color:inherit;}
+    a{text-decoration:none;color:inherit}
 
-    /* HEADER */
     header{
-      position:sticky;
-      top:0;
+      position:sticky;top:0;
       backdrop-filter:blur(14px);
-      background:rgba(5,5,9,0.82);
+      background:rgba(5,5,9,.82);
       border-bottom:1px solid var(--border);
       padding:18px 24px;
       display:flex;justify-content:space-between;align-items:center;
@@ -113,16 +53,15 @@
       text-transform:uppercase;
       letter-spacing:1px;
     }
+
     .btn{
-      display:flex;align-items:center;gap:8px;
+      display:flex;gap:8px;align-items:center;
       padding:12px 20px;
       background:var(--grad);
-      border:none;border-radius:var(--radius);
-      color:#000;font-weight:700;font-size:14px;
-      cursor:pointer;transition:.25s;
+      border-radius:var(--radius);
+      font-weight:700;color:#000;
       box-shadow:var(--shadow);
     }
-    .btn:hover{transform:translateY(-3px);}
     .btn-outline{
       background:transparent;
       border:1px solid var(--accent);
@@ -130,19 +69,14 @@
       box-shadow:none;
     }
 
-    main{
-      max-width:1100px;
-      margin:40px auto 60px;
-      padding:0 20px;
-    }
+    main{max-width:1100px;margin:40px auto;padding:0 20px}
 
-    /* HERO */
     .hero{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:32px;
       align-items:center;
-      margin-bottom:40px;
+      margin-bottom:50px;
     }
     .hero-title{
       font-size:clamp(30px,4vw,46px);
@@ -150,54 +84,46 @@
       background:var(--grad);
       -webkit-background-clip:text;
       color:transparent;
-      line-height:1.1;
       margin-bottom:14px;
     }
     .hero-sub{
       color:var(--muted);
-      font-size:16px;
-      max-width:550px;
+      max-width:560px;
       margin-bottom:18px;
     }
     .hero-tags{
-      display:flex;flex-wrap:wrap;gap:10px;
-      margin-bottom:20px;
+      display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;
     }
     .hero-tag{
       padding:6px 12px;
       font-size:12px;
-      color:var(--muted);
       border-radius:999px;
-      background:rgba(255,255,255,0.05);
+      background:rgba(255,255,255,.05);
       border:1px solid var(--border);
+      color:var(--muted);
     }
+
     .hero-card{
       background:var(--card2);
+      padding:22px;
       border-radius:22px;
-      padding:20px;
       border:1px solid var(--border);
       box-shadow:var(--shadow);
     }
-    .hero-card-title{
-      display:flex;align-items:center;gap:8px;
-      font-size:16px;font-weight:700;color:var(--text);
-      margin-bottom:10px;
+    .hero-card h3{
+      display:flex;gap:8px;align-items:center;
+      margin-bottom:6px;
+      color:var(--accent2);
     }
     .hero-card p{
-      font-size:14px;color:var(--muted);line-height:1.4;
+      font-size:14px;color:var(--muted);margin-bottom:14px;
     }
 
-    /* FEATURES */
     .section-title{
-      font-size:28px;
-      font-weight:800;
-      margin-bottom:12px;
+      font-size:28px;font-weight:800;margin-bottom:10px;
     }
     .section-sub{
-      color:var(--muted);
-      font-size:15px;
-      max-width:620px;
-      margin-bottom:24px;
+      color:var(--muted);max-width:620px;margin-bottom:24px;
     }
     .grid{
       display:grid;
@@ -212,46 +138,39 @@
       box-shadow:var(--shadow);
     }
     .feature-card h3{
-      font-size:16px;
       display:flex;gap:8px;align-items:center;
-      color:var(--accent2);
-      margin-bottom:8px;
+      color:var(--accent2);margin-bottom:8px;
     }
     .feature-card p{
       font-size:14px;color:var(--muted);
     }
 
-    /* DEVELOPMENT NOTICE */
-    .dev-box{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:26px;
-      box-shadow:var(--shadow);
+    .cta{
       text-align:center;
-      margin:50px 0;
-    }
-    .dev-box h2{
-      font-size:24px;font-weight:800;margin-bottom:6px;
-    }
-    .dev-box p{
-      font-size:15px;color:var(--muted);
-      max-width:600px;margin:0 auto;
+      margin:60px 0;
+      padding:32px;
+      background:var(--card2);
+      border-radius:22px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
     }
 
-    /* FOOTER */
     footer{
       text-align:center;
       padding:22px;
       border-top:1px solid var(--border);
-      margin-top:40px;
       color:var(--muted);
       font-size:13px;
     }
+    
+    .btn{
+      min-width:180px; /* минимальная ширина */
+      text-align:center; /* текст по центру */
+      justify-content:center; /* и иконка тоже центрируется */
+    }
 
-    /* RESPONSIVE */
     @media(max-width:900px){
-      .hero{grid-template-columns:1fr;gap:20px;}
+      .hero{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -260,98 +179,100 @@
 
 <header>
   <div class="logo">Samostroy Shop</div>
-  <a href="index.html" class="btn btn-outline">
-    <i data-lucide="arrow-left"></i> Назад до магазину
+  <a href="index.html" class="btn btn-outline" target="_blank">
+  <i data-lucide="arrow-left"></i> Назад до магазину
   </a>
 </header>
 
 <main>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div>
-      <h1 class="hero-title">Партнерська програма Samostroy Shop</h1>
-      <p class="hero-sub">
-        Ми створюємо систему, що дозволить кожному партнеру отримувати дохід за переходи та покупки клієнтів.
-        У майбутньому в кабінеті буде доступна статистика, унікальні посилання, UTM-генератор та рівні партнерства.
-      </p>
-
-      <div class="hero-tags">
-        <span class="hero-tag">Партнерські винагороди</span>
-        <span class="hero-tag">Баланс та статистика</span>
-        <span class="hero-tag">UTM-генератор</span>
-        <span class="hero-tag">Особистий кабінет</span>
-      </div>
-    </div>
-
-    <aside class="hero-card">
-      <div class="hero-card-title">
-        <i data-lucide="users"></i>
-        Програма для тих, хто хоче заробляти з нами
-      </div>
-      <p>
-        Партнерський кабінет відкриватиме доступ до вашого унікального реферального посилання,
-        статистики переходів, замовлень та доходу.
-      </p>
-    </aside>
-  </section>
-
-  <!-- FEATURES -->
-  <section>
-    <h2 class="section-title">Що буде доступно в партнерській програмі</h2>
-    <p class="section-sub">Ми розробляємо систему, яка стане зручною, зрозумілою і вигідною для кожного партнера.</p>
-
-    <div class="grid">
-      <div class="feature-card">
-        <h3><i data-lucide="link"></i> Унікальне партнерське посилання</h3>
-        <p>Отримайте свій персональний URL для соцмереж, сайтів або реклами.</p>
-      </div>
-
-      <div class="feature-card">
-        <h3><i data-lucide="bar-chart-2"></i> Мінімальна статистика</h3>
-        <p>Кількість переходів, замовлень та ваш заробіток у реальному часі.</p>
-      </div>
-
-      <div class="feature-card">
-        <h3><i data-lucide="wand-2"></i> UTM-генератор</h3>
-        <p>Легко створюйте UTM-посилання для відстеження джерел трафіку.</p>
-      </div>
-
-      <div class="feature-card">
-        <h3><i data-lucide="trophy"></i> Рівні партнерів</h3>
-        <p>Чим більше переходів і замовлень — тим вищий рівень та вигідніші умови.</p>
-      </div>
-
-      <div class="feature-card">
-        <h3><i data-lucide="wallet"></i> Нарахування винагород</h3>
-        <p>Прозора система розрахунку та можливість виводу коштів.</p>
-      </div>
-
-      <div class="feature-card">
-        <h3><i data-lucide="life-buoy"></i> Підтримка</h3>
-        <p>Менеджер допоможе з будь-якими питаннями та підключенням.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- DEVELOPMENT NOTICE -->
-  <section class="dev-box">
-    <h2>Партнерська програма у розробці</h2>
-    <p>
-      Ми активно працюємо над запуском повноцінного партнерського кабінету.
-      Слідкуйте за оновленнями — зовсім скоро ви зможете зареєструватися та почати заробляти разом зі Stroy Shop.
+<section class="hero">
+  <div>
+    <h1 class="hero-title">Партнерський кабінет Samostroy</h1>
+    <p class="hero-sub">
+      Особистий кабінет для дропшиперів та партнерів.
+      Обирай товари, встановлюй свою ціну та продавай без складу і зайвих процесів.
     </p>
-  </section>
+
+    <div class="hero-tags">
+      <span class="hero-tag">Каталог товарів</span>
+      <span class="hero-tag">Маржа та ціни</span>
+      <span class="hero-tag">Копіювання описів</span>
+      <span class="hero-tag">Швидкий старт</span>
+    </div>
+
+    <a href="partner-cabinet.html" class="btn">
+      <i data-lucide="log-in"></i> Перейти в кабінет
+    </a>
+  </div>
+
+  <aside class="hero-card">
+    <h3><i data-lucide="layout-dashboard"></i> Що дає кабінет?</h3>
+    <p>Усі інструменти для продажів зібрані в одному місці.</p>
+
+    <h3><i data-lucide="trending-up"></i> Як партнер заробляє?</h3>
+    <p>Ти продаєш за своєю ціною — різниця і є твоїм прибутком.</p>
+
+    <h3><i data-lucide="life-buoy"></i> Підтримка</h3>
+    <p>Допомагаємо зі стартом, товарами та робочими питаннями.</p>
+  </aside>
+</section>
+
+<section>
+  <h2 class="section-title">Можливості кабінету</h2>
+  <p class="section-sub">Все, що потрібно для стабільних продажів.</p>
+
+  <div class="grid">
+    <div class="feature-card">
+      <h3><i data-lucide="package"></i> Каталог товарів</h3>
+      <p>Готові товари з фото, описами та характеристиками.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i data-lucide="copy"></i> Копіювання описів</h3>
+      <p>Один клік — і опис готовий для публікації.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i data-lucide="calculator"></i> Контроль маржі</h3>
+      <p>Бачиш закупівельну ціну та формуєш свою націнку.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i data-lucide="zap"></i> Швидкий старт</h3>
+      <p>Можна почати продавати вже в день підключення.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i data-lucide="search"></i> Зручний пошук</h3>
+      <p>Фільтри та категорії для швидкої роботи.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3><i data-lucide="life-buoy"></i> Підтримка</h3>
+      <p>Менеджер допоможе з будь-якими питаннями.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Готовий почати?</h2>
+  <p class="section-sub">Заходь у кабінет та обирай товари для продажу.</p>
+  <a href="partner-cabinet.html" class="btn">
+    <i data-lucide="arrow-right-circle"></i> Відкрити кабінет
+  </a>
+</section>
 
 </main>
 
 <footer>
-  © <span id="year"></span> Samostroy Shop — Партнерська програма
+  © <span id="year"></span> Samostroy Shop
 </footer>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-  if (window.lucide) lucide.createIcons();
+  document.getElementById('year').textContent = new Date().getFullYear();
+  if(window.lucide) lucide.createIcons();
 </script>
+
 </body>
 </html>
