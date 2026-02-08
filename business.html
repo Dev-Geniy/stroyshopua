@@ -209,6 +209,421 @@
             .profit-banner { flex-direction: column; }
             .hero h1 { font-size: 2.2rem; }
         }
+      .notifications-viewport {
+        background: #F0F2F5; /* Фон совпадает с твоим motivation-box */
+        position: relative;
+        overflow: hidden;
+        height: 450px; 
+        border-radius: 40px;
+        box-shadow: inset 0 0 50px rgba(0,0,0,0.02);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 60px;
+    }
+
+    /* Фоновый текст с параллакс-эффектом */
+    .bg-expert-text {
+        position: absolute;
+        font-family: 'Unbounded', sans-serif;
+        font-size: 12vw;
+        font-weight: 800;
+        color: white;
+        text-shadow: 0 0 20px rgba(0,0,0,0.02);
+        white-space: nowrap;
+        user-select: none;
+        z-index: 1;
+    }
+
+    #notification-container {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+    }
+
+    .pay-card {
+        position: absolute;
+        width: 90%;
+        background: white;
+        padding: 25px;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+    }
+
+    /* Стейт 0: Новая карточка (вылетает сверху) */
+    .card-new {
+        transform: translateY(-150px) scale(0.8);
+        opacity: 0;
+        z-index: 10;
+    }
+
+    /* Стейт 1: Активная карточка в центре */
+    .card-active {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        z-index: 5;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+    }
+
+    /* Стейт 2: Старая карточка (уходит вниз) */
+    .card-old {
+        transform: translateY(120px) scale(0.95);
+        opacity: 0.4; /* Засветление */
+        filter: blur(1px);
+        z-index: 3;
+    }
+
+    /* Стейт 3: Почти исчезла (сильное засветление в фон) */
+    .card-exit {
+        transform: translateY(200px) scale(0.9);
+        opacity: 0; /* Полное слияние с фоном */
+        filter: blur(4px);
+        z-index: 1;
+    }
+
+    /* Детали внутри карточки */
+    .card-inner-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+    .mono-logo {
+        width: 42px; height: 42px; background: #000; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .amount-val {
+        font-size: 2.2rem; font-weight: 800; color: #1a1a1a; letter-spacing: -1px;
+    }
+    .partner-label {
+        font-size: 0.75rem; text-transform: uppercase; color: #aaa; letter-spacing: 1px;
+    }
+      
+      .hero-stream-title {
+    position: absolute;
+    top: 30px; /* Отступ сверху */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* Чтобы был над фоном */
+    text-align: center;
+    width: 100%;
+}
+
+.hero-stream-title h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin: 0;
+    color: var(--primary);
+    letter-spacing: 1px;
+}
+
+.live-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #ff0000;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 10px rgba(255,0,0,0.5);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+      
+      /* Контейнер секции */
+.workflow-section {
+    background: var(--card-bg);
+    padding: 60px 20px;
+    border-radius: 30px;
+    margin-bottom: 60px;
+}
+
+.workflow-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    gap: 15px;
+}
+
+/* Элемент шага */
+.workflow-item {
+    flex: 1;
+    text-align: center;
+    min-width: 180px;
+    z-index: 2;
+}
+
+/* Иконки в кругах */
+.workflow-icon {
+    background: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    color: var(--primary);
+}
+
+.workflow-icon svg {
+    width: 35px;
+    height: 35px;
+}
+
+/* Финальный шаг (акцентный) */
+.workflow-item.highlight .workflow-icon {
+    background: var(--accent);
+    box-shadow: 0 10px 20px rgba(229, 255, 0, 0.3);
+}
+
+/* Заголовки и текст */
+.workflow-title {
+    font-size: 1.1rem;
+    font-family: 'Unbounded', sans-serif;
+    margin: 0 0 10px;
+    line-height: 1.3;
+}
+
+.workflow-text {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Стрелки */
+.workflow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.workflow-arrow svg {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.4s ease;
+}
+
+/* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
+@media (max-width: 768px) {
+    .workflow-container {
+        flex-direction: column; /* Выстраиваем в стек */
+        gap: 30px;
+    }
+
+    .workflow-item {
+        width: 100%;
+    }
+
+    /* Поворачиваем стрелку вниз */
+    .workflow-arrow {
+        transform: rotate(90deg);
+        margin: -10px 0;
+    }
+
+    .workflow-icon {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 15px;
+    }
+}
+      
+      /* Главная обертка */
+.ss-promo-card {
+    position: relative;
+    max-width: 1100px;
+    margin: 60px auto;
+    border-radius: 35px;
+    overflow: hidden;
+    background: #000; /* Цвет подложки */
+    box-shadow: 0 40px 80px rgba(0,0,0,0.25);
+}
+
+/* Верхний ярлык */
+.ss-promo-badge {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: var(--accent);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 5;
+    letter-spacing: 1px;
+}
+
+.ss-promo-container {
+    position: relative;
+    line-height: 0;
+}
+
+/* Стилизация картинки */
+.ss-promo-img {
+    width: 100%;
+    /* Задаем фиксированную высоту для десктопа */
+    height: 500px; 
+    /* Магия обрезки: фото заполнит область, не теряя пропорций */
+    object-fit: cover; 
+    /* Центрируем картинку, чтобы обрезались края равномерно */
+    object-position: center; 
+    display: block;
+    filter: brightness(0.7) contrast(1.1);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* На мобильных высоту можно чуть уменьшить, чтобы блок не занимал весь экран */
+@media (max-width: 850px) {
+    .ss-promo-img {
+        height: 400px; /* Фото станет чуть ниже на смартфонах */
+    }
+}
+
+.ss-promo-card:hover .ss-promo-img {
+    transform: scale(1.03);
+}
+
+/* Оверлей с контентом */
+.ss-promo-content {
+    position: absolute;
+    inset: 0; /* Растягиваем на весь блок */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 50px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
+    color: #fff;
+}
+
+/* Левая часть: Текст */
+.ss-promo-info {
+    flex: 1;
+    max-width: 500px;
+    text-align: left;
+}
+
+.ss-promo-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 2.2rem;
+    margin: 0 0 15px 0;
+    color: var(--accent);
+    line-height: 1.1;
+}
+
+.ss-promo-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.85;
+}
+
+/* Правая часть: Блок прибыли */
+.ss-promo-profit {
+    flex-shrink: 0;
+}
+
+.ss-profit-box {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 25px 35px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.ss-profit-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #ddd;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ss-profit-amount {
+    display: block;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.ss-profit-note {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    color: #999;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 850px) {
+    .ss-promo-content {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px;
+        justify-content: flex-end;
+    }
+
+    .ss-promo-title {
+        font-size: 1.6rem;
+    }
+
+    .ss-promo-profit {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .ss-profit-box {
+        text-align: left;
+        padding: 20px;
+    }
+
+    .ss-profit-amount {
+        font-size: 2rem;
+    }
+}
+      
+      @media (max-width: 480px) {
+    /* Прячем исходный текст, но сохраняем блок */
+    .ss-mobile-alt {
+        font-size: 0; 
+    }
+
+    /* Подставляем новое слово через псевдоэлемент */
+    .ss-mobile-alt::before {
+        content: "ХИТ";
+        font-size: 0.75rem; /* Возвращаем размер шрифта */
+        display: block;
+    }
+    
+    /* Немного уменьшаем отступы для компактности */
+    .ss-promo-badge {
+        top: 15px;
+        right: 15px;
+        padding: 6px 12px;
+    }
+}
     </style>
 </head>
 <body>
@@ -237,12 +652,75 @@
             <p>Мы берем на себя склад, упаковку и логистику. Ты — забираешь прибыль. Посмотри, как это работает:</p>
             <div class="video-wrapper">
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/MSr0h7ZLfBY?autoplay=1&mute=1&loop=1&playlist=MSr0h7ZLfBY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/ciCprf8butg" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
         </section>
 
+<div class="workflow-section">
+    <div class="workflow-container">
+        
+        <div class="workflow-item">
+            <div class="workflow-icon">
+                <i data-lucide="mouse-pointer-click"></i>
+            </div>
+            <h3 class="workflow-title">Получаешь заказ</h3>
+            <p class="workflow-text">Через Instagram, OLX или Prom</p>
+        </div>
+
+        <div class="workflow-arrow">
+            <i data-lucide="arrow-right"></i>
+        </div>
+
+        <div class="workflow-item">
+            <div class="workflow-icon">
+                <i data-lucide="package-check"></i>
+            </div>
+            <h3 class="workflow-title">Мы отправляем</h3>
+            <p class="workflow-text">Упаковка и логистика на нас</p>
+        </div>
+
+        <div class="workflow-arrow">
+            <i data-lucide="arrow-right"></i>
+        </div>
+
+        <div class="workflow-item highlight">
+            <div class="workflow-icon">
+                <i data-lucide="coins"></i>
+            </div>
+            <h3 class="workflow-title">Твоя прибыль</h3>
+            <p class="workflow-text">Выплата сразу после забора</p>
+        </div>
+
+    </div>
+</div>
+
+      <section class="ss-promo-card">
+    <div class="ss-promo-badge ss-mobile-alt">ХИТ ПРОДАЖ 2026</div>
+    
+    <div class="ss-promo-container">
+        <img src="https://i.ibb.co/Nn7vfyrz/SW-00002700-1.jpg" 
+             alt="Склад инструментов" class="ss-promo-img">
+        
+        <div class="ss-promo-content">
+            <div class="ss-promo-info">
+                <h3 class="ss-promo-title">Поступили панели антишум</h3>
+                <p class="ss-promo-text">Для примера, на фото звукоизоляционные панели. Весь ассортимент в наличии. Отправка в день заказа без задержек.</p>
+            </div>
+            
+            <div class="ss-promo-profit">
+                <div class="ss-profit-box">
+                    <span class="ss-profit-label">Твой чистый доход</span>
+                    <span class="ss-profit-amount">≈ 3 800 ₴</span>
+                    <span class="ss-profit-note">с каждого заказа</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
         <section id="features">
+          
             <div class="section-title"><h2>Твой быстрый старт</h2></div>
             <div class="feature-grid">
                 <div class="feature-card">
@@ -263,6 +741,17 @@
             </div>
         </section>
 
+ <div class="notifications-viewport">
+    <div class="bg-expert-text">PARTNERS</div>
+    
+    <div class="hero-stream-title">
+        <h2>НЕДЕЛЬНЫЕ ВЫПЛАТЫ ПАРТНЕРАМ LIVE <span class="live-indicator"></span></h2>
+    </div>
+
+    <div id="notification-container">
+        </div>
+</div>
+      
         <section class="step-section">
             <div class="section-title"><h2>3 шага к твоей прибыли</h2></div>
             
@@ -322,6 +811,21 @@
                     <p>= <strong>30 книг</strong> в год. Знания — твое преимущество.</p>
                 </div>
             </div>
+            <p>Точно так же работает и наш бизнес:</p>
+            <div class="habits-list">
+                <div class="habit-item">
+                    <div style="font-weight:800; color:var(--primary); font-size:1.5rem;">1 заказ / день</div>
+                    <p>= <strong>438,000 грн.</strong> в год. Доход с одиного заказа 1200 грн. х 365 дней.</p>
+                </div>
+                <div class="habit-item">
+                    <div style="font-weight:800; color:var(--primary); font-size:1.5rem;">1 Маркет / месяц</div>
+                    <p>= <strong>12 маркетплейсов</strong> за год. Запуская не спеша, всего лиш по 1 площадке в месяц — твой товар будет продаваться на всех площадках Украины.</p>
+                </div>
+                <div class="habit-item">
+                    <div style="font-weight:800; color:var(--primary); font-size:1.5rem;">1$ в день</div>
+                    <p>= <strong>1$ на рекламу</strong> — это дешевле чашки кофе, но за то это твоё начало, твоя возможность начать с малого в Facebook & Instagram Targrt, делать продажи каждый день!</p>
+                </div>
+            </div>
         </section>
 
         <section id="calc" class="calc-section">
@@ -360,8 +864,9 @@
     </main>
 
     <footer>
+      
         <h2 style="color: var(--accent);">Samostroy Shop</h2>
-        <p>© 2026 Платформа №1 для бизнеса в Украине.</p>
+        <p>© 2026 Дропшиппинг платформа №1 для бизнеса в Украине.</p>
     </footer>
 
     <script>
@@ -412,6 +917,62 @@
                 window.location.href = "https://t.me/samostroy_drop";
             });
         });
+      
+    const container = document.getElementById('notification-container');
+    const partnerList = ["Артем В.", "Дмитро С.", "Сергей Ш.", "Валерия Н.", "Дмитрий Л.", "Ірина К.", "Олег М.", "Анна Б.", "Максим О.", "Елена Г.", "Максим О.", "Евгений С.", "Тимофей К."];
+
+    function createNotification() {
+        const amount = Math.floor(Math.random() * (50000 - 12000 + 1)) + 12000;
+        const name = partnerList[Math.floor(Math.random() * partnerList.length)];
+        
+        const card = document.createElement('div');
+        card.className = 'pay-card card-new';
+        
+        card.innerHTML = `
+            <div class="card-inner-header">
+                <div class="mono-logo"><i data-lucide="credit-card" style="color: #E5FF00;"></i></div>
+                <div style="flex-grow:1">
+                    <div style="font-weight: 800; font-size: 0.9rem;">Monobank</div>
+                    <div style="font-size: 0.7rem; color: #888;">Від: Samostroy Shop</div>
+                </div>
+                <div style="text-align:right">
+                    <div class="partner-label">Партнер</div>
+                    <div style="font-weight:600; font-size:0.9rem">${name}</div>
+                </div>
+            </div>
+            <div style="display:flex; align-items:baseline; gap:5px;">
+                <span style="font-size:1.5rem; font-weight:400; color:#2E7D32">+</span>
+                <span class="amount-val">${amount.toLocaleString()} ₴</span>
+            </div>
+        `;
+
+        container.appendChild(card);
+        if (window.lucide) lucide.createIcons();
+
+        // Управляем жизненным циклом карточек
+        const cards = container.querySelectorAll('.pay-card');
+        
+        // Смещаем существующие карточки вниз по иерархии стейтов
+        cards.forEach((c, index) => {
+            const revIndex = cards.length - 1 - index; // Инвертируем индекс (0 - самая новая)
+            
+            if (revIndex === 0) {
+                // Это только что созданная карточка
+                setTimeout(() => { c.className = 'pay-card card-active'; }, 50);
+            } else if (revIndex === 1) {
+                c.className = 'pay-card card-old';
+            } else if (revIndex === 2) {
+                c.className = 'pay-card card-exit';
+            } else {
+                // Совсем старые удаляем
+                setTimeout(() => { c.remove(); }, 800);
+            }
+        });
+    }
+
+    // Запуск
+    createNotification(); 
+    setInterval(createNotification, 3000); // Оптимальный темп для восприятия
     </script>
 </body>
 </html>
