@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MODULUS — Ремонт за выходные своими руками</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  
+  <meta name="description" content="MODULUS — модульные панели и покрытия для ремонта своими руками">
+  <meta name="keywords" content="3D панели, модульный пол, ремонт, панели Украина">
+  <meta property="og:title" content="MODULUS">
+  <meta property="og:description" content="Быстрый ремонт без мастеров">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --text: #f0f0ff;
+      --accent: #00eaff;
+      --accent-dark: #00aacc;
+      --card: rgba(20, 20, 40, 0.7);
+      --border: rgba(0, 234, 255, 0.14);
+      --gold: #ffd700;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--accent); color:#000; }
+
+    header {
+      position: fixed;
+      top:0; width:100%; z-index:1000;
+      padding: 1.5rem 5%;
+      backdrop-filter: blur(16px);
+      background: rgba(10,10,15,0.45);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.4s ease;
+    }
+
+    header.scrolled { background: rgba(10,10,15,0.8); padding:1rem 5%; }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-family: 'Orbitron', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      margin-left: 2.5rem;
+      font-weight: 500;
+      transition: 0.3s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width:0; height:2px; bottom:-5px; left:0;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+
+    .nav-links a:hover::after { width:100%; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* Burger Menu */
+    .burger {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 22px;
+    }
+
+    .burger span {
+      height: 3px;
+      width: 100%;
+      background: var(--accent);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .burger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .burger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .burger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* Mobile Nav */
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      height: 100vh;
+      background: rgba(10,10,15,0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: right 0.5s ease;
+      z-index: 999;
+    }
+
+    .mobile-nav.active {
+      right: 0;
+    }
+
+    .mobile-nav a {
+      opacity: 0;
+      transform: translateY(20px);
+      font-size: 1.8rem;
+      margin: 1.5rem 0;
+      color: var(--text);
+      text-decoration: none;
+      position: relative;
+    }
+
+    .mobile-nav.active a {
+      animation: slideIn 0.6s forwards;
+    }
+
+    .mobile-nav.active a:nth-child(1) { animation-delay: 0.2s; }
+    .mobile-nav.active a:nth-child(2) { animation-delay: 0.4s; }
+    .mobile-nav.active a:nth-child(3) { animation-delay: 0.6s; }
+    .mobile-nav.active a:nth-child(4) { animation-delay: 0.8s; }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mobile-nav a::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .mobile-nav a:hover::before {
+      width: 20px;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 10px var(--accent);
+    }
+
+    section { padding: 8rem 5% 6rem; max-width: 1440px; margin: 0 auto; }
+
+    #hero {
+      height: 100vh;
+      min-height: 800px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at 80% 20%, rgba(0,234,255,0.09), transparent 50%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset:0;
+      background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&auto=format&fit=crop&q=60') center/cover;
+      opacity: 0.06;
+      z-index: -2;
+    }
+
+    .hero-content {
+      max-width: 1100px;
+      padding: 0 5%;
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    h1 {
+      font-size: clamp(4rem, 10vw, 12rem);
+      font-family: 'Orbitron', monospace;
+      line-height: 0.9;
+      margin-bottom: 1.8rem;
+      background: linear-gradient(90deg, #fff, var(--accent), var(--gold), #fff);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientFlow 14s linear infinite;
+    }
+
+    .subtitle {
+      font-size: 1.6rem;
+      max-width: 720px;
+      margin: 0 auto 3rem;
+      color: #c0e0ff;
+      font-weight: 300;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 1.2rem 3rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+      background: linear-gradient(45deg, var(--accent), var(--gold));
+      color: #000;
+      text-decoration: none;
+      border-radius: 60px;
+      box-shadow: 0 0 50px rgba(0,234,255,0.35);
+      transition: all 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 0 80px rgba(0,234,255,0.6);
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 4.5rem;
+      margin-bottom: 4rem;
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(90deg, var(--accent), #fff, var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 3rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.4rem;
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+      transition: all 0.6s cubic-bezier(0.23,1,0.32,1);
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-24px);
+      border-color: var(--accent);
+      box-shadow: 0 40px 100px rgba(0,234,255,0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      transition: transform 0.9s ease;
+    }
+
+    .card:hover img { transform: scale(1.14) rotate(1deg); }
+
+    .card-content {
+      padding: 2rem 1.8rem 2.4rem;
+    }
+
+    .card h3 {
+      font-size: 1.7rem;
+      margin-bottom: 1rem;
+    }
+
+    .price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0.8rem 0 1.4rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(0,234,255,0.15);
+      color: var(--accent);
+      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      backdrop-filter: blur(8px);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.6rem;
+      width: 90%;
+      max-width: 1100px;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: flex;
+      position: relative;
+      margin: 1rem;
+    }
+
+    .modal-left {
+      flex: 1;
+      min-width: 45%;
+    }
+
+    .modal-left img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .modal-right {
+      flex: 1;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-close {
+      align-self: flex-end;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .modal h2 {
+      font-size: 2.4rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .quantity-wrapper {
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      background: rgba(0,234,255,0.1);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 0.5rem;
+      margin-right: 1.5rem;
+    }
+
+    .quantity button {
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-size: 1.6rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .quantity button:hover {
+      transform: scale(1.2) rotate(10deg);
+      text-shadow: 0 0 10px var(--accent);
+    }
+
+    .quantity button:active {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    .quantity input {
+      width: 70px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .order-btn {
+      padding: 1rem 2.5rem;
+      background: linear-gradient(45deg, var(--accent), var(--gold));
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.4s;
+    }
+
+    .order-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 40px rgba(0,234,255,0.5);
+    }
+
+    .desc-short {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .desc-toggle {
+      color: var(--accent);
+      cursor: pointer;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    .desc-full {
+      display: none;
+      font-size: 1.05rem;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 1rem;
+      color: #d0e0ff;
+    }
+
+    .delivery {
+      margin-top: auto;
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .delivery img {
+      height: 60px;
+      width: auto;
+      opacity: 0.9;
+    }
+
+    /* Sections */
+    #howto .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      margin-top: 4rem;
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .step-card h4 {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      color: var(--accent);
+    }
+
+    #reviews .review-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .review-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 2rem;
+    }
+
+    .stars { color: var(--gold); font-size: 1.4rem; margin-bottom: 1rem; }
+
+    #contacts form {
+      max-width: 600px;
+      margin: 4rem auto 0;
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    input, textarea {
+      padding: 1rem 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+
+    button[type="submit"] {
+      padding: 1.2rem;
+      background: linear-gradient(45deg, var(--accent), var(--gold));
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 5rem 0 7rem;
+      color: #8888aa;
+      font-size: 1rem;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(70px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes gradientFlow {
+      0%   { background-position:0% 50%; }
+      100% { background-position:300% 50%; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .burger { display: flex; }
+
+      .modal-content { 
+        flex-direction: column; 
+        max-height: 95vh;
+        overflow-y: scroll;
+      }
+      .modal-left { 
+        min-height: 250px; 
+        max-height: 40vh;
+      }
+      .modal-left img { height: 100%; }
+      .modal-right { padding: 2rem 1.5rem; }
+      .quantity-wrapper { flex-wrap: wrap; justify-content: center; }
+      .quantity { margin-right: 0; margin-bottom: 1rem; }
+      .delivery { flex-direction: column; }
+
+      h1 { font-size: 6rem; }
+      h2 { font-size: 3.5rem; }
+      .card img { height: 300px; }
+      .grid { grid-template-columns: 1fr; gap: 2rem; }
+      section { padding: 6rem 3% 4rem; }
+    }
+    
+.cart-btn {
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--accent);
+  position: relative;
+}
+
+#cartCount {
+  background: var(--gold);
+  color: black;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+
+.cart-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--accent);
+}
+
+  </style>
+</head>
+<body>
+
+<header id="header">
+  <nav>
+    <div class="logo">MODULUS</div>
+    
+<div class="cart-btn" onclick="openCart()">
+  <i class="fa-solid fa-cart-shopping"></i>
+  <span id="cartCount">0</span>
+</div>
+
+
+
+    <div class="nav-links">
+      <a onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Каталог</a>
+      <a onclick="document.getElementById('howto').scrollIntoView({behavior:'smooth'})">Как клеить</a>
+      <a onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'})">Отзывы</a>
+      <a onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Контакты</a>
+    </div>
+    <div class="burger" id="burger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a onclick="scrollToSection('products'); closeMobileNav();">Каталог</a>
+  <a onclick="scrollToSection('howto'); closeMobileNav();">Как клеить</a>
+  <a onclick="scrollToSection('reviews'); closeMobileNav();">Отзывы</a>
+  <a onclick="scrollToSection('contacts'); closeMobileNav();">Контакты</a>
+</div>
+
+<section id="hero">
+  <div class="hero-content">
+    <h1>MODULUS</h1>
+    <p class="subtitle">Модульные покрытия и 3D-панели для быстрого ремонта своими руками. Без пыли, без мастеров — за выходные.</p>
+
+  </div>
+</section>
+
+<section id="products">
+  <h2>Каталог MODULUS</h2>
+  
+  <div class="grid" id="productsGrid"></div>
+</section>
+
+<section id="howto">
+  <h2>Как клеить / укладывать</h2>
+  <div class="steps">
+    <div class="step-card">
+      <h4>1. Подготовка поверхности</h4>
+      <p>Очистите стену/пол от пыли, жира и старых покрытий. При необходимости выровняйте шпаклёвкой. Поверхность должна быть сухой и ровной.</p>
+    </div>
+    <div class="step-card">
+      <h4>2. Разметка и раскрой</h4>
+      <p>Сделайте разметку уровня. Панели/плитки легко режутся канцелярским ножом или ножовкой. Примеряйте сухим способом.</p>
+    </div>
+    <div class="step-card">
+      <h4>3. Монтаж</h4>
+      <p>Снимите защитную плёнку (для самоклеящихся) или нанесите клей (если требуется). Начинайте от центра или угла. Плотно прижимайте 30–60 сек.</p>
+    </div>
+    <div class="step-card">
+      <h4>4. Финал</h4>
+      <p>Пройдитесь валиком или руками по швам. Дайте 24 часа на полное схватывание. Готово — ремонт за день!</p>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <h2>Отзывы наших клиентов</h2>
+  <div class="review-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>За выходные обновили всю гостиную! Панели клеятся идеально, выглядят как дорогой ремонт. Рекомендую!</p>
+      <p><strong>Ольга К.</strong>, Киев</p>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p>Пол-пазл — просто находка для детской. Ребёнок падает — не больно, и выглядит стильно. Доставка быстрая.</p>
+      <p><strong>Андрей М.</strong>, Львов</p>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★☆</div>
+      <p>Хорошее качество за свои деньги. Волновые панели в спальне — огонь! Только чуть дольше резал по размеру.</p>
+      <p><strong>Марина П.</strong>, Одесса</p>
+    </div>
+  </div>
+</section>
+
+<section id="contacts">
+  <h2>Свяжитесь с нами</h2>
+  <form>
+    <input type="text" placeholder="Ваше имя" required>
+    <input type="tel" placeholder="Телефон" required>
+    <input type="email" placeholder="Email (не обязательно)">
+    <textarea placeholder="Сообщение или интересующий товар..." rows="5"></textarea>
+    <button type="submit">Отправить заявку</button>
+  </form>
+  <p style="text-align:center; margin-top:2rem;">Или пишите напрямую: +380 (XX) XXX-XX-XX | modulus.drop@gmail.com</p>
+</section>
+
+<footer>
+  <p>© 2026 MODULUS — Материалы для быстрого ремонта своими руками. Доставка Нова Пошта / Укрпошта по всей Украине. Количество ограничено.</p>
+</footer>
+
+<!-- Modal -->
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <div class="modal-left">
+      <img id="modalImg" src="" alt="Товар">
+    </div>
+    <div class="modal-right">
+      <span class="modal-close" onclick="closeModal()">×</span>
+      <h2 id="modalTitle"></h2>
+      <div class="quantity-wrapper">
+        <div class="quantity">
+          <button onclick="changeQty(-1)">−</button>
+          <input type="number" id="modalQty" value="1" min="1">
+          <button onclick="changeQty(1)">+</button>
+        </div>
+        <button class="order-btn">Заказать</button>
+      </div>
+      <p class="desc-short" id="modalShort"></p>
+      <span class="desc-toggle" onclick="toggleDesc()">Читать полностью ↓</span>
+      <div class="desc-full" id="modalFull"></div>
+      <div class="delivery">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/Nova_Poshta_2014_logo.svg" alt="Нова Пошта">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Logo_Ukrposhta.svg" alt="Укрпошта">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="cartModal">
+  <div class="modal-content">
+    <div class="modal-right">
+      <span class="modal-close" onclick="closeCart()">×</span>
+      <h2>Корзина</h2>
+      <div id="cartItems"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const header = document.getElementById('header');
+  const modal = document.getElementById('productModal');
+  const burger = document.getElementById('burger');
+  const mobileNav = document.getElementById('mobileNav');
+ 
+  loadProducts();
+  
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 100);
+
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 120 && card.style.opacity === '0') {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }
+    });
+  });
+
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(80px)';
+    card.style.transition = 'all 1s ease-out';
+
+    card.addEventListener('click', () => {
+      document.getElementById('modalTitle').textContent = card.dataset.title;
+      document.getElementById('modalImg').src = card.dataset.img;
+      document.getElementById('modalShort').textContent = card.dataset.short;
+      document.getElementById('modalFull').textContent = card.dataset.full;
+      document.getElementById('modalQty').value = 1;
+      modal.style.display = 'flex';
+    });
+  });
+
+  function closeModal() {
+    modal.style.display = 'none';
+  }
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+
+  function changeQty(delta) {
+    const qty = document.getElementById('modalQty');
+    let val = parseInt(qty.value) + delta;
+    if (val < 1) val = 1;
+    qty.value = val;
+  }
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+}
+
+function updateCartCount() {
+  document.getElementById("cartCount").textContent = cart.length;
+}
+
+function addToCart(title, price, img) {
+
+  const existing = cart.find(item => item.title === title);
+
+  if(existing) {
+    existing.qty++;
+  } else {
+    cart.push({title, price, img, qty: 1});
+  }
+
+  saveCart();
+}
+
+
+function openCart() {
+
+  const list = document.getElementById("cartItems");
+  list.innerHTML = "";
+
+  cart.forEach((item, index) => {
+
+    list.innerHTML += `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <img src="${item.img}" width="50">
+        ${item.title} — ${item.price} ₴
+        <button onclick="removeFromCart(${index})">Удалить</button>
+      </div>
+    `;
+
+  });
+
+  document.getElementById("cartModal").style.display = "flex";
+}
+
+
+function closeCart() {
+  document.getElementById("cartModal").style.display = "none";
+}
+
+function removeFromCart(i) {
+  cart.splice(i,1);
+  saveCart();
+  openCart();
+}
+
+  
+  function toggleDesc() {
+    const full = document.getElementById('modalFull');
+    const toggle = document.querySelector('.desc-toggle');
+    if (full.style.display === 'block') {
+      full.style.display = 'none';
+      toggle.textContent = 'Читать полностью ↓';
+    } else {
+      full.style.display = 'block';
+      toggle.textContent = 'Свернуть ↑';
+    }
+  }
+
+  // Burger Menu Script
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+  });
+
+  function closeMobileNav() {
+    burger.classList.remove('active');
+    mobileNav.classList.remove('active');
+  }
+
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+  }
+  
+  const productsGrid = document.getElementById("productsGrid");
+
+async function loadProducts() {
+
+  try {
+
+    const response = await fetch("https://raw.githubusercontent.com/Dev-Geniy/stroyshopua/refs/heads/main/products.xml");
+    const xmlText = await response.text();
+
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, "text/xml");
+
+    const offers = xml.querySelectorAll("offer");
+
+    offers.forEach(offer => {
+
+      const title = offer.querySelector("name")?.textContent || "Без названия";
+      const price = offer.querySelector("price")?.textContent || "0";
+      const img = offer.querySelector("picture")?.textContent || "";
+      const description = offer.querySelector("description")?.textContent || "";
+
+      createCard(title, price, img, description);
+
+    });
+
+  } catch(err) {
+    console.error("Ошибка загрузки XML:", err);
+  }
+
+}
+
+function createCard(title, price, img, description) {
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.dataset.title = title;
+  card.dataset.price = price + " ₴";
+  card.dataset.img = img;
+  card.dataset.short = description.substring(0, 120) + "...";
+  card.dataset.full = description;
+
+  card.innerHTML = `
+    <img src="${img}" alt="${title}" loading="lazy">
+
+    <div class="card-content">
+      <div class="tag">MODULUS</div>
+      <h3>${title}</h3>
+      <div class="price">${price} ₴</div>
+
+      <button class="order-btn"
+        onclick="event.stopPropagation(); addToCart('${title}', '${price}', '${img}')">
+        В корзину
+      </button>
+    </div>
+  `;
+
+  card.addEventListener("click", () => {
+
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalImg").src = img;
+    document.getElementById("modalShort").textContent = description.substring(0, 120) + "...";
+    document.getElementById("modalFull").textContent = description;
+
+    modal.style.display = "flex";
+  });
+
+  productsGrid.appendChild(card);
+
+  lucide.createIcons();
+}
+  
+  updateCartCount();
+
+  function generateProductSEO(title, price, img) {
+
+  const script = document.createElement("script");
+
+  script.type = "application/ld+json";
+
+  script.textContent = JSON.stringify({
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": title,
+    "image": img,
+    "offers": {
+      "@type": "Offer",
+      "price": price,
+      "priceCurrency": "UAH"
+    }
+  });
+
+  document.head.appendChild(script);
+}
+
+  generateProductSEO(title, price, img);
+
+  document.addEventListener("DOMContentLoaded", () => {
+  lucide.createIcons();
+});
+  
+  document.addEventListener("DOMContentLoaded", () => {
+  lucide.createIcons();
+});
+
+
+</script>
+
+</body>
+</html>
