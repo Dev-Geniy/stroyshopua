@@ -767,172 +767,47 @@
 </div>
 
 <script>
-  const header = document.getElementById('header');
-  const modal = document.getElementById('productModal');
-  const burger = document.getElementById('burger');
-  const mobileNav = document.getElementById('mobileNav');
- 
-  loadProducts();
-  
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 100);
+const header = document.getElementById('header');
+const modal = document.getElementById('productModal');
+const burger = document.getElementById('burger');
+const mobileNav = document.getElementById('mobileNav');
+const productsGrid = document.getElementById("productsGrid");
 
-    cards.forEach(card => {
-      const rect = card.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 120 && card.style.opacity === '0') {
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }
-    });
-  });
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  cards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(80px)';
-    card.style.transition = 'all 1s ease-out';
-
-    card.addEventListener('click', () => {
-      document.getElementById('modalTitle').textContent = card.dataset.title;
-      document.getElementById('modalImg').src = card.dataset.img;
-      document.getElementById('modalShort').textContent = card.dataset.short;
-      document.getElementById('modalFull').textContent = card.dataset.full;
-      document.getElementById('modalQty').value = 1;
-      modal.style.display = 'flex';
-    });
-  });
-
-  function closeModal() {
-    modal.style.display = 'none';
-  }
-
-  modal.addEventListener('click', e => {
-    if (e.target === modal) closeModal();
-  });
-
-  function changeQty(delta) {
-    const qty = document.getElementById('modalQty');
-    let val = parseInt(qty.value) + delta;
-    if (val < 1) val = 1;
-    qty.value = val;
-  }
-
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartCount();
-}
-
-function updateCartCount() {
-  document.getElementById("cartCount").textContent = cart.length;
-}
-
-function addToCart(title, price, img) {
-
-  const existing = cart.find(item => item.title === title);
-
-  if(existing) {
-    existing.qty++;
-  } else {
-    cart.push({title, price, img, qty: 1});
-  }
-
-  saveCart();
-}
-
-
-function openCart() {
-
-  const list = document.getElementById("cartItems");
-  list.innerHTML = "";
-
-  cart.forEach((item, index) => {
-
-    list.innerHTML += `
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-        <img src="${item.img}" width="50">
-        ${item.title} — ${item.price} ₴
-        <button onclick="removeFromCart(${index})">Удалить</button>
-      </div>
-    `;
-
-  });
-
-  document.getElementById("cartModal").style.display = "flex";
-}
-
-
-function closeCart() {
-  document.getElementById("cartModal").style.display = "none";
-}
-
-function removeFromCart(i) {
-  cart.splice(i,1);
-  saveCart();
-  openCart();
-}
-
-  
-  function toggleDesc() {
-    const full = document.getElementById('modalFull');
-    const toggle = document.querySelector('.desc-toggle');
-    if (full.style.display === 'block') {
-      full.style.display = 'none';
-      toggle.textContent = 'Читать полностью ↓';
-    } else {
-      full.style.display = 'block';
-      toggle.textContent = 'Свернуть ↑';
-    }
-  }
-
-  // Burger Menu Script
-  burger.addEventListener('click', () => {
-    burger.classList.toggle('active');
-    mobileNav.classList.toggle('active');
-  });
-
-  function closeMobileNav() {
-    burger.classList.remove('active');
-    mobileNav.classList.remove('active');
-  }
-
-  function scrollToSection(id) {
-    document.getElementById(id).scrollIntoView({behavior: 'smooth'});
-  }
-  
-  const productsGrid = document.getElementById("productsGrid");
-
+// =======================
+// Загрузка товаров
+// =======================
 async function loadProducts() {
-
   try {
-
     const response = await fetch("https://raw.githubusercontent.com/Dev-Geniy/stroyshopua/refs/heads/main/products.xml");
     const xmlText = await response.text();
 
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlText, "text/xml");
-
     const offers = xml.querySelectorAll("offer");
 
     offers.forEach(offer => {
-
       const title = offer.querySelector("name")?.textContent || "Без названия";
       const price = offer.querySelector("price")?.textContent || "0";
       const img = offer.querySelector("picture")?.textContent || "";
       const description = offer.querySelector("description")?.textContent || "";
 
       createCard(title, price, img, description);
-
+      generateProductSEO(title, price, img);
     });
+
+    animateCards(); // анимация карточек после загрузки
 
   } catch(err) {
     console.error("Ошибка загрузки XML:", err);
   }
-
 }
 
+// =======================
+// Создание карточки
+// =======================
 function createCard(title, price, img, description) {
-
   const card = document.createElement("div");
   card.className = "card";
 
@@ -944,68 +819,164 @@ function createCard(title, price, img, description) {
 
   card.innerHTML = `
     <img src="${img}" alt="${title}" loading="lazy">
-
     <div class="card-content">
       <div class="tag">MODULUS</div>
       <h3>${title}</h3>
       <div class="price">${price} ₴</div>
-
-      <button class="order-btn"
-        onclick="event.stopPropagation(); addToCart('${title}', '${price}', '${img}')">
+      <button class="order-btn" onclick="event.stopPropagation(); addToCart('${title}', '${price}', '${img}')">
         В корзину
       </button>
     </div>
   `;
 
   card.addEventListener("click", () => {
-
     document.getElementById("modalTitle").textContent = title;
     document.getElementById("modalImg").src = img;
     document.getElementById("modalShort").textContent = description.substring(0, 120) + "...";
     document.getElementById("modalFull").textContent = description;
-
-    modal.style.display = "flex";
+    document.getElementById('modalQty').value = 1;
+    modal.style.display = 'flex';
   });
 
   productsGrid.appendChild(card);
-
-  lucide.createIcons();
 }
-  
+
+// =======================
+// Анимация карточек
+// =======================
+function animateCards() {
+  const cards = document.querySelectorAll(".card");
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(80px)';
+    card.style.transition = 'all 1s ease-out';
+  });
+}
+
+// =======================
+// Скролл и анимация
+// =======================
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 100);
+
+  const cards = document.querySelectorAll(".card");
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 120 && card.style.opacity === '0') {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }
+  });
+});
+
+// =======================
+// Модальные окна
+// =======================
+function closeModal() { modal.style.display = 'none'; }
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+function toggleDesc() {
+  const full = document.getElementById('modalFull');
+  const toggle = document.querySelector('.desc-toggle');
+  if (full.style.display === 'block') {
+    full.style.display = 'none';
+    toggle.textContent = 'Читать полностью ↓';
+  } else {
+    full.style.display = 'block';
+    toggle.textContent = 'Свернуть ↑';
+  }
+}
+
+// =======================
+// Количество товара в модалке
+// =======================
+function changeQty(delta) {
+  const qty = document.getElementById('modalQty');
+  let val = parseInt(qty.value) + delta;
+  if (val < 1) val = 1;
+  qty.value = val;
+}
+
+// =======================
+// Корзина
+// =======================
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
+}
 
-  function generateProductSEO(title, price, img) {
+function updateCartCount() {
+  document.getElementById("cartCount").textContent = cart.length;
+}
 
+function addToCart(title, price, img) {
+  const existing = cart.find(item => item.title === title);
+  if(existing) {
+    existing.qty++;
+  } else {
+    cart.push({title, price, img, qty: 1});
+  }
+  saveCart();
+}
+
+function openCart() {
+  const list = document.getElementById("cartItems");
+  list.innerHTML = "";
+
+  cart.forEach((item, index) => {
+    list.innerHTML += `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <img src="${item.img}" width="50">
+        ${item.title} — ${item.price} ₴
+        <button onclick="removeFromCart(${index})">Удалить</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("cartModal").style.display = "flex";
+}
+
+function closeCart() { document.getElementById("cartModal").style.display = "none"; }
+function removeFromCart(i) { cart.splice(i,1); saveCart(); openCart(); }
+
+// =======================
+// Burger menu
+// =======================
+burger.addEventListener('click', () => {
+  burger.classList.toggle('active');
+  mobileNav.classList.toggle('active');
+});
+
+function closeMobileNav() {
+  burger.classList.remove('active');
+  mobileNav.classList.remove('active');
+}
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+}
+
+// =======================
+// SEO
+// =======================
+function generateProductSEO(title, price, img) {
   const script = document.createElement("script");
-
   script.type = "application/ld+json";
-
   script.textContent = JSON.stringify({
     "@context": "https://schema.org/",
     "@type": "Product",
     "name": title,
     "image": img,
-    "offers": {
-      "@type": "Offer",
-      "price": price,
-      "priceCurrency": "UAH"
-    }
+    "offers": { "@type": "Offer", "price": price, "priceCurrency": "UAH" }
   });
-
   document.head.appendChild(script);
 }
 
-  generateProductSEO(title, price, img);
-
-  document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
-});
-  
-  document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
-});
-
-
+// =======================
+// Инициализация
+// =======================
+loadProducts();
+updateCartCount();
 </script>
 
 </body>
