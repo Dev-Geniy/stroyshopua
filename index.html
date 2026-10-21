@@ -295,6 +295,16 @@ footer a:hover{text-decoration:underline}
 .form input[type=radio]{accent-color:var(--orange);width:16px;height:16px}
 input.err{border-color:var(--bad)!important}
 .hint{color:var(--bad);font-size:13px}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+.done{text-align:center;padding:28px 6px;display:grid;gap:12px;justify-items:center}
+.done .ic{width:58px;height:58px;border-radius:50%;background:#2f8a4c1f;color:var(--ok);display:grid;place-items:center}
+.done .ic svg{width:30px;height:30px;stroke-width:2.5}
+.done h3{font-family:var(--f-d);font-size:20px}
+.done p{color:var(--soft);max-width:34ch}
+.done.fail .ic{background:#c2410c1f;color:var(--bad)}
+.btn.busy{pointer-events:none;opacity:.7}
+.btn.busy:after{content:"";width:16px;height:16px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .guar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;color:var(--soft);line-height:1.3}
 .guar span{display:flex;gap:6px;align-items:flex-start}
 .guar svg{width:16px;height:16px;color:var(--ok);flex:none}
@@ -716,6 +726,7 @@ dialog#pd::backdrop{background:#000a}
    <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
    <div class="hint" id="hint"></div>
    <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
    <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
    <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
    <div class="guar">
@@ -748,11 +759,14 @@ const CFG={
  samplesNote:'',                                       // напр. 'Зразки 3 матеріалів — 50 грн'. Порожньо = без ціни
  quizBonus:'',                                         // напр. 'Знижка 5% на перше замовлення після підбору'. Порожньо = без бонусу
  videos:[],                                            // [['Монтаж 3D панелей','https://www.tiktok.com/@stroyshop_ua/video/...']]
- reviews:[]                                            // [['фото.jpg','Кухня, PET плитка, Дніпро']]
+ reviews:[],                                          // [['фото.jpg','Кухня, PET плитка, Дніпро']]
+ api:'https://script.google.com/macros/s/AKfycbzeYmkpMqlVwH6RsNc67d3YDuFGinnPmfy6UnWcW0FYEUpaoforC5m-GF4T1NVEMonn4w/exec'                                                // адреса скрипта Google (див. інструкцію). Порожньо = замовлення лише через Telegram
 };
 /* ===================================================================== */
 
-const K={more2:['Додати ще товари','Добавить ещё товары'],clearc:['Очистити кошик','Очистить корзину'],who:['Куди відправити','Куда отправить'],del:['Видалити','Удалить'],cleared:['Кошик очищено','Корзина очищена'],
+const K={okH:['Замовлення №{id} прийнято','Заказ №{id} принят'],okP:['Менеджер зв’яжеться з вами, щоб підтвердити наявність і доставку.','Менеджер свяжется с вами, чтобы подтвердить наличие и доставку.'],okTg:['Написати менеджеру в Telegram','Написать менеджеру в Telegram'],okMore:['Продовжити покупки','Продолжить покупки'],
+failH:['Не вдалося надіслати через сайт','Не удалось отправить через сайт'],failP:['Перевірте інтернет або надішліть замовлення менеджеру в Telegram — текст уже готовий.','Проверьте интернет или отправьте заказ менеджеру в Telegram — текст уже готов.'],failTg:['Надіслати в Telegram','Отправить в Telegram'],retry2:['Спробувати ще раз','Попробовать ещё раз'],rate:['Забагато замовлень за короткий час. Зачекайте кілька хвилин або напишіть менеджеру.','Слишком много заказов за короткое время. Подождите несколько минут или напишите менеджеру.'],num:['№','№'],
+more2:['Додати ще товари','Добавить ещё товары'],clearc:['Очистити кошик','Очистить корзину'],who:['Куди відправити','Куда отправить'],del:['Видалити','Удалить'],cleared:['Кошик очищено','Корзина очищена'],
 cel1:['Довжина елемента, см','Длина элемента, см'],cel2:['Ширина елемента, см','Ширина элемента, см'],cW:['Ширина стіни або підлоги, м','Ширина стены или пола, м'],cH:['Висота стіни або довжина підлоги, м','Высота стены или длина пола, м'],cA:['Або площа, м²','Или площадь, м²'],cO:['Вікна й двері, м²','Окна и двери, м²'],cR:['Запас на брак і помилки','Запас на брак и ошибки'],cAuto:['Авто','Авто'],
 el1:['Один елемент: {d} мм = {a} м²','Один элемент: {d} мм = {a} м²'],elSet:['У наборі {n} шт. — разом {a} м²','В наборе {n} шт. — всего {a} м²'],elPack:['В упаковці {n} шт. ({a} м²), можна купити поштучно','В упаковке {n} шт. ({a} м²), можно купить поштучно'],
 rS:['Площа покриття','Площадь покрытия'],rMin:['Мінімум з підрізкою по краях','Минимум с подрезкой по краям'],rMinA:['Мінімум за чистою площею','Минимум по чистой площади'],rRec:['Рекомендуємо, запас {r}%','Рекомендуем, запас {r}%'],addRec:['Додати {n} {u}','Добавить {n} {u}'],addMin:['Додати мінімум ({n})','Добавить минимум ({n})'],
@@ -1376,13 +1390,15 @@ function pGuide(p){const g=guideOf(p.cat);if(!g)return'';const ins=insOf(g);
 /* ---------- кошик ---------- */
 function save(){
  ls.set('cart',cart);
+ if(doneHTML){$('#items').innerHTML=doneHTML;$('#cform').hidden=$('#dfoot').hidden=$('#clr').hidden=true;$('#cn').textContent='';$$('[data-cnt]').forEach(e=>{e.textContent=0;e.hidden=!!e.closest('.mbar')});return}
  const ids=Object.keys(cart),n=ids.reduce((a,i)=>a+cart[i].q,0),sum=ids.reduce((a,i)=>a+cart[i].price*cart[i].q,0);
  $$('[data-cnt]').forEach(e=>{e.textContent=n;e.hidden=!n&&e.closest('.mbar')});
  $('#items').innerHTML=ids.length?ids.map(i=>{const c=cart[i];return`<div class="it"><img src="${esc(c.img)}" alt="" onerror="this.style.opacity=0"><div><a href="?p=${encodeURIComponent(i)}" data-p="${esc(i)}" style="text-decoration:none">${esc(c.name)}</a><br><span class="soft">${money(c.price)}&nbsp;&nbsp;${esc(c.sku||'')}</span><div class="qty" style="margin-top:6px"><button data-m="${esc(i)}" aria-label="−">−</button><input data-qi="${esc(i)}" value="${c.q}" inputmode="numeric" aria-label="Кількість"><button data-pl="${esc(i)}" aria-label="+">+</button></div></div><div class="side2"><button class="del" data-del="${esc(i)}" aria-label="${t('del')}" title="${t('del')}"><svg class="i"><use href="#i-x"/></svg></button><span class="lt">${money(c.price*c.q)}</span></div></div>`}).join(''):`<div class="empty" style="margin:20px 0">${t('empty')}<br><button class="btn" data-a="tocat">${t('toCat')}</button></div>`;
  $('#cform').hidden=$('#dfoot').hidden=!ids.length;$('#clr').hidden=!ids.length;
  $('#cn').textContent=n?'· '+n+' '+t('pcs'):'';
  $('#total').textContent=money(sum)}
-const panel=o=>{$('#cart').classList.toggle('on',o);$('#shade').classList.toggle('on',o);$('#cart').setAttribute('aria-hidden',!o);if(o)setTimeout(()=>$('#cart .xb').focus(),50)};
+let doneHTML='',lastMsg='';
+const panel=o=>{if(!o&&doneHTML){doneHTML='';setTimeout(save,300)}$('#cart').classList.toggle('on',o);$('#shade').classList.toggle('on',o);$('#cart').setAttribute('aria-hidden',!o);if(o)setTimeout(()=>$('#cart .xb').focus(),50)};
 function add(id,n=1){const p=byId.get(id);if(!p||!(n>0))return;cart[id]=cart[id]||{name:p.name,price:p.price,img:p.img,sku:p.sku,q:0};cart[id].price=p.price;cart[id].q+=n;save();toast(t('inCart')+': '+p.name.slice(0,60));
  $$('.hcart,.mbar button:last-child').forEach(e=>{e.classList.remove('bump');void e.offsetWidth;e.classList.add('bump')})}
 function tg(m){
@@ -1390,14 +1406,32 @@ function tg(m){
  window.open(`https://t.me/${CFG.tg}?text=${encodeURIComponent(m)}`,'_blank','noopener')}
 function phoneOk(v){return v.replace(/\D/g,'').length>=10}
 function bad(el,msg){el.classList.add('err');const h=$('#hint');if(el.id=='fp'){h.textContent=msg}else toast(msg);el.focus();el.addEventListener('input',()=>{el.classList.remove('err');h.textContent=''},{once:true})}
-function order(){
+/* відправка замовлення: спершу зберігаємо в таблиці (якщо CFG.api задано), Telegram — як запасний канал */
+const okey=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+async function api(body){
+ const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),20000);
+ try{const r=await fetch(CFG.api,{method:'POST',body:JSON.stringify(body),signal:ac.signal,redirect:'follow'});return await r.json()}finally{clearTimeout(tm)}}
+const doneBox=(id,fail,err,pd)=>`<div class="done${fail?' fail':''}"><div class="ic"><svg class="i"><use href="#${fail?'i-chat':'i-check'}"/></svg></div><h3>${fail?t('failH'):t('okH',{id:esc(id)})}</h3><p>${fail?(err=='rate'?t('rate'):t('failP')):t('okP')}</p><button class="btn" data-a="tgmsg">${fail?t('failTg'):t('okTg')}</button>${fail?`<button class="link" data-a="${err=='one'?'retry1':'order'}">${t('retry2')}</button>`:`<button class="link" data-a="${pd?'pdclose':'close'}">${t('okMore')}</button>`}</div>`;
+let pendingKey='';
+async function order(btn){
  const ids=Object.keys(cart);if(!ids.length)return toast(t('inc'));
  const ph=$('#fp');if(!phoneOk(ph.value))return bad(ph,t('phr'));
- const sum=ids.reduce((a,i)=>a+cart[i].price*cart[i].q,0);
- const m=[`🛒 ${t('newo')}`,...ids.map((i,k)=>`${k+1}. ${cart[i].name}${cart[i].sku?' ('+cart[i].sku+')':''} × ${cart[i].q} = ${money(cart[i].price*cart[i].q)}`),'',`${t('tot')}: ${money(sum)}`,`${t('nm')}: ${$('#fn').value}`,`${t('phn')}: ${ph.value}`,`${t('addr')}: ${$('#fc').value}`,`${t('pay')}: ${t($('[name=pay]:checked').value)}`,`${t('dl')}: ${$('[name=dl]:checked').nextElementSibling.textContent}`].join('\n');
- tg(m);toast(t('copied'))}
+ const sum=ids.reduce((a,i)=>a+cart[i].price*cart[i].q,0),pay=t($('[name=pay]:checked').value),dl=$('[name=dl]:checked').nextElementSibling.textContent;
+ const lines=ids.map((i,k)=>`${k+1}. ${cart[i].name}${cart[i].sku?' ('+cart[i].sku+')':''} × ${cart[i].q} = ${money(cart[i].price*cart[i].q)}`);
+ const msg=id=>[`🛒 ${t('newo')}${id?' '+t('num')+id:''}`,...lines,'',`${t('tot')}: ${money(sum)}`,`${t('nm')}: ${$('#fn').value}`,`${t('phn')}: ${ph.value}`,`${t('addr')}: ${$('#fc').value}`,`${t('pay')}: ${pay}`,`${t('dl')}: ${dl}`].join('\n');
+ if(!CFG.api){tg(msg());return toast(t('copied'))}
+ const b=$('[data-a=order]');b.classList.add('busy');pendingKey=pendingKey||okey();
+ let r=null;try{r=await api({action:'order',order:{type:'Кошик',name:$('#fn').value,phone:ph.value,city:$('#fc').value,pay,delivery:dl,total:sum,items:ids.map(i=>({id:i,name:cart[i].name,sku:cart[i].sku,q:cart[i].q,price:cart[i].price})),page:location.href,lang,key:pendingKey,hp:$('#fhp').value}})}catch(e){}
+ b.classList.remove('busy');
+ if(r&&r.ok){lastMsg=msg(r.id);pendingKey='';cart={};doneHTML=doneBox(r.id);save()}
+ else{lastMsg=msg();const old=$('#items .done');old&&old.remove();$('#items').insertAdjacentHTML('afterbegin',doneBox('',1,r&&r.error));$('#cart .dbody').scrollTop=0}}
 function oneClick(id){const i=$('#mp'),p=byId.get(id);if(!phoneOk(i.value))return bad(i,t('phr'));cust.fp=i.value;ls.set('cust',cust);
- tg(`⚡ ${t('o1c')}\n${p.name}${p.sku?' ('+p.sku+')':''}\n${money(p.price)}\n${CFG.site}${href(p)}\n${t('phn')}: ${i.value}`);toast(t('copied'))}
+const msg=n=>`⚡ ${t('o1c')}${n?' '+t('num')+n:''}\n${p.name}${p.sku?' ('+p.sku+')':''}\n${money(p.price)}\n${CFG.site}${href(p)}\n${t('phn')}: ${i.value}`;
+ if(!CFG.api){tg(msg());return toast(t('copied'))}
+ const b=$('[data-oc]'),box=$('.oc');b.classList.add('busy');const key=okey();
+ api({action:'order',order:{type:'1 клік',name:cust.fn||'',phone:i.value,items:[{id:p.id,name:p.name,sku:p.sku,q:1,price:p.price}],total:p.price,page:location.href,lang,key}}).catch(()=>null).then(r=>{
+  b.classList.remove('busy');lastMsg=msg(r&&r.ok?r.id:'');
+  box.outerHTML=r&&r.ok?doneBox(r.id,0,0,1):doneBox('',1,r&&r.error=='rate'?'rate':'one',1)})}
 
 /* ---------- калькулятор на головній ---------- */
 function fillCalc(){const s=$('#cm'),i=s.selectedIndex;s.innerHTML=PRESETS.map((x,k)=>`<option value="${k}">${esc(x[1])}</option>`).join('')+`<option value="own">${t('cown')}</option>`;if(i>=0)s.selectedIndex=i;
@@ -1491,6 +1525,8 @@ document.addEventListener('click',e=>{
   case'reset':$('#q').value=$('#q2').value='';$('#fav').checked=onlyAv=false;$('#fsale').checked=onlySale=false;return nav({},false);
   case'askq':return tg(`${t('askMsg')}: ${view.q||cname(view.c)||''}`);
   case'order':return order();
+  case'tgmsg':return tg(lastMsg);
+  case'retry1':return openP(readURL().p,false);
   case'samples':return tg(t('smpMsg')+(CFG.samplesNote?'\n'+CFG.samplesNote:''));
   case'fab':{const m=$('#fabm');m.hidden=!m.hidden;return a.setAttribute('aria-expanded',!m.hidden)}
   case'seo':{const x=$('#seot');x.classList.toggle('cut');return a.textContent=t(x.classList.contains('cut')?'rm':'rl')}
