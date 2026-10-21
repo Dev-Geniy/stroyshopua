@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Замовлення — Samostroy Shop</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--wall:#eceeee;--panel:#fff;--ink:#262c32;--soft:#5d6770;--line:#dde1e3;--orange:#f08a1c;--orange-d:#c86a06;--slate:#2b3138;--ok:#2f8a4c;--bad:#c2410c;--r:10px;--f-d:Unbounded,"Golos Text",system-ui,sans-serif;--f-b:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+ --s-new:#f08a1c;--s-conf:#2563eb;--s-sent:#7c3aed;--s-done:#2f8a4c;--s-canc:#8a939b}
+@media(prefers-color-scheme:dark){:root{--wall:#1b1f24;--panel:#242a31;--ink:#eef0f1;--soft:#a3acb4;--line:#343c45;--slate:#11151a;--orange-d:#ffad55;--ok:#5cc47e;--bad:#ff8a50;--s-conf:#6b9cff;--s-sent:#a78bfa;--s-done:#5cc47e}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:15px/1.5 var(--f-b);background:var(--wall);color:var(--ink)}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:4px}
+[hidden]{display:none!important}
+.w{max-width:1280px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 18px;border:0;border-radius:6px;background:var(--orange);color:#1f2328;font-weight:600;text-decoration:none;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.sm{min-height:34px;padding:0 12px;font-size:14px}
+.btn.busy{pointer-events:none;opacity:.6}
+.link{background:none;border:0;color:var(--orange-d);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+input,select,textarea{border:1.5px solid var(--line);border-radius:6px;background:var(--panel);padding:0 12px;height:42px;width:100%}
+textarea{height:auto;min-height:80px;padding:10px 12px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--orange)}
+svg.i{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:32px;width:min(400px,100%);display:grid;gap:12px}
+.login h1{font-family:var(--f-d);font-size:22px;margin-bottom:4px}
+.login label{display:grid;gap:4px;font-size:13px;color:var(--soft);font-weight:500}
+.login .chk{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--ink)}
+.login .chk input{width:16px;height:16px;accent-color:var(--orange)}
+.err{color:var(--bad);font-size:14px;min-height:1.2em}
+
+/* app */
+header{background:var(--slate);color:#fff;position:sticky;top:0;z-index:20}
+.hd{display:flex;align-items:center;gap:14px;height:60px}
+.hd .t{font-family:var(--f-d);font-weight:700;font-size:16px;margin-right:auto;display:flex;align-items:center;gap:10px}
+.hd .t img{width:34px;height:34px;border-radius:6px;object-fit:cover}
+.hd .upd{font-size:13px;color:#b8c0c7}
+.hd .btn.ghost{color:#fff;box-shadow:inset 0 0 0 1.5px #ffffff40}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.stat span{font-size:13px;color:var(--soft)}
+.stat b{display:block;font-family:var(--f-d);font-size:24px;line-height:1.2;margin-top:2px}
+.stat small{color:var(--soft);font-size:13px}
+.stat.hot b{color:var(--orange-d)}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.tabs{display:flex;gap:6px;overflow-x:auto;flex:1 1 100%;padding-bottom:2px}
+.tabs button{flex:none;border:1.5px solid var(--line);background:var(--panel);border-radius:6px;padding:6px 12px;font-weight:500;display:flex;gap:8px;align-items:center}
+.tabs button i{font-style:normal;font-size:12px;color:var(--soft)}
+.tabs button.on{background:var(--slate);border-color:var(--slate);color:#fff}
+.tabs button.on i{color:#c8d0d6}
+.tools .sr{flex:1;min-width:200px}
+.tools select{width:auto}
+
+.list{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:grid;grid-template-columns:88px 110px minmax(150px,1.1fr) minmax(160px,1.6fr) 100px 130px;gap:14px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer;width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0}
+.row:hover{background:var(--wall)}
+.row.head{cursor:default;font-size:12px;color:var(--soft);font-weight:600;background:var(--wall)}
+.row.new{box-shadow:inset 4px 0 0 var(--orange)}
+.row .id{font-weight:600}
+.row .dt{font-size:13px;color:var(--soft)}
+.row .cu b{display:block;font-weight:500}.row .cu span{font-size:13px;color:var(--soft)}
+.row .it{font-size:13px;color:var(--soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row .sum{font-weight:600;text-align:right;white-space:nowrap}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c);white-space:nowrap}
+.st:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+.empty{padding:40px;text-align:center;color:var(--soft)}
+
+/* detail drawer */
+.shade{position:fixed;inset:0;background:#0008;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.shade.on{opacity:1;pointer-events:auto}
+#dr{position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--panel);z-index:41;transform:translateX(102%);transition:transform .25s;display:flex;flex-direction:column}
+#dr.on{transform:none}
+.drh{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 20px;border-bottom:1px solid var(--line)}
+.drh b{font-family:var(--f-d);font-size:18px}
+.drh small{display:block;color:var(--soft);font-size:13px}
+.xb{width:38px;height:38px;border-radius:50%;border:0;background:var(--wall);display:grid;place-items:center}
+.drb{flex:1;overflow:auto;padding:18px 20px;display:grid;gap:18px;align-content:start}
+.drf{padding:12px 20px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.drf .btn{flex:1}
+.sec h3{font-size:13px;color:var(--soft);font-weight:600;margin-bottom:8px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px;font-weight:600;font-size:13px;color:var(--c)}
+.seg button.on{background:var(--c);border-color:var(--c);color:#fff}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 12px;font-size:14px}
+.kv dt{color:var(--soft)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.its{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.its div{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px;align-items:center}
+.its div:last-child{border:0;font-weight:600;background:var(--wall)}
+.its a{text-decoration:none}.its a:hover{color:var(--orange-d)}
+.its small{display:block;color:var(--soft);font-size:12px}
+.ttn{display:flex;gap:8px}
+.msgbox{background:var(--wall);border-radius:8px;padding:12px;font-size:14px;white-space:pre-wrap}
+.note{font-size:13px;color:var(--soft)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);visibility:hidden;background:var(--ink);color:var(--wall);padding:10px 18px;border-radius:6px;z-index:60;transition:transform .25s}
+#toast.on{transform:translate(-50%,0);visibility:visible}
+@media(max-width:900px){
+ .stats{grid-template-columns:1fr 1fr}
+ .row.head{display:none}
+ .row{grid-template-columns:1fr auto;gap:4px 12px;padding:12px 14px}
+ .row .id{grid-column:1}.row .stc{grid-column:2;grid-row:1;justify-self:end}
+ .row .dt{grid-column:1/-1;grid-row:2}
+ .row .cu{grid-column:1;grid-row:3}.row .sum{grid-column:2;grid-row:3}
+ .row .it{grid-column:1/-1;grid-row:4}
+ .hd .upd{display:none}
+ .kv{grid-template-columns:100px 1fr}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-ref" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+ <symbol id="i-ph" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></symbol>
+ <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+ <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></symbol>
+</svg>
+
+<!-- ВХІД -->
+<div class="login" id="login">
+ <form id="lf" autocomplete="on">
+  <h1>Замовлення</h1>
+  <p class="note">Samostroy Shop. Введіть пароль адмінки (ADMIN_PASS зі скрипта Google).</p>
+  <label id="apiw">Адреса скрипта Google<input id="lapi" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off"></label>
+  <label>Пароль<input id="lpass" type="password" autocomplete="current-password" required></label>
+  <label class="chk"><input type="checkbox" id="lrem"> Запам’ятати на цьому пристрої</label>
+  <div class="err" id="lerr"></div>
+  <button class="btn" id="lbtn">Увійти</button>
+ </form>
+</div>
+
+<!-- АДМІНКА -->
+<div id="app" hidden>
+ <header><div class="w hd">
+  <span class="t"><img src="logo.jpg" alt="">Замовлення</span>
+  <span class="upd" id="upd"></span>
+  <button class="btn ghost sm" data-a="refresh" title="Оновити"><svg class="i"><use href="#i-ref"/></svg><span>Оновити</span></button>
+  <button class="btn ghost sm" data-a="logout">Вийти</button>
+ </div></header>
+ <main class="w">
+  <section class="stats" id="stats"></section>
+  <div class="tools">
+   <div class="tabs" id="tabs"></div>
+   <input class="sr" id="q" type="search" placeholder="Пошук: телефон, ім’я, №, ТТН, товар" aria-label="Пошук">
+   <select id="per" aria-label="Період"><option value="all">За весь час</option><option value="0">Сьогодні</option><option value="7">7 днів</option><option value="30">30 днів</option></select>
+   <button class="btn ghost" data-a="csv"><svg class="i"><use href="#i-dl"/></svg>CSV</button>
+  </div>
+  <div class="list" id="list"></div>
+  <p class="note" style="margin:12px 0 40px">Список оновлюється сам щохвилини. Ціни в замовленні — ті, що бачив клієнт на сайті; звіряйте їх під час підтвердження.</p>
+ </main>
+</div>
+
+<div class="shade" id="shade" data-a="dclose"></div>
+<aside id="dr" aria-hidden="true">
+ <div class="drh"><div><b id="dtitle"></b><small id="dsub"></small></div><button class="xb" data-a="dclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="drb" id="dbody"></div>
+ <div class="drf"><button class="btn" data-a="save" id="dsave">Зберегти</button><button class="btn ghost" data-a="copy"><svg class="i"><use href="#i-copy"/></svg>Копіювати</button></div>
+</aside>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* Адреса скрипта Google (та сама, що CFG.api в index.html). Якщо порожньо — адмінка спитає її при вході. */
+const API='';
+const SITE='https://samostroy.shop/';
+
+const ST={'Нове':'var(--s-new)','Підтверджене':'var(--s-conf)','Відправлене':'var(--s-sent)','Виконане':'var(--s-done)','Скасоване':'var(--s-canc)'};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Math.round(n).toLocaleString('uk-UA').replace(/ /g,' ')+' ₴';
+const store={get:(k,s)=>{try{return(s?sessionStorage:localStorage).getItem(k)}catch(e){return null}},set:(k,v,s)=>{try{(s?sessionStorage:localStorage).setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k);sessionStorage.removeItem(k)}catch(e){}}};
+let api=API||store.get('adm_api')||'',pass=store.get('adm_pass',1)||store.get('adm_pass')||'',orders=[],tab='Нове',cur=null,timer=null,seen=new Set(JSON.parse(store.get('adm_seen')||'[]'));
+const toast=m=>{const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2800)};
+const fdt=s=>{const d=new Date(s);return isNaN(d)?'':d.toLocaleString('uk-UA',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})};
+const ERR={auth:'Невірний пароль',locked:'Забагато невдалих спроб. Зачекайте 10 хвилин.',no_pass_set:'У скрипті не задано ADMIN_PASS (Властивості скрипта)',net:'Немає зв’язку зі скриптом. Перевірте адресу й інтернет.'};
+
+async function call(body){
+ const ac=new AbortController(),t=setTimeout(()=>ac.abort(),25000);
+ try{const r=await fetch(api,{method:'POST',body:JSON.stringify({...body,pass}),signal:ac.signal});return await r.json()}
+ catch(e){return{ok:false,error:'net'}}finally{clearTimeout(t)}}
+
+/* ---------- вхід ---------- */
+$('#apiw').hidden=!!API;$('#lapi').value=api;
+$('#lf').addEventListener('submit',async e=>{e.preventDefault();
+ if(!API)api=$('#lapi').value.trim();pass=$('#lpass').value;
+ if(!/^https:\/\//.test(api)&&!/^http:\/\/127\./.test(api)){$('#lerr').textContent='Вставте адресу скрипта, що починається з https://';return}
+ $('#lbtn').classList.add('busy');const r=await call({action:'list'});$('#lbtn').classList.remove('busy');
+ if(!r.ok){$('#lerr').textContent=ERR[r.error]||('Помилка: '+r.error);return}
+ if(!API)store.set('adm_api',api);store.set('adm_pass',pass,!$('#lrem').checked);
+ start(r)});
+function start(r){$('#login').hidden=true;$('#app').hidden=false;got(r);clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)load(true)},60000)}
+async function load(quiet){
+ const b=$('[data-a=refresh]');b.classList.add('busy');const r=await call({action:'list'});b.classList.remove('busy');
+ if(!r.ok){if(r.error=='auth'||r.error=='locked')return logout(ERR[r.error]);if(!quiet)toast(ERR[r.error]||r.error);return}
+ got(r)}
+function got(r){
+ const before=new Set(orders.map(o=>o.id));
+ orders=r.orders||[];$('#upd').textContent='Оновлено о '+new Date().toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
+ if(!seen.size){orders.forEach(o=>seen.add(o.id));saveSeen()}           // перший вхід: усе вважаємо переглянутим
+ const fresh=orders.filter(o=>before.size&&!before.has(o.id));if(fresh.length)toast('Нових замовлень: '+fresh.length);
+ draw()}
+const saveSeen=()=>store.set('adm_seen',JSON.stringify([...seen].slice(-3000)));
+function logout(msg){store.del('adm_pass');pass='';clearInterval(timer);$('#app').hidden=true;$('#login').hidden=false;$('#lpass').value='';$('#lerr').textContent=msg||''}
+
+/* ---------- список ---------- */
+function inPeriod(o){const p=$('#per').value;if(p=='all')return true;const d=new Date(o.created),now=new Date();
+ if(p=='0')return d.toDateString()==now.toDateString();return now-d<=+p*864e5}
+function filtered(withTab=true){
+ const q=$('#q').value.trim().toLowerCase(),qd=q.replace(/\D/g,'');
+ return orders.filter(o=>(!withTab||tab=='Усі'||o.status==tab)&&inPeriod(o)&&(!q||[o.id,o.name,o.city,o.ttn,o.text,o.comment].join(' ').toLowerCase().includes(q)||(qd.length>=3&&o.phone.replace(/\D/g,'').includes(qd))))}
+function draw(){
+ // статистика (без скасованих)
+ const live=orders.filter(o=>o.status!='Скасоване'),now=new Date(),day=now.toDateString();
+ const today=live.filter(o=>new Date(o.created).toDateString()==day),wk=live.filter(o=>now-new Date(o.created)<=7*864e5),mo=live.filter(o=>{const d=new Date(o.created);return d.getMonth()==now.getMonth()&&d.getFullYear()==now.getFullYear()});
+ const sum=L=>L.reduce((a,o)=>a+o.total,0),nNew=orders.filter(o=>o.status=='Нове').length;
+ $('#stats').innerHTML=`<div class="stat ${nNew?'hot':''}"><span>Нові, чекають дзвінка</span><b>${nNew}</b><small>${orders.filter(o=>o.status=='Підтверджене').length} підтверджено, не відправлено</small></div>
+ <div class="stat"><span>Сьогодні</span><b>${money(sum(today))}</b><small>${today.length} замовл.</small></div>
+ <div class="stat"><span>7 днів</span><b>${money(sum(wk))}</b><small>${wk.length} замовл.</small></div>
+ <div class="stat"><span>Цей місяць</span><b>${money(sum(mo))}</b><small>${mo.length} замовл.${mo.length?', середній чек '+money(sum(mo)/mo.length):''}</small></div>`;
+ document.title=(nNew?`(${nNew}) `:'')+'Замовлення — Samostroy Shop';
+ // вкладки
+ const base=filtered(false),cnt=s=>s=='Усі'?base.length:base.filter(o=>o.status==s).length;
+ $('#tabs').innerHTML=['Нове','Підтверджене','Відправлене','Виконане','Скасоване','Усі'].map(s=>`<button data-tab="${s}" class="${tab==s?'on':''}">${s=='Усі'?s:`<span class="st" style="--c:${ST[s]};padding:0;background:none">${s}</span>`}<i>${cnt(s)}</i></button>`).join('');
+ const L=filtered();
+ $('#list').innerHTML=L.length?`<div class="row head"><span>№</span><span>Дата</span><span>Клієнт</span><span>Товари</span><span style="text-align:right">Сума</span><span>Статус</span></div>`+L.map(o=>`<button class="row ${seen.has(o.id)?'':'new'}" data-o="${esc(o.id)}"><span class="id">${esc(o.id)}</span><span class="dt">${fdt(o.created)}${o.type&&o.type!='Кошик'?' · '+esc(o.type):''}</span><span class="cu"><b>${esc(o.name||'Без імені')}</b><span>${esc(o.phone)}</span></span><span class="it">${esc(o.text.split('\n').map(x=>x.replace(/ \(SW-\d+\)/,'')).join('; '))}</span><span class="sum">${money(o.total)}</span><span class="stc"><span class="st" style="--c:${ST[o.status]||'var(--soft)'}">${esc(o.status)}</span></span></button>`).join(''):`<div class="empty">${orders.length?'За цими умовами замовлень немає.':'Замовлень ще немає. Коли клієнт оформить замовлення на сайті, воно з’явиться тут.'}</div>`}
+
+/* ---------- картка замовлення ---------- */
+const tel=p=>{let d=p.replace(/\D/g,'');if(d.length==10&&d[0]=='0')d='38'+d;return d};
+function track(o){const n=o.ttn.replace(/\s/g,'');if(!n)return'';return /укр/i.test(o.delivery)?`https://track.ukrposhta.ua/tracking_UA.html?barcode=${encodeURIComponent(n)}`:`https://novaposhta.ua/tracking/?cargo_number=${encodeURIComponent(n)}`}
+function clientMsg(o,st){const n=o.name?o.name.split(' ')[0]+', в':'В';
+ return{'Нове':`${n}ітаємо! Отримали ваше замовлення №${o.id} на суму ${money(o.total)}. Зараз перевіримо наявність і зв’яжемося з вами. Samostroy Shop`,
+ 'Підтверджене':`${n}ітаємо! Замовлення №${o.id} підтверджено, сума ${money(o.total)}. Відправимо найближчим робочим днем і надішлемо номер ТТН. Samostroy Shop`,
+ 'Відправлене':`${n}ітаємо! Замовлення №${o.id} відправлено${o.delivery?' ('+o.delivery+')':''}.${o.ttn?' Номер ТТН: '+o.ttn+'.':''} Дякуємо за покупку! Samostroy Shop`,
+ 'Виконане':`${n}ітаємо! Дякуємо, що обрали Samostroy Shop. Будемо раді фото вашого ремонту — покажемо його іншим покупцям.`,
+ 'Скасоване':`${n}ітаємо! Замовлення №${o.id} скасовано. Якщо це помилка — напишіть нам, і ми все відновимо. Samostroy Shop`}[st]||''}
+function openO(id){
+ const o=orders.find(x=>x.id==id);if(!o)return;cur={...o};seen.add(o.id);saveSeen();
+ $('#dtitle').textContent='№ '+o.id;$('#dsub').textContent=fdt(o.created)+(o.type?' · '+o.type:'');
+ const d=tel(o.phone);
+ $('#dbody').innerHTML=`
+ <div class="sec"><h3>Статус</h3><div class="seg" id="seg">${Object.keys(ST).map(s=>`<button data-st="${s}" style="--c:${ST[s]}" class="${o.status==s?'on':''}">${s}</button>`).join('')}</div></div>
+ <div class="sec"><h3>Клієнт</h3><dl class="kv"><dt>Ім’я</dt><dd>${esc(o.name||'—')}</dd><dt>Телефон</dt><dd><b>${esc(o.phone)}</b></dd><dt>Доставка</dt><dd>${esc([o.delivery,o.city].filter(Boolean).join(', ')||'—')}</dd><dt>Оплата</dt><dd>${esc(o.pay||'—')}</dd></dl>
+  <div class="acts" style="margin-top:10px"><a class="btn sm" href="tel:+${d}"><svg class="i"><use href="#i-ph"/></svg>Подзвонити</a><a class="btn ghost sm" href="viber://chat?number=%2B${d}">Viber</a><a class="btn ghost sm" href="https://t.me/+${d}" target="_blank" rel="noopener">Telegram</a><button class="btn ghost sm" data-copy="${esc(o.phone)}">Копіювати телефон</button></div></div>
+ <div class="sec"><h3>Товари</h3><div class="its">${(o.items.length?o.items:[]).map(x=>`<div><span>${x.id&&x.id!='test'?`<a href="${SITE}?p=${encodeURIComponent(x.id)}" target="_blank" rel="noopener">${esc(x.name)}</a>`:esc(x.name)}<small>${esc(x.sku||'')} · ${money(x.price)}</small></span><span>× ${x.q}</span><span>${money(x.q*x.price)}</span></div>`).join('')||`<div><span style="white-space:pre-wrap">${esc(o.text)}</span><span></span><span></span></div>`}<div><span>Разом</span><span></span><span>${money(o.total)}</span></div></div></div>
+ <div class="sec"><h3>ТТН</h3><div class="ttn"><input id="dttn" value="${esc(o.ttn)}" inputmode="numeric" placeholder="Номер накладної"><a class="btn ghost" id="dtrk" target="_blank" rel="noopener" href="${esc(track(o))}" ${o.ttn?'':'hidden'}>Відстежити</a></div></div>
+ <div class="sec"><h3>Коментар менеджера</h3><textarea id="dcom" placeholder="Напр.: передзвонити після 18:00, замінити колір">${esc(o.comment)}</textarea></div>
+ <div class="sec"><h3>Повідомлення клієнту</h3><div class="msgbox" id="dmsg"></div><div class="acts" style="margin-top:8px"><button class="btn ghost sm" data-a="copymsg"><svg class="i"><use href="#i-copy"/></svg>Копіювати текст</button></div><p class="note" style="margin-top:6px">Скопіюйте й надішліть клієнту у Viber або Telegram.</p></div>
+ ${o.page?`<p class="note">Замовлено зі сторінки: <a href="${esc(o.page)}" target="_blank" rel="noopener">${esc(o.page.replace(/^https?:\/\//,'').slice(0,70))}</a></p>`:''}`;
+ $('#dmsg').textContent=clientMsg(cur,cur.status);
+ $('#dttn').addEventListener('input',e=>{cur.ttn=e.target.value.trim();const l=$('#dtrk');l.hidden=!cur.ttn;l.href=track(cur);$('#dmsg').textContent=clientMsg(cur,cur.status)});
+ dr(true);draw()}
+function dr(o){$('#dr').classList.toggle('on',o);$('#shade').classList.toggle('on',o);$('#dr').setAttribute('aria-hidden',!o)}
+async function save(){
+ if(!cur)return;const b=$('#dsave');b.classList.add('busy');
+ const r=await call({action:'update',id:cur.id,status:cur.status,ttn:$('#dttn').value.trim(),comment:$('#dcom').value});
+ b.classList.remove('busy');
+ if(!r.ok)return toast(ERR[r.error]||('Не збережено: '+r.error));
+ const i=orders.findIndex(o=>o.id==cur.id);orders[i]=r.order;cur={...r.order};draw();toast('Збережено');
+ if(r.order.status=='Відправлене'&&!r.order.ttn)toast('Збережено. Не забудьте вписати ТТН')}
+function copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Скопійовано'),()=>{const a=document.createElement('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove();toast('Скопійовано')})}
+function csv(){
+ const L=filtered(),head=['№','Дата','Статус','Ім’я','Телефон','Місто / відділення','Доставка','Оплата','Сума','Товари','ТТН','Коментар'];
+ const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+ const rows=L.map(o=>[o.id,new Date(o.created).toLocaleString('uk-UA'),o.status,o.name,o.phone,o.city,o.delivery,o.pay,o.total,o.text,o.ttn,o.comment].map(q).join(';'));
+ const blob=new Blob(['﻿'+[head.map(q).join(';'),...rows].join('\r\n')],{type:'text/csv;charset=utf-8'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='zamovlennya-'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+
+/* ---------- події ---------- */
+document.addEventListener('click',e=>{const b=e.target.closest('button,a,[data-a]');if(!b)return;const D=b.dataset;
+ if(D.tab){tab=D.tab;return draw()}
+ if(D.o)return openO(D.o);
+ if(D.st){cur.status=D.st;$$('#seg button').forEach(x=>x.classList.toggle('on',x==b));$('#dmsg').textContent=clientMsg(cur,cur.status);if(D.st=='Відправлене')$('#dttn').focus();return}
+ if(D.copy!==undefined)return copy(D.copy);
+ switch(D.a){case'refresh':return load();case'logout':return logout();case'dclose':return dr(false);case'save':return save();case'csv':return csv();
+  case'copy':return copy(cur?`Замовлення №${cur.id}\n${cur.text}\nРазом: ${money(cur.total)}\n${cur.name}\n${cur.phone}\n${[cur.delivery,cur.city].filter(Boolean).join(', ')}\n${cur.pay}`:'');
+  case'copymsg':return copy($('#dmsg').textContent)}});
+$('#q').addEventListener('input',draw);$('#per').addEventListener('change',draw);
+document.addEventListener('keydown',e=>{if(e.key=='Escape')dr(false)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&pass&&!$('#app').hidden)load(true)});
+// автоматичний вхід, якщо пароль збережено
+if(api&&pass){call({action:'list'}).then(r=>r.ok?start(r):logout(r.error=='net'?ERR.net:''))}
+</script>
+</body>
+</html>
