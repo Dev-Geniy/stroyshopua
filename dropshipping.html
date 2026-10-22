@@ -29,7 +29,7 @@
 ]}
 </script>
 <script type="application/ld+json" id="ld"></script>
-<link rel="stylesheet" href="shop.css?v=3e0da13c">
+<link rel="stylesheet" href="shop.css?v=9572495d">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -298,7 +298,7 @@ addEventListener('DOMContentLoaded',()=>{
   const ok=id=>{f.innerHTML=`<div class="done"><div class="ic"><svg class="i"><use href="#i-check"/></svg></div><h3>Заявку${id?' №'+esc(id):''} отримано</h3><p>Менеджер зв’яжеться з вами найближчим часом. Щоб не чекати — напишіть у Telegram.</p><a class="btn" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">Написати менеджеру</a></div>`};
   if(!CFG.api){tg(msg);return ok('')}
   const b=$i('aBtn');b.classList.add('busy');key=key||okey();
-  let r=null;try{r=await api({action:'order',order:{type:'Дропшипінг',name:$i('aName').value,phone:ph.value,city:'',pay:'',delivery:'',items:[{id:'',name:details,sku:'',q:1,price:0}],page:location.href,lang,key,hp:$i('aHp').value}})}catch(x){}
+  let r=null;try{r=await api({action:'order',order:{type:'Дропшипінг',name:$i('aName').value,phone:ph.value,city:'',pay:'',delivery:'',items:leadItems(details.split('; ')),page:location.href,lang,key,hp:$i('aHp').value}})}catch(x){}
   b.classList.remove('busy');
   if(r&&r.ok)return ok(r.id);
   hint.innerHTML='Не вдалося надіслати через сайт. <button type="button" class="link" id="aTg">Надіслати в Telegram</button> — текст заявки вже готовий.';
@@ -377,6 +377,6 @@ addEventListener('DOMContentLoaded',()=>{
 
 <script src="config.js?v=52b18222"></script>
 <script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Дропшипінг", "listTitle": "Дропшипінг", "url": "https://samostroy.shop/dropshipping.html", "title": "Дропшипінг будматеріалів без вкладень — партнерська програма Samostroy Shop", "desc": "Продавайте 1200+ товарів для ремонту без складу й закупівлі: ми пакуємо, відправляємо в день замовлення й беремо на себе повернення. Ціну ставите ви. Три рівні партнера, навчання й готові матеріали.", "guide": "", "calc": 0, "faq": [["Чи потрібні вкладення?", "Ні. Ви не викуповуєте товар і не орендуєте склад: працюєте з нашим складом за моделлю дропшипінгу. Платите лише своїм часом на оголошення й спілкування з клієнтами."], ["Яка маржа?", "На рекомендованій роздрібній ціні — в середньому до 10% на рівні Starter і від 15% на рівні Pro. На рівні Team — найвигідніші закупівельні ціни й бонуси з обороту. Ціну для клієнта ви встановлюєте самі: якщо продаєте дорожче рекомендованої, різниця теж ваша."], ["Як я отримую свій прибуток?", "Ви встановлюєте роздрібну ціну. Клієнт оплачує замовлення на реквізити або післяплатою на пошті. Ми утримуємо оптову вартість товару, а різницю виплачуємо вам — за запитом або за домовленістю раз на тиждень чи місяць."], ["Що з поверненнями?", "Повернення й обмін бере на себе Samostroy Shop — ви не залишаєтеся сам на сам з клієнтом."], ["Де я можу продавати?", "OLX, Prom, Rozetka та інші маркетплейси, Instagram, TikTok, Facebook, Telegram-канали, власний сайт, дошки оголошень, офлайн-магазин — обмежень немає."], ["Чи можу я продавати за своїми цінами?", "Так. Ми рекомендуємо ринковий рівень, але остаточну ціну встановлюєте ви."], ["Як швидко можна отримати перші замовлення?", "Все залежить від активності. Перші партнери іноді отримували запити вже в перший день після розміщення оголошень."], ["Чи надаєте документи для магазинів?", "Так, партнерам рівнів Pro і Team надаємо документи на запит. Товари сертифіковані й мають документальний супровід."], ["Що робити, якщо я боюся починати?", "Почніть з малого: 3–5 оголошень і кілька запитів. Ризику немає — ви нічого не купуєте наперед, а менеджер підкаже на кожному кроці."], ["Чи можна поєднувати з роботою або навчанням?", "Так. Багато партнерів стартують у вільний час і поступово виходять на стабільний дохід."]], "wall": ["3d-paneli", "pet-plytka", "samokleyucha-plivka", "plytka-vinilova", "termokylymky", "dzerkalnyi-dekor", "ekoshkira", "pidloga-pazl-plyushevyy", "shpalery"], "info": true}</script>
-<script src="shop.js?v=1e978c2c"></script>
+<script src="shop.js?v=77a6bdd9"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const K={from:['від','от'],nNoRes:['Запас {r}% — це менше половини елемента, тож окремо докупувати не потрібно: запас уже є в мінімумі.','Запас {r}% — это меньше половины элемента, поэтому докупать отдельно не нужно: запас уже есть в минимуме.'],nWrap:['Розміри вводьте разом із загином: по 3–5 см з кожного боку деталі.','Размеры вводите вместе с загибом: по 3–5 см с каждой стороны детали.'],cWe:['Ширина деталі, м','Ширина детали, м'],cHe:['Висота деталі, м','Высота детали, м'],fullcat:['Весь каталог магазину','Весь каталог магазина'],okH:['Замовлення №{id} прийнято','Заказ №{id} принят'],okP:['Менеджер зв’яжеться з вами, щоб підтвердити наявність і доставку.','Менеджер свяжется с вами, чтобы подтвердить наличие и доставку.'],okTg:['Написати менеджеру в Telegram','Написать менеджеру в Telegram'],okMore:['Продовжити покупки','Продолжить покупки'],
+const K={leadOk:['Заявку отримано','Заявка получена'],leadOkN:['Заявку №{id} отримано','Заявка №{id} получена'],leadOkP:['Менеджер зв’яжеться з вами найближчим часом і надішле прайс та умови. Щоб не чекати — напишіть у Telegram.','Менеджер свяжется с вами в ближайшее время и пришлёт прайс и условия. Чтобы не ждать — напишите в Telegram.'],from:['від','от'],nNoRes:['Запас {r}% — це менше половини елемента, тож окремо докупувати не потрібно: запас уже є в мінімумі.','Запас {r}% — это меньше половины элемента, поэтому докупать отдельно не нужно: запас уже есть в минимуме.'],nWrap:['Розміри вводьте разом із загином: по 3–5 см з кожного боку деталі.','Размеры вводите вместе с загибом: по 3–5 см с каждой стороны детали.'],cWe:['Ширина деталі, м','Ширина детали, м'],cHe:['Висота деталі, м','Высота детали, м'],fullcat:['Весь каталог магазину','Весь каталог магазина'],okH:['Замовлення №{id} прийнято','Заказ №{id} принят'],okP:['Менеджер зв’яжеться з вами, щоб підтвердити наявність і доставку.','Менеджер свяжется с вами, чтобы подтвердить наличие и доставку.'],okTg:['Написати менеджеру в Telegram','Написать менеджеру в Telegram'],okMore:['Продовжити покупки','Продолжить покупки'],
 failH:['Не вдалося надіслати через сайт','Не удалось отправить через сайт'],failP:['Перевірте інтернет або надішліть замовлення менеджеру в Telegram — текст уже готовий.','Проверьте интернет или отправьте заказ менеджеру в Telegram — текст уже готов.'],failTg:['Надіслати в Telegram','Отправить в Telegram'],retry2:['Спробувати ще раз','Попробовать ещё раз'],rate:['Забагато замовлень за короткий час. Зачекайте кілька хвилин або напишіть менеджеру.','Слишком много заказов за короткое время. Подождите несколько минут или напишите менеджеру.'],num:['№','№'],
 more2:['Додати ще товари','Добавить ещё товары'],clearc:['Очистити кошик','Очистить корзину'],who:['Куди відправити','Куда отправить'],del:['Видалити','Удалить'],cleared:['Кошик очищено','Корзина очищена'],
 cel1:['Довжина елемента, см','Длина элемента, см'],cel2:['Ширина елемента, см','Ширина элемента, см'],cW:['Ширина стіни або підлоги, м','Ширина стены или пола, м'],cH:['Висота стіни або довжина підлоги, м','Высота стены или длина пола, м'],cA:['Або площа, м²','Или площадь, м²'],cO:['Вікна й двері, м²','Окна и двери, м²'],cR:['Запас на брак і помилки','Запас на брак и ошибки'],cAuto:['Авто','Авто'],
@@ -882,10 +882,37 @@ document.addEventListener('click',e=>{
  }
 });
 
+/* ---------- форма заявки для партнерських сторінок (опт, франшиза тощо) ----------
+   <form data-lead="Опт">: поля з data-k="Назва" потрапляють у текст заявки; data-role="name|phone" — ім'я й телефон.
+   Заявка йде в Google Таблицю (тип = data-lead) і в Telegram-бот; якщо сайт не зміг — пропонуємо Telegram. */
+const leadItems=parts=>parts.flatMap(x=>{const r=[];while(x.length>190){let k=x.lastIndexOf(' ',190);if(k<100)k=190;r.push(x.slice(0,k));x=x.slice(k).trim()}if(x)r.push(x);return r}).slice(0,90).map(n=>({id:'',name:n,sku:'',q:1,price:0}));
+function leadForms(){
+ document.querySelectorAll('form[data-lead]').forEach(f=>{
+  let key='';
+  f.addEventListener('submit',async e=>{
+   e.preventDefault();
+   const ph=f.querySelector('[data-role=phone]'),nm=f.querySelector('[data-role=name]'),hint=f.querySelector('.hint'),btn=f.querySelector('button[type=submit]');
+   if(!phoneOk(ph.value)){ph.classList.add('err');hint.textContent=t('phr');ph.focus();ph.addEventListener('input',()=>{ph.classList.remove('err');hint.textContent=''},{once:true});return}
+   const parts=[];
+   f.querySelectorAll('[data-k]').forEach(el=>{
+    let v='';
+    if(el.tagName=='FIELDSET')v=[...el.querySelectorAll('input:checked')].map(x=>x.value).join(', ');
+    else if(el.type=='checkbox')v=el.checked?(el.value||'так'):'';
+    else v=(el.value||'').trim();
+    if(v)parts.push(el.dataset.k+': '+v)});
+   const msg=`🤝 ${f.dataset.lead}\n${t('nm')}: ${nm?nm.value:''}\n${t('phn')}: ${ph.value}\n`+parts.join('\n');
+   const ok=id=>{f.innerHTML=`<div class="done"><div class="ic"><svg class="i"><use href="#i-check"/></svg></div><h3>${id?t('leadOkN',{id:esc(id)}):t('leadOk')}</h3><p>${t('leadOkP')}</p><a class="btn" href="https://t.me/${CFG.tg}" target="_blank" rel="noopener">${t('askm')}</a></div>`;f.scrollIntoView({block:'center'})};
+   if(!CFG.api){tg(msg);return ok('')}
+   btn.classList.add('busy');key=key||okey();
+   let r=null;try{r=await api({action:'order',order:{type:f.dataset.lead,name:nm?nm.value:'',phone:ph.value,city:'',pay:'',delivery:'',items:leadItems(parts.length?parts:['—']),page:location.href,lang,key,hp:(f.querySelector('.hp')||{}).value||''}})}catch(x){}
+   btn.classList.remove('busy');
+   if(r&&r.ok)return ok(r.id);
+   hint.innerHTML=`${t('failH')}. <button type="button" class="link">${t('failTg')}</button>`;hint.querySelector('button').onclick=()=>tg(msg)})})}
 /* ---------- запуск: помилка в другорядній частині не повинна зупиняти завантаження каталогу ---------- */
 const safe=(f,n)=>{try{f()}catch(e){console.error('[Samostroy] '+n,e)}};
 safe(()=>$('#yr').textContent=new Date().getFullYear(),'year');
 safe(buildMega,'menu');
 safe(()=>setLang(lang),'lang');
+safe(leadForms,'leadForms');
 safe(()=>{view=readURL();render()},'render');
 load();

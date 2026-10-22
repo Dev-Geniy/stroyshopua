@@ -1,1259 +1,281 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Оптова співпраця — Samostroy Shop</title>
-
-  <!-- Фавікон -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  
-  <!-- ШРИФТ -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- ИКОНКИ -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- 🚀 SEO БЛОК — Оптова співпраця Samostroy Shop -->
-  <!-- Основні ключові слова -->
-  <meta name="keywords" content="опт будматеріалів україна, оптові поставки, будматеріали оптом, вініл опт, плитка опт, самоклейка опт, магазини декору, студії ремонту, поставки будматеріалів, оптова співпраця stroy shop">
-
-  <!-- Опис сторінки -->
-  <meta name="description" content="Оптові поставки будматеріалів по Україні — Samostroy Shop. Склади в Дніпрі та Вінниці, індивідуальні знижки, швидкі відправки, робота по договору, персональний менеджер.">
-
-  <!-- Автор -->
-  <meta name="author" content="Samostroy Shop">
-
-  <!-- Канонічне посилання -->
-  <link rel="canonical" href="https://samostroy.shop/opt.html">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Оптові поставки — Samostroy Shop">
-  <meta property="og:description" content="Будматеріали оптом: плитка, вініл, самоклейка, покриття, меблі та декор. Швидкі відправки, знижки та персональний менеджер для бізнесу.">
-  <meta property="og:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-  <meta property="og:url" content="https://samostroy.shop/opt.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="uk_UA">
-
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Оптові поставки — Samostroy Shop">
-  <meta name="twitter:description" content="Опт будматеріалів для магазинів, студій ремонту та бізнесу. Знижки, резерви, швидкі відправки.">
-  <meta name="twitter:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- JSON-LD Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WholesaleStore",
-    "name": "Samostroy Shop — Опт",
-    "image": "https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png",
-    "url": "https://samostroy.shop/opt.html",
-    "description": "Оптові поставки будматеріалів по Україні для магазинів, студій ремонту, HoReCa та B2B клієнтів.",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "UA"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+380984927948",
-      "contactType": "sales"
-    },
-    "sameAs": [
-      "https://t.me/samostroy_shop",
-      "https://www.tiktok.com/@stroyshop_ua"
-    ]
-  }
-  </script>
-
-  <!-- Robots -->
-  <meta name="robots" content="index, follow">
-
-  <!-- Sitemap -->
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-
-  <!-- Розширені фавікони -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <style>
-    :root {
-      --bg:#050509;
-      --bg2:#0c0d12;
-      --card:rgba(255,255,255,0.04);
-      --card2:rgba(255,255,255,0.06);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --muted:#a4a9b7;
-      --text:#f1f1f4;
-      --radius:18px;
-      --border:rgba(255,255,255,0.1);
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-      --trans:0.25s;
-    }
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
-    body{
-      font-family:"Inter",sans-serif;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.45;
-    }
-
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    /* HEADER */
-    header{
-      position:sticky;
-      top:0;
-      z-index:10;
-      padding:18px 24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,9,0.8);
-      border-bottom:1px solid var(--border);
-    }
-
-    .logo{
-      font-size:clamp(20px,3vw,28px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      letter-spacing:1px;
-      text-transform:uppercase;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:12px 20px;
-      background:var(--grad);
-      border-radius:var(--radius);
-      font-size:14px;
-      font-weight:700;
-      color:#000;
-      cursor:pointer;
-      border:none;
-      transition:var(--trans);
-      box-shadow:var(--shadow);
-      white-space:nowrap;
-    }
-
-    .btn:hover{
-      transform:translateY(-3px);
-      box-shadow:0 24px 50px rgba(0,0,0,0.75);
-    }
-
-    .btn-outline{
-      background:transparent;
-      border:1px solid var(--accent);
-      color:var(--accent2);
-      box-shadow:none;
-    }
-
-    .btn-outline:hover{
-      background:rgba(255,122,26,0.08);
-      box-shadow:var(--shadow);
-    }
-
-    .btn i{
-      width:20px;
-      height:20px;
-    }
-
-    /* SECTION BASE */
-    .section{
-      max-width:1150px;
-      margin:50px auto;
-      padding:0 20px;
-    }
-
-    .title{
-      font-size:clamp(24px,4vw,34px);
-      font-weight:800;
-      margin-bottom:10px;
-      line-height:1.2;
-    }
-
-    .sub{
-      color:var(--muted);
-      font-size:clamp(14px,2.4vw,16px);
-      max-width:680px;
-      margin-bottom:24px;
-    }
-
-    /* HERO */
-    .hero{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:32px;
-      align-items:center;
-      max-width:1150px;
-      margin:50px auto;
-      padding:0 20px;
-    }
-
-    .hero h1{
-      font-size:clamp(30px,4vw,45px);
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      font-weight:800;
-      margin-bottom:12px;
-      line-height:1.15;
-    }
-
-    .hero p{
-      color:var(--muted);
-      font-size:clamp(14px,2.4vw,17px);
-      max-width:540px;
-      margin-bottom:20px;
-    }
-
-    .tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-bottom:24px;
-    }
-
-    .tag{
-      padding:6px 12px;
-      font-size:12px;
-      background:rgba(255,255,255,0.05);
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-
-    .hero-side{
-      padding:20px;
-      background:var(--card2);
-      border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .hero-side-title{
-      font-size:15px;
-      font-weight:700;
-      margin-bottom:8px;
-    }
-
-    .side-row{
-      display:flex;
-      justify-content:space-between;
-      color:var(--muted);
-      font-size:14px;
-      padding:6px 0;
-      border-bottom:1px solid rgba(255,255,255,0.07);
-    }
-
-    .side-row:last-child{
-      border-bottom:none;
-    }
-
-    .side-row strong{
-      color:var(--accent2);
-    }
-
-    /* GRID */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:20px;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .card h3{
-      font-size:18px;
-      color:var(--accent2);
-      margin-bottom:8px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .card p{
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    /* BENEFITS */
-    .benefits-list{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:16px;
-    }
-
-    .benefit{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:16px 18px;
-      font-size:14px;
-      color:var(--muted);
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-    }
-
-    .benefit i{
-      width:18px;
-      height:18px;
-      flex-shrink:0;
-      color:var(--accent2);
-    }
-
-    .benefit-title{
-      font-weight:600;
-      color:var(--text);
-      margin-bottom:4px;
-      font-size:14px;
-    }
-
-    /* STEPS */
-    .steps .step{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      position:relative;
-    }
-
-    .step-num{
-      position:absolute;
-      right:12px;
-      top:12px;
-      font-size:20px;
-      font-weight:800;
-      color:rgba(255,255,255,0.12);
-    }
-
-    .step-title{
-      font-size:16px;
-      font-weight:600;
-      margin-bottom:6px;
-    }
-
-    .step-text{
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    /* VOLUMES */
-    .volume-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .volume-title{
-      font-size:16px;
-      font-weight:700;
-      margin-bottom:6px;
-      color:var(--accent2);
-    }
-
-    .volume-note{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:8px;
-    }
-
-    .volume-label{
-      display:inline-block;
-      padding:3px 8px;
-      border-radius:999px;
-      background:rgba(255,122,26,0.16);
-      color:var(--accent2);
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.06em;
-      margin-bottom:8px;
-    }
-
-    /* CATEGORIES */
-    .categories-wrap{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:16px;
-    }
-
-    .categories-block{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .categories-block h3{
-      font-size:16px;
-      font-weight:700;
-      margin-bottom:6px;
-      color:var(--accent2);
-    }
-
-    .categories-block ul{
-      list-style:none;
-      columns:2;
-      gap:10px;
-      font-size:13px;
-      color:var(--muted);
-      margin-top:6px;
-    }
-
-    .categories-block li{
-      margin-bottom:4px;
-    }
-
-    @media(max-width:600px){
-      .categories-block ul{
-        columns:1;
-      }
-    }
-
-    /* CTA */
-    .cta{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:26px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-      flex-wrap:wrap;
-    }
-
-    .cta h3{
-      font-size:clamp(22px,4vw,28px);
-      font-weight:800;
-      margin-bottom:4px;
-    }
-
-    .cta p{
-      color:var(--muted);
-      font-size:14px;
-      max-width:420px;
-    }
-
-    /* FAQ */
-    .faq-item{
-      background:var(--card);
-      padding:20px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      margin-bottom:14px;
-    }
-
-    .faq-item h3{
-      font-size:16px;
-      color:var(--accent2);
-      margin-bottom:6px;
-    }
-
-    .faq-item p{
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    footer{
-      text-align:center;
-      padding:22px;
-      color:var(--muted);
-      font-size:13px;
-      border-top:1px solid var(--border);
-      margin-top:40px;
-    }
-
-    /* --------- НГ --------- */
-/* 🎄 + год возле названия (год подставит JS в data-ny-year) */
-html.ny .ac-logo{ position:relative; }
-html.ny .ac-logo::after{
-  content: " 🎄 " attr(data-ny-year);
-  display:inline-block;
-  margin-left:10px;
-  font-size:12px;
-  font-weight:900;
-  padding:4px 10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
-  color:var(--accent2);
-  vertical-align:middle;
-}
-
-/* ===== ГИРЛЯНДА (лампочки сверху) ===== */
-.ny-garland{
-  position:fixed;
-  left:0; right:0; top:0;
-  height:44px;          /* выше и меньше */
-  z-index:55;
-  pointer-events:auto;  /* клики по лампочкам */
-  display:none;
-}
-html.ny .ny-garland{ display:block; }
-
-/* УБРАНО: горизонтальная верёвка полностью */
-/* .ny-garland::before — не используем */
-
-.ny-garland-row{
-  position:absolute;
-  left:0; right:0; top:0;
-  height:44px;
-  display:flex;
-  justify-content:space-evenly;
-  align-items:flex-start;
-  padding:0 12px 0;
-  gap:10px;
-}
-
-/* лампочка: контейнер НЕ переворачиваем (чтоб подвес сверху был сверху) */
-.ny-bulb{
-  position:relative;
-  width:18px;                 /* меньше */
-  height:18px;                /* меньше */
-  transform: translateY(var(--ny-drop, -3px)) rotate(var(--ny-rot, 0deg));
-  opacity:.92;
-  cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
-
-  /* лёгкая тень (дешевле чем filter drop-shadow) */
-  box-shadow: 0 0 10px rgba(0,0,0,.25);
-}
-
-/* подвес сверху */
-.ny-bulb::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:-11px;
-  width:2px;
-  height:11px;
-  transform: translateX(-50%);
-  background: rgba(255,255,255,.16);
-  border-radius: 2px;
-  pointer-events:none;
-  box-shadow: 0 6px 10px rgba(0,0,0,.35);
-}
-
-/* переворачиваем ТОЛЬКО SVG лампочки */
-.ny-bulb svg{
-  width:100%;
-  height:100%;
-  display:block;
-  transform: rotate(180deg);
-  transform-origin:center;
-}
-
-/* контур лампочки */
-.ny-bulb .ny-stroke{
-  stroke: var(--ny-c);
-  stroke-width: 2.1;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* “стекло” внутри */
-.ny-bulb .ny-glass{
-  fill: color-mix(in srgb, var(--ny-c) 14%, transparent);
-  opacity: .8;
-}
-
-/* дешёвые анимации (только opacity) */
-@keyframes nyWave{
-  0%,100% { opacity:.35; }
-  40%     { opacity:1; }
-}
-@keyframes nyBlinkFast{
-  0%,100% { opacity:.25; }
-  35%     { opacity:1; }
-  65%     { opacity:.35; }
-}
-@keyframes nyBlinkSlow{
-  0%   { opacity:.35; }
-  35%  { opacity:1; }
-  75%  { opacity:.55; }
-  100% { opacity:.35; }
-}
-
-/* базовая “жизнь” */
-.ny-bulb{
-  animation: nyWave var(--ny-wave, 3.4s) ease-in-out infinite;
-}
-.ny-bulb.ny-fast{
-  animation:
-    nyWave var(--ny-wave, 3.2s) ease-in-out infinite,
-    nyBlinkFast var(--ny-blink, 1.2s) steps(2, end) infinite;
-}
-.ny-bulb.ny-slow{
-  animation:
-    nyWave var(--ny-wave, 4.2s) ease-in-out infinite,
-    nyBlinkSlow var(--ny-blink, 2.8s) ease-in-out infinite;
-}
-
-/* ===== СНЕЖИНКИ (ультра-лёгкий DOM) ===== */
-.ny-snow{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:40;
-  display:none;
-}
-html.ny .ny-snow{ display:block; }
-
-/* падение анимируем на контейнере (transform) */
-.ny-flake{
-  position:absolute;
-  top:-12vh;
-  left:0;
-  width: var(--ny-size, 14px);
-  height: var(--ny-size, 14px);
-
-  /* в 2 раза прозрачнее */
-  opacity: var(--ny-op, .28);
-
-  will-change: transform;
-  transform: translate3d(0,0,0);
-
-  animation: nyFall var(--ny-dur, 14s) linear infinite;
-}
-
-/* sway отдельно на вложенном (transform translateX — дешево) */
-.ny-flake-inner{
-  width:100%;
-  height:100%;
-  animation: nySway var(--ny-sway-dur, 5s) ease-in-out infinite;
-}
-
-.ny-flake svg{ width:100%; height:100%; display:block; }
-.ny-flake path{
-  stroke: rgba(255,255,255,.85);
-  stroke-width: 1.6;
-  fill:none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* только transform/opacity */
-@keyframes nyFall{
-  from { transform: translate3d(var(--ny-x,0px), -12vh, 0) rotate(0deg); opacity: var(--ny-op, .28); }
-  to   { transform: translate3d(var(--ny-x2,0px), 112vh, 0) rotate(var(--ny-r2, 540deg)); opacity: var(--ny-op, .28); }
-}
-@keyframes nySway{
-  0%   { transform: translateX(0px); }
-  25%  { transform: translateX(var(--ny-sway, 14px)); }
-  50%  { transform: translateX(calc(var(--ny-sway, 14px) * -1)); }
-  75%  { transform: translateX(calc(var(--ny-sway, 14px) * .6)); }
-  100% { transform: translateX(0px); }
-}
-
-/* мобилка ещё легче */
-@media (max-width:640px){
-  .ny-bulb{ width:16px; height:16px; }
-  .ny-garland{ height:40px; }
-  .ny-garland-row{ height:40px; }
-  .ny-flake{ opacity: .22; }
-}
-
-/* если пользователь/устройство просит меньше анимации — отключаем */
-@media (prefers-reduced-motion: reduce){
-  html.ny .ny-snow{ display:none !important; }
-  html.ny .ny-garland{ display:none !important; }
-  html.ny .ac-logo::after{ display:none !important; }
-}
-
-/* =========================
-   NEWYEAR END (REMOVE LATER)
-   ========================= */
-    
-    /* RESPONSIVE */
-    @media(max-width:900px){
-      .hero{
-        grid-template-columns:1fr;
-        margin-top:24px;
-        gap:24px;
-      }
-
-      .cta{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-    }
-
-    @media(max-width:640px){
-      header{
-        padding:14px 16px;
-      }
-
-      .btn{
-        padding:10px 14px;
-        font-size:13px;
-      }
-
-      .section{
-        margin:40px auto;
-      }
-    }
-
-    @media(max-width:480px){
-      .hero h1{
-        font-size:28px;
-      }
-
-      .hero p{
-        font-size:14px;
-      }
-
-      .title{
-        font-size:22px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Самоклеючі матеріали й будматеріали оптом — оптові поставки по Україні | Samostroy Shop</title>
+<meta name="description" content="Оптові поставки 3D панелей, плитки, плівки, шпалер, підлоги, килимків, екошкіри, дзеркал і меблів для магазинів, студій ремонту й бізнесу. Склади в Дніпрі та Вінниці, відправка за 1–2 дні, договір для ФОП і юросіб.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://samostroy.shop/opt.html">
+<meta name="theme-color" content="#2b3138">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samostroy Shop">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Оптові поставки для бізнесу — Samostroy Shop">
+<meta property="og:description" content="Магазинам, студіям ремонту, дизайнерам і HoReCa: оптові ціни, резерв на 2 складах, робота за договором, персональний менеджер.">
+<meta property="og:url" content="https://samostroy.shop/opt.html">
+<meta property="og:image" content="https://samostroy.shop/samostroy-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kabinet.dropoffice.com.ua">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"OnlineStore","@id":"https://samostroy.shop/#store","name":"Samostroy Shop","url":"https://samostroy.shop/","logo":"https://samostroy.shop/samostroy-shop-logo.jpg","image":"https://samostroy.shop/samostroy-preview.jpg","telephone":"+380984927948","description":"Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.","areaServed":"UA","currenciesAccepted":"UAH","paymentAccepted":"Cash on delivery, Card","address":{"@type":"PostalAddress","addressCountry":"UA"},"sameAs":["https://t.me/samostroy_shop","https://www.tiktok.com/@stroyshop_ua","https://www.instagram.com/samostroy.shop"]},
+{"@type":"WebSite","@id":"https://samostroy.shop/#site","url":"https://samostroy.shop/","name":"Samostroy Shop","inLanguage":"uk","publisher":{"@id":"https://samostroy.shop/#store"},"potentialAction":{"@type":"SearchAction","target":"https://samostroy.shop/?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
+<script type="application/ld+json" id="ld"></script>
+<link rel="stylesheet" href="shop.css?v=9572495d">
 </head>
 <body>
-
-<!-- =========================
-     NEWYEAR START (REMOVE LATER)
-     ========================= -->
-<div class="ny-garland" aria-hidden="true"></div>
-<div class="ny-snow" aria-hidden="true"></div>
-<!-- =========================
-     NEWYEAR END (REMOVE LATER)
-     ========================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+ <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.9V15"/><circle cx="12" cy="18.5" r=".6"/><circle cx="12" cy="12" r="10"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.5 4.5 2.8 11.6c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.3.8 1.3 1 1.9.4l2.6-2.5 4.8 3.5c.7.5 1.7.1 1.9-.7L22.9 5.8c.2-1-.6-1.7-1.4-1.3z"/><path d="m7.5 14.9 10-7.4-7.4 8.5"/></symbol>
+</svg>
 
 <header>
-  <div class="logo">Samostroy Shop</div>
-  <a href="index.html" class="btn btn-outline">
-    <i data-lucide="arrow-left"></i>
-    Назад до магазину
-  </a>
+ <div class="w hd">
+  <a class="logo" href="./"><img src="logo.jpg" alt="Samostroy Shop" width="44" height="44"><span>Samostroy Shop<small data-i="tag">Ремонт своїми руками</small></span></a>
+  <button class="hcat" data-a="mega" aria-expanded="false" aria-controls="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+  <div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q" autocomplete="off" data-ip="ph" placeholder="Пошук: 3D панель, PET плитка, артикул" aria-label="Пошук товарів"><button class="x" data-a="clr" aria-label="Очистити" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
+  <a class="hphone" href="tel:+380984927948">+380 98 492 79 48</a>
+  <div class="lg"><button data-l="uk" class="on">UA</button><button data-l="ru">RU</button></div>
+  <button class="btn hcart" data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="lbl" data-i="cart">Кошик</span><span class="cnt" data-cnt>0</span></button>
+ </div>
+ <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
+ <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
+<main id="top">
+<section class="w hero lhero" id="lhero">
+ <div>
+  <nav class="crumbs" aria-label="Breadcrumb"><span><a href="./">Головна</a></span><span>Оптовим покупцям</span></nav>
+  <h1>Оптові поставки матеріалів для ремонту й декору</h1>
+  <p class="lead">Регулярні закупівлі для магазинів, студій ремонту, майстерень і бізнесу по всій Україні. Склади в Дніпрі та Вінниці, відправка за 1–2 робочі дні й персональний менеджер.</p>
+  <div class="acts">
+   <a class="btn" href="#apply">Отримати оптовий прайс</a>
+   <a class="btn ghost" href="https://t.me/manager_samostroy_shop?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D0%B3%D0%BE%D0%B2%D0%BE%D1%80%D0%B8%D1%82%D0%B8%20%D0%BE%D0%BF%D1%82%D0%BE%D0%B2%D1%83%20%D1%81%D0%BF%D1%96%D0%B2%D0%BF%D1%80%D0%B0%D1%86%D1%8E" target="_blank" rel="noopener">Написати в Telegram</a>
+  </div>
+  <div class="facts">
+   <div><b>2 склади</b><span>Дніпро та Вінниця</span></div>
+   <div><b>Відправка за 1–2 дні</b><span>Нова Пошта, Укрпошта, кур’єр</span></div>
+   <div><b>Договір</b><span>Для ФОП і юросіб</span></div>
+   <div><b>Знижки</b><span>Індивідуальні при великих обсягах</span></div>
+  </div>
+ </div>
+ <div class="wallbox">
+  <div class="tw-wrap">
+   <div class="tw" id="tw">
+    <button class="tl"></button><button class="tl"></button><button class="tl"></button>
+    <button class="tl"></button><button class="tl"></button><button class="tl"></button>
+    <button class="tl"></button><button class="tl"></button><button class="tl peel"></button>
+    <div class="peelbg" aria-hidden="true"></div><div class="peelfx" aria-hidden="true"></div>
+   </div>
+  </div>
+  <p class="wallnote"><svg class="i"><use href="#i-check"/></svg><span>Роздрібні ціни з каталогу. Оптові — у прайсі, який надішле менеджер.</span></p>
+ </div>
+</section>
+
+<section class="w sec" id="who" style="padding-top:8px">
+ <h2>Кому підходить опт</h2>
+ <div class="aud">
+  <div class="box"><h3>Магазини та шоуруми</h3><p>Офлайн- та онлайн-магазини декору, будматеріалів, меблів і товарів для дому.</p><div class="chips"><span>Стабільні поставки</span><span>Широкий асортимент</span></div></div>
+  <div class="box"><h3>Студії ремонту й дизайнери</h3><p>Компанії, що роблять ремонт «під ключ», дизайнери інтер’єрів, авторські студії.</p><div class="chips"><span>Резерв під проєкт</span><span>Зразки матеріалів</span></div></div>
+  <div class="box"><h3>B2B і проєктні клієнти</h3><p>Готелі, салони краси, офіси, кав’ярні, манікюрні студії, HoReCa та інший бізнес.</p><div class="chips"><span>Договір</span><span>Рахунки й документи</span></div></div>
+ </div>
+</section>
+
+<section class="w sec" id="why">
+ <h2>Переваги оптового партнера</h2>
+ <div class="feat f3">
+  <div><b>Нижча оптова ціна</b><span>Спеціальні оптові прайси для регулярних закупівель.</span></div>
+  <div><b>Швидкі відправки</b><span>Оперативна комплектація замовлень зі складів у Дніпрі та Вінниці — більшість позицій за 1–2 робочі дні.</span></div>
+  <div><b>Резерв на 2 складах</b><span>Резервуємо позиції під ваші проєкти й регулярні поставки.</span></div>
+  <div><b>Індивідуальні знижки</b><span>Гнучка система знижок при великих партіях і довгостроковій співпраці.</span></div>
+  <div><b>Робота за договором</b><span>Офіційне оформлення співпраці й прозорі умови для юросіб і ФОП.</span></div>
+  <div><b>Персональний менеджер</b><span>Супровід на всіх етапах — від підбору асортименту до логістики.</span></div>
+ </div>
+</section>
+
+<section class="w sec" id="assortS">
+ <h2>Асортимент для оптових закупівель</h2>
+ <p class="soft" style="margin:-8px 0 18px;max-width:72ch">Матеріали для стін, підлоги, декору й організації простору. Кількість позицій у наявності й роздрібна ціна «від» — з каталогу просто зараз.</p>
+ <div class="assort" id="assort"><div class="sk" style="aspect-ratio:1"></div><div class="sk" style="aspect-ratio:1"></div><div class="sk" style="aspect-ratio:1"></div></div>
+ <p style="margin-top:16px"><a class="btn ghost" href="./#catalog">Увесь каталог</a></p>
+</section>
+
+<section class="w sec" id="levels">
+ <h2>Формати співпраці</h2>
+ <p class="soft" style="margin:-8px 0 22px;max-width:70ch">Підбираємо умови під ваш бізнес — від невеликих регулярних закупівель до великих партій для мережевих проєктів.</p>
+ <div class="levels">
+  <div class="lvl"><span class="tag">Невеликі регулярні закупівлі</span><h3>Стартовий опт</h3><p class="for">Для магазинів, салонів, майстерень і студій.</p>
+   <ul><li>Гнучка мінімальна сума замовлення</li><li>Базові оптові ціни</li><li>Рекомендації щодо асортименту</li></ul>
+   <a class="btn ghost" href="#apply" data-fmt="Стартовий опт">Обрати</a></div>
+  <div class="lvl mid" data-badge="Для постійних клієнтів"><span class="tag">Стабільні поставки</span><h3>Регулярний опт</h3><p class="for">Для бізнесу з постійними замовленнями й трафіком.</p>
+   <ul><li>Персональний менеджер</li><li>Резерв товару на складах</li><li>Індивідуальні ціни на ключові позиції</li></ul>
+   <a class="btn" href="#apply" data-fmt="Регулярний опт">Обрати</a></div>
+  <div class="lvl"><span class="tag">Партії для проєктів і мереж</span><h3>Великий опт</h3><p class="for">Для великих ремонтів, HoReCa й мережевих клієнтів.</p>
+   <ul><li>Найвигідніші цінові умови</li><li>Постачання під проєкт</li><li>Оформлення за договором</li></ul>
+   <a class="btn ghost" href="#apply" data-fmt="Великий опт">Обрати</a></div>
+ </div>
+</section>
+
+<section class="w sec" id="steps">
+ <h2>Як розпочати співпрацю</h2>
+ <ol class="steps">
+  <li><b>Заявка</b><span>Залишаєте заявку на сайті або пишете менеджеру в Telegram про ваш бізнес і потреби.</span></li>
+  <li><b>Оптовий прайс</b><span>Узгоджуємо категорії, надсилаємо прайс, каталог і за потреби зразки матеріалів.</span></li>
+  <li><b>Погодження умов</b><span>Обговорюємо обсяги, знижки, договір і графік поставок.</span></li>
+  <li><b>Регулярні поставки</b><span>Формуємо замовлення, резервуємо товар і запускаємо стабільні відправки.</span></li>
+ </ol>
+</section>
+
+<section class="w sec" id="apply">
+ <div class="apply">
   <div>
-    <h1>Оптові поставки для бізнесу</h1>
-    <p>
-      Регулярні закупівлі будматеріалів для магазинів, студій ремонту,
-      майстерень та бізнесу по всій Україні. Склади в Дніпрі та Вінниці,
-      швидкі відправки та персональна підтримка менеджера.
-    </p>
-
-    <div class="tags">
-      <span class="tag">Регулярні закупівлі для бізнесу</span>
-      <span class="tag">Нижча оптова ціна</span>
-      <span class="tag">Резерв товару на 2 складах</span>
-    </div>
-
-    <div class="hero-actions">
-      <a
-        href="https://t.me/manager_samostroy_shop?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D0%B3%D0%BE%D0%B2%D0%BE%D1%80%D0%B8%D1%82%D0%B8%20%D0%BE%D0%BF%D1%82%D0%BE%D0%B2%D1%83%20%D1%81%D0%BF%D1%96%D0%B2%D0%BF%D1%80%D0%B0%D1%86%D1%8E%20%D0%B7%20Stroy%20Shop"
-        class="btn"
-        target="_blank"
-      >
-        <i data-lucide="handshake"></i>
-        Запросити оптові умови
-      </a>
-
-      <a
-        href="https://t.me/manager_samostroy_shop?text=%D0%9F%D1%80%D0%BE%D1%88%D1%83%20%D0%BF%D1%80%D0%B8%D1%81%D0%BB%D0%B0%D1%82%D0%B8%20%D0%BE%D0%BF%D1%82%D0%BE%D0%B2%D0%B8%D0%B9%20%D0%BF%D1%80%D0%B0%D0%B9%D1%81%20%D1%82%D0%B0%20%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3"
-        class="btn btn-outline"
-        target="_blank"
-      >
-        <i data-lucide="file-text"></i>
-        Отримати оптовий прайс
-      </a>
-    </div>
+   <h2>Отримати оптовий прайс</h2>
+   <p class="lead2">Розкажіть коротко про ваш бізнес — менеджер надішле актуальний прайс, каталог і умови саме під ваші обсяги.</p>
+   <ol>
+    <li>Прайс і каталог за категоріями, які вас цікавлять</li>
+    <li>Умови доставки й мінімальне замовлення</li>
+    <li>Зразки матеріалів за потреби</li>
+    <li>Договір і документи для ФОП та юросіб</li>
+   </ol>
   </div>
-
-  <aside class="hero-side">
-    <div class="hero-side-title">Формат співпраці</div>
-    <div class="side-row">
-      <span>Тип співпраці</span>
-      <strong>Оптові поставки</strong>
-    </div>
-    <div class="side-row">
-      <span>Склади</span>
-      <strong>Дніпро та Вінниця</strong>
-    </div>
-    <div class="side-row">
-      <span>Відправка</span>
-      <strong>Нова Пошта / Укрпошта / кур’єр</strong>
-    </div>
-    <div class="side-row">
-      <span>Знижки</span>
-      <strong>Індивідуальні при великих замовленнях</strong>
-    </div>
-    <div class="side-row">
-      <span>Документи</span>
-      <strong>Можливість працювати по договору</strong>
-    </div>
-    <div class="side-row">
-      <span>Підтримка</span>
-      <strong>Менеджер на всіх етапах</strong>
-    </div>
-  </aside>
+  <form class="af" id="af" data-lead="Опт" novalidate>
+   <label>Ім’я<input data-role="name" autocomplete="name"></label>
+   <label>Телефон<input data-role="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380"></label>
+   <label>Компанія або магазин<input data-k="компанія" autocomplete="organization"></label>
+   <label>Місто<input data-k="місто" autocomplete="address-level2"></label>
+   <fieldset data-k="тип бізнесу"><legend>Тип бізнесу</legend><div class="tgl"><label><input type="radio" name="biz" value="Магазин або шоурум"><span>Магазин або шоурум</span></label><label><input type="radio" name="biz" value="Студія ремонту"><span>Студія ремонту</span></label><label><input type="radio" name="biz" value="Дизайнер"><span>Дизайнер</span></label><label><input type="radio" name="biz" value="HoReCa, салон, офіс"><span>HoReCa, салон, офіс</span></label><label><input type="radio" name="biz" value="Інше"><span>Інше</span></label></div></fieldset>
+   <fieldset data-k="категорії"><legend>Що цікавить</legend><div class="tgl"><label><input type="checkbox" name="cat" value="3D і ПВХ панелі"><span>3D і ПВХ панелі</span></label><label><input type="checkbox" name="cat" value="Плитка"><span>Плитка</span></label><label><input type="checkbox" name="cat" value="Плівка й шпалери"><span>Плівка й шпалери</span></label><label><input type="checkbox" name="cat" value="Підлога"><span>Підлога</span></label><label><input type="checkbox" name="cat" value="Профілі й плінтуси"><span>Профілі й плінтуси</span></label><label><input type="checkbox" name="cat" value="Килимки"><span>Килимки</span></label><label><input type="checkbox" name="cat" value="Екошкіра"><span>Екошкіра</span></label><label><input type="checkbox" name="cat" value="Дзеркала"><span>Дзеркала</span></label><label><input type="checkbox" name="cat" value="Меблі й зберігання"><span>Меблі й зберігання</span></label></div></fieldset>
+   <label>Обсяг закупівель на місяць<select data-k="обсяг"><option value="">Ще не знаю</option><option>до 20 000 ₴</option><option>20 000–50 000 ₴</option><option>50 000–150 000 ₴</option><option>понад 150 000 ₴</option></select></label>
+   <label>Формат<select data-k="формат" id="aFmt"><option value="">Ще не знаю</option><option>Стартовий опт</option><option>Регулярний опт</option><option>Великий опт</option></select></label>
+   <fieldset><div class="tgl"><label><input type="checkbox" data-k="договір" value="потрібен договір"><span>Потрібен договір і документи</span></label><label><input type="checkbox" data-k="зразки" value="потрібні зразки"><span>Потрібні зразки</span></label></div></fieldset>
+   <label class="full">Коментар (необов’язково)<textarea data-k="коментар" placeholder="Які позиції й обсяги, терміни, питання до менеджера"></textarea></label>
+   <input class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+   <div class="hint full"></div>
+   <button class="btn" type="submit">Надіслати заявку</button>
+   <p class="note2">Або напишіть менеджеру в <a href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">Telegram</a> чи зателефонуйте: <a href="tel:+380984927948">+380 98 492 79 48</a>.</p>
+  </form>
+ </div>
 </section>
 
-<!-- ДЛЯ КОГО ОПТ -->
-<section class="section">
-  <h2 class="title">Кому підходить опт Samostroy Shop</h2>
-  <p class="sub">
-    Ми працюємо з бізнесами, яким важливо мати стабільні поставки, широкий асортимент
-    та передбачувану логістику.
-  </p>
-
-  <div class="grid">
-    <div class="card">
-      <h3><i data-lucide="building-2"></i> Магазини та шоуруми</h3>
-      <p>Офлайн та онлайн-магазини декору, будматеріалів, меблів та товарів для дому.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="paint-roller"></i> Студії ремонту та дизайнери</h3>
-      <p>Компанії, що роблять ремонти “під ключ”, дизайнери інтер’єрів, авторські студії.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="briefcase"></i> B2B та проєктні клієнти</h3>
-      <p>Готелі, салони краси, офіси, кав’ярні, манікюрні студії, HoReCa та інші бізнеси.</p>
-    </div>
-  </div>
+<section class="w sec" id="drop">
+ <div class="xsell">
+  <div><h3 style="font-size:20px">Не готові закуповувати партію?</h3><p>Спробуйте дропшипінг: продавайте наш асортимент без закупівлі й складу, а пакування, відправку й повернення ми візьмемо на себе.</p></div>
+  <a class="btn ghost" href="dropshipping.html">Про дропшипінг</a>
+ </div>
 </section>
 
-<!-- ПЕРЕВАГИ -->
-<section class="section">
-  <h2 class="title">Переваги оптового партнера Samostroy Shop</h2>
-  <p class="sub">
-    Ми допомагаємо будувати довгострокову співпрацю — з прозорими умовами, стабільними поставками та персональним підходом.
-  </p>
-
-  <div class="benefits-list">
-    <div class="benefit">
-      <i data-lucide="badge-percent"></i>
-      <div>
-        <div class="benefit-title">Нижча оптова ціна</div>
-        <div>Спеціальні оптові прайси для регулярних закупівель.</div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="truck"></i>
-      <div>
-        <div class="benefit-title">Швидкі відправки</div>
-        <div>Оперативна комплектація замовлень зі складів у Дніпрі та Вінниці.</div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="warehouse"></i>
-      <div>
-        <div class="benefit-title">Резерв товарів на 2 складах</div>
-        <div>Можливість резервувати позиції під ваші проєкти та регулярні поставки.</div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="trending-up"></i>
-      <div>
-        <div class="benefit-title">Індивідуальні знижки</div>
-        <div>Гнучка система знижок при великих партіях та довгостроковій співпраці.</div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="file-signature"></i>
-      <div>
-        <div class="benefit-title">Робота по договору</div>
-        <div>Офіційне оформлення співпраці та прозорі умови для юросіб та ФОП.</div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="user-round"></i>
-      <div>
-        <div class="benefit-title">Підтримка менеджера</div>
-        <div>Персональний супровід на всіх етапах — від підбору до логістики.</div>
-      </div>
-    </div>
-  </div>
+<section class="w sec faq" id="faq">
+ <h2>Поширені питання</h2>
+ <details><summary>Яка мінімальна сума або обсяг оптового замовлення?</summary><p>Мінімальний обсяг обговорюється індивідуально. Для різних категорій товарів можливі різні пороги входу — менеджер підкаже їх разом із прайсом.</p></details>
+ <details><summary>За скільки днів ви відправляєте оптові замовлення?</summary><p>Більшість позицій відвантажуємо протягом 1–2 робочих днів зі складів у Дніпрі та Вінниці. Для великих партій терміни узгоджуємо окремо.</p></details>
+ <details><summary>Чи можна працювати за договором і з документами?</summary><p>Так. Можлива офіційна співпраця з договором, рахунками й закриттям документів для ФОП та юридичних осіб.</p></details>
+ <details><summary>Чи можна зарезервувати товар під проєкт?</summary><p>Так, резервуємо товар на складах під ваші проєкти або регулярні поставки за попередньою домовленістю.</p></details>
+ <details><summary>Як отримати оптовий прайс?</summary><p>Заповніть заявку на цій сторінці або напишіть менеджеру в Telegram: розкажіть про ваш бізнес і категорії, які цікавлять, — ми надішлемо актуальний прайс і умови.</p></details>
+ <details><summary>Чи можна отримати зразки перед закупівлею?</summary><p>Так, можемо надіслати зразки матеріалів, щоб ви оцінили колір, фактуру й якість перед партією. Умови уточнить менеджер.</p></details>
 </section>
 
-<!-- АСОРТИМЕНТ -->
-<section class="section">
-  <h2 class="title">Асортимент для оптових закупівель</h2>
-  <p class="sub">
-    Широкий вибір матеріалів для стін, підлоги, декору та організації простору.
-  </p>
-
-  <div class="categories-wrap">
-    <div class="categories-block">
-      <h3>Стінові рішення</h3>
-      <ul>
-        <li>3D панелі</li>
-        <li>ПВХ панелі</li>
-        <li>Стенові панелі</li>
-        <li>Теплі та самоклейні шпалери</li>
-        <li>Самоклеюча плівка</li>
-        <li>Мозаїка</li>
-        <li>Екошкіра</li>
-        <li>Дзеркала</li>
-      </ul>
-    </div>
-
-    <div class="categories-block">
-      <h3>Підлога та покриття</h3>
-      <ul>
-        <li>Плитка</li>
-        <li>PET плитка</li>
-        <li>Вінілові покриття</li>
-        <li>Підлога-пазл</li>
-        <li>Килимки</li>
-        <li>Профілі та декор</li>
-        <li>Плінтуси</li>
-      </ul>
-    </div>
-
-    <div class="categories-block">
-      <h3>Для бізнесу та організації</h3>
-      <ul>
-        <li>Манікюр (матеріали/декор)</li>
-        <li>Меблі й зберігання</li>
-        <li>Рішення для салонів та студій</li>
-        <li>Організація простору</li>
-      </ul>
-    </div>
-  </div>
+<section class="w sec seo" id="seo">
+ <h2 id="seoh">Самоклеючі матеріали й будматеріали оптом по Україні</h2>
+ <div class="txt cut" id="seot">
+  <p>Samostroy Shop постачає оптом матеріали для ремонту й декору: самоклеючі 3D панелі, ПВХ панелі й плити, PET, вінілову, LVT і алюмінієву плитку, самоклеючу плівку, шпалери, вінілові покриття й підлогу-пазл, профілі, молдинги й плінтуси, килимки, екошкіру, акрилові дзеркала, меблі й системи зберігання.</p>
+  <p>Працюємо з магазинами й шоурумами, студіями ремонту, дизайнерами інтер’єрів, готелями, салонами краси, офісами й закладами HoReCa. Товар зберігається на складах у Дніпрі та Вінниці, відправляємо Новою Поштою, Укрпоштою або кур’єром, більшість позицій — протягом 1–2 робочих днів.</p>
+  <h3>Умови оптової співпраці</h3>
+  <p>Оптові ціни, мінімальне замовлення й знижки залежать від категорій і обсягів. Можлива робота за договором з рахунками й закриттям документів для ФОП та юросіб, резерв товару під проєкт і регулярні поставки за графіком. Щоб отримати прайс, залиште заявку на цій сторінці або напишіть менеджеру в Telegram.</p>
+ </div>
+ <button class="link" data-a="seo" data-i="rm">Читати далі</button>
 </section>
-
-<!-- ОБСЯГИ ТА ФОРМАТИ -->
-<section class="section">
-  <h2 class="title">Формати співпраці та обсяги</h2>
-  <p class="sub">
-    Ми підбираємо умови під ваш бізнес — від невеликих регулярних закупівель до великих партій для мережевих проєктів.
-  </p>
-
-  <div class="grid">
-    <div class="volume-card">
-      <div class="volume-label">Стартовий опт</div>
-      <div class="volume-title">Невеликі регулярні закупівлі</div>
-      <div class="volume-note">Для магазинів, салонів, майстерень та студій.</div>
-      <ul style="color:var(--muted);font-size:13px;margin-left:18px;">
-        <li>Гнучка мінімальна сума замовлення</li>
-        <li>Базові оптові ціни</li>
-        <li>Рекомендації по асортименту</li>
-      </ul>
-    </div>
-
-    <div class="volume-card">
-      <div class="volume-label">Регулярний опт</div>
-      <div class="volume-title">Стабільні поставки</div>
-      <div class="volume-note">Для бізнесів з постійними замовленнями та трафіком.</div>
-      <ul style="color:var(--muted);font-size:13px;margin-left:18px;">
-        <li>Персональний менеджер</li>
-        <li>Резерв товару на складах</li>
-        <li>Індивідуальні ціни по ключових позиціях</li>
-      </ul>
-    </div>
-
-    <div class="volume-card">
-      <div class="volume-label">Великий опт</div>
-      <div class="volume-title">Партії для проєктів і мереж</div>
-      <div class="volume-note">Для великих ремонті, HoReCa та мережевих клієнтів.</div>
-      <ul style="color:var(--muted);font-size:13px;margin-left:18px;">
-        <li>Максимально вигідні цінові умови</li>
-        <li>Можливість постачання під проєкт</li>
-        <li>Оформлення по договору</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- КРОКИ ЗАПУСКУ -->
-<section class="section">
-  <h2 class="title">Як розпочати оптову співпрацю</h2>
-
-  <div class="grid steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-title">Звернення в Telegram</div>
-      <div class="step-text">
-        Пишете нашому менеджеру, розповідаєте про ваш бізнес та потреби.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-title">Отримання оптового прайсу</div>
-      <div class="step-text">
-        Узгоджуємо категорії, надсилаємо прайс, каталог та приклади матеріалів.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-title">Погодження умов</div>
-      <div class="step-text">
-        Обговорюємо обсяги, знижки, можливість договору та графік поставок.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-title">Регулярні поставки</div>
-      <div class="step-text">
-        Формуємо замовлення, резервуємо товар та запускаємо стабільні відправки.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section">
-  <div class="cta">
-    <div>
-      <h3>Готові до оптової співпраці?</h3>
-      <p>
-        Напишіть менеджеру, щоб отримати актуальний оптовий прайс, умови та
-        пропозиції саме під ваш бізнес.
-      </p>
-    </div>
-
-    <a
-      href="https://t.me/manager_samostroy_shop?text=%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D1%82%D1%80%D0%B8%D0%BC%D0%B0%D1%82%D0%B8%20%D0%BE%D0%BF%D1%82%D0%BE%D0%B2%D0%B8%D0%B9%20%D0%BF%D1%80%D0%B0%D0%B9%D1%81%20%D1%82%D0%B0%20%D0%B7%D1%80%D0%BE%D0%B7%D1%83%D0%BC%D1%96%D1%82%D0%B8%20%D1%83%D0%BC%D0%BE%D0%B2%D0%B8%20%D1%81%D0%BF%D1%96%D0%B2%D0%BF%D1%80%D0%B0%D1%86%D1%96"
-      class="btn"
-      target="_blank"
-    >
-      <i data-lucide="send"></i>
-      Отримати оптовий прайс
-    </a>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section">
-  <h2 class="title">Поширені питання</h2>
-
-  <div class="faq-item">
-    <h3>Яка мінімальна сума або обсяг оптового замовлення?</h3>
-    <p>
-      Мінімальний обсяг обговорюється індивідуально. Для різних категорій товарів можливі різні пороги входу.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3>За скільки днів ви відправляєте оптові замовлення?</h3>
-    <p>
-      Більшість позицій відвантажується протягом 1–2 робочих днів зі складів у Дніпрі та Вінниці.
-      Для великих партій строки узгоджуються окремо.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи можна працювати по договору та з документами?</h3>
-    <p>
-      Так, є можливість офіційної співпраці з договором, рахунками та закриттям документів для ФОП та юросіб.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи можна зарезервувати товар під проєкт?</h3>
-    <p>
-      Так, ми можемо резервувати товар на складах під ваші проєкти або регулярні поставки за попередньою домовленістю.
-    </p>
-  </div>
-</section>
-
-<footer>
-  © <span id="year"></span> Samostroy Shop — Оптові поставки для бізнесу
-</footer>
 
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  if (window.lucide) {
-    lucide.createIcons();
-  }
-
-  /* ============================================================
-   🟧 24. NEWYEAR START (REMOVE LATER)
-============================================================ */
-(function () {
-  // Сезон каждый год: 15 Dec - 15 Jan (включительно)
-  function isNewYearSeason(d) {
-    const m = d.getMonth(); // 0=Jan ... 11=Dec
-    const day = d.getDate();
-    return (m === 11 && day >= 15) || (m === 0 && day <= 15);
-  }
-
-  const now = new Date();
-  if (!isNewYearSeason(now)) {
-    document.documentElement.classList.remove("ny");
-    return;
-  }
-  document.documentElement.classList.add("ny");
-
-  // Год у логотипа: декабрь -> следующий год, январь -> текущий
-  const nyYear =
-    now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
-  const logo = document.querySelector(".ac-logo");
-  if (logo) logo.setAttribute("data-ny-year", String(nyYear));
-
-  // SVG лампочка
-  function bulbSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path class="ny-glass" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M9.2 18.4h5.6"/>
-        <path class="ny-stroke" d="M9.8 21h4.4"/>
-      </svg>
-    `;
-  }
-
-  // SVG снежинка
-  function snowflakeSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 2v20M4 6l16 12M20 6L4 18M6 4l2 2M18 4l-2 2M6 20l2-2M18 20l-2-2M2 12h3M19 12h3"/>
-      </svg>
-    `;
-  }
-
-  // ============ ГИРЛЯНДА (ТОЛЬКО ВИЗУАЛ, БЕЗ КЛИКОВ) ============
-  const garland = document.querySelector(".ny-garland");
-  if (garland && !garland.querySelector(".ny-garland-row")) {
-    // Важно: гирлянда не перехватывает клики вообще
-    garland.style.pointerEvents = "none";
-
-    const row = document.createElement("div");
-    row.className = "ny-garland-row";
-
-    const colors = [
-      "#ff4e6d",
-      "#5ce3a0",
-      "#38bdf8",
-      "#ffb347",
-      "#a855f7",
-      "#f97316",
-      "#ffffff",
-    ];
-
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-    const count = isMobile ? 14 : 22;
-
-    for (let i = 0; i < count; i++) {
-      const b = document.createElement("div");
-      b.className = "ny-bulb";
-
-      const r = Math.random();
-      if (r < 0.3) b.classList.add("ny-fast");
-      else if (r < 0.65) b.classList.add("ny-slow");
-
-      b.style.setProperty("--ny-drop", `${Math.round(Math.random() * 6 - 3)}px`);
-      b.style.setProperty("--ny-rot", `${Math.round(Math.random() * 10 - 5)}deg`);
-      b.style.setProperty("--ny-wave", `${(2.8 + Math.random() * 2.0).toFixed(2)}s`);
-      b.style.setProperty("--ny-blink", `${(0.9 + Math.random() * 3.0).toFixed(2)}s`);
-
-      const c = colors[i % colors.length];
-      b.style.setProperty("--ny-c", c);
-      b.style.animationDelay = `${(i * 0.1 + Math.random() * 0.25).toFixed(2)}s`;
-
-      b.innerHTML = bulbSVG();
-      row.appendChild(b);
-    }
-
-    garland.appendChild(row);
-
-    // ВАЖНО: никаких addEventListener("click") тут нет — только визуал
-  }
-
-  // ============ СНЕГ ============
-  const snow = document.querySelector(".ny-snow");
-  if (snow && !snow.querySelector(".ny-flake")) {
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-
-    // ультра-лайт: минимум элементов
-    const flakesCount = isMobile ? 5 : 9;
-
-    for (let i = 0; i < flakesCount; i++) {
-      const f = document.createElement("div");
-      f.className = "ny-flake";
-
-      // внутренний слой для sway (дешево)
-      f.innerHTML = `<div class="ny-flake-inner">${snowflakeSVG()}</div>`;
-
-      const left = Math.random() * 100;
-      const size =
-        (isMobile ? 10 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const op = 0.16 + Math.random() * 0.16;
-      const dur =
-        (isMobile ? 11 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const sway = 10 + Math.random() * 18;
-      const swayDur = 3.6 + Math.random() * 3.6;
-
-      // дрейф по x
-      const x = Math.random() * 30 - 15;
-      const x2 = x + (Math.random() * 50 - 25);
-      const r2 = 360 + Math.round(Math.random() * 360);
-
-      f.style.left = `${left}%`;
-      f.style.setProperty("--ny-size", `${size.toFixed(1)}px`);
-      f.style.setProperty("--ny-op", op.toFixed(2));
-      f.style.setProperty("--ny-dur", `${dur.toFixed(2)}s`);
-      f.style.setProperty("--ny-sway", `${sway.toFixed(1)}px`);
-      f.style.setProperty("--ny-sway-dur", `${swayDur.toFixed(2)}s`);
-      f.style.setProperty("--ny-x", `${x.toFixed(1)}px`);
-      f.style.setProperty("--ny-x2", `${x2.toFixed(1)}px`);
-      f.style.setProperty("--ny-r2", `${r2}deg`);
-
-      // разнесём старт
-      const delay = Math.random() * (isMobile ? 4 : 6);
-      f.style.animationDelay = `${delay.toFixed(2)}s`;
-
-      snow.appendChild(f);
-    }
-  }
-})();
-// =========================
-// NEWYEAR END (REMOVE LATER)
-// =========================
+/* кнопки форматів підставляють формат у заявку */
+addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('[data-fmt]').forEach(a=>a.addEventListener('click',()=>{document.getElementById('aFmt').value=a.dataset.fmt}))});
 </script>
+</main>
 
+<footer>
+ <div class="w">
+  <div class="fg">
+   <div>
+    <a class="logo" href="./" style="margin-bottom:12px" data-home><img src="logo.jpg" alt="" width="44" height="44"><span style="color:#fff">Samostroy Shop</span></a>
+    <p style="font-size:14px;max-width:34ch" data-i="fabout">Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.</p>
+    <p style="margin-top:12px"><a href="tel:+380984927948">+380 98 492 79 48</a></p>
+   </div>
+   <div><h3 data-i="fcat">Каталог</h3><ul>
+    <li><a href="?c=3d-paneli">3D панелі</a></li><li><a href="?g=plytka">Плитка</a></li><li><a href="?c=samokleyucha-plivka">Самоклеюча плівка</a></li><li><a href="?c=shpalery">Шпалери</a></li><li><a href="?g=pidloga">Підлога</a></li><li><a href="?c=ekoshkira">Екошкіра</a></li></ul></div>
+   <div><h3 data-i="fspec">Добірки</h3><ul>
+    <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
+   <div><h3 data-i="fbiz">Співпраця</h3><ul>
+    <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="partners.html" data-i="fp">Партнерам</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
+  </div>
+  <div class="fbot"><span>© <span id="yr">2026</span> Samostroy Shop</span><span><a href="https://t.me/samostroy_shop" target="_blank" rel="noopener">Telegram</a> &nbsp; <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" rel="noopener">TikTok</a> &nbsp; <a href="https://www.instagram.com/samostroy.shop" target="_blank" rel="noopener">Instagram</a></span></div>
+ </div>
+</footer>
+
+<nav class="mbar" aria-label="Швидка навігація">
+ <button data-a="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+ <button data-a="msearch"><svg class="i"><use href="#i-search"/></svg><span data-i="srch">Пошук</span></button>
+ <button data-a="quiz"><svg class="i"><use href="#i-quiz"/></svg><span data-i="pick">Підбір</span></button>
+ <button data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="cnt" data-cnt>0</span><span data-i="cart">Кошик</span></button>
+</nav>
+
+<div class="fab" id="fab">
+ <div class="menu" id="fabm" hidden>
+  <p data-i="fabp">Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.</p>
+  <a id="fabtg" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><span class="dot" style="background:#229ed9"></span>Telegram</a>
+  <a id="fabvb" href="#" hidden><span class="dot" style="background:#7360f2"></span>Viber</a>
+  <a href="tel:+380984927948"><span class="dot" style="background:var(--ok)"></span><span data-i="call">Подзвонити</span></a>
+ </div>
+ <button class="main" data-a="fab" aria-expanded="false" aria-controls="fabm" aria-label="Написати менеджеру"><svg class="i"><use href="#i-chat"/></svg></button>
+</div>
+
+<div class="shade" id="shade" data-a="close"></div>
+<aside id="cart" aria-label="Кошик" aria-hidden="true">
+ <div class="dh"><b><span data-i="cart">Кошик</span> <span class="soft" id="cn" style="font-family:var(--f-b);font-weight:500;font-size:15px"></span></b><button class="xb" data-a="close" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="dbody">
+  <div id="items"></div>
+  <div class="clr" id="clr" hidden><button class="link" data-a="tocat" data-i="more2">Додати ще товари</button><button class="link" style="color:var(--soft)" data-a="clearcart" data-i="clearc">Очистити кошик</button></div>
+  <div class="form" id="cform">
+   <h3 data-i="who">Куди відправити</h3>
+   <input id="fn" autocomplete="name" data-ip="nm" placeholder="Ім’я">
+   <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
+   <div class="hint" id="hint"></div>
+   <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
+   <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
+   <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
+   <div class="guar">
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g1">Безкоштовно порахуємо кількість</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g2">Відправка в день замовлення</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g3">Обмін і повернення 14 днів</span></span>
+   </div>
+  </div>
+ </div>
+ <div class="dfoot" id="dfoot">
+  <div class="tot"><span data-i="tot">Разом</span><span id="total">0 ₴</span></div>
+  <button class="btn" data-a="order" data-i="send">Надіслати замовлення менеджеру</button>
+ </div>
+</aside>
+
+<dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
+
+<script src="config.js?v=52b18222"></script>
+<script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Оптовим покупцям", "listTitle": "Оптові поставки", "url": "https://samostroy.shop/opt.html", "title": "Самоклеючі матеріали й будматеріали оптом — оптові поставки по Україні | Samostroy Shop", "desc": "Оптові поставки 3D панелей, плитки, плівки, шпалер, підлоги, килимків, екошкіри, дзеркал і меблів для магазинів, студій ремонту й бізнесу. Склади в Дніпрі та Вінниці, відправка за 1–2 дні, договір для ФОП і юросіб.", "guide": "", "calc": 0, "faq": [["Яка мінімальна сума або обсяг оптового замовлення?", "Мінімальний обсяг обговорюється індивідуально. Для різних категорій товарів можливі різні пороги входу — менеджер підкаже їх разом із прайсом."], ["За скільки днів ви відправляєте оптові замовлення?", "Більшість позицій відвантажуємо протягом 1–2 робочих днів зі складів у Дніпрі та Вінниці. Для великих партій терміни узгоджуємо окремо."], ["Чи можна працювати за договором і з документами?", "Так. Можлива офіційна співпраця з договором, рахунками й закриттям документів для ФОП та юридичних осіб."], ["Чи можна зарезервувати товар під проєкт?", "Так, резервуємо товар на складах під ваші проєкти або регулярні поставки за попередньою домовленістю."], ["Як отримати оптовий прайс?", "Заповніть заявку на цій сторінці або напишіть менеджеру в Telegram: розкажіть про ваш бізнес і категорії, які цікавлять, — ми надішлемо актуальний прайс і умови."], ["Чи можна отримати зразки перед закупівлею?", "Так, можемо надіслати зразки матеріалів, щоб ви оцінили колір, фактуру й якість перед партією. Умови уточнить менеджер."]], "wall": ["3d-paneli", "pvh-paneli-plyty", "pet-plytka", "plytka-vinilova", "samokleyucha-plivka", "vologopoglynayuchi-kylymky", "shpalery", "profili-dekor", "stelazhi"], "info": true}</script>
+<script src="shop.js?v=77a6bdd9"></script>
 </body>
 </html>

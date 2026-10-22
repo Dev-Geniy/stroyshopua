@@ -548,3 +548,8 @@ dialog#pd::backdrop{background:#000a}
  .cmp td:last-child{color:var(--ink);font-weight:600}
  .cmp td:last-child:before{color:var(--orange-d);font-weight:600}
 }
+.feat.f3{grid-template-columns:repeat(3,1fr);row-gap:32px}
+@media(max-width:1020px){.feat.f3{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.feat.f3{grid-template-columns:1fr}}
+.xsell{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:var(--r);padding:22px 26px}
+.xsell p{color:var(--soft);max-width:62ch;margin-top:4px}
