@@ -50,7 +50,9 @@ const GROUPS=[['stiny','Стіни','Стены'],['plytka','Плитка','Пл
 const CATS=[
 ['manikyur','dim','Манікюр','Маникюр',/манікюр/],
 ['konteynery','dim','Контейнери для зберігання','Контейнеры для хранения',/контейнер|органайзер/],
-['mebli','dim','Меблі для дому та саду','Мебель для дома и сада',/стелаж|етажерк|стіл\b|стіл |стілець|стільц|тумба|шафа|крісло|диван|мебл|меблі/],
+['naduvni-mebli','dim','Надувні меблі','Надувная мебель',/надувн/],
+['stelazhi','dim','Стелажі, етажерки й шафи','Стеллажи, этажерки и шкафы',/стелаж|етажерк|шафа|тумба/],
+['skladni-mebli','dim','Складні столи й стільці','Складные столы и стулья',/стіл\b|стіл |стілець|стільц|мебел|меблі/],
 ['termokylymky','dim','Килимки термо (дитячі)','Термоковрики (детские)',/термокилим|розвиваюч|камуфляж|дитячий склад/],
 ['vologopoglynayuchi-kylymky','dim','Килимки вологопоглинаючі','Влагопоглощающие коврики',/вологопоглин/],
 ['pidloga-pazl-plyushevyy','pidloga','Підлога-пазл плюшевий','Пол-пазл плюшевый',/пазл.*плюш/],
@@ -81,9 +83,9 @@ const CATS=[
 ['stinovi-paneli','stiny','Стінові панелі','Стеновые панели',/панел/],
 ['inshe','dim','Інше','Другое',/./]];
 // складені категорії
-const VIRT={'pokryttya-vinilove':{g:'pidloga',uk:'Покриття вінілове',ru:'Виниловое покрытие',inc:['3d-reyky','pidlogove-vinilove-pokryttya']}};
+const VIRT={'pokryttya-vinilove':{g:'pidloga',uk:'Покриття вінілове',ru:'Виниловое покрытие',inc:['3d-reyky','pidlogove-vinilove-pokryttya']},'mebli':{g:'dim',uk:'Меблі для дому та саду',ru:'Мебель для дома и сада',inc:['stelazhi','skladni-mebli','naduvni-mebli']}};
 // з чим купують
-const COMP={stiny:['profili-dekor','plintusy','dzerkala'],plytka:['profili-dekor','plintusy'],pidloga:['plintusy','vologopoglynayuchi-kylymky'],dekor:['3d-paneli','pet-plytka'],'pidloga-pazl':['pidloga-pazl-plyushevyy','termokylymky'],'pidloga-pazl-plyushevyy':['termokylymky','pidloga-pazl'],termokylymky:['pidloga-pazl-plyushevyy','pidloga-pazl'],ekoshkira:['profili-dekor','plintusy'],mebli:['konteynery'],konteynery:['mebli'],manikyur:['dzerkala'],'vologopoglynayuchi-kylymky':['plytka-vinilova','plintusy']};
+const COMP={stiny:['profili-dekor','plintusy','dzerkala'],plytka:['profili-dekor','plintusy'],pidloga:['plintusy','vologopoglynayuchi-kylymky'],dekor:['3d-paneli','pet-plytka'],'pidloga-pazl':['pidloga-pazl-plyushevyy','termokylymky'],'pidloga-pazl-plyushevyy':['termokylymky','pidloga-pazl'],termokylymky:['pidloga-pazl-plyushevyy','pidloga-pazl'],ekoshkira:['profili-dekor','plintusy'],stelazhi:['konteynery'],'skladni-mebli':['naduvni-mebli'],'naduvni-mebli':['skladni-mebli'],konteynery:['stelazhi'],manikyur:['dzerkala'],'vologopoglynayuchi-kylymky':['plytka-vinilova','plintusy']};
 // для калькулятора розраховуємо площу з назви
 const CALCG=new Set(['stiny','plytka','pidloga']);
 const PRESETS=[['3d-paneli','3D панель 700×700 мм',.7,.7],['3d-paneli','3D панель 700×770 мм (цегла)',.7,.77],['3d-paneli','3D панель у рулоні 0,7×19,6 м',.7,19.6],['pvh-paneli-plyty','ПВХ панель 960×480 мм',.96,.48],['pvh-paneli-plyty','ПВХ плита 1,22×2,44 м',1.22,2.44],['pet-plytka','PET плитка 600×300 мм',.6,.3],['pet-plytka-rulon','PET плитка в рулоні 0,6×3 м',.6,3],['alyuminiyeva-plytka','Алюмінієва плитка 300×300 мм',.3,.3],['plytka-vinilova','Вінілова плитка 600×300 мм',.6,.3],['plytka-vinilova','Вінілова дошка 152×914 мм',.1524,.9144],['lvt-plytka','LVT плитка 457×457 мм',.457,.457],['3d-reyky','Вінілові 3D рейки 600×600 мм',.6,.6],['shtukaturka','Гнучка штукатурка 600×600 мм',.6,.6],['samokleyucha-plivka','Плівка, рулон 0,45×10 м',.45,10],['shpalery','Шпалери 2800×500 мм',.5,2.8],['pidloga-pazl-plyushevyy','Підлога-пазл 600×600 мм',.6,.6],['pidloga-pazl-plyushevyy','Підлога-пазл 300×300 мм',.3,.3]];
@@ -320,7 +322,31 @@ const GUIDES={
  ch:['Рулон 1,37×1 м — для ремонту окремих місць','Рулон 1,37×3 м — для обтягування крісла чи узголів’я'],
  ins:['Поверхня має бути сухою та чистою; пластикові деталі знежирте.','Виріжте шматок із запасом на загин.','Не знімайте весь папір одразу: відклеюйте частинами й поступово розгладжуйте матеріал.','Загини на торцях притисніть особливо щільно.'],
  care:['Протирайте вологою серветкою']},
-'mebli':{t:'Меблі для дому та саду',use:['Дача','Балкон','Тераса','Кухня','Комора'],pro:['Складні меблі економлять місце','Надувні меблі легко перевозити'],ch:['Перевірте розміри меблів під ваше приміщення']},
+'mebli':{t:'Меблі й системи зберігання',
+ use:['Кухня','Ванна','Балкон','Комора','Гараж','Дача','Офіс','Студія'],
+ pro:['Готові рішення замість вбудованих систем: додавайте й міняйте поступово','Мобільні етажерки й розкладні стелажі легко переставити чи заховати','Більшість моделей збирається за 10–20 хвилин без майстрів'],
+ lim:['Великогабаритні позиції відправляються окремо — вартість і термін доставки уточнить менеджер','Надувні меблі можуть відрізнятися розміром до ±5% залежно від температури й накачування'],
+ ch:['Виміряйте нішу: ширину, глибину й висоту, залиште 2–3 см запасу','Для ванної й кухні обирайте нержавіючу сталь або пластик','Між пральною машиною й стіною стануть етажерки завглибшки 25 см','Важке зберігайте на нижніх полицях'],
+ ins:['Розкладіть деталі й перевірте комплектацію за інструкцією.','Збирайте на рівній підлозі, без поспіху затягуючи кріплення.','Перевірте, що всі фіксатори полиць клацнули, а конструкція не хитається.','Важкі речі ставте на нижні полиці, легкі — нагору.'],
+ care:['Протирайте вологою ганчіркою, плями — м’яким засобом і теплою водою','Не використовуйте абразиви, щоб не пошкодити порошкове фарбування'],
+ faq:[['Як доставляють великі меблі?','Новою Поштою. Для великогабаритних позицій менеджер підкаже вартість і термін доставки до вашого відділення.']]},
+'stelazhi':{t:'Стелажі, етажерки й шафи',base:'mebli',
+ use:['Кухня','Ванна','Пральня','Балкон','Комора','Гараж','Офіс'],
+ pro:['Металевий каркас з порошковим фарбуванням не іржавіє й витримує вологу','Мобільні етажерки на колесах легко пересунути для прибирання','Розкладні стелажі складаються, коли не потрібні'],
+ ch:['Пластикові етажерки легші й дешевші, металеві та сталеві — міцніші','Для вузьких місць є моделі завглибшки 25 см','Полиця над раковиною з нержавіючої сталі — для сушіння посуду'],
+ lim:['Не перевантажуйте верхні полиці: важке ставте вниз']},
+'skladni-mebli':{t:'Складні столи й стільці',base:'mebli',
+ use:['Дача','Тераса','Балкон','Свята й гості','Виїзні заходи'],
+ pro:['Складаються за секунди й займають мінімум місця','Набір «стіл і 4 стільці» має сумку для перенесення','Стіл 182 см вміщує 6 людей'],
+ ch:['Для щоденного використання вдома обирайте стільці зі спинкою','Для дачі й саду — набір стіл і 2 лави'],
+ care:['Після використання на вулиці протріть і просушіть меблі перед складанням'],
+ lim:['Великогабаритні позиції відправляються окремо — вартість і термін доставки уточнить менеджер']},
+'naduvni-mebli':{t:'Надувні меблі',base:'mebli',
+ use:['Вітальня','Дача','Студія','Гостьове місце','Дитяча'],
+ pro:['Легко перевезти й заховати','Матеріал не втрачає властивостей при зміні температури','Комплект «диван і 2 крісла» — готова зона відпочинку'],
+ lim:['Розмір може відрізнятися до ±5% залежно від температури й накачування','Бережіть від гострих предметів і не перевищуйте навантаження'],
+ ins:['Накачайте насосом до пружного стану, не перекачуйте.','Перевірте, що клапан щільно закритий.','Ставте подалі від гострих кутів і обігрівачів.'],
+ ch:['Для гостей вистачить одного дивана','Для студії чи вітальні — комплект диван і крісла одного кольору']},
 'konteynery':{t:'Контейнери для зберігання',use:['Кухня','Комора','Гараж','Дитяча'],pro:['Поліпропілен не вбирає запахи й бруд','Контейнери складаються один в один'],care:['Протирайте м’яким засобом без абразиву']},
 'manikyur':{t:'Манікюрні набори',use:['Подарунок','Дитячий набір']}
 };
@@ -513,7 +539,7 @@ function renderLand(){
 function drawSide(){
  const g=view.c?cgroup(view.c):view.g;
  $('#side').innerHTML=`<a class="gl ${!view.c&&!view.g?'on':''}" href="./" data-nav>${t('allh')} <span class="soft" style="font-weight:400">${all.length||''}</span></a>`+GROUPS.map(([gg])=>`<h3><a class="gl ${view.g==gg&&!view.c?'on':''}" href="?g=${gg}" data-nav style="padding:0">${esc(gname(gg))}</a></h3><ul>${subsOf(gg).map(s=>`<li><a class="${view.c==s?'on':''}" href="?c=${s}" data-nav>${esc(cname(s))}<i>${cnt(s)||''}</i></a></li>`).join('')}</ul>`).join('')}
-const ORDER={stiny:['3d-paneli','pvh-paneli-plyty','stinovi-paneli','samokleyucha-plivka','shpalery','tepli-shpalery','shtukaturka','mozayika-sklo'],plytka:['plytka-vinilova','pvh-plytka','poliuretanova-plytka','alyuminiyeva-plytka','lvt-plytka','plytka-pid-kovrolin','pet-plytka','pet-mozayika','pet-plytka-rulon','kompozytna-plytka'],pidloga:['pokryttya-vinilove','pidlogove-vinilove-pokryttya','3d-reyky','pidloga-pazl','pidloga-pazl-plyushevyy'],dekor:['profili-dekor','plintusy','dzerkala'],dim:['termokylymky','vologopoglynayuchi-kylymky','ekoshkira','konteynery','mebli','manikyur','inshe']};
+const ORDER={stiny:['3d-paneli','pvh-paneli-plyty','stinovi-paneli','samokleyucha-plivka','shpalery','tepli-shpalery','shtukaturka','mozayika-sklo'],plytka:['plytka-vinilova','pvh-plytka','poliuretanova-plytka','alyuminiyeva-plytka','lvt-plytka','plytka-pid-kovrolin','pet-plytka','pet-mozayika','pet-plytka-rulon','kompozytna-plytka'],pidloga:['pokryttya-vinilove','pidlogove-vinilove-pokryttya','3d-reyky','pidloga-pazl','pidloga-pazl-plyushevyy'],dekor:['profili-dekor','plintusy','dzerkala'],dim:['termokylymky','vologopoglynayuchi-kylymky','ekoshkira','konteynery','mebli','stelazhi','skladni-mebli','naduvni-mebli','manikyur','inshe']};
 function subsOf(g){return(ORDER[g]||[]).filter(s=>!loaded||cnt(s))}
 const cnt=s=>catsOf(s).reduce((a,c)=>a+(counts[c]||0),0);
 function drawSubs(g){
@@ -715,7 +741,7 @@ const msg=n=>`⚡ ${t('o1c')}${n?' '+t('num')+n:''}\n${p.name}${p.sku?' ('+p.sku
   box.outerHTML=r&&r.ok?doneBox(r.id,0,0,1):doneBox('',1,r&&r.error=='rate'?'rate':'one',1)})}
 
 /* ---------- калькулятор на головній ---------- */
-function fillCalc(){const s=$('#cm'),i=s.options.length?s.selectedIndex:(PAGE.calc||0);s.innerHTML=PRESETS.map((x,k)=>`<option value="${k}">${esc(x[1])}</option>`).join('')+`<option value="own">${t('cown')}</option>`;if(i>=0)s.selectedIndex=i;
+function fillCalc(){const s=$('#cm');if(!s.options)return;const i=s.options.length?s.selectedIndex:(PAGE.calc||0);s.innerHTML=PRESETS.map((x,k)=>`<option value="${k}">${esc(x[1])}</option>`).join('')+`<option value="own">${t('cown')}</option>`;if(i>=0)s.selectedIndex=i;
  const r=$('#crs'),ri=r.selectedIndex;r.innerHTML=resOpts();if(ri>=0)r.selectedIndex=ri;calc()}
 function calc(){
  const s=$('#cm').value,own=s=='own';$('#cuw1').hidden=$('#cuw2').hidden=!own;
@@ -737,9 +763,9 @@ function quiz(){
  const b=$('#qb'),prog=`<div class="qprog">${QS.map((_,i)=>`<i class="${i<=qstep?'on':''}"></i>`).join('')}</div>`;
  if(qstep<QS.length){const[k,q,opts,pre]=QS[qstep];
   b.innerHTML=`${prog}<div class="qq">${t(q)}</div><div class="qo">${opts.map(o=>`<button data-q="${k}:${o}">${t(pre+o)}</button>`).join('')}</div>${qstep?`<div class="qacts"><button class="link" data-a="qback">${t('qback')}</button></div>`:''}`;return}
- const cs=quizCats(qa).filter(c=>cnt(c));const L=all.filter(p=>p.av&&cs.includes(p.cat));const seen=new Set();let R=[];
+ const cs=quizCats(qa).filter(c=>cnt(c));const inC=(c,p)=>catsOf(c).includes(p.cat),L=all.filter(p=>p.av&&cs.some(c=>inC(c,p)));const seen=new Set();let R=[];
  const srt=qa.b=='low'?(a,b)=>a.price-b.price:qa.b=='high'?(a,b)=>b.price-a.price:null;
- for(const c of cs){let C=L.filter(p=>p.cat==c);if(srt)C.sort(srt);else{C.sort((a,b)=>a.price-b.price);C=C.slice(Math.floor(C.length/3))}for(const p of C){if(!seen.has(p.name)){seen.add(p.name);R.push(p);break}}}
+ for(const c of cs){let C=L.filter(p=>inC(c,p));if(srt)C.sort(srt);else{C.sort((a,b)=>a.price-b.price);C=C.slice(Math.floor(C.length/3))}for(const p of C){if(!seen.has(p.name)){seen.add(p.name);R.push(p);break}}}
  for(const p of (srt?[...L].sort(srt):L)){if(R.length>=6)break;if(!seen.has(p.name)){seen.add(p.name);R.push(p)}}
  R=R.slice(0,6);
  b.innerHTML=`${prog}<div class="qq">${t('qdone')}</div><div class="qcats">${cs.map(c=>`<a href="?c=${c}" data-nav>${esc(cname(c))}</a>`).join('')}</div><div class="qres">${R.map(p=>`<a href="${href(p)}" data-p="${esc(p.id)}"><img loading="lazy" src="${esc(p.img)}" alt="" onerror="this.style.opacity=0">${esc(p.name.slice(0,60))}<b>${money(p.price)}</b></a>`).join('')}</div>${CFG.quizBonus?`<p style="font-weight:600;margin-bottom:6px">${esc(CFG.quizBonus)}</p>`:''}<div class="qacts"><button class="btn" data-a="qsend">${t('qsend')}</button>${cs[0]?`<a class="btn ghost" href="?c=${cs[0]}" data-nav>${t('qall')}</a>`:''}<button class="link" data-a="qagain">${t('qagain')}</button></div>`;
