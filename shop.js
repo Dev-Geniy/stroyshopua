@@ -1,4 +1,4 @@
-const K={nNoRes:['Запас {r}% — це менше половини елемента, тож окремо докупувати не потрібно: запас уже є в мінімумі.','Запас {r}% — это меньше половины элемента, поэтому докупать отдельно не нужно: запас уже есть в минимуме.'],nWrap:['Розміри вводьте разом із загином: по 3–5 см з кожного боку деталі.','Размеры вводите вместе с загибом: по 3–5 см с каждой стороны детали.'],cWe:['Ширина деталі, м','Ширина детали, м'],cHe:['Висота деталі, м','Высота детали, м'],fullcat:['Весь каталог магазину','Весь каталог магазина'],okH:['Замовлення №{id} прийнято','Заказ №{id} принят'],okP:['Менеджер зв’яжеться з вами, щоб підтвердити наявність і доставку.','Менеджер свяжется с вами, чтобы подтвердить наличие и доставку.'],okTg:['Написати менеджеру в Telegram','Написать менеджеру в Telegram'],okMore:['Продовжити покупки','Продолжить покупки'],
+const K={from:['від','от'],nNoRes:['Запас {r}% — це менше половини елемента, тож окремо докупувати не потрібно: запас уже є в мінімумі.','Запас {r}% — это меньше половины элемента, поэтому докупать отдельно не нужно: запас уже есть в минимуме.'],nWrap:['Розміри вводьте разом із загином: по 3–5 см з кожного боку деталі.','Размеры вводите вместе с загибом: по 3–5 см с каждой стороны детали.'],cWe:['Ширина деталі, м','Ширина детали, м'],cHe:['Висота деталі, м','Высота детали, м'],fullcat:['Весь каталог магазину','Весь каталог магазина'],okH:['Замовлення №{id} прийнято','Заказ №{id} принят'],okP:['Менеджер зв’яжеться з вами, щоб підтвердити наявність і доставку.','Менеджер свяжется с вами, чтобы подтвердить наличие и доставку.'],okTg:['Написати менеджеру в Telegram','Написать менеджеру в Telegram'],okMore:['Продовжити покупки','Продолжить покупки'],
 failH:['Не вдалося надіслати через сайт','Не удалось отправить через сайт'],failP:['Перевірте інтернет або надішліть замовлення менеджеру в Telegram — текст уже готовий.','Проверьте интернет или отправьте заказ менеджеру в Telegram — текст уже готов.'],failTg:['Надіслати в Telegram','Отправить в Telegram'],retry2:['Спробувати ще раз','Попробовать ещё раз'],rate:['Забагато замовлень за короткий час. Зачекайте кілька хвилин або напишіть менеджеру.','Слишком много заказов за короткое время. Подождите несколько минут или напишите менеджеру.'],num:['№','№'],
 more2:['Додати ще товари','Добавить ещё товары'],clearc:['Очистити кошик','Очистить корзину'],who:['Куди відправити','Куда отправить'],del:['Видалити','Удалить'],cleared:['Кошик очищено','Корзина очищена'],
 cel1:['Довжина елемента, см','Длина элемента, см'],cel2:['Ширина елемента, см','Ширина элемента, см'],cW:['Ширина стіни або підлоги, м','Ширина стены или пола, м'],cH:['Висота стіни або довжина підлоги, м','Высота стены или длина пола, м'],cA:['Або площа, м²','Или площадь, м²'],cO:['Вікна й двері, м²','Окна и двери, м²'],cR:['Запас на брак і помилки','Запас на брак и ошибки'],cAuto:['Авто','Авто'],
@@ -522,6 +522,7 @@ function render(){
 }
 /* ---------- тематична сторінка (vinil.html тощо) ---------- */
 function renderLand(){
+ if(PAGE.info)return renderInfo();
  const title=view.c?cname(view.c):view.q?t('srres',{q:view.q}):PAGE.listTitle||PAGE.name;
  $('#ctitle').textContent=title;
  const cr=[[t('home'),'./'],[PAGE.name,location.pathname]];if(view.c)cr.push([cname(view.c),'']);
@@ -552,6 +553,24 @@ function renderLand(){
  const graph=[{'@type':'BreadcrumbList',itemListElement:bl},{'@type':'CollectionPage',name:view.c?title:PAGE.name,url,description:view.c?'':PAGE.desc,mainEntity:{'@type':'ItemList',numberOfItems:L.length,itemListElement:L.slice(0,24).map((p,i)=>({'@type':'ListItem',position:i+1,url:CFG.site+href(p),name:p.name}))}}];
  if(faq.length)graph.push({'@type':'FAQPage',mainEntity:faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))});
  $('#ld').textContent=JSON.stringify({'@context':'https://schema.org','@graph':graph})}
+/* ---------- інформаційна сторінка (дропшипінг тощо): без каталогу, з власним SEO ---------- */
+function renderInfo(){
+ if(view.q){location.href='./?q='+encodeURIComponent(view.q);return}
+ if(!pdOpen()){document.title=PAGE.title;setMeta('meta[name=description]','content',PAGE.desc);setMeta('link[rel=canonical]','href',PAGE.url);setMeta('meta[property="og:url"]','content',PAGE.url)}
+ setMeta('meta[name=robots]','content','index,follow,max-image-preview:large');
+ const graph=[{'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Samostroy Shop',item:CFG.site},{'@type':'ListItem',position:2,name:PAGE.name,item:PAGE.url}]},
+  {'@type':'WebPage',name:PAGE.name,url:PAGE.url,description:PAGE.desc,inLanguage:'uk',isPartOf:{'@id':'https://samostroy.shop/#site'}}];
+ if((PAGE.faq||[]).length)graph.push({'@type':'FAQPage',mainEntity:PAGE.faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))});
+ $('#ld').textContent=JSON.stringify({'@context':'https://schema.org','@graph':graph});
+ if(loaded)safe(fillAssort,'assort')}
+/* асортимент для партнерів: категорії з кількістю, ціною «від» і фото — з живого каталогу */
+function fillAssort(){
+ const el=document.getElementById('assort');if(!el||el.dataset.done)return;el.dataset.done=1;
+ const L=[];for(const[g]of GROUPS)for(const c of ORDER[g]||[]){if(c=='inshe'||VIRT[c])continue;const P=all.filter(p=>p.cat==c&&p.av);if(!P.length)continue;
+  const img=(P.find(p=>p.img)||{}).img||'';L.push({c,n:P.length,min:Math.min(...P.map(p=>p.price)),img})}
+ L.sort((a,b)=>b.n-a.n);
+ el.innerHTML=L.slice(0,12).map(x=>`<a class="as" href="./?c=${x.c}"><span class="im"><img loading="lazy" src="${esc(x.img)}" alt="" onerror="this.style.opacity=0"></span><b>${esc(cname(x.c))}</b><span class="soft">${x.n} ${t('items')} · ${t('from')} ${money(x.min)}</span></a>`).join('');
+ const n=all.filter(p=>p.av).length;$$('[data-avn]').forEach(e=>e.textContent=n)}
 function drawSide(){
  const g=view.c?cgroup(view.c):view.g;
  $('#side').innerHTML=`<a class="gl ${!view.c&&!view.g?'on':''}" href="./" data-nav>${t('allh')} <span class="soft" style="font-weight:400">${all.length||''}</span></a>`+GROUPS.map(([gg])=>`<h3><a class="gl ${view.g==gg&&!view.c?'on':''}" href="?g=${gg}" data-nav style="padding:0">${esc(gname(gg))}</a></h3><ul>${subsOf(gg).map(s=>`<li><a class="${view.c==s?'on':''}" href="?c=${s}" data-nav>${esc(cname(s))}<i>${cnt(s)||''}</i></a></li>`).join('')}</ul>`).join('')}
@@ -821,7 +840,7 @@ document.addEventListener('click',e=>{
  if(D.l)return setLang(D.l);
  if(a.matches('a[href^="?"],a[data-nav],a[data-home]')&&!D.p&&!e.ctrlKey&&!e.metaKey){
   const u=new URL(a.href,location.href),s=u.searchParams;if(u.pathname!=location.pathname&&!a.hasAttribute('data-home')&&!a.hasAttribute('data-nav'))return;
-  if(LAND&&(s.get('g')||(s.get('c')&&!inScope(s.get('c'))))){e.preventDefault();location.href='./'+u.search+u.hash;return}
+  if(LAND&&(s.get('g')||(s.get('c')&&(PAGE.info||!inScope(s.get('c')))))){e.preventDefault();location.href='./'+u.search+u.hash;return}
   e.preventDefault();mega(false);if(pdOpen()){view={...view,p:''};$('#pd').close()}
   if(s.get('p'))return openP(s.get('p'));
   $('#q').value=$('#q2').value='';
@@ -832,9 +851,9 @@ document.addEventListener('click',e=>{
  if(D.oc)return oneClick(D.oc);
  if(D.smp){const p=byId.get(D.smp);return tg(`${t('smpMsg')}:\n• ${p.name} (${p.sku})\n${CFG.site}${href(p)}${CFG.samplesNote?'\n'+CFG.samplesNote:''}`)}
  if(D.askp){const p=byId.get(D.askp);return tg(`${t('askMsg')}:\n${p.name} (${p.sku})\n${CFG.site}${href(p)}`)}
- if(D.pl){cart[D.pl].q++;return save()}
+ if(D.pl&&cart[D.pl]){cart[D.pl].q++;return save()}
  if(D.del){delete cart[D.del];return save()}
- if(D.m){if(--cart[D.m].q<1)delete cart[D.m];return save()}
+ if(D.m&&cart[D.m]){if(--cart[D.m].q<1)delete cart[D.m];return save()}
  if(D.q){const[k,v]=D.q.split(':');qa[k]=v;qstep++;return quiz()}
  switch(D.a){
   case'cart':mega(false);return panel(true);

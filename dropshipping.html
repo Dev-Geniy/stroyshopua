@@ -1,1939 +1,382 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Дропшипінг — партнерська програма Samostroy Shop</title>
-
-  <!-- Фавікон -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  
-  <!-- ШРИФТ -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- ИКОНКИ -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- 🚀 SEO для сторінки Дропшипінгу — Samostroy Shop -->
-  <!-- Основні ключові слова -->
-  <meta name="keywords" content="дропшипінг Україна, партнерська програма, заробіток онлайн, продаж будматеріалів, Samostroy Shop, бізнес без вкладень, дропшипінг будматеріали, партнерська програма магазин будматеріалів">
-
-  <!-- Опис сторінки -->
-  <meta name="description" content="Дропшипінг з Samostroy Shop — заробляйте без ризиків та без складу. Маржа 25–60%, відправки Новою Поштою та Укрпоштою, повний пакет матеріалів для продажу.">
-
-  <!-- Канонічне посилання -->
-  <link rel="canonical" href="https://samostroy.shop/dropshipping.html">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Дропшипінг — партнерська програма Samostroy Shop">
-  <meta property="og:description" content="Запускайте продаж будматеріалів без ризиків. Маржа 25–60%, відправка НП/Укрпошта, консультації та повний пакет матеріалів.">
-  <meta property="og:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-  <meta property="og:url" content="https://samostroy.shop/dropshipping.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="uk_UA">
-
-  <!-- Telegram Preview -->
-  <meta name="telegram:title" content="Дропшипінг Samostroy Shop">
-  <meta name="telegram:description" content="Запустіть свій бізнес без вкладень — партнерська програма Samostroy Shop.">
-  <meta name="telegram:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Дропшипінг — партнерська програма Samostroy Shop">
-  <meta name="twitter:description" content="Заробляйте без ризиків. Дропшипінг будматеріалів із маржею 25–60%.">
-  <meta name="twitter:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- JSON-LD Schema (Google Rich Snippets) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "Дропшипінг — партнерська програма Samostroy Shop",
-    "image": "https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png",
-    "description": "Партнерська програма для заробітку на продажу будматеріалів без складу та вкладень.",
-    "brand": {
-      "@type": "Brand",
-      "name": "Samostroy Shop"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "UAH",
-      "availability": "https://schema.org/InStock"
-    },
-    "url": "https://samostroy.shop/dropshipping.html",
-    "sameAs": [
-      "https://t.me/samostroy_shop",
-      "https://www.tiktok.com/@stroyshop_ua"
-    ]
-  }
-  </script>
-
-  <!-- Robots -->
-  <meta name="robots" content="index, follow">
-  
-  <!-- Sitemap -->
-  <link rel="sitemap" type="application/xml" href="https://samostroy.shop/sitemap.xml">
-  
-  <style>
-    :root {
-      --bg:#050509;
-      --bg2:#0c0d12;
-      --card:rgba(255,255,255,0.04);
-      --card2:rgba(255,255,255,0.06);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --muted:#a4a9b7;
-      --text:#f1f1f4;
-      --radius:18px;
-      --border:rgba(255,255,255,0.1);
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-      --trans:0.25s;
-    }
-
-    *{
-      margin:0; padding:0; box-sizing:border-box;
-    }
-
-    body{
-      font-family:"Inter",sans-serif;
-      background:radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%), var(--bg);
-      color:var(--text);
-      line-height:1.45;
-    }
-
-    a{
-      color:inherit; text-decoration:none;
-    }
-
-    /* HEADER */
-    header{
-      position:sticky; top:0; z-index:10;
-      padding:18px 24px;
-      display:flex; justify-content:space-between; align-items:center;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,9,0.72);
-      border-bottom:1px solid var(--border);
-    }
-
-    .logo{
-      font-size:clamp(20px, 3vw, 28px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      letter-spacing:1px;
-      text-transform:uppercase;
-    }
-
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:8px; padding:12px 20px;
-      background:var(--grad);
-      border-radius:var(--radius);
-      font-size:14px; font-weight:700;
-      color:#000; cursor:pointer; border:none;
-      transition:var(--trans);
-      box-shadow:var(--shadow);
-      white-space:nowrap;
-    }
-    .btn:hover{ transform:translateY(-3px); box-shadow:0 24px 50px rgba(0,0,0,0.75); }
-
-    .btn-outline{
-      background:transparent; border:1px solid var(--accent);
-      color:var(--accent2); box-shadow:none;
-    }
-    .btn-outline:hover{
-      background:rgba(255,122,26,0.08);
-      box-shadow:var(--shadow);
-    }
-
-    .btn i{ width:20px; height:20px; }
-
-    /* SECTION BASE */
-    .section{
-      max-width:1150px; margin:50px auto; padding:0 20px;
-    }
-
-    .title{
-      font-size:clamp(24px,4vw,34px);
-      font-weight:800; margin-bottom:10px;
-      line-height:1.2;
-    }
-
-    .sub{
-      color:var(--muted); font-size:clamp(14px,2.4vw,16px);
-      max-width:640px; margin-bottom:24px;
-    }
-
-    .section-label{
-      text-transform:uppercase;
-      font-size:11px;
-      letter-spacing:.08em;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-
-    /* HERO */
-    .hero{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:32px; align-items:center;
-      max-width:1150px; margin:50px auto;
-      padding:0 20px;
-    }
-
-    .hero h1{
-      font-size:clamp(30px,4vw,45px);
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      font-weight:800;
-      margin-bottom:12px;
-      line-height:1.15;
-    }
-
-    .hero p{
-      color:var(--muted);
-      font-size:clamp(14px,2.4vw,17px);
-      max-width:520px;
-      margin-bottom:20px;
-    }
-
-    .tags{
-      display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;
-    }
-    .tag{
-      padding:6px 12px; font-size:12px;
-      background:rgba(255,255,255,0.05);
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-
-    .hero-side{
-      padding:20px;
-      background:var(--card2);
-      border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .side-row{
-      display:flex; justify-content:space-between;
-      color:var(--muted); font-size:14px;
-      padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-    .side-row:last-child{ border-bottom:none; }
-    .side-row strong{ color:var(--accent2); }
-
-    /* CARDS GRID */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:20px;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .card h3{
-      font-size:18px;
-      color:var(--accent2);
-      margin-bottom:8px;
-      display:flex; align-items:center; gap:8px;
-    }
-
-    .card p{
-      font-size:14px; color:var(--muted);
-    }
-
-    /* STEPS */
-    .steps .step{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      position:relative;
-    }
-    .step-num{
-      position:absolute; right:12px; top:12px;
-      font-size:20px; font-weight:800;
-      color:rgba(255,255,255,0.1);
-    }
-    .step-title{ font-size:16px; font-weight:600; margin-bottom:6px; }
-    .step-text{ font-size:14px; color:var(--muted); }
-
-    /* COMPARE */
-    .compare .c-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:20px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .compare h4{
-      font-size:16px; font-weight:700;
-      margin-bottom:8px; color:var(--accent2);
-    }
-
-    .compare ul{
-      margin-left:18px; color:var(--muted); font-size:14px;
-    }
-
-    .badge{
-      padding:3px 8px; background:rgba(255,122,26,0.16);
-      border-radius:999px; color:var(--accent2);
-      font-size:11px; margin-left:6px;
-    }
-
-    /* CALCULATOR (пока не используется, оставляем стиль на будущее) */
-    .calc-wrap{
-      display:grid; grid-template-columns:1fr 1fr; gap:22px;
-    }
-
-    .calc input{
-      width:100%; padding:10px;
-      background:var(--bg2);
-      border-radius:10px; border:1px solid var(--border);
-      color:var(--text); margin-top:4px;
-    }
-
-    .calc-result{ margin-top:12px; font-size:14px; }
-    
-        /* INCOME CALCULATOR */
-    .income-section-note{
-      color:var(--muted);
-      font-size:13px;
-      max-width:720px;
-      margin-bottom:18px;
-    }
-
-    .calc{
-      background:var(--card2);
-      border-radius:var(--radius);
-      padding:20px 20px 18px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .calc-block{
-      margin-bottom:18px;
-    }
-
-    .calc-label-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      margin-bottom:6px;
-      gap:12px;
-    }
-
-    .calc-label{
-      font-size:14px;
-      font-weight:600;
-    }
-
-    .calc-current{
-      font-size:14px;
-      color:var(--accent2);
-      font-weight:600;
-      white-space:nowrap;
-    }
-
-    .calc-hint{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:4px;
-    }
-
-    .calc-slider input[type="range"]{
-      width:100%;
-      -webkit-appearance:none;
-      appearance:none;
-      height:5px;
-      border-radius:999px;
-      background:rgba(148,163,184,0.35);
-      outline:none;
-    }
-
-    .calc-slider input[type="range"]::-webkit-slider-thumb{
-      -webkit-appearance:none;
-      appearance:none;
-      width:18px;
-      height:18px;
-      border-radius:50%;
-      background:var(--accent);
-      border:2px solid #11131c;
-      box-shadow:0 0 0 4px rgba(255,122,26,0.25);
-      cursor:pointer;
-      transition:transform .15s ease, box-shadow .15s ease;
-    }
-
-    .calc-slider input[type="range"]::-moz-range-thumb{
-      width:18px;
-      height:18px;
-      border-radius:50%;
-      background:var(--accent);
-      border:2px solid #11131c;
-      box-shadow:0 0 0 4px rgba(255,122,26,0.25);
-      cursor:pointer;
-      transition:transform .15s ease, box-shadow .15s ease;
-    }
-
-    .calc-slider input[type="range"]:active::-webkit-slider-thumb{
-      transform:scale(1.05);
-      box-shadow:0 0 0 6px rgba(255,122,26,0.35);
-    }
-
-    .calc-slider input[type="range"]:active::-moz-range-thumb{
-      transform:scale(1.05);
-      box-shadow:0 0 0 6px rgba(255,122,26,0.35);
-    }
-
-    .calc-summary{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-
-    .calc-summary-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .calc-summary-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:6px;
-      gap:10px;
-    }
-
-    .calc-summary-title{
-      font-size:14px;
-      font-weight:600;
-    }
-
-    .calc-summary-tag{
-      font-size:11px;
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.12);
-      color:var(--muted);
-      white-space:nowrap;
-    }
-
-    .calc-summary-value{
-      font-size:20px;
-      font-weight:700;
-      color:var(--accent2);
-      margin-bottom:4px;
-    }
-
-    .calc-summary-desc{
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .calc-profit-lines{
-      font-size:13px;
-      margin-bottom:6px;
-    }
-
-    .calc-profit-lines div{
-      margin-bottom:4px;
-    }
-
-    /* CTA */
-    .cta{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:26px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      display:flex; justify-content:space-between; align-items:center;
-      gap:20px; flex-wrap:wrap;
-    }
-
-    .cta h3{
-      font-size:clamp(22px,4vw,28px);
-      font-weight:800; margin-bottom:4px;
-    }
-
-    .cta p{
-      color:var(--muted);
-      font-size:14px;
-      max-width:420px;
-    }
-
-    /* FAQ */
-    .faq-item{
-      background:var(--card);
-      padding:20px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      margin-bottom:14px;
-    }
-    .faq-item h3{
-      font-size:16px; color:var(--accent2); margin-bottom:6px;
-    }
-    .faq-item p{ color:var(--muted); font-size:14px; }
-
-    footer{
-      text-align:center; padding:22px;
-      color:var(--muted); font-size:13px;
-      border-top:1px solid var(--border);
-      margin-top:40px;
-    }
-
-    /* 3 РІВНІ ПАРТНЕРА */
-.partner-levels{
-  margin-top:18px;
-}
-
-.partner-card{
-  position:relative;
-  overflow:hidden;
-}
-
-.partner-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:0.02em;
-  margin-bottom:10px;
-}
-
-.partner-badge span{
-  opacity:0.8;
-}
-
-/* Цвета для уровней */
-.partner-card.starter .partner-badge{
-  background:rgba(148,163,184,0.16);
-  color:#e5e7eb;
-}
-
-.partner-card.pro .partner-badge{
-  background:rgba(56,189,248,0.16);
-  color:#7dd3fc;
-}
-
-.partner-card.team .partner-badge{
-  background:rgba(251,191,36,0.16);
-  color:#facc15;
-}
-
-.partner-label{
-  font-size:13px;
-  text-transform:uppercase;
-  letter-spacing:0.12em;
-  color:var(--muted);
-  margin-bottom:4px;
-}
-
-.partner-title{
-  font-size:18px;
-  font-weight:700;
-  color:var(--accent2);
-  margin-bottom:6px;
-}
-
-.partner-meta{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:10px;
-}
-
-.partner-meta strong{
-  color:var(--text);
-}
-
-/* Список преимуществ */
-.partner-list{
-  list-style:none;
-  margin:0;
-  padding:0;
-  margin-top:8px;
-}
-
-.partner-list li{
-  display:flex;
-  align-items:flex-start;
-  gap:8px;
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:6px;
-}
-
-.partner-dot{
-  width:6px;
-  height:6px;
-  border-radius:999px;
-  background:var(--accent2);
-  margin-top:6px;
-}
-
-/* Маленькие подписи-таблетки */
-.partner-pills{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:10px;
-}
-
-.partner-pill{
-  padding:4px 8px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,0.09);
-  font-size:11px;
-  color:var(--muted);
-}
-
-/* Небольшая подводка под блоком */
-.partner-note{
-  margin-top:18px;
-  font-size:13px;
-  color:var(--muted);
-  max-width:720px;
-}
-
-    /* --------- НГ --------- */
-/* 🎄 + год возле названия (год подставит JS в data-ny-year) */
-html.ny .ac-logo{ position:relative; }
-html.ny .ac-logo::after{
-  content: " 🎄 " attr(data-ny-year);
-  display:inline-block;
-  margin-left:10px;
-  font-size:12px;
-  font-weight:900;
-  padding:4px 10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
-  color:var(--accent2);
-  vertical-align:middle;
-}
-
-/* ===== ГИРЛЯНДА (лампочки сверху) ===== */
-.ny-garland{
-  position:fixed;
-  left:0; right:0; top:0;
-  height:44px;          /* выше и меньше */
-  z-index:55;
-  pointer-events:auto;  /* клики по лампочкам */
-  display:none;
-}
-html.ny .ny-garland{ display:block; }
-
-/* УБРАНО: горизонтальная верёвка полностью */
-/* .ny-garland::before — не используем */
-
-.ny-garland-row{
-  position:absolute;
-  left:0; right:0; top:0;
-  height:44px;
-  display:flex;
-  justify-content:space-evenly;
-  align-items:flex-start;
-  padding:0 12px 0;
-  gap:10px;
-}
-
-/* лампочка: контейнер НЕ переворачиваем (чтоб подвес сверху был сверху) */
-.ny-bulb{
-  position:relative;
-  width:18px;                 /* меньше */
-  height:18px;                /* меньше */
-  transform: translateY(var(--ny-drop, -3px)) rotate(var(--ny-rot, 0deg));
-  opacity:.92;
-  cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
-
-  /* лёгкая тень (дешевле чем filter drop-shadow) */
-  box-shadow: 0 0 10px rgba(0,0,0,.25);
-}
-
-/* подвес сверху */
-.ny-bulb::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:-11px;
-  width:2px;
-  height:11px;
-  transform: translateX(-50%);
-  background: rgba(255,255,255,.16);
-  border-radius: 2px;
-  pointer-events:none;
-  box-shadow: 0 6px 10px rgba(0,0,0,.35);
-}
-
-/* переворачиваем ТОЛЬКО SVG лампочки */
-.ny-bulb svg{
-  width:100%;
-  height:100%;
-  display:block;
-  transform: rotate(180deg);
-  transform-origin:center;
-}
-
-/* контур лампочки */
-.ny-bulb .ny-stroke{
-  stroke: var(--ny-c);
-  stroke-width: 2.1;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* “стекло” внутри */
-.ny-bulb .ny-glass{
-  fill: color-mix(in srgb, var(--ny-c) 14%, transparent);
-  opacity: .8;
-}
-
-/* дешёвые анимации (только opacity) */
-@keyframes nyWave{
-  0%,100% { opacity:.35; }
-  40%     { opacity:1; }
-}
-@keyframes nyBlinkFast{
-  0%,100% { opacity:.25; }
-  35%     { opacity:1; }
-  65%     { opacity:.35; }
-}
-@keyframes nyBlinkSlow{
-  0%   { opacity:.35; }
-  35%  { opacity:1; }
-  75%  { opacity:.55; }
-  100% { opacity:.35; }
-}
-
-/* базовая “жизнь” */
-.ny-bulb{
-  animation: nyWave var(--ny-wave, 3.4s) ease-in-out infinite;
-}
-.ny-bulb.ny-fast{
-  animation:
-    nyWave var(--ny-wave, 3.2s) ease-in-out infinite,
-    nyBlinkFast var(--ny-blink, 1.2s) steps(2, end) infinite;
-}
-.ny-bulb.ny-slow{
-  animation:
-    nyWave var(--ny-wave, 4.2s) ease-in-out infinite,
-    nyBlinkSlow var(--ny-blink, 2.8s) ease-in-out infinite;
-}
-
-/* ===== СНЕЖИНКИ (ультра-лёгкий DOM) ===== */
-.ny-snow{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:40;
-  display:none;
-}
-html.ny .ny-snow{ display:block; }
-
-/* падение анимируем на контейнере (transform) */
-.ny-flake{
-  position:absolute;
-  top:-12vh;
-  left:0;
-  width: var(--ny-size, 14px);
-  height: var(--ny-size, 14px);
-
-  /* в 2 раза прозрачнее */
-  opacity: var(--ny-op, .28);
-
-  will-change: transform;
-  transform: translate3d(0,0,0);
-
-  animation: nyFall var(--ny-dur, 14s) linear infinite;
-}
-
-/* sway отдельно на вложенном (transform translateX — дешево) */
-.ny-flake-inner{
-  width:100%;
-  height:100%;
-  animation: nySway var(--ny-sway-dur, 5s) ease-in-out infinite;
-}
-
-.ny-flake svg{ width:100%; height:100%; display:block; }
-.ny-flake path{
-  stroke: rgba(255,255,255,.85);
-  stroke-width: 1.6;
-  fill:none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* только transform/opacity */
-@keyframes nyFall{
-  from { transform: translate3d(var(--ny-x,0px), -12vh, 0) rotate(0deg); opacity: var(--ny-op, .28); }
-  to   { transform: translate3d(var(--ny-x2,0px), 112vh, 0) rotate(var(--ny-r2, 540deg)); opacity: var(--ny-op, .28); }
-}
-@keyframes nySway{
-  0%   { transform: translateX(0px); }
-  25%  { transform: translateX(var(--ny-sway, 14px)); }
-  50%  { transform: translateX(calc(var(--ny-sway, 14px) * -1)); }
-  75%  { transform: translateX(calc(var(--ny-sway, 14px) * .6)); }
-  100% { transform: translateX(0px); }
-}
-
-/* мобилка ещё легче */
-@media (max-width:640px){
-  .ny-bulb{ width:16px; height:16px; }
-  .ny-garland{ height:40px; }
-  .ny-garland-row{ height:40px; }
-  .ny-flake{ opacity: .22; }
-}
-
-/* если пользователь/устройство просит меньше анимации — отключаем */
-@media (prefers-reduced-motion: reduce){
-  html.ny .ny-snow{ display:none !important; }
-  html.ny .ny-garland{ display:none !important; }
-  html.ny .ac-logo::after{ display:none !important; }
-}
-
-/* =========================
-   NEWYEAR END (REMOVE LATER)
-   ========================= */
-    
-    /* ========= MOBILE (Идеальная адаптация) ========= */
-    @media(max-width:900px){
-      .hero{
-        grid-template-columns:1fr;
-        margin-top:20px;
-      }
-      .cta{
-        flex-direction:column; align-items:flex-start;
-      }
-      .calc-wrap{ grid-template-columns:1fr; }
-    }
-
-    @media(max-width:480px){
-      .btn{
-        padding:10px 14px;
-        font-size:13px;
-      }
-      .hero h1{
-        font-size:28px;
-      }
-      .section{
-        margin:40px auto;
-      }
-      .grid{
-        grid-template-columns:1fr;
-      }
-    }
-    
-    /* СЕКЦИЯ АКАДЕМИЯ */
-    .ac-item{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:10px 14px;
-      text-align:center;
-      min-width:70px;
-    }
-
-    .ac-num{
-      font-size:22px;
-      font-weight:800;
-      color:var(--accent2);
-      line-height:1;
-    }
-
-    .ac-label{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:3px;
-    }
-
-    /* Дополнительные “инфографические” секции */
-    .pill-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:8px;
-    }
-    .pill{
-      padding:4px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      font-size:11px;
-      color:var(--muted);
-      background:rgba(255,255,255,0.02);
-    }
-
-    .journey{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
-    }
-    .journey-step{
-      background:var(--card2);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:20px;
-      position:relative;
-      overflow:hidden;
-    }
-    .journey-step::before{
-      content:attr(data-step);
-      position:absolute;
-      top:10px;right:14px;
-      font-size:22px;
-      font-weight:800;
-      color:rgba(255,255,255,0.08);
-    }
-    .journey-title{
-      font-size:16px;
-      font-weight:600;
-      margin-bottom:6px;
-      color:var(--accent2);
-    }
-    .journey-text{
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    .psych-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:16px;
-    }
-    .psych-item{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:16px 18px;
-      font-size:14px;
-      color:var(--muted);
-    }
-    .psych-item strong{
-      color:var(--accent2);
-    }
-
-    /* Animations reused */
-    @keyframes fadeUp{
-      0%{opacity:0;transform:translateY(10px);}
-      100%{opacity:1;transform:translateY(0);}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Дропшипінг будматеріалів без вкладень — партнерська програма Samostroy Shop</title>
+<meta name="description" content="Продавайте 1200+ товарів для ремонту без складу й закупівлі: ми пакуємо, відправляємо в день замовлення й беремо на себе повернення. Ціну ставите ви. Три рівні партнера, навчання й готові матеріали.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://samostroy.shop/dropshipping.html">
+<meta name="theme-color" content="#2b3138">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samostroy Shop">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Дропшипінг з Samostroy Shop — продавайте без складу й вкладень">
+<meta property="og:description" content="Ви знаходите клієнтів, ми відправляємо. 1200+ товарів, готові фото й описи, навчання, три рівні партнера.">
+<meta property="og:url" content="https://samostroy.shop/dropshipping.html">
+<meta property="og:image" content="https://samostroy.shop/DropSamostroyShop.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kabinet.dropoffice.com.ua">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"OnlineStore","@id":"https://samostroy.shop/#store","name":"Samostroy Shop","url":"https://samostroy.shop/","logo":"https://samostroy.shop/samostroy-shop-logo.jpg","image":"https://samostroy.shop/samostroy-preview.jpg","telephone":"+380984927948","description":"Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.","areaServed":"UA","currenciesAccepted":"UAH","paymentAccepted":"Cash on delivery, Card","address":{"@type":"PostalAddress","addressCountry":"UA"},"sameAs":["https://t.me/samostroy_shop","https://www.tiktok.com/@stroyshop_ua","https://www.instagram.com/samostroy.shop"]},
+{"@type":"WebSite","@id":"https://samostroy.shop/#site","url":"https://samostroy.shop/","name":"Samostroy Shop","inLanguage":"uk","publisher":{"@id":"https://samostroy.shop/#store"},"potentialAction":{"@type":"SearchAction","target":"https://samostroy.shop/?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
+<script type="application/ld+json" id="ld"></script>
+<link rel="stylesheet" href="shop.css?v=3e0da13c">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+ <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.9V15"/><circle cx="12" cy="18.5" r=".6"/><circle cx="12" cy="12" r="10"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.5 4.5 2.8 11.6c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.3.8 1.3 1 1.9.4l2.6-2.5 4.8 3.5c.7.5 1.7.1 1.9-.7L22.9 5.8c.2-1-.6-1.7-1.4-1.3z"/><path d="m7.5 14.9 10-7.4-7.4 8.5"/></symbol>
+</svg>
 
-<!-- =========================
-     NEWYEAR START (REMOVE LATER)
-========================= -->
-<div class="ny-garland" aria-hidden="true"></div>
-<div class="ny-snow" aria-hidden="true"></div>
-<!-- =========================
-     NEWYEAR END (REMOVE LATER)
-========================= -->
-  
 <header>
-  <div class="logo">Samostroy Shop</div>
-  <a href="index.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Назад до магазину</a>
+ <div class="w hd">
+  <a class="logo" href="./"><img src="logo.jpg" alt="Samostroy Shop" width="44" height="44"><span>Samostroy Shop<small data-i="tag">Ремонт своїми руками</small></span></a>
+  <button class="hcat" data-a="mega" aria-expanded="false" aria-controls="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+  <div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q" autocomplete="off" data-ip="ph" placeholder="Пошук: 3D панель, PET плитка, артикул" aria-label="Пошук товарів"><button class="x" data-a="clr" aria-label="Очистити" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
+  <a class="hphone" href="tel:+380984927948">+380 98 492 79 48</a>
+  <div class="lg"><button data-l="uk" class="on">UA</button><button data-l="ru">RU</button></div>
+  <button class="btn hcart" data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="lbl" data-i="cart">Кошик</span><span class="cnt" data-cnt>0</span></button>
+ </div>
+ <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
+ <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
+<main id="top">
+<section class="w hero lhero" id="lhero">
+ <div>
+  <nav class="crumbs" aria-label="Breadcrumb"><span><a href="./">Головна</a></span><span>Дропшипінг</span></nav>
+  <h1>Продавайте товари для ремонту без складу й вкладень</h1>
+  <p class="lead">Ви знаходите покупців на OLX, маркетплейсах чи в соцмережах. Ми пакуємо, відправляємо в день замовлення й беремо на себе повернення. Різниця між оптовою ціною й вашою — ваш дохід.</p>
+  <div class="acts">
+   <a class="btn" href="#apply">Подати заявку</a>
+   <a class="btn ghost" href="#how">Як це працює</a>
+  </div>
+  <div class="facts">
+   <div><b>Вкладення 0 ₴</b><span>Без закупівлі й складу</span></div>
+   <div><b>Ціну ставите ви</b><span>Рекомендуємо ринкову</span></div>
+   <div><b>Відправка в день замовлення</b><span>Нова Пошта, Укрпошта</span></div>
+   <div><b>Повернення — на нас</b><span>Обмін і повернення робимо ми</span></div>
+  </div>
+ </div>
+ <div class="wallbox">
+  <div class="tw-wrap">
+   <div class="tw" id="tw">
+    <button class="tl"></button><button class="tl"></button><button class="tl"></button>
+    <button class="tl"></button><button class="tl"></button><button class="tl"></button>
+    <button class="tl"></button><button class="tl"></button><button class="tl peel"></button>
+    <div class="peelbg" aria-hidden="true"></div><div class="peelfx" aria-hidden="true"></div>
+   </div>
+  </div>
+  <p class="wallnote"><svg class="i"><use href="#i-check"/></svg><span>Це справжні товари, які ви можете продавати вже сьогодні: <b data-avn>1200+</b> позицій у наявності.</span></p>
+ </div>
+</section>
+
+<section class="w sec" id="how" style="padding-top:8px">
+ <h2>Як це працює</h2>
+ <ol class="flow">
+  <li><span class="who">Ви</span><b>Розміщуєте товар</b><span>Беріть наші фото й описи та публікуйте на OLX, Prom, в Instagram чи на своєму сайті.</span></li>
+  <li><span class="who">Ви</span><b>Отримуєте замовлення</b><span>Клієнт пише вам. Ви погоджуєте ціну й доставку та передаєте замовлення менеджеру.</span></li>
+  <li><span class="who we">Ми</span><b>Пакуємо й відправляємо</b><span>У день замовлення Новою Поштою або Укрпоштою, з надійним пакуванням.</span></li>
+  <li><span class="who we">Ми</span><b>Ведемо доставку</b><span>Даємо ТТН, стежимо за посилкою, беремо на себе обмін і повернення.</span></li>
+  <li><b>Ви заробляєте</b><span>Клієнт платить вашу ціну, ми утримуємо оптову, різницю виплачуємо вам.</span></li>
+ </ol>
+</section>
+
+<section class="w sec" id="roles">
+ <h2>Хто що робить</h2>
+ <div class="split">
+  <div class="box"><h3>Ваша частина</h3><p>Продажі й спілкування з клієнтами. Працюєте з телефона, у зручний час.</p>
+   <ul><li>Публікуєте оголошення й ведете сторінки</li><li>Відповідаєте клієнтам і радите товар</li><li>Встановлюєте свою ціну</li><li>Передаєте замовлення менеджеру в Telegram</li></ul></div>
+  <div class="box we"><h3>Наша частина</h3><p>Усе, що потребує складу, грошей і логістики.</p>
+   <ul><li>Каталог на 1200+ товарів і власний склад</li><li>Пакування й відправка в день замовлення</li><li>ТТН, контроль доставки, обмін і повернення</li><li>Фото, описи, навчання й підтримка менеджера</li></ul></div>
+ </div>
+</section>
+
+<section class="w sec" id="assortS">
+ <h2>Що можна продавати</h2>
+ <p class="soft" style="margin:-8px 0 18px;max-width:70ch">Самоклеючі матеріали для ремонту — товари, які легко показати на фото й відео «до/після». Ціни й наявність нижче — з нашого каталогу просто зараз.</p>
+ <div class="assort" id="assort"><div class="sk" style="aspect-ratio:1"></div><div class="sk" style="aspect-ratio:1"></div><div class="sk" style="aspect-ratio:1"></div></div>
+ <p style="margin-top:16px"><a class="btn ghost" href="./#catalog">Увесь каталог</a></p>
+</section>
+
+<section class="w sec" id="levels">
+ <h2>Три рівні партнера</h2>
+ <p class="soft" style="margin:-8px 0 22px;max-width:70ch">Рівень не прив’язує вас назавжди: починайте зі Starter, вийдіть на стабільні замовлення й переходьте на Pro, а далі — на Team, де дропшипінг стає бізнесом з командою.</p>
+ <div class="levels">
+  <div class="lvl"><span class="tag">Рівень 1</span><h3>Starter</h3><p class="for">Для студентів, новачків і тих, хто тестує нішу без ризику.</p>
+   <div class="gate">Без мінімального обороту й обов’язкових закупівель</div>
+   <ul><li>Маржа в середньому до 10% на рекомендованій ціні</li><li>Готові фото, описи й приклади оголошень</li><li>Безкоштовний курс «Дропшипінг з нуля» в Samostroy Academy</li><li>Підтримка менеджера в Telegram і телефоном</li></ul>
+   <a class="btn ghost" href="#apply" data-lvl="Starter">Почати зі Starter</a></div>
+  <div class="lvl mid" data-badge="Для тих, хто вже продає"><span class="tag">Рівень 2</span><h3>Pro</h3><p class="for">Для інтернет-магазинів, продавців на маркетплейсах і тих, хто має замовлення щотижня.</p>
+   <div class="gate">Оборот від 20 000–30 000 ₴ на місяць</div>
+   <ul><li>Кращі закупівельні ціни: маржа від 15%</li><li>Новинки, хіти й позиції з уцінки</li><li>Шаблони УТП, заголовків і структура оголошення</li><li>Пріоритетна комунікація й бронювання товару</li><li>Документи для магазинів на запит</li></ul>
+   <a class="btn" href="#apply" data-lvl="Pro">Подати заявку на Pro</a></div>
+  <div class="lvl"><span class="tag">Рівень 3</span><h3>Team</h3><p class="for">Для партнерів з кількома каналами продажу або командою.</p>
+   <div class="gate">Оборот від 80 000–100 000 ₴ на місяць</div>
+   <ul><li>Найвигідніші ціни, знижки й бонуси з обороту</li><li>Пріоритетний доступ до нових партій і залишків</li><li>Дохід за рекомендацію активних партнерів (за домовленістю)</li><li>Закритий чат Team-партнерів</li></ul>
+   <a class="btn ghost" href="#apply" data-lvl="Team">Обговорити Team</a></div>
+ </div>
+</section>
+
+<section class="w sec" id="channels">
+ <h2>Де продавати</h2>
+ <div class="chan">
+  <div><b>Дошки оголошень</b><span>OLX, Besplatka, Obyava. Розміщуєте оголошення, отримуєте заявки — ми відправляємо.</span><em>Старт без бюджету й сайту</em></div>
+  <div><b>Маркетплейси</b><span>Prom, Rozetka та інші: підключаєте наші позиції до свого магазину й працюєте з готовим потоком покупців.</span><em>Готовий трафік, легко масштабувати</em></div>
+  <div><b>Соцмережі</b><span>Instagram, TikTok, Facebook, Telegram. Даємо фото й відео товарів, а ви будуєте аудиторію й особистий бренд.</span><em>Ремонт «до/після» добре заходить у відео</em></div>
+  <div><b>Свій інтернет-магазин</b><span>Додаєте наші товари окремою категорією і заробляєте на трафіку, який уже маєте.</span><em>Мінімум технічних змін</em></div>
+ </div>
+</section>
+
+<section class="w sec" id="income">
+ <h2>Скільки можна заробляти</h2>
+ <p class="soft" style="margin:-8px 0 18px;max-width:72ch">Порахуйте свій сценарій. Розрахунок орієнтовний і не є гарантією доходу: результат залежить від ваших цін, товарів, рівня партнера, витрат на рекламу й активності.</p>
+ <div class="inc">
+  <div class="in">
+   <label><span class="row">Замовлень на день<output id="iO">3</output></span><input type="range" id="iOrders" min="1" max="15" step="1" value="3"><span class="hint2">1–2 на день — підробіток, 5+ — повноцінна зайнятість.</span></label>
+   <label><span class="row">Середній чек<output id="iC">1 200 ₴</output></span><input type="range" id="iCheck" min="300" max="3000" step="50" value="1200"><span class="hint2">Наприклад, комплект 3D панелей на стіну чи 2 рулони екошкіри.</span></label>
+   <label><span class="row">Ваша маржа<output id="iM">10%</output></span><input type="range" id="iMargin" min="5" max="40" step="1" value="10">
+    <span class="pre"><button type="button" data-mg="10" class="on">Starter ≈10%</button><button type="button" data-mg="15">Pro ≈15%</button><button type="button" data-mg="25">Своя ціна ≈25%</button></span></label>
+   <label><span class="row">Робочих днів на місяць<output id="iD">22</output></span><input type="range" id="iDays" min="8" max="30" step="1" value="22"></label>
+  </div>
+  <div class="out" aria-live="polite">
+   <span>Ваш орієнтовний дохід на місяць</span>
+   <div class="big" id="rProfit">7 920 ₴</div>
+   <div class="k"><span>З одного замовлення</span><b id="rOne">120 ₴</b></div>
+   <div class="k"><span>Продажів на місяць</span><b id="rCnt">66</b></div>
+   <div class="k"><span>Оборот на місяць</span><b id="rTurn">79 200 ₴</b></div>
+   <div class="goal">Щоб заробляти <input id="iGoal" inputmode="numeric" value="20000" aria-label="Бажаний дохід, ₴"> ₴ на місяць, потрібно <b id="rNeed">≈ 8</b> замовлень на день.</div>
+   <p>Не враховано: рекламу, комісії маркетплейсів і податки. Вони залежать від вашого каналу продажу.</p>
+  </div>
+ </div>
+</section>
+
+<section class="w sec" id="compare">
+ <h2>Чим дропшипінг вигідніший</h2>
+ <div class="cmpw"><table class="cmp">
+  <thead><tr><th></th><th>Свій склад</th><th>Оптова закупівля</th><th>Дропшипінг з нами</th></tr></thead>
+  <tbody>
+   <tr><th>Вкладення на старт</th><td data-l="Свій склад">Великі витрати на товар і склад</td><td data-l="Оптова закупівля">Закупівля партії</td><td data-l="Дропшипінг з нами"><b>0 ₴</b></td></tr>
+   <tr><th>Товар на складі</th><td data-l="Свій склад">Ваш, купуєте наперед</td><td data-l="Оптова закупівля">Ваш, купуєте наперед</td><td data-l="Дропшипінг з нами">Наш, ви нічого не купуєте</td></tr>
+   <tr><th>Ризик залишків</th><td data-l="Свій склад">Високий</td><td data-l="Оптова закупівля">Частковий</td><td data-l="Дропшипінг з нами">Немає</td></tr>
+   <tr><th>Пакування й відправка</th><td data-l="Свій склад">Ви</td><td data-l="Оптова закупівля">Ви</td><td data-l="Дропшипінг з нами">Ми, в день замовлення</td></tr>
+   <tr><th>Обмін і повернення</th><td data-l="Свій склад">Ви</td><td data-l="Оптова закупівля">Ви</td><td data-l="Дропшипінг з нами">Ми</td></tr>
+   <tr><th>Час до старту</th><td data-l="Свій склад">Тижні</td><td data-l="Оптова закупівля">Кілька днів</td><td data-l="Дропшипінг з нами">1 день</td></tr>
+  </tbody>
+ </table></div>
+</section>
+
+<section class="w sec" id="who">
+ <h2>Кому підходить</h2>
+ <div class="aud">
+  <div class="box"><h3>Власникам інтернет-магазинів</h3><p>Додаєте наш асортимент окремою категорією: без викупу й складу. Розширюєте вітрину й тестуєте нові ніші.</p><div class="chips"><span>Новий асортимент</span><span>Без залишків</span><span>Тест ніші</span></div></div>
+  <div class="box"><h3>Тим, хто стартує з нуля</h3><p>Викладайте товари на дошки, маркетплейси чи в соцмережі з готовим контентом. Бізнес, який помістився в телефон.</p><div class="chips"><span>Без інвестицій</span><span>Готові фото й описи</span></div></div>
+  <div class="box"><h3>Студентам і початківцям</h3><p>Замість підробітку — досвід продажів, роботи з клієнтами й управління своїм часом і грошима.</p><div class="chips"><span>Гнучкий графік</span><span>Реальний досвід</span></div></div>
+ </div>
+</section>
+
+<section class="w sec" id="academy">
+ <div class="acad">
   <div>
-    <h1>Дропшипінг з Samostroy Shop</h1>
-    <p>Запускайте продаж будматеріалів без ризиків, складу та вкладень. Ми обробляємо всі замовлення замість вас.</p>
-
-    <div class="tags">
-      <span class="tag">Без складу</span>
-      <span class="tag">Відправки Новою Поштою</span>
-      <span class="tag">Матеріали для продажу</span>
-    </div>
-
-<a href="https://t.me/manager_samostroy_shop" target="_blank" class="btn">
-  <i data-lucide="handshake"></i> Стати партнером
-</a>
+   <h2 style="margin-bottom:10px">Немає досвіду? Навчимо</h2>
+   <p class="soft" style="max-width:56ch">Samostroy Academy — навчальна платформа для партнерів. Покажемо, як зробити перші продажі, вибудувати стабільний дохід і керувати часом, грошима й проєктами. Для рівня Starter курс «Дропшипінг з нуля» безкоштовний.</p>
+   <p style="margin-top:18px"><a class="btn" href="academy.html">Переглянути курс</a></p>
   </div>
-
-  <div class="hero-side">
-    <div class="side-row"><span>Тип</span><strong>Дропшипінг</strong></div>
-    <div class="side-row"><span>Маржа</span><strong>25–60%</strong></div>
-    <div class="side-row"><span>Вкладення</span><strong>0 ₴</strong></div>
-    <div class="side-row"><span>Відправка</span><strong>НП / Укрпошта</strong></div>
-  </div>
+  <ul>
+   <li><b>Швидкий старт</b><span>Чіткий план від першого оголошення до перших замовлень.</span></li>
+   <li><b>24 уроки</b><span>Шаблони, інструкції, реклама, аналітика й робота з майданчиками.</span></li>
+   <li><b>Орієнтація на результат</b><span>Не знання заради знань, а перші продажі й реальний досвід.</span></li>
+  </ul>
+ </div>
 </section>
 
-<!-- WHAT -->
-<section class="section">
-  <h2 class="title">Як це працює</h2>
-  <p class="sub">Проста модель, що дозволяє заробляти вже з першого дня.</p>
-
-  <div class="grid">
-    <div class="card">
-      <h3><i data-lucide="store"></i> Для кого</h3>
-      <p>Блогери, магазини, маркетологи, ремонтні компанії, підприємці-початківці.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="infinity"></i> Що ми робимо</h3>
-      <p>Склад, пакування, логістика, консультації клієнтів, контроль якості та відправок.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="rocket"></i> Ваш заробіток</h3>
-      <p>Різниця між оптовою та роздрібною ціною — ваш дохід. Чим краще оформлені оголошення, тим більше прибуток.</p>
-    </div>
+<section class="w sec" id="apply">
+ <div class="apply">
+  <div>
+   <h2>Заявка на партнерство</h2>
+   <p class="lead2">Заповніть форму за хвилину — менеджер зв’яжеться з вами, відповість на питання й надішле стартовий пакет.</p>
+   <ol>
+    <li>Консультація: умови, рівень, як рахується прибуток</li>
+    <li>Прайс, фото, відео й описи товарів</li>
+    <li>Доступ до курсу й перші оголошення</li>
+    <li>Перші замовлення — ми відправляємо</li>
+   </ol>
   </div>
+  <form class="af" id="af" novalidate>
+   <label>Ім’я<input id="aName" autocomplete="name" required></label>
+   <label>Телефон<input id="aPhone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="+380"></label>
+   <label class="full">Telegram або Viber (необов’язково)<input id="aMsg" autocomplete="off" placeholder="@нік або номер"></label>
+   <fieldset><legend>Де плануєте продавати</legend><div class="tgl">
+    <label><input type="checkbox" name="ch" value="OLX та дошки"><span>OLX та дошки</span></label>
+    <label><input type="checkbox" name="ch" value="Prom / Rozetka"><span>Prom / Rozetka</span></label>
+    <label><input type="checkbox" name="ch" value="Instagram / TikTok"><span>Instagram / TikTok</span></label>
+    <label><input type="checkbox" name="ch" value="Свій сайт"><span>Свій сайт</span></label>
+    <label><input type="checkbox" name="ch" value="Офлайн-магазин"><span>Офлайн-магазин</span></label>
+   </div></fieldset>
+   <fieldset><legend>Досвід продажів</legend><div class="tgl">
+    <label><input type="radio" name="exp" value="Без досвіду" checked><span>Без досвіду</span></label>
+    <label><input type="radio" name="exp" value="Вже продаю онлайн"><span>Вже продаю онлайн</span></label>
+    <label><input type="radio" name="exp" value="Маю магазин або команду"><span>Маю магазин або команду</span></label>
+   </div></fieldset>
+   <label class="full">Рівень<select id="aLvl"><option>Starter</option><option>Pro</option><option>Team</option><option value="">Ще не знаю</option></select></label>
+   <label class="full">Коментар (необов’язково)<textarea id="aCom" placeholder="Які товари цікавлять, питання до менеджера"></textarea></label>
+   <input id="aHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+   <div class="hint full" id="aHint"></div>
+   <button class="btn" id="aBtn" type="submit">Надіслати заявку</button>
+   <p class="note2">Або напишіть одразу менеджеру в <a href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">Telegram</a> чи за телефоном <a href="tel:+380984927948">+380 98 492 79 48</a>.</p>
+  </form>
+ </div>
 </section>
 
-<!-- PARTNER LEVELS -->
-<section class="section" id="partner-levels">
-  <h2 class="title">3 рівні партнера Samostroy Shop</h2>
-  <p class="sub">
-    Ми будуємо довгострокову систему, де кожен може рости: від перших оголошень до 
-    стабільного бізнесу з командою. Обирайте свій стартовий рівень — а далі ми допоможемо 
-    перейти на наступний.
-  </p>
-
-  <div class="grid partner-levels">
-    <!-- Starter -->
-    <article class="card partner-card starter">
-      <div class="partner-label">Рівень 1</div>
-      <div class="partner-badge">
-        <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
-        <span>Starter</span>
-      </div>
-      <div class="partner-title">Перші кроки в дропшипінгу</div>
-      <div class="partner-meta">
-        Для студентів, новачків, тих, хто тільки тестує нішу та хоче спробувати заробіток без ризиків.
-      </div>
-
-      <ul class="partner-list">
-        <li>
-          <span class="partner-dot"></span>
-          <span>Старт <strong>без мінімального обороту</strong> та без обов’язкових закупівель.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Маржа в середньому <strong>до 10%</strong> за рахунок рекомендованої роздрібної ціни.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Готові фото, описи та базові приклади оголошень для дошок, маркетплейсів та соцмереж.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Безкоштовне професійне навчання у нашій академії Samostroy Academy, курс: "Дропшипінг з нуля".</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Підтримка менеджера в Telegram та по телефону, по базових питаннях.</span>
-        </li>
-      </ul>
-
-      <div class="partner-pills">
-        <span class="partner-pill">Перші 10 оголошень</span>
-        <span class="partner-pill">Тест попиту</span>
-        <span class="partner-pill">Без досвіду</span>
-      </div>
-    </article>
-
-    <!-- Pro -->
-    <article class="card partner-card pro">
-      <div class="partner-label">Рівень 2</div>
-      <div class="partner-badge">
-        <i data-lucide="trending-up" style="width:14px;height:14px;"></i>
-        <span>Pro</span>
-      </div>
-      <div class="partner-title">Стабільний дохід з продажів</div>
-      <div class="partner-meta">
-        Для власників інтернет-магазинів, активних продавців на маркетплейсах та тих, хто вже робить стабільні замовлення.
-      </div>
-
-      <ul class="partner-list">
-        <li>
-          <span class="partner-dot"></span>
-          <span>Місячний оборот від <strong>20 000–30 000+ ₴</strong> або стабільні замовлення кожного тижня.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Поліпшені закупівельні ціни: маржа може зростати до <strong>15%+</strong>.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Розширений доступ до асортименту: новинки, хіти продажів, окремі позиції з уцінки.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Розширені рекомендації: шаблони УТП, готові варіанти заголовків, структура ідеального оголошення.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Більш швидка комунікація з менеджером та пріоритет при бронюванні товару на складі.</span>
-        </li>
-      </ul>
-
-      <div class="partner-pills">
-        <span class="partner-pill">Інтернет-магазини</span>
-        <span class="partner-pill">Маркетплейси</span>
-        <span class="partner-pill">Вищі ціни закупки</span>
-      </div>
-    </article>
-
-    <!-- Team -->
-    <article class="card partner-card team">
-      <div class="partner-label">Рівень 3</div>
-      <div class="partner-badge">
-        <i data-lucide="users" style="width:14px;height:14px;"></i>
-        <span>Team</span>
-      </div>
-      <div class="partner-title">Партнер-лідер з командою</div>
-      <div class="partner-meta">
-        Для тих, хто будує системний бізнес: має декілька каналів продажу або невелику команду та стабільний високий оборот.
-      </div>
-
-      <ul class="partner-list">
-        <li>
-          <span class="partner-dot"></span>
-          <span>Місячний оборот від <strong>80 000–100 000+ ₴</strong> і вище (або еквівалент в замовленнях по категоріях).</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Найвигідніші закупівельні ціни, додаткові знижки та <strong>бонуси з обороту</strong>.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Пріоритетний доступ до нових партій, уцінки та обмежених залишків товару.</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Можливість отримувати додатковий дохід за рекомендацію нових активних партнерів (опція за домовленістю).</span>
-        </li>
-        <li>
-          <span class="partner-dot"></span>
-          <span>Закритий чат для Team-партнерів: обмін досвідом, робочі кейси, підтримка в масштабуванні команди.</span>
-        </li>
-      </ul>
-
-      <div class="partner-pills">
-        <span class="partner-pill">Команда</span>
-        <span class="partner-pill">Бонуси з обороту</span>
-        <span class="partner-pill">Пріоритетні партнери</span>
-      </div>
-    </article>
-  </div>
-
-  <div class="partner-note">
-    Рівні не “прив’язують” вас назавжди — це живий розвиток. Ви можете почати зі <strong>Starter</strong>, 
-    зробити перші замовлення, вийти на стабільний потік і перейти до <strong>Pro</strong>, а далі — до 
-    <strong>Team</strong>, де дропшипінг перетворюється на повноцінний бізнес з командою, досвідом та свободою.
-  </div>
+<section class="w sec faq" id="faq">
+ <h2>Поширені питання</h2>
+ <details><summary>Чи потрібні вкладення?</summary><p>Ні. Ви не викуповуєте товар і не орендуєте склад: працюєте з нашим складом за моделлю дропшипінгу. Платите лише своїм часом на оголошення й спілкування з клієнтами.</p></details>
+ <details><summary>Яка маржа?</summary><p>На рекомендованій роздрібній ціні — в середньому до 10% на рівні Starter і від 15% на рівні Pro. На рівні Team — найвигідніші закупівельні ціни й бонуси з обороту. Ціну для клієнта ви встановлюєте самі: якщо продаєте дорожче рекомендованої, різниця теж ваша.</p></details>
+ <details><summary>Як я отримую свій прибуток?</summary><p>Ви встановлюєте роздрібну ціну. Клієнт оплачує замовлення на реквізити або післяплатою на пошті. Ми утримуємо оптову вартість товару, а різницю виплачуємо вам — за запитом або за домовленістю раз на тиждень чи місяць.</p></details>
+ <details><summary>Що з поверненнями?</summary><p>Повернення й обмін бере на себе Samostroy Shop — ви не залишаєтеся сам на сам з клієнтом.</p></details>
+ <details><summary>Де я можу продавати?</summary><p>OLX, Prom, Rozetka та інші маркетплейси, Instagram, TikTok, Facebook, Telegram-канали, власний сайт, дошки оголошень, офлайн-магазин — обмежень немає.</p></details>
+ <details><summary>Чи можу я продавати за своїми цінами?</summary><p>Так. Ми рекомендуємо ринковий рівень, але остаточну ціну встановлюєте ви.</p></details>
+ <details><summary>Як швидко можна отримати перші замовлення?</summary><p>Все залежить від активності. Перші партнери іноді отримували запити вже в перший день після розміщення оголошень.</p></details>
+ <details><summary>Чи надаєте документи для магазинів?</summary><p>Так, партнерам рівнів Pro і Team надаємо документи на запит. Товари сертифіковані й мають документальний супровід.</p></details>
+ <details><summary>Що робити, якщо я боюся починати?</summary><p>Почніть з малого: 3–5 оголошень і кілька запитів. Ризику немає — ви нічого не купуєте наперед, а менеджер підкаже на кожному кроці.</p></details>
+ <details><summary>Чи можна поєднувати з роботою або навчанням?</summary><p>Так. Багато партнерів стартують у вільний час і поступово виходять на стабільний дохід.</p></details>
 </section>
 
-  
-<!-- НОВА СЕКЦІЯ: КОМУ ПІДХОДИТЬ -->
-<section class="section" id="audiences">
-  <div class="section-label">Кому це буде корисно</div>
-  <h2 class="title">Кому підходить дропшипінг з Samostroy Shop</h2>
-  <p class="sub">
-    Модель гнучка: вона працює і для діючого бізнесу, і для тих, хто тільки робить перші кроки у підприємництві.
-  </p>
-
-  <div class="grid">
-    <div class="card" style="animation:fadeUp .4s ease both;">
-      <h3><i data-lucide="shopping-bag"></i> Власникам інтернет-магазинів</h3>
-      <p>
-        Ви вже продаєте товари? Просто додаєте наш асортимент як окрему категорію —
-        без складу, без викупу. Розширюєте вітрину, тестуєте нові ніші і заробляєте зверху.
-      </p>
-      <div class="pill-row">
-        <span class="pill">+ новий асортимент</span>
-        <span class="pill">без ризику залишків</span>
-        <span class="pill">можна тестувати нішу</span>
-      </div>
-    </div>
-
-    <div class="card" style="animation:fadeUp .5s ease both;">
-      <h3><i data-lucide="sparkles"></i> Тим, хто хоче стартувати з нуля</h3>
-      <p>
-        Ви можете викладати наші товари на дошки оголошень, маркетплейси або
-        створити сторінку в Instagram / TikTok / Facebook з уже готовим контентом.
-      </p>
-      <div class="pill-row">
-        <span class="pill">перші продажі без інвестицій</span>
-        <span class="pill">готові фото та описи</span>
-        <span class="pill">бізнес “з телефона”</span>
-      </div>
-    </div>
-
-    <div class="card" style="animation:fadeUp .6s ease both;">
-      <h3><i data-lucide="graduation-cap"></i> Студентам та початківцям</h3>
-      <p>
-        Це може замінити підробіток: ви отримуєте досвід продажів, роботи з клієнтами,
-        планування, управління своїм часом і грошима. Те, що прокачує мислення підприємця.
-      </p>
-      <div class="pill-row">
-        <span class="pill">досвід в реальному бізнесі</span>
-        <span class="pill">гнучкий графік</span>
-        <span class="pill">база для майбутніх проєктів</span>
-      </div>
-    </div>
-  </div>
+<section class="w sec seo" id="seo">
+ <h2 id="seoh">Дропшипінг в Україні без вкладень: як почати з Samostroy Shop</h2>
+ <div class="txt cut" id="seot">
+  <p>Дропшипінг — модель продажів, у якій ви не купуєте товар наперед і не тримаєте склад. Ви знаходите покупця, а постачальник пакує й відправляє замовлення. Samostroy Shop пропонує дропшипінг товарів для ремонту своїми руками: самоклеючих 3D панелей, PET і вінілової плитки, плівки, шпалер, підлоги-пазла, килимків, екошкіри, дзеркал і меблів — понад 1200 позицій.</p>
+  <p>Такі товари добре продаються на OLX, Prom і Rozetka та в соцмережах: їх легко показати на фото й відео «до/після», а покупці шукають швидкий і недорогий ремонт без майстрів. Ми відправляємо замовлення в день оформлення Новою Поштою та Укрпоштою й беремо на себе обмін і повернення.</p>
+  <h3>Як стати партнером</h3>
+  <p>Заповніть заявку на цій сторінці або напишіть менеджеру в Telegram. Ви отримаєте прайс, фото й описи товарів, доступ до навчання в Samostroy Academy та підтримку менеджера. Почати можна з рівня Starter — без мінімального обороту й без закупівель.</p>
+ </div>
+ <button class="link" data-a="seo" data-i="rm">Читати далі</button>
 </section>
-
-<!-- STEPS -->
-<section class="section">
-  <h2 class="title">Кроки запуску</h2>
-
-  <div class="grid steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-title">Заявка</div>
-      <div class="step-text">Пишете менеджеру, отримуєте консультацію та відповіді на питання.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-title">Матеріали</div>
-      <div class="step-text">Отримуєте прайс, фото, відео, описання, рекомендації по продажах.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-title">Розміщення</div>
-      <div class="step-text">Додаєте товари на дошки, маркетплейси або в соцмережі.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-title">Відправки</div>
-      <div class="step-text">Ми пакуємо, відправляємо, спілкуємось з клієнтом і ведемо логістику.</div>
-    </div>
-  </div>
-</section>
-
-<!-- НОВА СЕКЦІЯ: ФОРМАТИ РОБОТИ -->
-<section class="section" id="formats">
-  <div class="section-label">Формати роботи</div>
-  <h2 class="title">Як можна заробляти з нами</h2>
-  <p class="sub">
-    Оберіть формат, який вам ближчий: дошки оголошень, маркетплейси, соцмережі чи свій магазин —  
-    модель дропшипінгу однаково працює всюди.
-  </p>
-
-  <div class="grid">
-    <div class="card">
-      <h3><i data-lucide="layout-grid"></i> Дошки оголошень</h3>
-      <p>
-        OLX, Besplatka, Obyava та інші дошки. Ви розміщуєте оголошення, отримуєте заявки,
-        ми — відправляємо товар. Ідеально для старту без бюджету.
-      </p>
-      <div class="pill-row">
-        <span class="pill">безкоштовний старт</span>
-        <span class="pill">можна обійтися без сайту</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><i data-lucide="shopping-cart"></i> Маркетплейси</h3>
-      <p>
-        Підв’язуєте наші позиції до свого акаунта/магазину. Працює там, де вже є потік покупців
-        і важливі рейтинг та відгуки.
-      </p>
-      <div class="pill-row">
-        <span class="pill">готовий трафік</span>
-        <span class="pill">зручно масштабувати</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><i data-lucide="instagram"></i> Соцмережі</h3>
-      <p>
-        Ведете сторінку в Instagram, TikTok, Facebook або Telegram: ми даємо готовий контент з товарами,
-        а ви будуєте аудиторію та особистий бренд.
-      </p>
-      <div class="pill-row">
-        <span class="pill">контент від нас</span>
-        <span class="pill">можна комбінувати з блогом</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><i data-lucide="briefcase"></i> Власний інтернет-магазин</h3>
-      <p>
-        Додаєте наші позиції до наявного сайту — як окремий розділ чи категорію.
-        Отримуєте додатковий прибуток з трафіку, який уже маєте.
-      </p>
-      <div class="pill-row">
-        <span class="pill">розширення асортименту</span>
-        <span class="pill">мінімум технічних змін</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- UTP SECTION -->
-<section class="section">
-  <div class="cta">
-    <div>
-      <h3>Скільки реально можна заробляти?</h3>
-      <p>
-        Наш калькулятор показує: при активній роботі та середньому обсязі замовлень 
-        потенційний дохід партнера може сягати до 
-        <strong style="color:var(--accent2);font-weight:800;">300 000 грн / місяць</strong>.
-        Це не обіцянка — це реальна математика: попит + маржа + ваш темп роботи.
-      </p>
-
-      <p style="color:var(--muted);font-size:13px;margin-top:8px;">
-        Вихід простий: 5–10 замовлень на день, стабільна робота з клієнтами, правильні ціни — 
-        і ви поступово виходите на дохід, який для багатьох сьогодні є рівнем власного бізнесу.
-      </p>
-    </div>
-
-    <a href="#income-calculator" class="btn">
-      <i data-lucide="equal"></i> Перерахувати свій результат
-    </a>
-  </div>
-</section>
-
-  
-<!-- COMPARE -->
-<section class="section compare">
-  <h2 class="title">Порівняння моделей</h2>
-
-  <div class="grid">
-    <div class="c-card">
-      <h4>Класичний склад</h4>
-      <ul>
-        <li>Великі витрати</li>
-        <li>Ризик залишків</li>
-        <li>Довгий старт</li>
-      </ul>
-    </div>
-
-    <div class="c-card">
-      <h4>Опт</h4>
-      <ul>
-        <li>Потрібна закупівля товару</li>
-        <li>Часткові ризики</li>
-      </ul>
-    </div>
-
-    <div class="c-card">
-      <h4>Дропшипінг <span class="badge">кращий вибір</span></h4>
-      <ul>
-        <li>Без вкладень</li>
-        <li>Старт за 1 день</li>
-        <li>Маржа 25–60%</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- НОВА СЕКЦІЯ: ШЛЯХ РОЗВИТКУ -->
-<section class="section" id="journey">
-  <div class="section-label">Шлях партнера</div>
-  <h2 class="title">Як дропшипінг змінює мислення та дохід</h2>
-  <p class="sub">
-    Це не просто “підробіток”. Це вхід у реальний бізнес: від перших продажів до управління
-    часом, грошима, людьми та проєктами.
-  </p>
-
-  <div class="journey">
-    <div class="journey-step" data-step="1">
-      <div class="journey-title">Старт: перші продажі</div>
-      <div class="journey-text">
-        Ви запускаєте прості оголошення, пробуєте різні майданчики, вчитеся спілкуватися з клієнтами.
-        Тут формується базове розуміння “що працює”.
-      </div>
-    </div>
-
-    <div class="journey-step" data-step="2">
-      <div class="journey-title">Стабільний дохід</div>
-      <div class="journey-text">
-        Ви вже знаєте, які товари заходять краще, системно оновлюєте оголошення,
-        додаєте маркетплейси та соцмережі. Починає з’являтися відчуття фінансової свободи.
-      </div>
-    </div>
-
-    <div class="journey-step" data-step="3">
-      <div class="journey-title">Масштабування та управління</div>
-      <div class="journey-text">
-        Ви делегуєте частину задач, будуєте невелику команду, вчитеся управляти
-        часом, капіталом і проєктами. Дропшипінг стає базою для великих бізнес-ідей.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INCOME CALCULATOR SECTION -->
-<section class="section" id="income-calculator">
-  <h2 class="title">Калькулятор потенційного доходу</h2>
-  <p class="sub">
-    Змоделюйте свій результат: оберіть орієнтовну кількість замовлень на день та середній чек, 
-    щоб побачити, який оборот і прибуток може давати дропшипінг з Samostroy Shop.
-  </p>
-  <p class="income-section-note">
-    Розрахунок приблизний і не є фінансовою гарантією. Реальний дохід залежить від ваших цін, 
-    категорії товарів, рівня партнера (Starter / Pro / Team), рекламних витрат та активності.
-  </p>
-
-  <div class="calc-wrap">
-    <!-- Ліва частина: налаштування -->
-    <div class="calc">
-      <!-- Замовлень на день -->
-      <div class="calc-block">
-        <div class="calc-label-row">
-          <div class="calc-label">Замовлень на день</div>
-          <div class="calc-current" id="ordersPerDayLabel">5 замовлень / день</div>
-        </div>
-        <div class="calc-slider">
-          <input 
-            type="range" 
-            id="ordersPerDayInput" 
-            min="1" 
-            max="10" 
-            step="1" 
-            value="5"
-          >
-        </div>
-        <div class="calc-hint">
-          Перетягніть повзунок, щоб обрати темп роботи: від 1 до 10 замовлень на день.
-        </div>
-      </div>
-
-      <!-- Середній чек -->
-      <div class="calc-block">
-        <div class="calc-label-row">
-          <div class="calc-label">Середній чек</div>
-          <div class="calc-current" id="avgCheckLabel">1&nbsp;200 грн</div>
-        </div>
-        <div class="calc-slider">
-          <input 
-            type="range" 
-            id="avgCheckInput" 
-            min="600" 
-            max="2500" 
-            step="50" 
-            value="1200"
-          >
-        </div>
-        <div class="calc-hint">
-          Повзунок автоматично “чіпляється” до ключових значень: 600 / 1200 / 1800 / 2500 грн.
-        </div>
-      </div>
-
-      <div class="calc-hint">
-        Порада: спробуйте кілька сценаріїв — “1–2 замовлення на день” як підробіток і 
-        “7–10 замовлень” як варіант повноцінного бізнесу.
-      </div>
-    </div>
-
-    <!-- Права частина: результат -->
-    <div class="calc-summary">
-      <!-- Денний оборот -->
-      <article class="calc-summary-card">
-        <div class="calc-summary-header">
-          <div class="calc-summary-title">Денний оборот</div>
-          <div class="calc-summary-tag">швидкий результат</div>
-        </div>
-        <div class="calc-summary-value" id="dailyTurnover">6&nbsp;000 грн / день</div>
-        <div class="calc-summary-desc">
-          Орієнтовна сума продажів за день при обраній кількості замовлень та середньому чеку.
-        </div>
-      </article>
-
-      <!-- Місячний оборот -->
-      <article class="calc-summary-card">
-        <div class="calc-summary-header">
-          <div class="calc-summary-title">Орієнтовний місячний оборот</div>
-          <div class="calc-summary-tag">30 днів роботи</div>
-        </div>
-        <div class="calc-summary-value" id="monthlyTurnover">180&nbsp;000 грн / місяць</div>
-        <div class="calc-summary-desc">
-          Розрахунок базується на 30 активних днях. Ви можете адаптувати цю цифру під свою модель.
-        </div>
-      </article>
-
-      <!-- Прибуток -->
-      <article class="calc-summary-card">
-        <div class="calc-summary-header">
-          <div class="calc-summary-title">Орієнтовний прибуток</div>
-          <div class="calc-summary-tag">приклад маржі</div>
-        </div>
-        <div class="calc-profit-lines">
-          <div id="profit30">При маржі 30%: 54&nbsp;000 грн / місяць</div>
-          <div id="profit40">При маржі 40%: 72&nbsp;000 грн / місяць</div>
-        </div>
-        <div class="calc-summary-desc">
-          Реальна маржа залежить від групи товарів та вашого рівня партнера. 
-          Ці цифри показують, як змінюється прибуток при різному відсотку.
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-  
-<!-- МОТИВАЦІЯ ПАРТНЕРСТВА -->
-<section class="section" id="psych">
-  <div class="section-label">Мотивація</div>
-  <h2 class="title">Чому людям легко приєднатися до нас</h2>
-  <p class="sub">
-    В дропшипінгу важливо не тільки “що ми продаємо”, а й “як люди себе почувають, заходячи в цю модель”.
-    Тут ми прибираємо страхи та даємо ясність.
-  </p>
-
-  <div class="psych-grid">
-    <div class="psych-item">
-      <strong>Безпечний старт.</strong><br>
-      Немає ризику “застрягти” з товаром на складі. Людина платить тільки часом і увагою — це знімає напругу
-      і дає сміливість зробити перший крок.
-    </div>
-    <div class="psych-item">
-      <strong>Постійний розвиток.</strong><br>
-      Партнер не просто “продає”, а навчається: розуміє попит, тестує ніші, вчиться мислити як підприємець.
-      Це трансформує мислення і відкриває нові можливості.
-    </div>
-    <div class="psych-item">
-      <strong>Підтримка та структура.</strong><br>
-      Є чіткі кроки, готові матеріали, рекомендації. Коли є зрозуміла система — людина відчуває контроль,
-      а не хаос, і охочіше рухається вперед.
-    </div>
-    <div class="psych-item">
-      <strong>Свобода в форматі.</strong><br>
-      Можна працювати паралельно з основною роботою, навчанням або бізнесом.
-      Партнер сам обирає темп, майданчики та рівень залучення.
-    </div>
-    <div class="psych-item">
-      <strong>Сенс “розвиваюсь разом з командою”.</strong><br>
-      Людина відчуває, що приєднується не просто до магазину, а до спільноти, де вигідно, щоб кожен партнер ріс.
-    </div>
-    <div class="psych-item">
-      <strong>Фінансова перспектива.</strong><br>
-      Від “підробітку” до стабільного доходу — є зрозумілий шлях. Це мотивує не здаватися після перших
-      складностей і йти до результату.
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section">
-  <div class="cta">
-    <div>
-      <h3>Готові почати?</h3>
-      <p>Отримайте повний пакет матеріалів для легкого старту, перших продажів та побудови власної бізнес-історії.</p>
-    </div>
-    <a href="https://t.me/manager_samostroy_shop" target="_blank" class="btn">
-      <i data-lucide="send"></i> Отримати матеріали
-    </a>
-  </div>
-</section>
-
-<!-- ACADEMY SECTION -->
-<section class="section" id="academy">
-  <div class="academy-box" style="
-    background:var(--card2);
-    border:1px solid var(--border);
-    border-radius:26px;
-    padding:32px;
-    box-shadow:var(--shadow);
-    animation:fadeUp .7s ease both;
-  ">
-    
-    <h2 class="title" style="background:none;color:var(--accent2);margin-bottom:10px;">
-      Немає досвіду, але хочете навчитися заробляти на дропшипінгу?
-    </h2>
-
-    <p class="sub" style="max-width:720px;">
-      Підключайся до <strong>Samostroy Academy</strong> — навчальної платформи,
-      де ми показуємо, як побудувати стабільний бізнес з нуля, зробити перші продажі та 
-      вийти до своєї фінансової цілі у 2026 році. Це не тільки про гроші, а й про мислення:
-      управління часом, капіталом, людьми та проєктами.
-    </p>
-
-    <!-- Countdown -->
-    <div style="text-align:center;margin:22px 0 26px;">
-      <h3 style="font-size:20px;font-weight:700;color:var(--accent2);margin-bottom:12px;">
-        Старт нового потоку — 10 лютого 2026
-      </h3>
-      <div class="academy-timer" style="
-        display:flex;
-        justify-content:center;
-        gap:12px;
-        flex-wrap:wrap;
-      ">
-        <div class="ac-item">
-          <div class="ac-num" id="acDays">00</div>
-          <div class="ac-label">днів</div>
-        </div>
-        <div class="ac-item">
-          <div class="ac-num" id="acHours">00</div>
-          <div class="ac-label">год</div>
-        </div>
-        <div class="ac-item">
-          <div class="ac-num" id="acMinutes">00</div>
-          <div class="ac-label">хв</div>
-        </div>
-        <div class="ac-item">
-          <div class="ac-num" id="acSeconds">00</div>
-          <div class="ac-label">сек</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Benefits grid -->
-    <div class="grid" style="margin-bottom:24px;">
-      <div class="card" style="animation:fadeUp .8s ease both;">
-        <h3><i data-lucide="rocket"></i> Швидкий старт</h3>
-        <p>Почнеш з нуля та отримаєш перші замовлення вже через кілька днів за чітким планом.</p>
-      </div>
-
-      <div class="card" style="animation:fadeUp .85s ease both;">
-        <h3><i data-lucide="graduation-cap"></i> Повний курс</h3>
-        <p>24 уроки, шаблони, інструкції, уроки з реклами, аналітики та роботи з майданчиками.</p>
-      </div>
-
-      <div class="card" style="animation:fadeUp .9s ease both;">
-        <h3><i data-lucide="target"></i> Рух до результату</h3>
-        <p>Працюємо не заради “просто знань”, а заради перших продажів та реального досвіду в бізнесі.</p>
-      </div>
-    </div>
-
-    <!-- CTA BUTTON -->
-    <div style="text-align:center;margin-top:14px;">
-      <a href="academy.html" class="btn" style="font-size:16px; padding:14px 26px;">
-        <i data-lucide="external-link"></i> Переглянути курс
-      </a>
-    </div>
-
-  </div>
-</section>
-  
-<!-- FAQ -->
-<section class="section">
-  <h2 class="title">Поширені питання</h2>
-
-  <div class="faq-item">
-    <h3>Чи потрібні вкладення?</h3>
-    <p>Ні. Ви не викуповуєте товар. Ви працюєте з нашим складом по моделі дропшипінгу.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Що з поверненнями?</h3>
-    <p>Повернення та обмін бере на себе Samostroy Shop — ви не залишаєтеся сам на сам з клієнтом.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Яка середня маржа?</h3>
-    <p>Зазвичай 25–60%. Все залежить від категорії товару, попиту, від вашої націнки (яку ви формуєте самостійно), а також від вашого партнерського рівня (Starter / Pro / Team).</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Де я можу продавати?</h3>
-    <p>OLX, Prom, Rozetka і інші маркетплейси, а також соц. мережі, такі як Instagram, Facebook, Telegram-канали, власний сайт, дошки оголошень, магазини — обмежень немає.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Як швидко я зможу отримати перші замовлення?</h3>
-    <p>Все залежить від активності. Перші партнери іноді отримували запити вже у перший день після розміщення оголошень.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Як я отримую свій прибуток?</h3>
-    <p>Ви встановлюєте свою роздрібну ціну. Клієнт оплачує замовлення (по реквізитах або післяплатою на пошті). 
-    Ми списуємо оптову вартість товару, а <strong>різниця між оптом і вашою ціною — це ваш прибуток</strong>. Виплату можемо робити за запитом (коли вам зручно) або за попередньою домовленістю — раз на тиждень/місяць.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи можу я продавати за своїми цінами?</h3>
-    <p>Так. Ми рекомендуємо ринковий рівень, але остаточну ціну ви встановлюєте самостійно.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи надаєте ви документи для магазинів?</h3>
-    <p>Так, для партнерів-Pro та Team ми можемо надавати необхідні документи на запит. Усі товари сертифіковані за стандартами, та мають документаційний супровід.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Що робити, якщо я боюся починати?</h3>
-    <p>Це нормально. Почніть із малого: 3–5 оголошень, кілька запитів — і ви зрозумієте, що все реально і просто. Усі колись починали і ми готові вас підтримати.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи можу я поєднувати дропшипінг із роботою або навчанням?</h3>
-    <p>Так. Багато партнерів стартують у вільний час і поступово виходять на стабільний дохід.</p>
-  </div>
-</section>
-
-
-<footer>
-  © <span id="year"></span> Samostroy Shop
-</footer>
 
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  lucide.createIcons();
-  
-  const acTargetDate = new Date('2026-02-10T00:00:00');
-  const acDays = document.getElementById('acDays');
-  const acHours = document.getElementById('acHours');
-  const acMinutes = document.getElementById('acMinutes');
-  const acSeconds = document.getElementById('acSeconds');
-
-  function updateAcademyTimer(){
-    const now = new Date();
-    const diff = acTargetDate - now;
-
-    if (diff <= 0){
-      acDays.textContent = '00';
-      acHours.textContent = '00';
-      acMinutes.textContent = '00';
-      acSeconds.textContent = '00';
-      return;
-    }
-
-    const totalSeconds = Math.floor(diff/1000);
-    const days = Math.floor(totalSeconds / (3600*24));
-    const hours = Math.floor((totalSeconds % (3600*24)) / 3600);
-    const mins = Math.floor((totalSeconds % 3600) / 60);
-    const secs = totalSeconds % 60;
-
-    acDays.textContent = String(days).padStart(2,'0');
-    acHours.textContent = String(hours).padStart(2,'0');
-    acMinutes.textContent = String(mins).padStart(2,'0');
-    acSeconds.textContent = String(secs).padStart(2,'0');
-  }
-
-  updateAcademyTimer();
-  setInterval(updateAcademyTimer, 1000);
-  
-  /* ============================
-     КАЛЬКУЛЯТОР ДОХОДУ
-  ============================ */
-  (function initIncomeCalculator(){
-    const ordersInput = document.getElementById('ordersPerDayInput');
-    const avgCheckInput = document.getElementById('avgCheckInput');
-
-    if (!ordersInput || !avgCheckInput) return;
-
-    const ordersLabel = document.getElementById('ordersPerDayLabel');
-    const avgCheckLabel = document.getElementById('avgCheckLabel');
-    const dailyTurnoverEl = document.getElementById('dailyTurnover');
-    const monthlyTurnoverEl = document.getElementById('monthlyTurnover');
-    const profit30El = document.getElementById('profit30');
-    const profit40El = document.getElementById('profit40');
-
-    // Ключові значення середнього чеку
-    const CHECK_STEPS = [600, 1200, 1800, 2500];
-
-    function formatMoney(n){
-      // Просте форматування з пробілами та "грн"
-      return n.toLocaleString('uk-UA') + ' грн';
-    }
-
-    function snapToCheckStep(rawValue){
-      // Знаходимо найближче значення із CHECK_STEPS
-      let closest = CHECK_STEPS[0];
-      let minDiff = Math.abs(rawValue - closest);
-      for (let i = 1; i < CHECK_STEPS.length; i++){
-        const diff = Math.abs(rawValue - CHECK_STEPS[i]);
-        if (diff < minDiff){
-          minDiff = diff;
-          closest = CHECK_STEPS[i];
-        }
-      }
-      return closest;
-    }
-
-    function updateCalc(){
-      const ordersPerDay = parseInt(ordersInput.value, 10) || 1;
-      const avgRaw = parseInt(avgCheckInput.value, 10) || 600;
-      const avgCheck = snapToCheckStep(avgRaw);
-
-      // Оновлюємо повзунок на "приклеєне" значення
-      avgCheckInput.value = avgCheck;
-
-      // Лейбли
-      ordersLabel.innerHTML = `${ordersPerDay} замовлень / день`;
-      avgCheckLabel.innerHTML = `${avgCheck.toLocaleString('uk-UA')}&nbsp;грн`;
-
-      // Рахуємо
-      const daily = ordersPerDay * avgCheck;
-      const monthly = daily * 30; // 30 днів
-      const profit30 = monthly * 0.30;
-      const profit40 = monthly * 0.40;
-
-      dailyTurnoverEl.innerHTML = `${formatMoney(daily)} / день`;
-      monthlyTurnoverEl.innerHTML = `${formatMoney(monthly)} / місяць`;
-      profit30El.innerHTML = `При маржі 30%: ${formatMoney(Math.round(profit30))} / місяць`;
-      profit40El.innerHTML = `При маржі 40%: ${formatMoney(Math.round(profit40))} / місяць`;
-    }
-
-    // Події
-    ordersInput.addEventListener('input', updateCalc);
-    avgCheckInput.addEventListener('input', updateCalc);
-
-    // Стартове оновлення
-    updateCalc();
-  })();
-
-
-  /* ============================================================
-   🟧 24. NEWYEAR START (REMOVE LATER)
-============================================================ */
-(function () {
-  // Сезон каждый год: 15 Dec - 15 Jan (включительно)
-  function isNewYearSeason(d) {
-    const m = d.getMonth(); // 0=Jan ... 11=Dec
-    const day = d.getDate();
-    return (m === 11 && day >= 15) || (m === 0 && day <= 15);
-  }
-
-  const now = new Date();
-  if (!isNewYearSeason(now)) {
-    document.documentElement.classList.remove("ny");
-    return;
-  }
-  document.documentElement.classList.add("ny");
-
-  // Год у логотипа: декабрь -> следующий год, январь -> текущий
-  const nyYear =
-    now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
-  const logo = document.querySelector(".ac-logo");
-  if (logo) logo.setAttribute("data-ny-year", String(nyYear));
-
-  // SVG лампочка
-  function bulbSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path class="ny-glass" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M9.2 18.4h5.6"/>
-        <path class="ny-stroke" d="M9.8 21h4.4"/>
-      </svg>
-    `;
-  }
-
-  // SVG снежинка
-  function snowflakeSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 2v20M4 6l16 12M20 6L4 18M6 4l2 2M18 4l-2 2M6 20l2-2M18 20l-2-2M2 12h3M19 12h3"/>
-      </svg>
-    `;
-  }
-
-  // ============ ГИРЛЯНДА (ТОЛЬКО ВИЗУАЛ, БЕЗ КЛИКОВ) ============
-  const garland = document.querySelector(".ny-garland");
-  if (garland && !garland.querySelector(".ny-garland-row")) {
-    // Важно: гирлянда не перехватывает клики вообще
-    garland.style.pointerEvents = "none";
-
-    const row = document.createElement("div");
-    row.className = "ny-garland-row";
-
-    const colors = [
-      "#ff4e6d",
-      "#5ce3a0",
-      "#38bdf8",
-      "#ffb347",
-      "#a855f7",
-      "#f97316",
-      "#ffffff",
-    ];
-
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-    const count = isMobile ? 14 : 22;
-
-    for (let i = 0; i < count; i++) {
-      const b = document.createElement("div");
-      b.className = "ny-bulb";
-
-      const r = Math.random();
-      if (r < 0.3) b.classList.add("ny-fast");
-      else if (r < 0.65) b.classList.add("ny-slow");
-
-      b.style.setProperty("--ny-drop", `${Math.round(Math.random() * 6 - 3)}px`);
-      b.style.setProperty("--ny-rot", `${Math.round(Math.random() * 10 - 5)}deg`);
-      b.style.setProperty("--ny-wave", `${(2.8 + Math.random() * 2.0).toFixed(2)}s`);
-      b.style.setProperty("--ny-blink", `${(0.9 + Math.random() * 3.0).toFixed(2)}s`);
-
-      const c = colors[i % colors.length];
-      b.style.setProperty("--ny-c", c);
-      b.style.animationDelay = `${(i * 0.1 + Math.random() * 0.25).toFixed(2)}s`;
-
-      b.innerHTML = bulbSVG();
-      row.appendChild(b);
-    }
-
-    garland.appendChild(row);
-
-    // ВАЖНО: никаких addEventListener("click") тут нет — только визуал
-  }
-
-  // ============ СНЕГ ============
-  const snow = document.querySelector(".ny-snow");
-  if (snow && !snow.querySelector(".ny-flake")) {
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-
-    // ультра-лайт: минимум элементов
-    const flakesCount = isMobile ? 5 : 9;
-
-    for (let i = 0; i < flakesCount; i++) {
-      const f = document.createElement("div");
-      f.className = "ny-flake";
-
-      // внутренний слой для sway (дешево)
-      f.innerHTML = `<div class="ny-flake-inner">${snowflakeSVG()}</div>`;
-
-      const left = Math.random() * 100;
-      const size =
-        (isMobile ? 10 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const op = 0.16 + Math.random() * 0.16;
-      const dur =
-        (isMobile ? 11 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const sway = 10 + Math.random() * 18;
-      const swayDur = 3.6 + Math.random() * 3.6;
-
-      // дрейф по x
-      const x = Math.random() * 30 - 15;
-      const x2 = x + (Math.random() * 50 - 25);
-      const r2 = 360 + Math.round(Math.random() * 360);
-
-      f.style.left = `${left}%`;
-      f.style.setProperty("--ny-size", `${size.toFixed(1)}px`);
-      f.style.setProperty("--ny-op", op.toFixed(2));
-      f.style.setProperty("--ny-dur", `${dur.toFixed(2)}s`);
-      f.style.setProperty("--ny-sway", `${sway.toFixed(1)}px`);
-      f.style.setProperty("--ny-sway-dur", `${swayDur.toFixed(2)}s`);
-      f.style.setProperty("--ny-x", `${x.toFixed(1)}px`);
-      f.style.setProperty("--ny-x2", `${x2.toFixed(1)}px`);
-      f.style.setProperty("--ny-r2", `${r2}deg`);
-
-      // разнесём старт
-      const delay = Math.random() * (isMobile ? 4 : 6);
-      f.style.animationDelay = `${delay.toFixed(2)}s`;
-
-      snow.appendChild(f);
-    }
-  }
-})();
-// =========================
-// NEWYEAR END (REMOVE LATER)
-// =========================
+/* калькулятор доходу партнера та форма заявки (сторінка дропшипінгу) */
+addEventListener('DOMContentLoaded',()=>{
+ const $i=id=>document.getElementById(id),fm=n=>Math.round(n).toLocaleString('uk-UA').replace(/\u00a0/g,' ')+' ₴';
+ const R={o:$i('iOrders'),c:$i('iCheck'),m:$i('iMargin'),d:$i('iDays'),g:$i('iGoal')};
+ function calc(){
+  const o=+R.o.value,c=+R.c.value,m=+R.m.value,d=+R.d.value,one=c*m/100,cnt=o*d,turn=cnt*c,profit=cnt*one;
+  $i('iO').textContent=o;$i('iC').textContent=fm(c);$i('iM').textContent=m+'%';$i('iD').textContent=d;
+  $i('rProfit').textContent=fm(profit);$i('rOne').textContent=fm(one);$i('rCnt').textContent=cnt;$i('rTurn').textContent=fm(turn);
+  const goal=parseInt(String(R.g.value).replace(/\D/g,''),10)||0;
+  $i('rNeed').textContent=goal&&one&&d?String(Math.ceil(goal/(one*d)-1e-9)):'—';
+  document.querySelectorAll('.inc .pre button').forEach(b=>b.classList.toggle('on',+b.dataset.mg==m))}
+ Object.values(R).forEach(x=>x.addEventListener('input',calc));
+ document.querySelectorAll('.inc .pre button').forEach(b=>b.addEventListener('click',()=>{R.m.value=b.dataset.mg;calc()}));
+ calc();
+ /* кнопки рівнів підставляють рівень у форму */
+ document.querySelectorAll('[data-lvl]').forEach(a=>a.addEventListener('click',()=>{$i('aLvl').value=a.dataset.lvl}));
+ /* заявка: зберігаємо в Google Таблицю (менеджеру приходить сповіщення в Telegram), запасний канал — Telegram */
+ const f=$i('af');let key='';
+ f.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const ph=$i('aPhone'),hint=$i('aHint');
+  if(!phoneOk(ph.value)){ph.classList.add('err');hint.textContent='Вкажіть телефон, щоб менеджер міг з вами зв’язатися';ph.focus();ph.addEventListener('input',()=>{ph.classList.remove('err');hint.textContent=''},{once:true});return}
+  const ch=[...f.querySelectorAll('[name=ch]:checked')].map(x=>x.value).join(', ')||'не вказано',exp=f.querySelector('[name=exp]:checked').value,lvl=$i('aLvl').value||'не визначився';
+  const details=`Заявка на дропшипінг — рівень: ${lvl}; канали: ${ch}; досвід: ${exp}`+($i('aMsg').value?`; зв’язок: ${$i('aMsg').value}`:'')+($i('aCom').value?`; коментар: ${$i('aCom').value}`:'');
+  const msg=`🤝 Заявка на дропшипінг\nІм’я: ${$i('aName').value}\nТелефон: ${ph.value}\n${details.replace('Заявка на дропшипінг — ','')}`;
+  const ok=id=>{f.innerHTML=`<div class="done"><div class="ic"><svg class="i"><use href="#i-check"/></svg></div><h3>Заявку${id?' №'+esc(id):''} отримано</h3><p>Менеджер зв’яжеться з вами найближчим часом. Щоб не чекати — напишіть у Telegram.</p><a class="btn" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">Написати менеджеру</a></div>`};
+  if(!CFG.api){tg(msg);return ok('')}
+  const b=$i('aBtn');b.classList.add('busy');key=key||okey();
+  let r=null;try{r=await api({action:'order',order:{type:'Дропшипінг',name:$i('aName').value,phone:ph.value,city:'',pay:'',delivery:'',items:[{id:'',name:details,sku:'',q:1,price:0}],page:location.href,lang,key,hp:$i('aHp').value}})}catch(x){}
+  b.classList.remove('busy');
+  if(r&&r.ok)return ok(r.id);
+  hint.innerHTML='Не вдалося надіслати через сайт. <button type="button" class="link" id="aTg">Надіслати в Telegram</button> — текст заявки вже готовий.';
+  $i('aTg').onclick=()=>tg(msg)});
+});
 </script>
+</main>
 
+<footer>
+ <div class="w">
+  <div class="fg">
+   <div>
+    <a class="logo" href="./" style="margin-bottom:12px" data-home><img src="logo.jpg" alt="" width="44" height="44"><span style="color:#fff">Samostroy Shop</span></a>
+    <p style="font-size:14px;max-width:34ch" data-i="fabout">Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.</p>
+    <p style="margin-top:12px"><a href="tel:+380984927948">+380 98 492 79 48</a></p>
+   </div>
+   <div><h3 data-i="fcat">Каталог</h3><ul>
+    <li><a href="?c=3d-paneli">3D панелі</a></li><li><a href="?g=plytka">Плитка</a></li><li><a href="?c=samokleyucha-plivka">Самоклеюча плівка</a></li><li><a href="?c=shpalery">Шпалери</a></li><li><a href="?g=pidloga">Підлога</a></li><li><a href="?c=ekoshkira">Екошкіра</a></li></ul></div>
+   <div><h3 data-i="fspec">Добірки</h3><ul>
+    <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
+   <div><h3 data-i="fbiz">Співпраця</h3><ul>
+    <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="partners.html" data-i="fp">Партнерам</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
+  </div>
+  <div class="fbot"><span>© <span id="yr">2026</span> Samostroy Shop</span><span><a href="https://t.me/samostroy_shop" target="_blank" rel="noopener">Telegram</a> &nbsp; <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" rel="noopener">TikTok</a> &nbsp; <a href="https://www.instagram.com/samostroy.shop" target="_blank" rel="noopener">Instagram</a></span></div>
+ </div>
+</footer>
+
+<nav class="mbar" aria-label="Швидка навігація">
+ <button data-a="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+ <button data-a="msearch"><svg class="i"><use href="#i-search"/></svg><span data-i="srch">Пошук</span></button>
+ <button data-a="quiz"><svg class="i"><use href="#i-quiz"/></svg><span data-i="pick">Підбір</span></button>
+ <button data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="cnt" data-cnt>0</span><span data-i="cart">Кошик</span></button>
+</nav>
+
+<div class="fab" id="fab">
+ <div class="menu" id="fabm" hidden>
+  <p data-i="fabp">Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.</p>
+  <a id="fabtg" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><span class="dot" style="background:#229ed9"></span>Telegram</a>
+  <a id="fabvb" href="#" hidden><span class="dot" style="background:#7360f2"></span>Viber</a>
+  <a href="tel:+380984927948"><span class="dot" style="background:var(--ok)"></span><span data-i="call">Подзвонити</span></a>
+ </div>
+ <button class="main" data-a="fab" aria-expanded="false" aria-controls="fabm" aria-label="Написати менеджеру"><svg class="i"><use href="#i-chat"/></svg></button>
+</div>
+
+<div class="shade" id="shade" data-a="close"></div>
+<aside id="cart" aria-label="Кошик" aria-hidden="true">
+ <div class="dh"><b><span data-i="cart">Кошик</span> <span class="soft" id="cn" style="font-family:var(--f-b);font-weight:500;font-size:15px"></span></b><button class="xb" data-a="close" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="dbody">
+  <div id="items"></div>
+  <div class="clr" id="clr" hidden><button class="link" data-a="tocat" data-i="more2">Додати ще товари</button><button class="link" style="color:var(--soft)" data-a="clearcart" data-i="clearc">Очистити кошик</button></div>
+  <div class="form" id="cform">
+   <h3 data-i="who">Куди відправити</h3>
+   <input id="fn" autocomplete="name" data-ip="nm" placeholder="Ім’я">
+   <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
+   <div class="hint" id="hint"></div>
+   <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
+   <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
+   <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
+   <div class="guar">
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g1">Безкоштовно порахуємо кількість</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g2">Відправка в день замовлення</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g3">Обмін і повернення 14 днів</span></span>
+   </div>
+  </div>
+ </div>
+ <div class="dfoot" id="dfoot">
+  <div class="tot"><span data-i="tot">Разом</span><span id="total">0 ₴</span></div>
+  <button class="btn" data-a="order" data-i="send">Надіслати замовлення менеджеру</button>
+ </div>
+</aside>
+
+<dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
+
+<script src="config.js?v=52b18222"></script>
+<script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Дропшипінг", "listTitle": "Дропшипінг", "url": "https://samostroy.shop/dropshipping.html", "title": "Дропшипінг будматеріалів без вкладень — партнерська програма Samostroy Shop", "desc": "Продавайте 1200+ товарів для ремонту без складу й закупівлі: ми пакуємо, відправляємо в день замовлення й беремо на себе повернення. Ціну ставите ви. Три рівні партнера, навчання й готові матеріали.", "guide": "", "calc": 0, "faq": [["Чи потрібні вкладення?", "Ні. Ви не викуповуєте товар і не орендуєте склад: працюєте з нашим складом за моделлю дропшипінгу. Платите лише своїм часом на оголошення й спілкування з клієнтами."], ["Яка маржа?", "На рекомендованій роздрібній ціні — в середньому до 10% на рівні Starter і від 15% на рівні Pro. На рівні Team — найвигідніші закупівельні ціни й бонуси з обороту. Ціну для клієнта ви встановлюєте самі: якщо продаєте дорожче рекомендованої, різниця теж ваша."], ["Як я отримую свій прибуток?", "Ви встановлюєте роздрібну ціну. Клієнт оплачує замовлення на реквізити або післяплатою на пошті. Ми утримуємо оптову вартість товару, а різницю виплачуємо вам — за запитом або за домовленістю раз на тиждень чи місяць."], ["Що з поверненнями?", "Повернення й обмін бере на себе Samostroy Shop — ви не залишаєтеся сам на сам з клієнтом."], ["Де я можу продавати?", "OLX, Prom, Rozetka та інші маркетплейси, Instagram, TikTok, Facebook, Telegram-канали, власний сайт, дошки оголошень, офлайн-магазин — обмежень немає."], ["Чи можу я продавати за своїми цінами?", "Так. Ми рекомендуємо ринковий рівень, але остаточну ціну встановлюєте ви."], ["Як швидко можна отримати перші замовлення?", "Все залежить від активності. Перші партнери іноді отримували запити вже в перший день після розміщення оголошень."], ["Чи надаєте документи для магазинів?", "Так, партнерам рівнів Pro і Team надаємо документи на запит. Товари сертифіковані й мають документальний супровід."], ["Що робити, якщо я боюся починати?", "Почніть з малого: 3–5 оголошень і кілька запитів. Ризику немає — ви нічого не купуєте наперед, а менеджер підкаже на кожному кроці."], ["Чи можна поєднувати з роботою або навчанням?", "Так. Багато партнерів стартують у вільний час і поступово виходять на стабільний дохід."]], "wall": ["3d-paneli", "pet-plytka", "samokleyucha-plivka", "plytka-vinilova", "termokylymky", "dzerkalnyi-dekor", "ekoshkira", "pidloga-pazl-plyushevyy", "shpalery"], "info": true}</script>
+<script src="shop.js?v=1e978c2c"></script>
 </body>
 </html>
