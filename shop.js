@@ -1,4 +1,4 @@
-const K={fullcat:['Весь каталог магазину','Весь каталог магазина'],okH:['Замовлення №{id} прийнято','Заказ №{id} принят'],okP:['Менеджер зв’яжеться з вами, щоб підтвердити наявність і доставку.','Менеджер свяжется с вами, чтобы подтвердить наличие и доставку.'],okTg:['Написати менеджеру в Telegram','Написать менеджеру в Telegram'],okMore:['Продовжити покупки','Продолжить покупки'],
+const K={nNoRes:['Запас {r}% — це менше половини елемента, тож окремо докупувати не потрібно: запас уже є в мінімумі.','Запас {r}% — это меньше половины элемента, поэтому докупать отдельно не нужно: запас уже есть в минимуме.'],nWrap:['Розміри вводьте разом із загином: по 3–5 см з кожного боку деталі.','Размеры вводите вместе с загибом: по 3–5 см с каждой стороны детали.'],cWe:['Ширина деталі, м','Ширина детали, м'],cHe:['Висота деталі, м','Высота детали, м'],fullcat:['Весь каталог магазину','Весь каталог магазина'],okH:['Замовлення №{id} прийнято','Заказ №{id} принят'],okP:['Менеджер зв’яжеться з вами, щоб підтвердити наявність і доставку.','Менеджер свяжется с вами, чтобы подтвердить наличие и доставку.'],okTg:['Написати менеджеру в Telegram','Написать менеджеру в Telegram'],okMore:['Продовжити покупки','Продолжить покупки'],
 failH:['Не вдалося надіслати через сайт','Не удалось отправить через сайт'],failP:['Перевірте інтернет або надішліть замовлення менеджеру в Telegram — текст уже готовий.','Проверьте интернет или отправьте заказ менеджеру в Telegram — текст уже готов.'],failTg:['Надіслати в Telegram','Отправить в Telegram'],retry2:['Спробувати ще раз','Попробовать ещё раз'],rate:['Забагато замовлень за короткий час. Зачекайте кілька хвилин або напишіть менеджеру.','Слишком много заказов за короткое время. Подождите несколько минут или напишите менеджеру.'],num:['№','№'],
 more2:['Додати ще товари','Добавить ещё товары'],clearc:['Очистити кошик','Очистить корзину'],who:['Куди відправити','Куда отправить'],del:['Видалити','Удалить'],cleared:['Кошик очищено','Корзина очищена'],
 cel1:['Довжина елемента, см','Длина элемента, см'],cel2:['Ширина елемента, см','Ширина элемента, см'],cW:['Ширина стіни або підлоги, м','Ширина стены или пола, м'],cH:['Висота стіни або довжина підлоги, м','Высота стены или длина пола, м'],cA:['Або площа, м²','Или площадь, м²'],cO:['Вікна й двері, м²','Окна и двери, м²'],cR:['Запас на брак і помилки','Запас на брак и ошибки'],cAuto:['Авто','Авто'],
@@ -90,7 +90,8 @@ const COMP={stiny:['profili-dekor','plintusy','dzerkala'],plytka:['profili-dekor
 const CALCG=new Set(['stiny','plytka','pidloga']);
 const PRESETS=[['3d-paneli','3D панель 700×700 мм',.7,.7],['3d-paneli','3D панель 700×770 мм (цегла)',.7,.77],['3d-paneli','3D панель у рулоні 0,7×19,6 м',.7,19.6],['pvh-paneli-plyty','ПВХ панель 960×480 мм',.96,.48],['pvh-paneli-plyty','ПВХ плита 1,22×2,44 м',1.22,2.44],['pet-plytka','PET плитка 600×300 мм',.6,.3],['pet-plytka-rulon','PET плитка в рулоні 0,6×3 м',.6,3],['alyuminiyeva-plytka','Алюмінієва плитка 300×300 мм',.3,.3],['plytka-vinilova','Вінілова плитка 600×300 мм',.6,.3],['plytka-vinilova','Вінілова дошка 152×914 мм',.1524,.9144],['lvt-plytka','LVT плитка 457×457 мм',.457,.457],['3d-reyky','Вінілові 3D рейки 600×600 мм',.6,.6],['shtukaturka','Гнучка штукатурка 600×600 мм',.6,.6],['samokleyucha-plivka','Плівка, рулон 0,45×10 м',.45,10],['shpalery','Шпалери 2800×500 мм',.5,2.8],['pidloga-pazl-plyushevyy','Підлога-пазл 600×600 мм',.6,.6],['pidloga-pazl-plyushevyy','Підлога-пазл 300×300 мм',.3,.3]];
 /* ===== Калькулятор (ця ж копія вставлена в index.html) ===== */
-const ceilE=x=>Math.ceil(x-1e-7);           // 11.000000000000002 → 11, а не 12
+const ceilE=x=>Math.ceil(x-1e-7);
+const withRes=(n,r)=>{const x=n*r/100;return n+(x<0.5-1e-9?0:ceilE(x))};           // 11.000000000000002 → 11, а не 12
 const floorE=x=>Math.floor(x+1e-7);         // 3.9999999 → 4
 // листи/плитка a×b (a — вздовж W): цілі + крайній стовпчик + крайній ряд + кут; обрізки по краю використовуються повторно
 function gridCount(W,H,a,b){
@@ -113,7 +114,7 @@ function calcNeed(el,inp){
  const open=Math.min(Math.max(inp.open||0,0),gross*.9),S=gross-open;
  if(!(S>0)||!(area>0))return null;
  const ideal=ceilE(S/area),roll=Math.max(el.a,el.b)>=2.5;
- let pieces=ideal,how='area',recPieces=ceilE(ideal*(1+r/100)),strip=null;
+ let pieces=ideal,how='area',recPieces=withRes(ideal,r),strip=null;
  if(dims){
   const s=Math.min(el.a,el.b),l=Math.max(el.a,el.b);
   if(roll){
@@ -125,11 +126,11 @@ function calcNeed(el,inp){
   }else{
    let n=Math.min(gridCount(inp.W,inp.H,el.a,el.b).n,gridCount(inp.W,inp.H,el.b,el.a).n);
    if(open>0)n=ceilE(n*S/gross);
-   pieces=Math.max(n,ideal);how='grid';recPieces=ceilE(pieces*(1+r/100));
+   pieces=Math.max(n,ideal);how='grid';recPieces=withRes(pieces,r);
   }
  }
  const units=ceilE(pieces/per),rec=Math.max(units,ceilE(recPieces/per));
- return{S,ideal,pieces,units,rec,how,roll,strip}}
+ return{S,ideal,pieces,units,rec,how,roll,strip,noRes:r>0&&rec==units}}
 
 /* ===== ДОВІДНИК ПОКУПЦЯ: по категоріях (українською) =====
    use — де застосовувати; pro — переваги; lim — обмеження (чесно); ch — як обрати;
@@ -305,23 +306,30 @@ const GUIDES={
  ch:['Великі листи — замість звичайного дзеркала','Набори фігур — для декору стіни в дитячій чи вітальні'],
  ins:'mirror',care:['Мийте м’якою серветкою, без абразиву та спирту']},
 'termokylymky':{t:'Дитячі термокилимки',
- use:['Дитяча','Ігрова','Домашній фітнес','Пікнік і мандрівки'],
- pro:['Тримає тепло й захищає від холодної підлоги','Пом’якшує падіння','Двосторонній: яскравий малюнок і спокійний бік','Складається для зберігання'],
- lim:['Не залишайте під прямим сонцем надовго — малюнок може вигоріти'],
- ch:['Товщина 8–10 мм — для дитини, що повзає й вчиться ходити','Розмір під ігрову зону, із запасом 30–50 см з кожного боку'],
- ins:'mat',care:['Плями від фломастерів і крейди змиваються вологою серветкою']},
+ use:['Дитяча','Ігрова','Домашній фітнес','Пікнік і мандрівки','Йога й розтяжка'],
+ pro:['Тримає тепло й захищає від холодної підлоги','Пом’якшує падіння, коли дитина вчиться сидіти й ходити','Двосторонній: яскравий розвиваючий малюнок і спокійний бік','Гіпоалергенний XPE, ламінований водовідштовхувальний шар','Складається й легко береться з собою'],
+ lim:['Не залишайте під прямим сонцем надовго — малюнок може вигоріти','Не прасуйте й не кладіть на обігрівач'],
+ ch:['Товщина 8–10 мм — для дитини, що повзає й вчиться ходити; 6 мм — легший, зручніший для поїздок','Розмір 150×200 або 180×200 см закриває ігрову зону; 117×177 см — для невеликої кімнати чи манежу','Моделі зі зростоміром ростуть разом з дитиною','Однотонні килимки легко вписати в інтер’єр вітальні'],
+ ins:'mat',care:['Плями від фломастерів, крейди та їжі змиваються вологою серветкою','Мийте теплою водою з м’яким засобом, без абразиву','Зберігайте складеним, а не скрученим, щоб не залишилось залом']},
 'vologopoglynayuchi-kylymky':{t:'Вологопоглинаючі килимки',
- use:['Ванна','Душ','Кухня','Вхідні двері','Пральня'],
- pro:['Швидко вбирають воду й бруд','Каучукова основа не ковзає','Легко очищуються струшуванням або промиванням'],
- lim:['Після промивання потрібно добре просушити'],ch:['Для ванної — 40×60 або 50×80 см','Для входу — розмір під ширину дверей'],
- ins:'mat',care:['Регулярно провітрюйте ванну, щоб не було плісняви']},
+ use:['Ванна','Біля душу','Біля умивальника','Кухня','Вхідні двері','Пральня','Місце для домашніх тварин'],
+ pro:['Швидко вбирають воду — на плитці не лишається калюж','Каучукова основа не ковзає навіть на мокрій підлозі','Тонкі (3 мм): не заважають відчиняти двері','Очищуються струшуванням або промиванням під водою'],
+ lim:['Після промивання потрібно добре просушити','Під гарячий душ та у ванну не кладіть: це килимок для підлоги поруч'],
+ ch:['38×58 або 40×60 см — біля умивальника, унітаза чи під двері','50×80 см — біля ванни чи душової кабіни','Для вхідних дверей беріть килимок, вужчий за дверний отвір на 5–10 см','Для дитячої ванної є килимки з малюнками: жабка, качечка, панда, котик'],
+ ins:'mat',care:['Струшуйте або промивайте під струменем води, плями — м’яким засобом','Сушіть розстеленим, не на батареї','Регулярно провітрюйте ванну, щоб не з’явилася пліснява']},
 'ekoshkira':{t:'Самоклеюча екошкіра',
- use:['Дивани й крісла','Стільці','Автомобільні сидіння','Узголів’я ліжка','Двері'],
- pro:['Відновлює меблі без перетяжки','Ріжеться ножицями','Легко чиститься, стійка до бруду'],
- lim:['Клей дуже сильний: склеєні між собою шматки вже не роз’єднати'],
- ch:['Рулон 1,37×1 м — для ремонту окремих місць','Рулон 1,37×3 м — для обтягування крісла чи узголів’я'],
- ins:['Поверхня має бути сухою та чистою; пластикові деталі знежирте.','Виріжте шматок із запасом на загин.','Не знімайте весь папір одразу: відклеюйте частинами й поступово розгладжуйте матеріал.','Загини на торцях притисніть особливо щільно.'],
- care:['Протирайте вологою серветкою']},
+ use:['Дивани й крісла','Стільці й пуфи','Узголів’я ліжка','Підлокітники','Двері й полиці','Салон авто','Сліди від кігтів тварин'],
+ pro:['Відновлює меблі без перетяжки й заміни','Ріжеться ножицями чи ножем на заплатки, смуги або цілі панелі','Стійка до зносу, вологи й більшості побутових забруднень','Товщина 0,5 мм: тонка, але щільна'],
+ lim:['Клей дуже сильний: склеєні між собою шматки вже не роз’єднати','Не тримається на пухкій, пиловій чи жирній основі','Для місць, що сильно гнуться (сидіння, на яких постійно сидять), служить менше, ніж на рівних поверхнях'],
+ ch:['Рулон 1,37×1 м (1,37 м²) — для заплаток, підлокітників, дверей, полиць','Рулон 1,37×3 м (4,11 м²) — для узголів’я, крісла чи кількох стільців; виходить дешевше за 1 м²','Додайте по 3–5 см на загин з кожного боку деталі','Колір порівнюйте при денному світлі; за фото можна попросити менеджера підібрати відтінок'],
+ ins:['Очистіть і висушіть поверхню, пластикові деталі знежирте.','Зробіть викрійку з паперу й перенесіть на підкладку екошкіри, додавши по 3–5 см на загин.','Виріжте деталь гострими ножицями або ножем по лінійці; кути заокругліть — так вони не будуть відклеюватися.','Не знімайте весь папір одразу: відклейте 5–10 см, приклейте край і далі поступово розгладжуйте матеріал від центру.','Загини на торцях притисніть особливо щільно; на вигинах злегка прогрійте феном.'],
+ care:['Протирайте вологою серветкою з м’яким засобом','Не використовуйте розчинники й абразиви'],
+ err:['Знімати весь захисний папір одразу — матеріал злипнеться','Клеїти на запилену або жирну поверхню — краї відійдуть','Залишати гострі кути — саме з них починається відклеювання'],
+ faq:[['Скільки екошкіри потрібно на узголів’я чи крісло?','Виміряйте ширину й висоту кожної деталі, додайте по 3–5 см на загин і впишіть у калькулятор на сторінці товару. Ширина рулону 1,37 м, тож узголів’я до 1,3 м шириною обтягується одним шматком.'],['Чи можна клеїти на тканинну оббивку?','На щільну гладку тканину — так, якщо вона чиста й суха. На ворсисту, пухку тканину й поролон клей тримає погано.']]},
+'kylymky':{t:'Килимки для дому',base:'vologopoglynayuchi-kylymky',
+ use:['Ванна','Кухня','Коридор','Дитяча','Ігрова','Вхідні двері'],
+ ch:['Біля умивальника чи унітаза — вологопоглинаючий 38×58 або 40×60 см','Біля ванни чи душу — вологопоглинаючий 50×80 см','Для дитячої й ігрової — складний термокилимок 150×200 або 180×200 см товщиною 8–10 мм','Для вхідних дверей — килимок, вужчий за дверний отвір на 5–10 см'],
+ pro:['Вологопоглинаючі вбирають воду й не ковзають на мокрій плитці','Термокилимки тримають тепло й пом’якшують падіння','Усі легко очищуються вологою серветкою або під водою']},
 'mebli':{t:'Меблі й системи зберігання',
  use:['Кухня','Ванна','Балкон','Комора','Гараж','Дача','Офіс','Студія'],
  pro:['Готові рішення замість вбудованих систем: додавайте й міняйте поступово','Мобільні етажерки й розкладні стелажі легко переставити чи заховати','Більшість моделей збирається за 10–20 хвилин без майстрів'],
@@ -413,7 +421,7 @@ function dimsOf(title){
 // розмір з характеристик (Ширина/Довжина/Висота в мм) — точніший за назву
 function dimsOfPar(P){const v=['Ширина','Довжина','Висота'].map(k=>num(P[k])).filter(x=>x>0);return v.length>=2&&v[0]>=20&&v[1]>=20?[v[0]/1000,v[1]/1000]:null}
 function elOf(name,P,cat){
- if(!CALCG.has(catBy[cat][1]))return null;
+ if(!CALCG.has(catBy[cat][1])&&cat!='ekoshkira')return null;
  let d=dimsOfPar(P)||dimsOf(name);
  if(!d){const pa=num(P['Площа, що покривається панеллю']);if(pa>0)d=[Math.sqrt(pa),Math.sqrt(pa)];else return null}
  const qty=parseInt(P['Кількість в упаковці'],10)||parseInt((name.match(/\((\d+)\s*шт\)|(\d+)\s*рулон/)||[]).slice(1).find(Boolean),10)||1;
@@ -450,7 +458,7 @@ function load(){
  go(CFG.xml).catch(()=>go(CFG.xmlBackup)).then(x=>{
   all=parse(x);if(!all.length)throw 0;
   byId=new Map(all.map(p=>[p.id,p]));counts={};all.forEach(p=>counts[p.cat]=(counts[p.cat]||0)+1);
-  loaded=true;decorateDir();fillWall();fillNew();drawKB();route(false);if(location.hash)setTimeout(()=>{const x=$(location.hash);x&&x.scrollIntoView()},60);
+  loaded=true;[decorateDir,fillWall,fillNew,drawKB].forEach(f=>safe(f,f.name));route(false);if(location.hash)setTimeout(()=>{const x=$(location.hash);x&&x.scrollIntoView()},60);
  }).catch(()=>{$('#grid').innerHTML='';$('#msg').innerHTML=`<div class="empty">${t('err')}<br><button class="btn" data-a="retry">${t('retry')}</button></div>`});
 }
 
@@ -513,7 +521,7 @@ function renderLand(){
  const cs=PAGE.cats.filter(c=>!loaded||cnt(c)),tot=loaded?all.filter(p=>SCOPE.has(p.cat)).length:'';
  $('#side').innerHTML=`<a class="gl ${!view.c?'on':''}" href="${location.pathname}" data-nav>${esc(PAGE.name)} <span class="soft" style="font-weight:400">${tot}</span></a><ul>${cs.map(c=>`<li><a class="${view.c==c?'on':''}" href="?c=${c}" data-nav>${esc(cname(c))}<i>${cnt(c)||''}</i></a></li>`).join('')}</ul><h3><a class="gl" href="./" style="padding:0">${t('fullcat')}</a></h3>`;
  $('#subs').classList.remove('mfilters');
- $('#subs').innerHTML=`<a href="${location.pathname}" data-nav class="${!view.c?'on':''}">${t('allh')}</a>`+cs.map(c=>`<a href="?c=${c}" data-nav class="${view.c==c?'on':''}">${esc(cname(c))}</a>`).join('');
+ $('#subs').innerHTML=cs.length<2?'':`<a href="${location.pathname}" data-nav class="${!view.c?'on':''}">${t('allh')}</a>`+cs.map(c=>`<a href="?c=${c}" data-nav class="${view.c==c?'on':''}">${esc(cname(c))}</a>`).join('');
  $$('[data-lc]').forEach(a=>{const n=cnt(a.dataset.lc);const i=a.querySelector('i');if(i)i.textContent=n||'';if(loaded&&!n)a.hidden=true});
  if(!loaded)return;
  const L=list();
@@ -619,7 +627,7 @@ function openP(id,push=true){
    <div class="price">${money(p.price)}${ppm(p)}</div>
    ${p.av?`<div class="pacts"><button class="btn" data-add="${esc(p.id)}">${t('add')}</button><button class="btn ghost" data-smp="${esc(p.id)}">${t('smp')}</button></div>
    <div class="oc"><input id="mp" type="tel" inputmode="tel" placeholder="${t('phn')}" value="${esc(cust.fp||'')}" aria-label="${t('phn')}"><button class="btn ghost" data-oc="${esc(p.id)}">${t('one')}</button></div>`:`<button class="btn" data-askp="${esc(p.id)}">${t('askm')}</button>`}
-   ${p.el?`<div class="pcalc" data-id="${esc(p.id)}"><b class="t">${t('pcalc')}</b><div class="el">${elInfo(p)}</div><div class="row"><label>${t('cW')}<input data-k="w" inputmode="decimal" autocomplete="off"></label><label>${t('cH')}<input data-k="h" inputmode="decimal" autocomplete="off"></label></div><div class="row"><label>${t('cA')}<input data-k="a" inputmode="decimal" autocomplete="off"></label><label>${t('cO')}<input data-k="o" inputmode="decimal" autocomplete="off" placeholder="0"></label><label>${t('cR')}<select data-k="r">${resOpts()}</select></label></div><div class="cres"></div></div>`:''}
+   ${p.el?`<div class="pcalc" data-id="${esc(p.id)}"><b class="t">${t('pcalc')}</b><div class="el">${elInfo(p)}</div><div class="row"><label>${t(p.cat=='ekoshkira'?'cWe':'cW')}<input data-k="w" inputmode="decimal" autocomplete="off"></label><label>${t(p.cat=='ekoshkira'?'cHe':'cH')}<input data-k="h" inputmode="decimal" autocomplete="off"></label></div><div class="row"><label>${t('cA')}<input data-k="a" inputmode="decimal" autocomplete="off"></label><label${p.cat=='ekoshkira'?' hidden':''}>${t('cO')}<input data-k="o" inputmode="decimal" autocomplete="off" placeholder="0"></label><label>${t('cR')}<select data-k="r">${resOpts()}</select></label></div><div class="cres"></div></div>`:''}
    <div class="guar"><span><svg class="i"><use href="#i-check"/></svg><span>${t('g1')}</span></span><span><svg class="i"><use href="#i-check"/></svg><span>${t('g2')}</span></span><span><svg class="i"><use href="#i-check"/></svg><span>${t('g3')}</span></span></div>
    ${pars.length?`<dl class="params">${pars.slice(0,12).map(x=>`<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>`:''}
   </div></div>
@@ -644,7 +652,7 @@ $('#pd').addEventListener('change',e=>{if(e.target.dataset.k=='r')e.target.dispa
 /* ---------- спільний вивід калькулятора ---------- */
 const resOpts=()=>`<option value="auto">${t('cAuto')}</option>`+[0,5,10,15].map(x=>`<option value="${x}">${x}%</option>`).join('');
 const mm=x=>fmt(x*1000,1);
-function unitOf(el,name){return el.per>1?t('u_set'):(Math.max(el.a,el.b)>=2.5&&/рулон|плівк|рулоні/i.test(name||''))?t('u_roll'):t('u_pcs')}
+function unitOf(el,name){return el.per>1?t('u_set'):(/рулон|рулоні/i.test(name||'')||(Math.max(el.a,el.b)>=2.5&&/плівк/i.test(name||'')))?t('u_roll'):t('u_pcs')}
 function elInfo(p){const e=p.el,a=e.a*e.b;let x=t('el1',{d:mm(e.a)+'×'+mm(e.b),a:fmt(a,3)});
  if(e.per>1)x+='<br>'+t('elSet',{n:e.per,a:fmt(a*e.per,2)});if(e.pack)x+='<br>'+t('elPack',{n:e.pack,a:fmt(a*e.pack,2)});return x}
 function calcOut(el,inp,rSel,ctx){
@@ -655,7 +663,9 @@ function calcOut(el,inp,rSel,ctx){
  if(R.how=='area')notes.push(t('nArea'));
  if(R.strip){const k=Math.floor(R.strip.L/R.strip.len+1e-7);notes.push(k>=1?t('nStrip',{c:R.strip.cols,l:fmt(R.strip.len),k}):t('nJoin',{c:R.strip.cols,l:fmt(R.strip.len)}));if(/плівк|шпалер/i.test((p?p.name:ctx.name)||''))notes.push(t('nPat'))}
  if((el.per>1||R.roll)&&R.rec>R.units)notes.push(t('nTight',{n:R.rec-R.units,u})+'.');
+ if(R.noRes&&!R.roll&&el.per<2)notes.push(t('nNoRes',{r}));
  if(el.pack)notes.push(t('nPack',{p:fmt(R.rec/el.pack,1),n:el.pack}));
+ if(p&&p.cat=='ekoshkira')notes.push(t('nWrap'));
  const sum=p?` · ${money(R.rec*p.price)}`:'';
  return`${ctx.big?`<span class="soft">${t('rRec',{r})}</span><div class="big">${R.rec} ${u}</div>`:''}<div class="cl"><span>${t('rS')}</span><b>${fmt(R.S)} м²</b></div>
  <div class="cl"><span>${t(R.how=='area'?'rMinA':'rMin')}</span><b>${R.units} ${u}</b></div>
@@ -845,6 +855,10 @@ document.addEventListener('click',e=>{
  }
 });
 
-$('#yr').textContent=new Date().getFullYear();
-buildMega();
-setLang(lang);view=readURL();render();load();
+/* ---------- запуск: помилка в другорядній частині не повинна зупиняти завантаження каталогу ---------- */
+const safe=(f,n)=>{try{f()}catch(e){console.error('[Samostroy] '+n,e)}};
+safe(()=>$('#yr').textContent=new Date().getFullYear(),'year');
+safe(buildMega,'menu');
+safe(()=>setLang(lang),'lang');
+safe(()=>{view=readURL();render()},'render');
+load();
