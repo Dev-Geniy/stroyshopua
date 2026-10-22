@@ -60,7 +60,8 @@ const CATS=[
 ['ekoshkira','dim','Екошкіра у рулоні','Экокожа в рулоне',/екошкір|еко шкір/],
 ['mozayika-sklo','stiny','Мозаїка з декоративного скла','Мозаика из декоративного стекла',/мозаїка з декоративного|мозаїка дзеркальн/],
 ['alyuminiyeva-plytka','plytka','Алюмінієва плитка','Алюминиевая плитка',/алюмінієва плит/],
-['dzerkala','dekor','Дзеркала','Зеркала',/дзеркал/],
+['dzerkalnyi-dekor','dekor','Дзеркальний декор','Зеркальный декор',/дзеркальний декор|дзеркальн.*шт/],
+['akrylovi-dzerkala','dekor','Акрилові дзеркала','Акриловые зеркала',/дзеркал/],
 ['pet-mozayika','plytka','PET мозаїка','PET мозаика',/pet мозаї|pet мозаі/],
 ['pet-plytka-rulon','plytka','PET плитка у рулоні','PET плитка в рулоне',/pet[^,]*[ву] рулоні/],
 ['pet-plytka','plytka','PET плитка','PET плитка',/pet/],
@@ -83,9 +84,9 @@ const CATS=[
 ['stinovi-paneli','stiny','Стінові панелі','Стеновые панели',/панел/],
 ['inshe','dim','Інше','Другое',/./]];
 // складені категорії
-const VIRT={'pokryttya-vinilove':{g:'pidloga',uk:'Покриття вінілове',ru:'Виниловое покрытие',inc:['3d-reyky','pidlogove-vinilove-pokryttya']},'mebli':{g:'dim',uk:'Меблі для дому та саду',ru:'Мебель для дома и сада',inc:['stelazhi','skladni-mebli','naduvni-mebli']}};
+const VIRT={'pokryttya-vinilove':{g:'pidloga',uk:'Покриття вінілове',ru:'Виниловое покрытие',inc:['3d-reyky','pidlogove-vinilove-pokryttya']},'mebli':{g:'dim',uk:'Меблі для дому та саду',ru:'Мебель для дома и сада',inc:['stelazhi','skladni-mebli','naduvni-mebli']},'dzerkala':{g:'dekor',uk:'Дзеркала',ru:'Зеркала',inc:['akrylovi-dzerkala','dzerkalnyi-dekor']}};
 // з чим купують
-const COMP={stiny:['profili-dekor','plintusy','dzerkala'],plytka:['profili-dekor','plintusy'],pidloga:['plintusy','vologopoglynayuchi-kylymky'],dekor:['3d-paneli','pet-plytka'],'pidloga-pazl':['pidloga-pazl-plyushevyy','termokylymky'],'pidloga-pazl-plyushevyy':['termokylymky','pidloga-pazl'],termokylymky:['pidloga-pazl-plyushevyy','pidloga-pazl'],ekoshkira:['profili-dekor','plintusy'],stelazhi:['konteynery'],'skladni-mebli':['naduvni-mebli'],'naduvni-mebli':['skladni-mebli'],konteynery:['stelazhi'],manikyur:['dzerkala'],'vologopoglynayuchi-kylymky':['plytka-vinilova','plintusy']};
+const COMP={'akrylovi-dzerkala':['dzerkalnyi-dekor','mozayika-sklo'],'dzerkalnyi-dekor':['akrylovi-dzerkala','3d-paneli'],stiny:['profili-dekor','plintusy','dzerkala','akrylovi-dzerkala','dzerkalnyi-dekor'],plytka:['profili-dekor','plintusy'],pidloga:['plintusy','vologopoglynayuchi-kylymky'],dekor:['3d-paneli','pet-plytka'],'pidloga-pazl':['pidloga-pazl-plyushevyy','termokylymky'],'pidloga-pazl-plyushevyy':['termokylymky','pidloga-pazl'],termokylymky:['pidloga-pazl-plyushevyy','pidloga-pazl'],ekoshkira:['profili-dekor','plintusy'],stelazhi:['konteynery'],'skladni-mebli':['naduvni-mebli'],'naduvni-mebli':['skladni-mebli'],konteynery:['stelazhi'],manikyur:['dzerkala'],'vologopoglynayuchi-kylymky':['plytka-vinilova','plintusy']};
 // для калькулятора розраховуємо площу з назви
 const CALCG=new Set(['stiny','plytka','pidloga']);
 const PRESETS=[['3d-paneli','3D панель 700×700 мм',.7,.7],['3d-paneli','3D панель 700×770 мм (цегла)',.7,.77],['3d-paneli','3D панель у рулоні 0,7×19,6 м',.7,19.6],['pvh-paneli-plyty','ПВХ панель 960×480 мм',.96,.48],['pvh-paneli-plyty','ПВХ плита 1,22×2,44 м',1.22,2.44],['pet-plytka','PET плитка 600×300 мм',.6,.3],['pet-plytka-rulon','PET плитка в рулоні 0,6×3 м',.6,3],['alyuminiyeva-plytka','Алюмінієва плитка 300×300 мм',.3,.3],['plytka-vinilova','Вінілова плитка 600×300 мм',.6,.3],['plytka-vinilova','Вінілова дошка 152×914 мм',.1524,.9144],['lvt-plytka','LVT плитка 457×457 мм',.457,.457],['3d-reyky','Вінілові 3D рейки 600×600 мм',.6,.6],['shtukaturka','Гнучка штукатурка 600×600 мм',.6,.6],['samokleyucha-plivka','Плівка, рулон 0,45×10 м',.45,10],['shpalery','Шпалери 2800×500 мм',.5,2.8],['pidloga-pazl-plyushevyy','Підлога-пазл 600×600 мм',.6,.6],['pidloga-pazl-plyushevyy','Підлога-пазл 300×300 мм',.3,.3]];
@@ -299,12 +300,19 @@ const GUIDES={
  lim:['Плінтус не можна переклеїти','Фарбовану стіну потрібно загрунтувати'],
  ch:['Додайте 1–2 смуги на підрізку','Для ванної обирайте вологостійкий вініловий плінтус'],
  ins:'sticker',care:['Не використовуйте абразиви, сильні луги й кислоти']},
-'dzerkala':{t:'Акрилові дзеркала',
- use:['Дитяча','Передпокій','Ванна','Шафи й двері','Декор стін'],
- pro:['Не б’ються і не дають гострих уламків — безпечні для дитячої','Легші й доступніші за скло','Вологостійкі, не бояться пари'],
- lim:['На нерівній стіні відображення викривлюється — основа має бути ідеально рівною','Подряпати акрил легше, ніж скло'],
- ch:['Великі листи — замість звичайного дзеркала','Набори фігур — для декору стіни в дитячій чи вітальні'],
- ins:'mirror',care:['Мийте м’якою серветкою, без абразиву та спирту']},
+'dzerkala':{t:'Акрилові дзеркала й дзеркальний декор',
+ use:['Дитяча','Передпокій','Ванна','Шафи й двері','Вітальня','Салон і фотозона','Садок і ігрова'],
+ pro:['Не б’ються й не дають гострих уламків — безпечні для дитячої та публічних місць','У рази легші за скло, клеяться без свердління','Вологостійкі, не бояться пари й плісняви','Ріжуться й легко повторюють потрібну форму'],
+ lim:['Акрил гнучкий: на нерівній стіні відображення викривлюється, тому основа має бути ідеально рівною','Подряпати акрил легше, ніж скло — не мийте абразивами','Відображення трохи м’якше, ніж у скляного дзеркала'],
+ ch:['Листи 27×42, 30×40, 33×33 см — для ванної, шафи чи дверей','Листи 40×90 і 40×100 см — дзеркало в повний зріст для передпокою чи дитячої','Набори фігур (серця, краплі, метелики, кола) — для акцентної стіни, дитячої чи зони ТВ','Срібло — універсальне, золото — для теплих інтер’єрів і бежевих стін'],
+ ins:'mirror',care:['Мийте м’якою мікрофіброю й водою або засобом для скла без спирту й аміаку','Не використовуйте абразиви й жорсткі губки'],
+ err:['Клеїти на шпалери, фактурну штукатурку чи нерівну стіну — відображення «попливе»','Знімати захисну плівку до монтажу — поверхню легко подряпати','Клеїти лише по кутах — дзеркало прогнеться; притискайте по всій площі'],
+ faq:[['Чим акрилове дзеркало відрізняється від скляного?','Акрилове легше в кілька разів, не розбивається на гострі уламки й клеїться без свердління. Скляне дає трохи чіткіше відображення й не подряпається від мийки, але важче й небезпечне для дитячої.'],['Чи можна клеїти акрилове дзеркало на двері шафи?','Так, якщо поверхня гладка: ДСП, МДФ, пластик, скло. Знежирте її й притисніть дзеркало по всій площі.']]},
+'akrylovi-dzerkala':{t:'Акрилові дзеркала',base:'dzerkala'},
+'dzerkalnyi-dekor':{t:'Дзеркальний декор',base:'dzerkala',
+ use:['Дитяча','Вітальня','Зона ТВ','Над ліжком','Ванна й туалет','Фотозона','Кафе й салон'],
+ ch:['Спершу розкладіть фігури на підлозі або закріпіть малярним скотчем, щоб побачити композицію','Невеликі фігури (7–12 см) по 12–33 шт. — для «розсипу» на стіні','Великі елементи 15×17 і 14×19 см — для помітного акценту над диваном чи ліжком'],
+ ins:['Протріть і знежирте стіну; пофарбовану загрунтуйте й дайте висохнути.','Розмітьте композицію олівцем або малярним скотчем по рівню.','Зніміть папір зі скотчу на звороті фігури, прикладіть і притисніть на 20–30 секунд.','Захисну плівку з лицьового боку зніміть, коли вся композиція на стіні.']},
 'termokylymky':{t:'Дитячі термокилимки',
  use:['Дитяча','Ігрова','Домашній фітнес','Пікнік і мандрівки','Йога й розтяжка'],
  pro:['Тримає тепло й захищає від холодної підлоги','Пом’якшує падіння, коли дитина вчиться сидіти й ходити','Двосторонній: яскравий розвиваючий малюнок і спокійний бік','Гіпоалергенний XPE, ламінований водовідштовхувальний шар','Складається й легко береться з собою'],
@@ -547,7 +555,7 @@ function renderLand(){
 function drawSide(){
  const g=view.c?cgroup(view.c):view.g;
  $('#side').innerHTML=`<a class="gl ${!view.c&&!view.g?'on':''}" href="./" data-nav>${t('allh')} <span class="soft" style="font-weight:400">${all.length||''}</span></a>`+GROUPS.map(([gg])=>`<h3><a class="gl ${view.g==gg&&!view.c?'on':''}" href="?g=${gg}" data-nav style="padding:0">${esc(gname(gg))}</a></h3><ul>${subsOf(gg).map(s=>`<li><a class="${view.c==s?'on':''}" href="?c=${s}" data-nav>${esc(cname(s))}<i>${cnt(s)||''}</i></a></li>`).join('')}</ul>`).join('')}
-const ORDER={stiny:['3d-paneli','pvh-paneli-plyty','stinovi-paneli','samokleyucha-plivka','shpalery','tepli-shpalery','shtukaturka','mozayika-sklo'],plytka:['plytka-vinilova','pvh-plytka','poliuretanova-plytka','alyuminiyeva-plytka','lvt-plytka','plytka-pid-kovrolin','pet-plytka','pet-mozayika','pet-plytka-rulon','kompozytna-plytka'],pidloga:['pokryttya-vinilove','pidlogove-vinilove-pokryttya','3d-reyky','pidloga-pazl','pidloga-pazl-plyushevyy'],dekor:['profili-dekor','plintusy','dzerkala'],dim:['termokylymky','vologopoglynayuchi-kylymky','ekoshkira','konteynery','mebli','stelazhi','skladni-mebli','naduvni-mebli','manikyur','inshe']};
+const ORDER={stiny:['3d-paneli','pvh-paneli-plyty','stinovi-paneli','samokleyucha-plivka','shpalery','tepli-shpalery','shtukaturka','mozayika-sklo'],plytka:['plytka-vinilova','pvh-plytka','poliuretanova-plytka','alyuminiyeva-plytka','lvt-plytka','plytka-pid-kovrolin','pet-plytka','pet-mozayika','pet-plytka-rulon','kompozytna-plytka'],pidloga:['pokryttya-vinilove','pidlogove-vinilove-pokryttya','3d-reyky','pidloga-pazl','pidloga-pazl-plyushevyy'],dekor:['profili-dekor','plintusy','dzerkala','akrylovi-dzerkala','dzerkalnyi-dekor'],dim:['termokylymky','vologopoglynayuchi-kylymky','ekoshkira','konteynery','mebli','stelazhi','skladni-mebli','naduvni-mebli','manikyur','inshe']};
 function subsOf(g){return(ORDER[g]||[]).filter(s=>!loaded||cnt(s))}
 const cnt=s=>catsOf(s).reduce((a,c)=>a+(counts[c]||0),0);
 function drawSubs(g){
@@ -610,7 +618,7 @@ function safeHTML(h){
 function related(p){
  const g=catBy[p.cat][1],comp=COMP[p.cat]||COMP[g]||[];const seen=new Set([p.name]);const pick=(L,n)=>{const r=[];for(const x of L){if(r.length>=n)break;if(seen.has(x.name)||!x.av)continue;seen.add(x.name);r.push(x)}return r};
  const sim=pick(all.filter(x=>x.cat==p.cat&&x.id!=p.id).sort((a,b)=>Math.abs(a.price-p.price)-Math.abs(b.price-p.price)),4);
- const h=(p.n*7)%97;const wth=pick(comp.flatMap(c=>all.filter(x=>x.cat==c)).sort((a,b)=>((a.n*13+h)%101)-((b.n*13+h)%101)),4);
+ const h=(p.n*7)%97;const wth=pick(comp.flatMap(c=>all.filter(x=>catsOf(c).includes(x.cat))).sort((a,b)=>((a.n*13+h)%101)-((b.n*13+h)%101)),4);
  return{sim,wth}}
 const mini=L=>`<div class="mini">${L.map(x=>`<a href="${href(x)}" data-p="${esc(x.id)}"><img loading="lazy" src="${esc(x.img)}" alt="" onerror="this.style.opacity=0">${esc(x.name)}<b>${money(x.price)}</b></a>`).join('')}</div>`;
 function openP(id,push=true){
