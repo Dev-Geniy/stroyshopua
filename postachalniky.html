@@ -1,976 +1,285 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Постачальникам — співпраця з Samostroy Shop</title>
-
-  <!-- Фавікон -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  
-  <!-- ШРИФТ -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- ІКОНКИ -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- 🚀 SEO для сторінки "Постачальникам" — Samostroy Shop -->
-  <meta name="keywords" content="співпраця з постачальниками, постачальникам будматеріалів, поставки декору, оптові постачальники Україна, маркетплейс будматеріалів, Samostroy Shop, розміщення товарів, опт та дропшипінг">
-  <meta name="description" content="Samostroy Shop відкритий до співпраці з виробниками та оптовими постачальниками будматеріалів і декору. Розмістимо ваші товари на нашому сайті, візьмемо на себе маркетинг, логістику та підтримку клієнтів.">
-
-  <!-- Канонічне посилання -->
-  <link rel="canonical" href="https://samostroy.shop/suppliers.html">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Постачальникам — співпраця з Samostroy Shop">
-  <meta property="og:description" content="Запрошуємо виробників та оптових постачальників до співпраці. Розмістимо ваші товари на Samostroy Shop, займемося продажами та логістикою.">
-  <meta property="og:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-  <meta property="og:url" content="https://samostroy.shop/suppliers.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="uk_UA">
-
-  <!-- Telegram Preview -->
-  <meta name="telegram:title" content="Постачальникам Samostroy Shop">
-  <meta name="telegram:description" content="Стати партнером Samostroy Shop як постачальник — розмістіть свої товари на нашій платформі.">
-  <meta name="telegram:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Постачальникам — співпраця з Samostroy Shop">
-  <meta name="twitter:description" content="Запрошуємо виробників та оптовиків до співпраці. Розміщення товарів, маркетинг та логістика під ключ.">
-  <meta name="twitter:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- JSON-LD Schema (Google Rich Snippets) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Samostroy Shop — співпраця з постачальниками",
-    "url": "https://samostroy.shop/suppliers.html",
-    "logo": "https://samostroy.shop/favicon.png",
-    "description": "Співпраця з виробниками та оптовими постачальниками будматеріалів і декору. Розміщення товарів на сайті, маркетинг, логістика та підтримка клієнтів.",
-    "sameAs": [
-      "https://t.me/samostroy_shop",
-      "https://www.tiktok.com/@stroyshop_ua"
-    ]
-  }
-  </script>
-
-  <!-- Robots -->
-  <meta name="robots" content="index, follow">
-  
-  <!-- Sitemap -->
-  <link rel="sitemap" type="application/xml" href="https://samostroy.shop/sitemap.xml">
-  
-  <style>
-    :root {
-      --bg:#050509;
-      --bg2:#0c0d12;
-      --card:rgba(255,255,255,0.04);
-      --card2:rgba(255,255,255,0.06);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --muted:#a4a9b7;
-      --text:#f1f1f4;
-      --radius:18px;
-      --border:rgba(255,255,255,0.1);
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-      --trans:0.25s;
-    }
-
-    *{
-      margin:0; padding:0; box-sizing:border-box;
-    }
-
-    body{
-      font-family:"Inter",sans-serif;
-      background:radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%), var(--bg);
-      color:var(--text);
-      line-height:1.45;
-    }
-
-    a{
-      color:inherit; text-decoration:none;
-    }
-
-    /* HEADER */
-    header{
-      position:sticky; top:0; z-index:10;
-      padding:18px 24px;
-      display:flex; justify-content:space-between; align-items:center;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,9,0.72);
-      border-bottom:1px solid var(--border);
-    }
-
-    .logo{
-      font-size:clamp(20px, 3vw, 28px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      letter-spacing:1px;
-      text-transform:uppercase;
-    }
-
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:8px; padding:12px 20px;
-      background:var(--grad);
-      border-radius:var(--radius);
-      font-size:14px; font-weight:700;
-      color:#000; cursor:pointer; border:none;
-      transition:var(--trans);
-      box-shadow:var(--shadow);
-      white-space:nowrap;
-    }
-    .btn:hover{ transform:translateY(-3px); box-shadow:0 24px 50px rgba(0,0,0,0.75); }
-
-    .btn-outline{
-      background:transparent; border:1px solid var(--accent);
-      color:var(--accent2); box-shadow:none;
-    }
-    .btn-outline:hover{
-      background:rgba(255,122,26,0.08);
-      box-shadow:var(--shadow);
-    }
-
-    .btn i{ width:20px; height:20px; }
-
-    /* SECTION BASE */
-    .section{
-      max-width:1150px; margin:50px auto; padding:0 20px;
-    }
-
-    .title{
-      font-size:clamp(24px,4vw,34px);
-      font-weight:800; margin-bottom:10px;
-      line-height:1.2;
-    }
-
-    .sub{
-      color:var(--muted); font-size:clamp(14px,2.4vw,16px);
-      max-width:720px; margin-bottom:24px;
-    }
-
-    /* HERO */
-    .hero{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:32px; align-items:center;
-      max-width:1150px; margin:50px auto;
-      padding:0 20px;
-    }
-
-    .hero h1{
-      font-size:clamp(30px,4vw,45px);
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      font-weight:800;
-      margin-bottom:12px;
-      line-height:1.15;
-    }
-
-    .hero p{
-      color:var(--muted);
-      font-size:clamp(14px,2.4vw,17px);
-      max-width:560px;
-      margin-bottom:20px;
-    }
-
-    .tags{
-      display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;
-    }
-    .tag{
-      padding:6px 12px; font-size:12px;
-      background:rgba(255,255,255,0.05);
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-
-    .hero-side{
-      padding:20px;
-      background:var(--card2);
-      border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .side-row{
-      display:flex; justify-content:space-between;
-      color:var(--muted); font-size:14px;
-      padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-    .side-row:last-child{ border-bottom:none; }
-    .side-row strong{ color:var(--accent2); }
-
-    /* CARDS GRID */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:20px;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .card h3{
-      font-size:18px;
-      color:var(--accent2);
-      margin-bottom:8px;
-      display:flex; align-items:center; gap:8px;
-    }
-
-    .card p{
-      font-size:14px; color:var(--muted);
-    }
-
-    /* STEPS */
-    .steps .step{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      position:relative;
-    }
-    .step-num{
-      position:absolute; right:12px; top:12px;
-      font-size:20px; font-weight:800;
-      color:rgba(255,255,255,0.1);
-    }
-    .step-title{ font-size:16px; font-weight:600; margin-bottom:6px; }
-    .step-text{ font-size:14px; color:var(--muted); }
-
-    /* COMPARE */
-    .compare .c-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:20px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .compare h4{
-      font-size:16px; font-weight:700;
-      margin-bottom:8px; color:var(--accent2);
-    }
-
-    .compare ul{
-      margin-left:18px; color:var(--muted); font-size:14px;
-    }
-
-    .badge{
-      padding:3px 8px; background:rgba(255,122,26,0.16);
-      border-radius:999px; color:var(--accent2);
-      font-size:11px; margin-left:6px;
-    }
-
-    /* CTA */
-    .cta{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:26px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      display:flex; justify-content:space-between; align-items:center;
-      gap:20px; flex-wrap:wrap;
-    }
-
-    .cta h3{
-      font-size:clamp(22px,4vw,28px);
-      font-weight:800; margin-bottom:4px;
-    }
-
-    .cta p{
-      color:var(--muted);
-      font-size:14px;
-      max-width:420px;
-    }
-
-    /* FAQ */
-    .faq-item{
-      background:var(--card);
-      padding:20px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      margin-bottom:14px;
-    }
-    .faq-item h3{
-      font-size:16px; color:var(--accent2); margin-bottom:6px;
-    }
-    .faq-item p{ color:var(--muted); font-size:14px; }
-
-    footer{
-      text-align:center; padding:22px;
-      color:var(--muted); font-size:13px;
-      border-top:1px solid var(--border);
-      margin-top:40px;
-    }
-
-    /* --------- НГ --------- */
-/* 🎄 + год возле названия (год подставит JS в data-ny-year) */
-html.ny .ac-logo{ position:relative; }
-html.ny .ac-logo::after{
-  content: " 🎄 " attr(data-ny-year);
-  display:inline-block;
-  margin-left:10px;
-  font-size:12px;
-  font-weight:900;
-  padding:4px 10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
-  color:var(--accent2);
-  vertical-align:middle;
-}
-
-/* ===== ГИРЛЯНДА (лампочки сверху) ===== */
-.ny-garland{
-  position:fixed;
-  left:0; right:0; top:0;
-  height:44px;          /* выше и меньше */
-  z-index:55;
-  pointer-events:auto;  /* клики по лампочкам */
-  display:none;
-}
-html.ny .ny-garland{ display:block; }
-
-/* УБРАНО: горизонтальная верёвка полностью */
-/* .ny-garland::before — не используем */
-
-.ny-garland-row{
-  position:absolute;
-  left:0; right:0; top:0;
-  height:44px;
-  display:flex;
-  justify-content:space-evenly;
-  align-items:flex-start;
-  padding:0 12px 0;
-  gap:10px;
-}
-
-/* лампочка: контейнер НЕ переворачиваем (чтоб подвес сверху был сверху) */
-.ny-bulb{
-  position:relative;
-  width:18px;                 /* меньше */
-  height:18px;                /* меньше */
-  transform: translateY(var(--ny-drop, -3px)) rotate(var(--ny-rot, 0deg));
-  opacity:.92;
-  cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
-
-  /* лёгкая тень (дешевле чем filter drop-shadow) */
-  box-shadow: 0 0 10px rgba(0,0,0,.25);
-}
-
-/* подвес сверху */
-.ny-bulb::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:-11px;
-  width:2px;
-  height:11px;
-  transform: translateX(-50%);
-  background: rgba(255,255,255,.16);
-  border-radius: 2px;
-  pointer-events:none;
-  box-shadow: 0 6px 10px rgba(0,0,0,.35);
-}
-
-/* переворачиваем ТОЛЬКО SVG лампочки */
-.ny-bulb svg{
-  width:100%;
-  height:100%;
-  display:block;
-  transform: rotate(180deg);
-  transform-origin:center;
-}
-
-/* контур лампочки */
-.ny-bulb .ny-stroke{
-  stroke: var(--ny-c);
-  stroke-width: 2.1;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* “стекло” внутри */
-.ny-bulb .ny-glass{
-  fill: color-mix(in srgb, var(--ny-c) 14%, transparent);
-  opacity: .8;
-}
-
-/* дешёвые анимации (только opacity) */
-@keyframes nyWave{
-  0%,100% { opacity:.35; }
-  40%     { opacity:1; }
-}
-@keyframes nyBlinkFast{
-  0%,100% { opacity:.25; }
-  35%     { opacity:1; }
-  65%     { opacity:.35; }
-}
-@keyframes nyBlinkSlow{
-  0%   { opacity:.35; }
-  35%  { opacity:1; }
-  75%  { opacity:.55; }
-  100% { opacity:.35; }
-}
-
-/* базовая “жизнь” */
-.ny-bulb{
-  animation: nyWave var(--ny-wave, 3.4s) ease-in-out infinite;
-}
-.ny-bulb.ny-fast{
-  animation:
-    nyWave var(--ny-wave, 3.2s) ease-in-out infinite,
-    nyBlinkFast var(--ny-blink, 1.2s) steps(2, end) infinite;
-}
-.ny-bulb.ny-slow{
-  animation:
-    nyWave var(--ny-wave, 4.2s) ease-in-out infinite,
-    nyBlinkSlow var(--ny-blink, 2.8s) ease-in-out infinite;
-}
-
-/* ===== СНЕЖИНКИ (ультра-лёгкий DOM) ===== */
-.ny-snow{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:40;
-  display:none;
-}
-html.ny .ny-snow{ display:block; }
-
-/* падение анимируем на контейнере (transform) */
-.ny-flake{
-  position:absolute;
-  top:-12vh;
-  left:0;
-  width: var(--ny-size, 14px);
-  height: var(--ny-size, 14px);
-
-  /* в 2 раза прозрачнее */
-  opacity: var(--ny-op, .28);
-
-  will-change: transform;
-  transform: translate3d(0,0,0);
-
-  animation: nyFall var(--ny-dur, 14s) linear infinite;
-}
-
-/* sway отдельно на вложенном (transform translateX — дешево) */
-.ny-flake-inner{
-  width:100%;
-  height:100%;
-  animation: nySway var(--ny-sway-dur, 5s) ease-in-out infinite;
-}
-
-.ny-flake svg{ width:100%; height:100%; display:block; }
-.ny-flake path{
-  stroke: rgba(255,255,255,.85);
-  stroke-width: 1.6;
-  fill:none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* только transform/opacity */
-@keyframes nyFall{
-  from { transform: translate3d(var(--ny-x,0px), -12vh, 0) rotate(0deg); opacity: var(--ny-op, .28); }
-  to   { transform: translate3d(var(--ny-x2,0px), 112vh, 0) rotate(var(--ny-r2, 540deg)); opacity: var(--ny-op, .28); }
-}
-@keyframes nySway{
-  0%   { transform: translateX(0px); }
-  25%  { transform: translateX(var(--ny-sway, 14px)); }
-  50%  { transform: translateX(calc(var(--ny-sway, 14px) * -1)); }
-  75%  { transform: translateX(calc(var(--ny-sway, 14px) * .6)); }
-  100% { transform: translateX(0px); }
-}
-
-/* мобилка ещё легче */
-@media (max-width:640px){
-  .ny-bulb{ width:16px; height:16px; }
-  .ny-garland{ height:40px; }
-  .ny-garland-row{ height:40px; }
-  .ny-flake{ opacity: .22; }
-}
-
-/* если пользователь/устройство просит меньше анимации — отключаем */
-@media (prefers-reduced-motion: reduce){
-  html.ny .ny-snow{ display:none !important; }
-  html.ny .ny-garland{ display:none !important; }
-  html.ny .ac-logo::after{ display:none !important; }
-}
-
-/* =========================
-   NEWYEAR END (REMOVE LATER)
-   ========================= */
-    
-    /* ========= MOBILE ========= */
-    @media(max-width:900px){
-      .hero{
-        grid-template-columns:1fr;
-        margin-top:20px;
-      }
-      .cta{
-        flex-direction:column; align-items:flex-start;
-      }
-    }
-
-    @media(max-width:480px){
-      .btn{
-        padding:10px 14px;
-        font-size:13px;
-      }
-      .hero h1{
-        font-size:28px;
-      }
-      .section{
-        margin:40px auto;
-      }
-      .grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    /* Простая анімація появи */
-    @keyframes fadeUp{
-      0%{opacity:0;transform:translateY(10px);}
-      100%{opacity:1;transform:translateY(0);}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Постачальникам — продавайте будматеріали й декор через Samostroy Shop</title>
+<meta name="description" content="Співпраця з виробниками, оптовими базами й брендами товарів для ремонту й дому: продаж через сайт, мережу партнерів-дропшиперів і оптовим покупцям. Опт, дропшипінг або змішаний формат, підключення через XML/YML-фід.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://samostroy.shop/postachalniky.html">
+<meta name="theme-color" content="#2b3138">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samostroy Shop">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Постачальникам — співпраця з Samostroy Shop">
+<meta property="og:description" content="Одне підключення — продажі через наш сайт, партнерів-дропшиперів і оптових покупців по всій Україні.">
+<meta property="og:url" content="https://samostroy.shop/postachalniky.html">
+<meta property="og:image" content="https://samostroy.shop/samostroy-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kabinet.dropoffice.com.ua">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"OnlineStore","@id":"https://samostroy.shop/#store","name":"Samostroy Shop","url":"https://samostroy.shop/","logo":"https://samostroy.shop/samostroy-shop-logo.jpg","image":"https://samostroy.shop/samostroy-preview.jpg","telephone":"+380984927948","description":"Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.","areaServed":"UA","currenciesAccepted":"UAH","paymentAccepted":"Cash on delivery, Card","address":{"@type":"PostalAddress","addressCountry":"UA"},"sameAs":["https://t.me/samostroy_shop","https://www.tiktok.com/@stroyshop_ua","https://www.instagram.com/samostroy.shop"]},
+{"@type":"WebSite","@id":"https://samostroy.shop/#site","url":"https://samostroy.shop/","name":"Samostroy Shop","inLanguage":"uk","publisher":{"@id":"https://samostroy.shop/#store"},"potentialAction":{"@type":"SearchAction","target":"https://samostroy.shop/?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
+<script type="application/ld+json" id="ld"></script>
+<link rel="stylesheet" href="shop.css?v=9572495d">
+<link rel="stylesheet" href="postachalniky.css?v=62ca0293">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+ <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.9V15"/><circle cx="12" cy="18.5" r=".6"/><circle cx="12" cy="12" r="10"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.5 4.5 2.8 11.6c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.3.8 1.3 1 1.9.4l2.6-2.5 4.8 3.5c.7.5 1.7.1 1.9-.7L22.9 5.8c.2-1-.6-1.7-1.4-1.3z"/><path d="m7.5 14.9 10-7.4-7.4 8.5"/></symbol>
+</svg>
 
-<!-- =========================
-     NEWYEAR START (REMOVE LATER)
-     ========================= -->
-<div class="ny-garland" aria-hidden="true"></div>
-<div class="ny-snow" aria-hidden="true"></div>
-<!-- =========================
-     NEWYEAR END (REMOVE LATER)
-     ========================= -->
-  
 <header>
-  <div class="logo">Samostroy Shop</div>
-  <a href="index.html" class="btn btn-outline"><i data-lucide="arrow-left"></i> Назад до магазину</a>
+ <div class="w hd">
+  <a class="logo" href="./"><img src="logo.jpg" alt="Samostroy Shop" width="44" height="44"><span>Samostroy Shop<small data-i="tag">Ремонт своїми руками</small></span></a>
+  <button class="hcat" data-a="mega" aria-expanded="false" aria-controls="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+  <div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q" autocomplete="off" data-ip="ph" placeholder="Пошук: 3D панель, PET плитка, артикул" aria-label="Пошук товарів"><button class="x" data-a="clr" aria-label="Очистити" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
+  <a class="hphone" href="tel:+380984927948">+380 98 492 79 48</a>
+  <div class="lg"><button data-l="uk" class="on">UA</button><button data-l="ru">RU</button></div>
+  <button class="btn hcart" data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="lbl" data-i="cart">Кошик</span><span class="cnt" data-cnt>0</span></button>
+ </div>
+ <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
+ <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
+<main id="top" class="sp-page">
+<section class="w hero lhero sp-hero">
+ <div>
+  <nav class="crumbs" aria-label="Breadcrumb"><span><a href="./">Головна</a></span><span>Постачальникам</span></nav>
+  <h1>Продавайте ваші товари через Samostroy Shop</h1>
+  <p class="lead">Для виробників, оптових баз і брендів товарів для ремонту й дому. Одне підключення — і ваш асортимент продається на нашому сайті, через мережу партнерів-дропшиперів і оптовим покупцям по всій Україні.</p>
+  <div class="acts">
+   <a class="btn" href="#apply">Надіслати заявку</a>
+   <a class="btn ghost" href="#formats">Формати співпраці</a>
+  </div>
+  <div class="facts">
+   <div><b><span data-avn>1000+</span> товарів</b><span>Зараз у нашому каталозі</span></div>
+   <div><b>Опт, дропшипінг</b><span>Або змішаний формат</span></div>
+   <div><b>Підключення фідом</b><span>XML/YML або прайс</span></div>
+   <div><b>Вся Україна</b><span>Нова Пошта, Укрпошта</span></div>
+  </div>
+ </div>
+ <div class="sp-flow" aria-label="Як ваш товар доходить до покупця">
+  <div class="sp-n you"><b>Ваш товар</b><span>Каталог, ціни, наявність</span></div>
+  <i class="sp-ar" aria-hidden="true"></i>
+  <div class="sp-n we"><b>Samostroy Shop</b><span>Картки, SEO, контент, обробка замовлень і клієнтів</span></div>
+  <i class="sp-ar" aria-hidden="true"></i>
+  <div class="sp-ch">
+   <div><b>Наш сайт</b><span>Покупці з пошуку й соцмереж</span></div>
+   <div><b>Партнери-дропшипери</b><span>OLX, Prom, Rozetka, соцмережі</span></div>
+   <div><b>Оптові покупці</b><span>Магазини, студії ремонту</span></div>
+  </div>
+  <i class="sp-ar" aria-hidden="true"></i>
+  <div class="sp-n end"><b>Покупці по всій Україні</b></div>
+ </div>
+</section>
+
+<section class="w sec" id="who" style="padding-top:8px">
+ <h2>Кому підходить співпраця</h2>
+ <div class="aud">
+  <div class="box"><h3>Виробникам</h3><p>Посильте присутність онлайн і розширте збут без запуску власного інтернет-магазину з нуля.</p></div>
+  <div class="box"><h3>Оптовим базам і складам</h3><p>Отримайте стабільний онлайн-канал продажів — а ми допоможемо реалізувати залишки.</p></div>
+  <div class="box"><h3>Новим брендам</h3><p>Вийдіть на ринок через готову вітрину й аудиторію, яка вже шукає товари для ремонту.</p></div>
+ </div>
+ <h3 class="sp-h3">Що вже продаємо — і де ваш товар буде доречним</h3>
+ <p class="soft sp-sub">Наша ніша — матеріали для ремонту своїми руками й товари для дому. Найкраще продаються товари, результат яких видно на фото «до/після».</p>
+ <div class="sp-cats" id="spCats"><div class="sk" style="height:96px"></div><div class="sk" style="height:96px"></div><div class="sk" style="height:96px"></div><div class="sk" style="height:96px"></div><div class="sk" style="height:96px"></div></div>
+</section>
+
+<section class="w sec" id="formats" style="padding-top:8px">
+ <h2>Формати співпраці</h2>
+ <p class="soft sp-sub">Оберіть модель, яка підходить вашому бізнесу. Комерційні умови погоджуємо індивідуально.</p>
+ <div class="cmpw"><table class="cmp sp-cmp">
+  <thead><tr><th></th><th>Опт</th><th>Дропшипінг</th><th>Змішаний</th></tr></thead>
+  <tbody>
+   <tr><th>Як це працює</th><td data-l="Опт">Ми закуповуємо партію й продаємо зі свого складу</td><td data-l="Дропшипінг">Товар на вашому складі, ми продаємо й передаємо вам замовлення</td><td data-l="Змішаний">Ходові позиції — партією, решта асортименту — під замовлення</td></tr>
+   <tr><th>Хто відправляє</th><td data-l="Опт">Ми</td><td data-l="Дропшипінг">Ви, за нашими даними про клієнта</td><td data-l="Змішаний">Залежно від позиції</td></tr>
+   <tr><th>Ваш ризик залишків</th><td data-l="Опт">Мінімальний — партію викуплено</td><td data-l="Дропшипінг">Товар у вас, але без витрат на продаж</td><td data-l="Змішаний">Розподілений</td></tr>
+   <tr><th>Кому підходить</th><td data-l="Опт">Виробникам і базам з об’ємами</td><td data-l="Дропшипінг">Тим, хто тестує онлайн-канал і має свій склад</td><td data-l="Змішаний">Широкому асортименту з різним попитом</td></tr>
+   <tr><th>Мінімальний обсяг</th><td colspan="3" data-l="Усі формати">Погоджуємо індивідуально: розглядаємо як регулярні поставки, так і тестові партії</td></tr>
+  </tbody>
+ </table></div>
+</section>
+
+<section class="w sec" id="roles" style="padding-top:8px">
+ <h2>Хто що робить</h2>
+ <div class="split">
+  <div class="box"><h3>Ваша частина</h3><p>Якісний продукт і стабільні поставки.</p>
+   <ul><li>Товар і актуальна наявність</li><li>Ціни, фото, характеристики, сертифікати</li><li>Відвантаження вчасно (у дропшипінгу — за нашими замовленнями)</li><li>Цивілізоване рішення питань браку й обміну</li></ul></div>
+  <div class="box we"><h3>Наша частина</h3><p>Усе, що потрібно, щоб товар продавався онлайн.</p>
+   <ul><li>Картки товарів, описи, категорії й SEO</li><li>Продаж через сайт, мережу партнерів і оптовим клієнтам</li><li>Консультації покупців, оформлення замовлень, доставка</li><li>Комунікація з клієнтом при поверненнях і звітність за погодженим форматом</li></ul></div>
+ </div>
+</section>
+
+<section class="w sec" id="ready" style="padding-top:8px">
+ <h2>Перевірте готовність до старту</h2>
+ <p class="soft sp-sub">Відмітьте, що у вас уже є. Побачите, що варто підготувати, а відповіді автоматично додамо до заявки — так ми швидше погодимо умови.</p>
+ <div class="sp-ready">
+  <div class="sp-list" id="spReady"></div>
+  <div class="sp-res" aria-live="polite"><span>Готовність до підключення</span><b id="spPct">0%</b><div class="ac-pb sp-pb"><i id="spBar"></i></div><p id="spTip"></p><a class="btn" href="#apply">Перейти до заявки</a></div>
+ </div>
+</section>
+
+<section class="w sec" id="steps" style="padding-top:8px">
+ <h2>Як підключитися</h2>
+ <ol class="flow sp-steps">
+  <li><b>Заявка</b><span>Коротко про компанію, асортимент і бажаний формат — 2 хвилини.</span></li>
+  <li><b>Аналіз і умови</b><span>Оцінюємо категорію, попит і логістику, погоджуємо комерційні умови й договір.</span></li>
+  <li><b>Підключення каталогу</b><span>Через XML/YML-фід або прайс: створюємо картки, описи й категорії.</span></li>
+  <li><b>Старт продажів</b><span>Товари з’являються на сайті й у партнерів, ціни й наявність оновлюються автоматично.</span></li>
+  <li><b>Ріст</b><span>Аналізуємо продажі разом і розширюємо асортимент, що продається.</span></li>
+ </ol>
+</section>
+
+<section class="w sec" id="apply">
+ <div class="apply">
   <div>
-    <h1>Постачальникам Samostroy Shop</h1>
-    <p>
-      Запрошуємо виробників та оптових постачальників будматеріалів і декору
-      до довгострокової співпраці. Ми розміщуємо ваші товари на нашому сайті,
-      беремо на себе продажі, промо та логістику по всій Україні.
-    </p>
-
-    <div class="tags">
-      <span class="tag">Виробникам та опту</span>
-      <span class="tag">Будматеріали та декор</span>
-      <span class="tag">Онлайн-майданчик по Україні</span>
-    </div>
-
-    <a href="#apply" class="btn">
-      <i data-lucide="handshake"></i> Стати постачальником
-    </a>
+   <h2>Заявка постачальника</h2>
+   <p class="lead2">Розкажіть про компанію й асортимент — ми повернемося з пропозицією формату співпраці.</p>
+   <ol>
+    <li>Відповідаємо протягом робочого дня</li>
+    <li>Обговорюємо формат і комерційні умови</li>
+    <li>Погоджуємо договір і підключаємо каталог</li>
+    <li>Запускаємо продажі</li>
+   </ol>
+   <p class="note2" style="margin-top:18px;font-size:14px;color:var(--soft)">Можна й без форми: <a href="mailto:partner@samostroy.shop">partner@samostroy.shop</a> або <a href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">Telegram</a>.</p>
   </div>
-
-  <div class="hero-side">
-    <div class="side-row"><span>Формат</span><strong>Опт / дропшипінг</strong></div>
-    <div class="side-row"><span>Регіон</span><strong>Вся Україна</strong></div>
-    <div class="side-row"><span>Категорії</span><strong>Для дому/дачі, ремонт, техніка</strong></div>
-    <div class="side-row"><span>Мінімальний обсяг</span><strong>обговорюється індивідуально</strong></div>
-  </div>
+  <form class="af" id="spForm" novalidate>
+   <label>Компанія або бренд<input id="sCo" autocomplete="organization" required></label>
+   <label>Контактна особа<input id="sName" autocomplete="name"></label>
+   <label>Телефон<input id="sPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required></label>
+   <label>Email або Telegram<input id="sMail" autocomplete="email" placeholder="name@company.ua або @нік"></label>
+   <fieldset><legend>Хто ви</legend><div class="tgl">
+    <label><input type="radio" name="sType" value="Виробник" checked><span>Виробник</span></label>
+    <label><input type="radio" name="sType" value="Оптова база / склад"><span>Оптова база / склад</span></label>
+    <label><input type="radio" name="sType" value="Імпортер / дистриб’ютор"><span>Імпортер / дистриб’ютор</span></label>
+    <label><input type="radio" name="sType" value="Новий бренд"><span>Новий бренд</span></label>
+   </div></fieldset>
+   <fieldset><legend>Формат співпраці</legend><div class="tgl">
+    <label><input type="radio" name="sFmt" value="Опт"><span>Опт</span></label>
+    <label><input type="radio" name="sFmt" value="Дропшипінг"><span>Дропшипінг</span></label>
+    <label><input type="radio" name="sFmt" value="Змішаний"><span>Змішаний</span></label>
+    <label><input type="radio" name="sFmt" value="Ще не визначились" checked><span>Ще не визначились</span></label>
+   </div></fieldset>
+   <fieldset><legend>Категорії товарів</legend><div class="tgl">
+    <label><input type="checkbox" name="sCat" value="Стіни й декор"><span>Стіни й декор</span></label>
+    <label><input type="checkbox" name="sCat" value="Плитка"><span>Плитка</span></label>
+    <label><input type="checkbox" name="sCat" value="Підлога"><span>Підлога</span></label>
+    <label><input type="checkbox" name="sCat" value="Профілі, молдинги"><span>Профілі, молдинги</span></label>
+    <label><input type="checkbox" name="sCat" value="Дім і зберігання"><span>Дім і зберігання</span></label>
+    <label><input type="checkbox" name="sCat" value="Меблі"><span>Меблі</span></label>
+    <label><input type="checkbox" name="sCat" value="Інше"><span>Інше</span></label>
+   </div></fieldset>
+   <label>Кількість позицій<select id="sSku"><option value="">Оберіть</option><option>до 50</option><option>50–300</option><option>300–1000</option><option>понад 1000</option></select></label>
+   <label>Каталог, сайт або фід<input id="sUrl" inputmode="url" placeholder="https://"></label>
+   <label class="full">Коментар (необов’язково)<textarea id="sCom" placeholder="Товарні групи, регіон складу, умови відвантаження"></textarea></label>
+   <input id="sHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+   <div class="hint full" id="sHint"></div>
+   <button class="btn" id="sBtn" type="submit">Надіслати заявку</button>
+   <p class="note2">Дані з заявки використовуємо лише для зв’язку щодо співпраці.</p>
+  </form>
+ </div>
 </section>
 
-<!-- ДЛЯ КОГО -->
-<section class="section">
-  <h2 class="title">Кому буде цікаво співпрацювати з нами</h2>
-  <p class="sub">
-    Ми будуємо партнерську екосистему навколо будматеріалів та декору.
-    Якщо ви виробляєте або постачаєте якісний продукт — ми допоможемо
-    масштабувати продажі за рахунок нашої аудиторії та досвіду в онлайні.
-  </p>
-
-  <div class="grid">
-    <div class="card">
-      <h3><i data-lucide="factory"></i> Виробники</h3>
-      <p>Підходить для брендів, що хочуть посилити присутність в інтернеті та розширити збут без запуску власного магазину з нуля.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="boxes"></i> Оптові бази та склади</h3>
-      <p>Допомагаємо розвантажити склад, вивести залишки та сформувати стабільний онлайн-канал продажів.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="sparkle"></i> Нові бренди</h3>
-      <p>Якщо ви тільки виходите на ринок — Samostroy Shop стане вітриною, де про вас дізнаються сотні нових клієнтів.</p>
-    </div>
-  </div>
+<section class="w sec faq" id="faq">
+ <h2>Поширені питання постачальників</h2>
+ <details><summary>Який мінімальний обсяг для старту?</summary><p>Розглядаємо як регулярні оптові поставки, так і тестові партії. Мінімальний обсяг погоджуємо індивідуально залежно від категорії товару.</p></details>
+ <details><summary>Чи можна підключити товари через XML/YML-фід?</summary><p>Так, це найзручніше: ми підключаємо ваш фід, і ціни та наявність на сайті оновлюються автоматично. Якщо фіду немає — працюємо з прайсом у таблиці.</p></details>
+ <details><summary>Чи обов’язковий ексклюзив?</summary><p>Ні. Ексклюзивність обговорюємо окремо: у деяких нішах готові розглянути ексклюзивне представництво вашого бренду.</p></details>
+ <details><summary>Як відбуваються розрахунки?</summary><p>Працюємо офіційно. Формат оплати — післяоплата за відвантаження, закриття за період чи інший — погоджуємо на етапі умов співпраці.</p></details>
+ <details><summary>Хто відповідає за повернення й брак?</summary><p>Комунікацію з клієнтом беремо на себе, а питання браку й обміну вирішуємо спільно. Остаточні умови фіксуємо в договорі.</p></details>
+ <details><summary>Як ваші товари потрапляють до партнерів-дропшиперів?</summary><p>Товари, підключені до нашого каталогу, бачать партнери в партнерському кабінеті: з фото, описами й цінами. Вони розміщують їх на своїх майданчиках, а замовлення проходять через нас.</p></details>
 </section>
+</main>
 
-<!-- ЩО МИ БЕРЕМО НА СЕБЕ -->
-<section class="section">
-  <h2 class="title">Що ми робимо як ваш партнер</h2>
-  <p class="sub">
-    Наша задача — зробити продажі ваших товарів простими та прозорими.
-    Ви зосереджуєтесь на якості продукту, ми — на всьому іншому.
-  </p>
-
-  <div class="grid">
-    <div class="card">
-      <h3><i data-lucide="shopping-bag"></i> Розміщення товарів</h3>
-      <p>Створюємо картки товарів, опис, підбір ключових слів, базову SEO-оптимізацію та структуру категорій.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="megaphone"></i> Маркетинг та промо</h3>
-      <p>Реклама у соцмережах, контент, рекомендації в каталозі, участь у добірках та акційних пропозиціях.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="truck"></i> Логістика</h3>
-      <p>Організовуємо відправки по Україні (Нова Пошта, Укрпошта), інформуємо клієнта та контролюємо доставку.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="headset"></i> Підтримка клієнтів</h3>
-      <p>Консультуємо покупців, допомагаємо з підбором, супроводжуємо до моменту покупки і після отримання замовлення.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ВИМОГИ ДО ТОВАРІВ -->
-<section class="section">
-  <h2 class="title">Вимоги до товарів та постачальників</h2>
-  <p class="sub">
-    Ми дбаємо про репутацію майданчика, тому підбираємо партнерів, які поділяють наші стандарти якості та сервісу.
-  </p>
-
-  <div class="grid">
-    <div class="card">
-      <h3><i data-lucide="shield-check"></i> Якість та стабільність</h3>
-      <p>Сертифікована або перевірена продукція, стабільні поставки, відсутність критичних дефектів та шахрайських практик.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="images"></i> Контент по товарах</h3>
-      <p>Бажано надати фото/відео, технічні характеристики, рекомендації по монтажу — ми допоможемо все красиво упакувати.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="file-text"></i> Документи</h3>
-      <p>Базовий пакет юридичних документів, можливість офіційно оформлювати співпрацю та платежі.</p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="refresh-cw"></i> Робота з поверненнями</h3>
-      <p>Готовність цивілізовано вирішувати питання браку, замін та повернень, щоб клієнт залишався задоволеним.</p>
-    </div>
-  </div>
-</section>
-
-<!-- КРОКИ ПІДКЛЮЧЕННЯ -->
-<section class="section" id="apply">
-  <h2 class="title">Як стати постачальником Samostroy Shop</h2>
-  <p class="sub">
-    Процес підключення максимально простий — більшість питань вирішуємо онлайн,
-    без зайвої бюрократії та затягування у часі.
-  </p>
-
-  <div class="grid steps">
-    <div class="step" style="animation:fadeUp .7s ease both;">
-      <div class="step-num">01</div>
-      <div class="step-title">Заявка на співпрацю</div>
-      <div class="step-text">
-        Ви надсилаєте коротку інформацію про компанію, асортимент та формат роботи (опт, дропшипінг, змішаний).
-      </div>
-    </div>
-    <div class="step" style="animation:fadeUp .8s ease both;">
-      <div class="step-num">02</div>
-      <div class="step-title">Аналіз та узгодження</div>
-      <div class="step-text">
-        Ми оцінюємо категорію, конкуренцію, логістику та погоджуємо комерційні умови співпраці.
-      </div>
-    </div>
-    <div class="step" style="animation:fadeUp .9s ease both;">
-      <div class="step-num">03</div>
-      <div class="step-title">Підготовка каталогу</div>
-      <div class="step-text">
-        Створюємо картки товарів, завантажуємо фото, прописуємо описи, націнку, варіанти доставки та оплат.
-      </div>
-    </div>
-    <div class="step" style="animation:fadeUp 1s ease both;">
-      <div class="step-num">04</div>
-      <div class="step-title">Старт продажів</div>
-      <div class="step-text">
-        Запускаємо розміщення на сайті, підключаємо промо-інструменти та передаємо вам регулярну статистику продажів.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ПОРІВНЯННЯ -->
-<section class="section compare">
-  <h2 class="title">Чому з нами вигідніше, ніж запускати все з нуля</h2>
-  <p class="sub">
-    Власний інтернет-магазин — це розробка, реклама, команда та ризики.
-    Співпраця з Samostroy Shop дозволяє зосередитись на продукті, а не на технічних деталях.
-  </p>
-
-  <div class="grid">
-    <div class="c-card">
-      <h4>Самостійний запуск магазину</h4>
-      <ul>
-        <li>Витрати на розробку сайту та підтримку</li>
-        <li>Постійні бюджети на рекламу</li>
-        <li>Пошук і навчання команди</li>
-        <li>Технічні та маркетингові ризики на вас</li>
-      </ul>
-    </div>
-
-    <div class="c-card">
-      <h4>Загальні маркетплейси</h4>
-      <ul>
-        <li>Висока конкуренція серед тисяч товарів</li>
-        <li>Обмежений контроль за візуалом та подачею</li>
-        <li>Складніше сформувати власний бренд</li>
-      </ul>
-    </div>
-
-    <div class="c-card">
-      <h4>Співпраця з Samostroy Shop <span class="badge">оптимальний вибір</span></h4>
-      <ul>
-        <li>Ніша — будматеріали та декор</li>
-        <li>Таргетована аудиторія, яка вже готова ремонтувати</li>
-        <li>Гнучкі формати співпраці (опт, дропшипінг)</li>
-        <li>Прозора аналітика та зручна звітність</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section">
-  <div class="cta">
-    <div>
-      <h3>Готові обговорити співпрацю?</h3>
-      <p>
-        Напишіть нам, коротко розкажіть про свій бренд та асортимент — ми повернемось
-        з пропозицією формату співпраці, що буде вигідним саме для вас.
-      </p>
-    </div>
-    <a href="mailto:partner@samostroy.shop" class="btn">
-      <i data-lucide="send"></i> Надіслати заявку постачальника
-    </a>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section">
-  <h2 class="title">Поширені питання постачальників</h2>
-
-  <div class="faq-item">
-    <h3>Який мінімальний обсяг для старту?</h3>
-    <p>
-      Ми розглядаємо як регулярні оптові поставки, так і тестові партії.
-      Мінімальний обсяг узгоджується індивідуально залежно від категорії товару.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи обов’язковий ексклюзив?</h3>
-    <p>
-      Ексклюзивність обговорюється окремо. У деяких нішах ми готові розглядати
-      формат ексклюзивного представництва вашого бренду на нашому майданчику.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Як відбуваються розрахунки?</h3>
-    <p>
-      Працюємо офіційно. Формат оплати (післяоплата за відвантаження, закриття
-      за період, інше) обговорюємо на етапі узгодження умов співпраці.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Хто відповідає за повернення та брак?</h3>
-    <p>
-      Питання браку та повернень вирішуються спільно. Ми беремо на себе комунікацію
-      з клієнтом, а фінальні умови фіксуємо в договорі або окремій угоді.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Як подати заявку на співпрацю?</h3>
-    <p>
-      Ви можете написати нам на пошту <strong>partner@samostroy.shop</strong>
-      або натиснути кнопку “Надіслати заявку постачальника” вище. Коротко опишіть
-      компанію, товарні групи та бажаний формат взаємодії.
-    </p>
-  </div>
-</section>
 
 <footer>
-  © <span id="year"></span> Samostroy Shop
+ <div class="w">
+  <div class="fg">
+   <div>
+    <a class="logo" href="./" style="margin-bottom:12px" data-home><img src="logo.jpg" alt="" width="44" height="44"><span style="color:#fff">Samostroy Shop</span></a>
+    <p style="font-size:14px;max-width:34ch" data-i="fabout">Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.</p>
+    <p style="margin-top:12px"><a href="tel:+380984927948">+380 98 492 79 48</a></p>
+   </div>
+   <div><h3 data-i="fcat">Каталог</h3><ul>
+    <li><a href="?c=3d-paneli">3D панелі</a></li><li><a href="?g=plytka">Плитка</a></li><li><a href="?c=samokleyucha-plivka">Самоклеюча плівка</a></li><li><a href="?c=shpalery">Шпалери</a></li><li><a href="?g=pidloga">Підлога</a></li><li><a href="?c=ekoshkira">Екошкіра</a></li></ul></div>
+   <div><h3 data-i="fspec">Добірки</h3><ul>
+    <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
+   <div><h3 data-i="fbiz">Співпраця</h3><ul>
+    <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="partners.html" data-i="fp">Партнерам</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
+  </div>
+  <div class="fbot"><span>© <span id="yr">2026</span> Samostroy Shop</span><span><a href="https://t.me/samostroy_shop" target="_blank" rel="noopener">Telegram</a> &nbsp; <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" rel="noopener">TikTok</a> &nbsp; <a href="https://www.instagram.com/samostroy.shop" target="_blank" rel="noopener">Instagram</a></span></div>
+ </div>
 </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  lucide.createIcons();
-  
-  /* ============================================================
-   🟧 24. NEWYEAR START (REMOVE LATER)
-============================================================ */
-(function () {
-  // Сезон каждый год: 15 Dec - 15 Jan (включительно)
-  function isNewYearSeason(d) {
-    const m = d.getMonth(); // 0=Jan ... 11=Dec
-    const day = d.getDate();
-    return (m === 11 && day >= 15) || (m === 0 && day <= 15);
-  }
+<nav class="mbar" aria-label="Швидка навігація">
+ <button data-a="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+ <button data-a="msearch"><svg class="i"><use href="#i-search"/></svg><span data-i="srch">Пошук</span></button>
+ <button data-a="quiz"><svg class="i"><use href="#i-quiz"/></svg><span data-i="pick">Підбір</span></button>
+ <button data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="cnt" data-cnt>0</span><span data-i="cart">Кошик</span></button>
+</nav>
 
-  const now = new Date();
-  if (!isNewYearSeason(now)) {
-    document.documentElement.classList.remove("ny");
-    return;
-  }
-  document.documentElement.classList.add("ny");
+<div class="fab" id="fab">
+ <div class="menu" id="fabm" hidden>
+  <p data-i="fabp">Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.</p>
+  <a id="fabtg" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><span class="dot" style="background:#229ed9"></span>Telegram</a>
+  <a id="fabvb" href="#" hidden><span class="dot" style="background:#7360f2"></span>Viber</a>
+  <a href="tel:+380984927948"><span class="dot" style="background:var(--ok)"></span><span data-i="call">Подзвонити</span></a>
+ </div>
+ <button class="main" data-a="fab" aria-expanded="false" aria-controls="fabm" aria-label="Написати менеджеру"><svg class="i"><use href="#i-chat"/></svg></button>
+</div>
 
-  // Год у логотипа: декабрь -> следующий год, январь -> текущий
-  const nyYear =
-    now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
-  const logo = document.querySelector(".ac-logo");
-  if (logo) logo.setAttribute("data-ny-year", String(nyYear));
+<div class="shade" id="shade" data-a="close"></div>
+<aside id="cart" aria-label="Кошик" aria-hidden="true">
+ <div class="dh"><b><span data-i="cart">Кошик</span> <span class="soft" id="cn" style="font-family:var(--f-b);font-weight:500;font-size:15px"></span></b><button class="xb" data-a="close" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="dbody">
+  <div id="items"></div>
+  <div class="clr" id="clr" hidden><button class="link" data-a="tocat" data-i="more2">Додати ще товари</button><button class="link" style="color:var(--soft)" data-a="clearcart" data-i="clearc">Очистити кошик</button></div>
+  <div class="form" id="cform">
+   <h3 data-i="who">Куди відправити</h3>
+   <input id="fn" autocomplete="name" data-ip="nm" placeholder="Ім’я">
+   <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
+   <div class="hint" id="hint"></div>
+   <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
+   <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
+   <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
+   <div class="guar">
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g1">Безкоштовно порахуємо кількість</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g2">Відправка в день замовлення</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g3">Обмін і повернення 14 днів</span></span>
+   </div>
+  </div>
+ </div>
+ <div class="dfoot" id="dfoot">
+  <div class="tot"><span data-i="tot">Разом</span><span id="total">0 ₴</span></div>
+  <button class="btn" data-a="order" data-i="send">Надіслати замовлення менеджеру</button>
+ </div>
+</aside>
 
-  // SVG лампочка
-  function bulbSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path class="ny-glass" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M9.2 18.4h5.6"/>
-        <path class="ny-stroke" d="M9.8 21h4.4"/>
-      </svg>
-    `;
-  }
+<dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
 
-  // SVG снежинка
-  function snowflakeSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 2v20M4 6l16 12M20 6L4 18M6 4l2 2M18 4l-2 2M6 20l2-2M18 20l-2-2M2 12h3M19 12h3"/>
-      </svg>
-    `;
-  }
-
-  // ============ ГИРЛЯНДА (ТОЛЬКО ВИЗУАЛ, БЕЗ КЛИКОВ) ============
-  const garland = document.querySelector(".ny-garland");
-  if (garland && !garland.querySelector(".ny-garland-row")) {
-    // Важно: гирлянда не перехватывает клики вообще
-    garland.style.pointerEvents = "none";
-
-    const row = document.createElement("div");
-    row.className = "ny-garland-row";
-
-    const colors = [
-      "#ff4e6d",
-      "#5ce3a0",
-      "#38bdf8",
-      "#ffb347",
-      "#a855f7",
-      "#f97316",
-      "#ffffff",
-    ];
-
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-    const count = isMobile ? 14 : 22;
-
-    for (let i = 0; i < count; i++) {
-      const b = document.createElement("div");
-      b.className = "ny-bulb";
-
-      const r = Math.random();
-      if (r < 0.3) b.classList.add("ny-fast");
-      else if (r < 0.65) b.classList.add("ny-slow");
-
-      b.style.setProperty("--ny-drop", `${Math.round(Math.random() * 6 - 3)}px`);
-      b.style.setProperty("--ny-rot", `${Math.round(Math.random() * 10 - 5)}deg`);
-      b.style.setProperty("--ny-wave", `${(2.8 + Math.random() * 2.0).toFixed(2)}s`);
-      b.style.setProperty("--ny-blink", `${(0.9 + Math.random() * 3.0).toFixed(2)}s`);
-
-      const c = colors[i % colors.length];
-      b.style.setProperty("--ny-c", c);
-      b.style.animationDelay = `${(i * 0.1 + Math.random() * 0.25).toFixed(2)}s`;
-
-      b.innerHTML = bulbSVG();
-      row.appendChild(b);
-    }
-
-    garland.appendChild(row);
-
-    // ВАЖНО: никаких addEventListener("click") тут нет — только визуал
-  }
-
-  // ============ СНЕГ ============
-  const snow = document.querySelector(".ny-snow");
-  if (snow && !snow.querySelector(".ny-flake")) {
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-
-    // ультра-лайт: минимум элементов
-    const flakesCount = isMobile ? 5 : 9;
-
-    for (let i = 0; i < flakesCount; i++) {
-      const f = document.createElement("div");
-      f.className = "ny-flake";
-
-      // внутренний слой для sway (дешево)
-      f.innerHTML = `<div class="ny-flake-inner">${snowflakeSVG()}</div>`;
-
-      const left = Math.random() * 100;
-      const size =
-        (isMobile ? 10 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const op = 0.16 + Math.random() * 0.16;
-      const dur =
-        (isMobile ? 11 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const sway = 10 + Math.random() * 18;
-      const swayDur = 3.6 + Math.random() * 3.6;
-
-      // дрейф по x
-      const x = Math.random() * 30 - 15;
-      const x2 = x + (Math.random() * 50 - 25);
-      const r2 = 360 + Math.round(Math.random() * 360);
-
-      f.style.left = `${left}%`;
-      f.style.setProperty("--ny-size", `${size.toFixed(1)}px`);
-      f.style.setProperty("--ny-op", op.toFixed(2));
-      f.style.setProperty("--ny-dur", `${dur.toFixed(2)}s`);
-      f.style.setProperty("--ny-sway", `${sway.toFixed(1)}px`);
-      f.style.setProperty("--ny-sway-dur", `${swayDur.toFixed(2)}s`);
-      f.style.setProperty("--ny-x", `${x.toFixed(1)}px`);
-      f.style.setProperty("--ny-x2", `${x2.toFixed(1)}px`);
-      f.style.setProperty("--ny-r2", `${r2}deg`);
-
-      // разнесём старт
-      const delay = Math.random() * (isMobile ? 4 : 6);
-      f.style.animationDelay = `${delay.toFixed(2)}s`;
-
-      snow.appendChild(f);
-    }
-  }
-})();
-// =========================
-// NEWYEAR END (REMOVE LATER)
-// =========================
-</script>
-
+<script src="config.js?v=52b18222"></script>
+<script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Постачальникам", "listTitle": "Постачальникам", "url": "https://samostroy.shop/postachalniky.html", "title": "Постачальникам — продавайте будматеріали й декор через Samostroy Shop", "desc": "Співпраця з виробниками, оптовими базами й брендами товарів для ремонту й дому: продаж через сайт, мережу партнерів-дропшиперів і оптовим покупцям. Опт, дропшипінг або змішаний формат, підключення через XML/YML-фід.", "guide": "", "calc": 0, "faq": [["Який мінімальний обсяг для старту?", "Розглядаємо як регулярні оптові поставки, так і тестові партії. Мінімальний обсяг погоджуємо індивідуально залежно від категорії товару."], ["Чи можна підключити товари через XML/YML-фід?", "Так, це найзручніше: ми підключаємо ваш фід, і ціни та наявність на сайті оновлюються автоматично. Якщо фіду немає — працюємо з прайсом у таблиці."], ["Чи обов’язковий ексклюзив?", "Ні. Ексклюзивність обговорюємо окремо: у деяких нішах готові розглянути ексклюзивне представництво вашого бренду."], ["Як відбуваються розрахунки?", "Працюємо офіційно. Формат оплати — післяоплата за відвантаження, закриття за період чи інший — погоджуємо на етапі умов співпраці."], ["Хто відповідає за повернення й брак?", "Комунікацію з клієнтом беремо на себе, а питання браку й обміну вирішуємо спільно. Остаточні умови фіксуємо в договорі."], ["Як ваші товари потрапляють до партнерів-дропшиперів?", "Товари, підключені до нашого каталогу, бачать партнери в партнерському кабінеті: з фото, описами й цінами. Вони розміщують їх на своїх майданчиках, а замовлення проходять через нас."]], "wall": [], "info": true}</script>
+<script src="shop.js?v=34f33025"></script>
+<script src="postachalniky.js?v=b9d5909b"></script>
 </body>
 </html>
