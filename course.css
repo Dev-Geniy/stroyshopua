@@ -1,4 +1,4 @@
-/* Курс «Продажі 3.0» — доповнює shop.css і academy.css */
+/* Курси академії — доповнює shop.css і academy.css */
 .ac-nav .cs-mh{font-size:12px;font-weight:600;color:var(--soft);text-transform:uppercase;letter-spacing:.04em;padding:12px 8px 4px}
 .ac-nav .cs-mh:first-child{padding-top:0}
 .ac-body p{max-width:72ch}
@@ -53,3 +53,10 @@
  body.cs-print .cs-cert{margin:40px auto;max-width:720px;outline:0}
  body.cs-print .cs-name{border:0}
 }
+.cs-txt{font-size:15px;line-height:1.5;background:var(--panel);border-radius:var(--r-s);padding:12px 14px}
+.cs-txt b{display:block;margin-bottom:4px}
+.cs-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.cs-kpi div{background:var(--wall);border-radius:var(--r-s);padding:12px;display:grid;gap:2px}
+.cs-kpi b{font-family:var(--f-d);font-size:17px}
+.cs-kpi span{font-size:13px;color:var(--soft)}
+@media(max-width:820px){.cs-kpi{grid-template-columns:1fr 1fr}}

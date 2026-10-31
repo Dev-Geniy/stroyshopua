@@ -1,24 +1,6 @@
-/* Курс «Продажі 3.0» — інтерактивні уроки з прикладами діалогів, скриптами й тестами.
-   Використовує стилі академії (academy.css) і спільний двигун магазину (shop.js). */
+/* Курс «Продажі 3.0» — зміст уроків. Двигун курсу — course.js. */
 (()=>{
-const KEY='sales3_v2';
-const S=Object.assign({cur:0,done:{},ans:{},name:'',fin:''},ls.get(KEY,{}));
-const save=()=>ls.set(KEY,S);
-const $i=id=>document.getElementById(id);
-const ico=n=>`<svg class="i"><use href="#i-${n}"/></svg>`;
-
-/* ---------- будівельні блоки уроку ---------- */
-const QUIZ={};
-function q(id,qt,opts,ok,why){QUIZ[id]=ok;const a=S.ans[id],done=a!=null;
- return `<div class="ac-q${done?' is-done':''}" data-q="${id}"><p class="ac-qt">${ico('quiz')}<span>${qt}</span></p><div class="ac-opts">${opts.map((o,i)=>`<button type="button" class="ac-opt${done?(i==ok?' ok':i==a?' bad':' dim'):''}" data-cs="ans" data-qid="${id}" data-x="${i}" ${done?'disabled':''}>${o}</button>`).join('')}</div>${done?`<div class="ac-why ${a==ok?'ok':'bad'}"><b>${a==ok?'Правильно!':'Не зовсім.'}</b> ${why}</div>`:''}</div>`}
-const lead=t=>`<p class="ac-lead">${t}</p>`;
-const h=t=>`<h3 class="ac-h">${t}</h3>`;
-const tips=(L,c=3)=>`<div class="ac-grid${c}">${L.map(([a,b])=>`<div class="ac-tip"><b>${a}</b><span>${b}</span></div>`).join('')}</div>`;
-const list=L=>`<ul class="ac-check">${L.map(x=>`<li>${x}</li>`).join('')}</ul>`;
-const chat=L=>`<div class="cs-chat">${L.map(([w,t])=>`<p class="${w=='c'?'cl':'me'}">${t}</p>`).join('')}</div>`;
-const vs=(bad,good,note)=>`<div class="cs-vs"><div class="bad"><span>Так втрачають клієнта</span>${chat(bad)}</div><div class="good"><span>Так продають</span>${chat(good)}</div></div>${note?`<p class="ac-note">${note}</p>`:''}`;
-let SC=[];const script=(t,b)=>{SC.push(b);return `<div class="cs-sc"><b>${t}</b><pre>${esc(b)}</pre><button type="button" class="btn sm ghost" data-cs="copy" data-x="${SC.length-1}">Скопіювати</button></div>`};
-const rule=t=>`<div class="ac-route">${t}</div>`;
+const {q,lead,h,tips,list,chat,vs,script,rule}=CK;
 const OBJ=[
  ['«Дорого»','Розумію, хочеться не переплатити. Порівняйте з класичним ремонтом: не треба майстра, клею й прибирання, а стіну можна оновити за вечір. Давайте порахую точну кількість під ваші розміри — щоб ви не купували зайвого.'],
  ['«Я подумаю»','Звісно, це правильно. Щоб було простіше вирішити — порахувати кількість під ваші розміри чи надіслати фото, як матеріал виглядає в інтер’єрі?'],
@@ -60,7 +42,7 @@ const MOD=[
   ${h('Тон, що продає')}
   ${list(['Звертайтеся на «Ви» й на ім’я, якщо воно відоме','Короткі повідомлення: 2–3 речення, без «полотен»','Без капсу, «???» і канцеляриту','Емодзі — максимум один на повідомлення','Пишіть так, як говорили б з приємною людиною'])}
   ${q('q4','Клієнт написав о 21:40, ви побачили о 22:10. Що робити?',['Нічого — відповім вранці','Відповісти зараз коротко: наявність, ціна й одне уточнююче питання','Відповісти завтра, але з довгим описом'],1,'Коротка відповідь одразу тримає клієнта у вашому діалозі. Вранці він уже може купити в іншого.')}`},
- {id:'l5',t:'Скрипти відповідей',m:3,html:()=>{SC=[];return `<h2>Скрипти відповідей</h2>
+ {id:'l5',t:'Скрипти відповідей',m:3,html:()=>{return `<h2>Скрипти відповідей</h2>
   ${lead('Скрипт — не завчений текст, а маршрут розмови. Тримайте структуру, слова підлаштовуйте під клієнта.')}
   <ol class="cs-path"><li><b>Відповідь + привітання</b><span>Відповідаєте на питання одразу</span></li><li><b>Уточнення</b><span>Що, де, які розміри й колір</span></li><li><b>Рішення</b><span>Конкретний товар, кількість, сума</span></li><li><b>Дія</b><span>«Оформлюємо?» і дані для відправки</span></li></ol>
   ${script('1. Перша відповідь','Добрий день! Так, [товар] є в наявності, ціна [ціна] ₴ за [одиницю]. Для якої кімнати шукаєте? Напишіть розміри — порахую, скільки потрібно.')}
@@ -76,7 +58,7 @@ const MOD=[
   ${vs([['c','Я ще подумаю'],['m','Ок']],[['c','Я ще подумаю'],['m','Звісно, це правильно! Щоб було простіше вирішити — порахувати точну кількість під ваші розміри чи надіслати фото в інтер’єрі?']],'Відповідь «Ок» закриває розмову. Варіант з вибором дає клієнту простий крок і залишає вас у діалозі.')}
   ${q('q6','Клієнт: «Щось сумніваюся, чи підійде колір до кухні». Ваша дія?',['«Колір гарний, беріть»','«Розумію! Надішліть фото кухні — підкажу, який відтінок підійде, і покажу фото в схожому інтер’єрі»','Запропонувати знижку'],1,'Погодились, запропонували конкретну допомогу й крок — фото кухні. Знижка не знімає сумнів щодо кольору.')}`}]},
 {t:'Телефонні продажі',L:[
- {id:'l7',t:'Перші 7 секунд',m:2,html:()=>{SC=[];return `<h2>Перші 7 секунд дзвінка</h2>
+ {id:'l7',t:'Перші 7 секунд',m:2,html:()=>{return `<h2>Перші 7 секунд дзвінка</h2>
   ${lead('За перші секунди людина вирішує, слухати вас чи покласти слухавку. Скажіть, хто ви, чому дзвоните й чи зручно говорити.')}
   ${script('Початок дзвінка','Добрий день, [ім’я]? Мене звати [ваше ім’я], ви залишали заявку на 3D панелі для кухні. Зручно зараз 2 хвилини — підкажу по кількості й доставці?')}
   ${tips([['Усмішка в голосі','Її чути. Говоріть стоячи й усміхаючись — голос стає живішим.'],['Тиша навколо','Без шуму вулиці й телевізора. Ручка й папір — під рукою.'],['Темп клієнта','Говорить повільно — не поспішайте. Швидко — будьте коротшими.']])}
@@ -94,11 +76,11 @@ const MOD=[
   ${tips([['Вибір без вибору','«Відправляти на Нову Пошту чи Укрпошту?» — питання про спосіб, а не «чи купуєте».'],['Підсумок','«Отже: 16 панелей, біла цегла, Нова Пошта Дніпро №5, оплата при отриманні — оформлюю?»'],['Наступний крок','«Напишіть ПІБ і відділення — сьогодні ж відправимо».']])}
   ${q('q9','Клієнт: «А якщо замовлю сьогодні, коли буде?» Що це і як відповісти?',['Просто питання — відповісти «через кілька днів»','Сигнал готовності: назвати терміни й одразу запропонувати оформлення','Розповісти ще про переваги товару'],1,'Питання про терміни — сигнал готовності. Відповідайте коротко й переходьте до оформлення: «Відправимо сьогодні, буде за 1–2 дні. Напишіть ПІБ і відділення?»')}`}]},
 {t:'Заперечення та психологія',L:[
- {id:'l10',t:'ТОП-10 заперечень',m:4,html:()=>{SC=[];return `<h2>ТОП-10 заперечень і що відповідати</h2>
+ {id:'l10',t:'ТОП-10 заперечень',m:4,html:()=>{return `<h2>ТОП-10 заперечень і що відповідати</h2>
   ${lead('Заперечення — нормальна частина продажу. Готові відповіді знімають стрес і допомагають не губитися. Пам’ятайте про «Погодитись — Пояснити — Дія».')}
   <div class="cs-obj">${OBJ.map(([o,a],i)=>`<details${i==0?' open':''}><summary>${o}</summary>${script('Відповідь',a)}</details>`).join('')}</div>
   ${q('q10','Клієнт: «Знайшов дешевше». Найкраща реакція?',['«Тоді купуйте там»','Подякувати й допомогти порівняти: розмір, товщину, умови доставки й оплати','Одразу знизити ціну'],1,'Часто дешевший товар менший чи тонший. Чесне порівняння показує вашу експертність, а не жадібність.')}`}},
- {id:'l11',t:'Чому клієнт відмовляється',m:3,html:()=>{SC=[];return `<h2>Чому клієнт відмовляється</h2>
+ {id:'l11',t:'Чому клієнт відмовляється',m:3,html:()=>{return `<h2>Чому клієнт відмовляється</h2>
   ${lead('За словами «дорого» чи «подумаю» часто ховається інша причина. Знайдете справжню — зможете допомогти.')}
   ${tips([['Не зрозумів цінність','Говорили про товар, а не про результат для нього.'],['Не довіряє','Порожній профіль, повільні відповіді, немає оплати при отриманні.'],['Не той товар','Не з’ясували, що потрібно, і запропонували не те.'],['Складно оформити','Багато питань і кроків. Попросіть лише необхідне.'],['Не на часі','Ремонт пізніше — домовтеся, коли нагадати.'],['Ви зникли','Не написали після «подумаю». Його «підхопив» інший продавець.']],3)}
   ${h('Як повернути клієнта: одне корисне нагадування')}
@@ -113,14 +95,8 @@ const MOD=[
   ${lead('Найкращі не мають «секретних фраз». Вони щодня роблять прості речі — регулярно.')}
   ${list(['Відповідають за 5–15 хвилин і завжди закінчують повідомлення питанням','Рахують кількість за клієнта — без «дивіться самі»','Ведуть облік заявок: хто, що хотів, коли нагадати','Пишуть одне корисне нагадування тим, хто «подумає»','Просять фото результату й відгук — і використовують у контенті','Щотижня дивляться, які оголошення приносять заявки, і посилюють їх','Продають повторно: після панелей — молдинги, плінтуси, матеріали для іншої кімнати'])}
   ${q('q13','Клієнт купив 3D панелі для кухні. Що зробить найкращий продавець через тиждень?',['Нічого — продаж уже був','Запитає, як пройшов монтаж, попросить фото й запропонує доповнення — молдинги чи матеріали для іншої кімнати','Надішле прайс на весь каталог'],1,'Турбота після покупки дає відгук, контент і повторний продаж. Повний прайс без приводу виглядає як спам.')}`}]},
-{t:'Фініш',L:[
- {id:'fin',t:'Підсумковий тест',m:3,final:1,html:()=>finHTML()}]}];
-const STEPS=MOD.flatMap((m,mi)=>m.L.map(l=>({...l,mi})));
-const TOTAL=STEPS.filter(s=>!s.final).length;
-STEPS.forEach(s=>{if(!s.final)s.html()}); // заповнюємо ключі відповідей усіх уроків для підрахунку
-STEPS.forEach(s=>{if(!s.final)s.ok=()=>{const tmp=s.html();return [...tmp.matchAll(/data-q="([^"]+)"/g)].every(m=>S.ans[m[1]]!=null)}});
+];
 
-/* ---------- фінал ---------- */
 const FIN=[
  ['f1','Клієнт питає ціну. Що додати до відповіді?',['Нічого, лише цифру','Уточнююче питання й пропозицію порахувати під його розміри','Перелік усіх товарів'],1],
  ['f2','Яка послідовність діалогу правильна?',['Ціна → реквізити → прощання','Відповідь → уточнення → рішення → дія','Привітання → історія компанії → ціна'],1],
@@ -128,73 +104,9 @@ const FIN=[
  ['f4','Що з цього — сигнал готовності купити?',['«А коли прийде, якщо замовлю сьогодні?»','«Просто дивлюся»','«Надішліть каталог»'],0],
  ['f5','Скільки нагадувань писати клієнту, який замовк?',['Щодня, поки не відповість','Одне корисне через 1–2 дні','Жодного'],1],
  ['f6','Що найкраще знижує ризик для нового клієнта?',['Обіцянка «все буде добре»','Оплата при отриманні з оглядом товару','Довгий опис компанії'],1]];
-function finHTML(){
- const left=STEPS.filter(s=>!s.final&&!S.done[s.id]);
- const fdone=FIN.every(f=>S.ans[f[0]]!=null);
- const ok=FIN.filter(f=>S.ans[f[0]]==f[3]).length,pass=ok>=5;
- const all=Object.keys(QUIZ).filter(k=>S.ans[k]!=null),aok=all.filter(k=>S.ans[k]==QUIZ[k]).length;
- return `<h2>Підсумковий тест</h2>
- ${left.length?rule(`Ще не пройдені уроки: ${left.map(s=>`<button type="button" class="link" data-cs="go" data-v="${STEPS.indexOf(s)}">${s.t}</button>`).join(', ')}. Тест можна пройти вже зараз.`):''}
- ${lead('6 питань з усього курсу. Щоб отримати сертифікат, потрібно 5 правильних відповідей.')}
- ${FIN.map(f=>q(...f.slice(0,3),f[3],FWHY[f[0]])).join('')}
- ${fdone?(pass?`<div class="cs-cert" id="csCert">
-   <span class="cs-cl">Samostroy Shop · Академія партнера</span>
-   <b class="cs-ct">Сертифікат</b>
-   <span>підтверджує, що</span>
-   <input id="csName" class="cs-name" placeholder="Ваше ім’я та прізвище" value="${esc(S.name)}" aria-label="Ваше ім’я для сертифіката">
-   <span>успішно завершив(ла) курс</span>
-   <b class="cs-cc">«Продажі 3.0»</b>
-   <span class="cs-cd">Результат: ${ok} з ${FIN.length} у підсумковому тесті · ${S.fin||today()}</span>
-  </div>
-  <div class="cs-acts"><button type="button" class="btn" data-cs="print">Зберегти сертифікат (PDF)</button><a class="btn ghost" href="partners.html">До партнерського кабінету</a></div>`
-  :`<div class="ac-route">Правильних відповідей: <b>${ok} з ${FIN.length}</b>. Перегляньте пояснення вище й пройдіть тест ще раз — у вас вийде! <button type="button" class="link" data-cs="retest">Пройти тест заново</button></div>`):''}
- ${fdone?`<div class="ac-sum cs-sum"><div><span>Усіх відповідей у курсі</span><b>${aok} з ${all.length} правильних</b></div><div><span>Наступний крок</span><b><a href="partners.html#scripts">Шаблони відповідей</a> у партнерському кабінеті</b></div><div><span>Ще не партнер?</span><b><a href="dropshipping.html#apply">Подайте заявку</a></b></div><div><span>Почати спочатку</span><b><button type="button" class="link" data-cs="reset">Скинути прогрес курсу</button></b></div></div>`:''}`}
 const FWHY={f1:'Відповідь + питання + допомога з розрахунком — основа Продажів 3.0.',f2:'Ця структура веде клієнта від питання до замовлення без зайвих кроків.',f3:'«Погодитись — Пояснити — Дія»: простий крок залишає вас у діалозі.',f4:'Питання про терміни доставки показує, що клієнт уже уявляє покупку.',f5:'Одне нагадування з користю повертає клієнтів і не дратує.',f6:'Огляд при отриманні знімає страх отримати не те.'};
-const today=()=>new Date().toLocaleDateString('uk-UA');
-
-/* ---------- рендер ---------- */
-const stage=$i('acStage'),nav=$i('acNav');
-const doneN=()=>STEPS.filter(s=>!s.final&&S.done[s.id]).length;
-function mark(){const s=STEPS[S.cur];if(!s.final&&s.ok()&&!S.done[s.id]){S.done[s.id]=1;save()}
- if(s.final&&FIN.filter(f=>S.ans[f[0]]==f[3]).length>=5&&!S.fin){S.fin=today();save()}}
-function render(scroll){
- S.cur=Math.min(Math.max(0,S.cur|0),STEPS.length-1);const s=STEPS[S.cur];SC=[];mark();
- const body=s.html(),ok=s.final||s.ok(),n=S.cur+1;
- stage.innerHTML=`<div class="ac-sh"><span>${s.final?'Фініш':`${MOD[s.mi].t} · Урок ${n} з ${TOTAL}`} · ≈${s.m} хв</span></div>
-  <div class="ac-body">${body}</div>
-  ${s.final?'':`<div class="ac-foot">${S.cur?`<button type="button" class="btn ghost" data-cs="prev">Назад</button>`:'<span></span>'}<div class="ac-fr"><span class="ac-hint">${ok?'':'Дайте відповідь на питання, щоб продовжити'}</span><button type="button" class="btn" data-cs="next" ${ok?'':'disabled'}>${S.cur==STEPS.length-2?'До підсумкового тесту':'Наступний урок'}</button></div></div>`}`;
- drawNav();
- const nm=$i('csName');if(nm)nm.oninput=()=>{S.name=nm.value;save()};
- if(scroll)$i('learn').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})}
-function drawNav(){
- const d=doneN(),pct=Math.round(d/TOTAL*100);
- nav.innerHTML=`<div class="ac-prog"><span><b>${pct}%</b> пройдено · ${d} з ${TOTAL} уроків</span><div class="ac-pb"><i style="width:${pct}%"></i></div></div><ol>${MOD.map((m,mi)=>`<li class="cs-mh">${mi+1<MOD.length?`Модуль ${mi+1}. `:''}${m.t}</li>`+m.L.map(l=>{const i=STEPS.findIndex(s=>s.id==l.id),ok=l.final?!!S.fin:S.done[l.id];return `<li><button type="button" class="${i==S.cur?'cur':''}${ok?' ok':''}" data-cs="go" data-v="${i}" ${i==S.cur?'aria-current="step"':''}><i>${ok?ico('check'):l.final?'★':i+1}</i><span>${l.t}</span></button></li>`}).join('')).join('')}</ol>`;
- const c=nav.querySelector('.cur'),ol=nav.querySelector('ol');if(c&&getComputedStyle(ol).display=='flex')ol.scrollLeft=c.parentNode.offsetLeft-ol.offsetLeft-12;
- const r=$i('csRoute');if(r)r.innerHTML=MOD.map((m,mi)=>{const L=m.L.filter(l=>!l.final),dn=m.L.filter(l=>l.final?S.fin:S.done[l.id]).length,all=m.L.length,full=dn==all;
-  return `<li class="${full?'ok':''}"><i>${full?ico('check'):mi+1<MOD.length?mi+1:'★'}</i><span>${m.t}</span><em>${L.length?`${dn}/${all} ${all==1?'урок':all<5?'уроки':'уроків'}`:(S.fin?'складено':'тест')}</em></li>`}).join('');
- const hp=$i('csPct');if(hp){hp.textContent=pct+'%';$i('csBar').style.width=pct+'%'}
- const st=$i('csStart');if(st)st.textContent=d==0?'Почати курс':S.fin?'Мій сертифікат':`Продовжити: ${STEPS[S.cur].t}`}
-function copy(t){const ok=()=>toast('Скопійовано — підставте свої дані й надсилайте');
- const fb=()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(x){}a.remove()};
- try{navigator.clipboard.writeText(t).then(ok,fb)}catch(x){fb()}}
-
-stage.addEventListener('click',e=>{
- const b=e.target.closest('[data-cs]');if(!b)return;const D=b.dataset,s=STEPS[S.cur];
- switch(D.cs){
-  case'ans':{if(S.ans[D.qid]!=null)return;S.ans[D.qid]=+D.x;save();
-   if(s.final){const y=scrollY;render(false);return scrollTo(0,y)}
-   SC=[];const tmp=document.createElement('div');tmp.innerHTML=s.html();const nb=tmp.querySelector(`[data-q="${D.qid}"]`),box=b.closest('.ac-q');if(box&&nb)box.replaceWith(nb);
-   mark();const nx=stage.querySelector('[data-cs=next]');if(nx&&s.ok()){nx.disabled=false;stage.querySelector('.ac-hint').textContent=''}return drawNav()}
-  case'copy':{const pre=b.parentNode.querySelector('pre');return pre&&copy(pre.textContent)}
-  case'next':if(!s.final&&!s.ok())return;S.cur++;save();return render(true);
-  case'prev':S.cur--;save();return render(true);
-  case'go':S.cur=+D.v;save();return render(true);
-  case'retest':FIN.forEach(f=>delete S.ans[f[0]]);save();return render(false);
-  case'print':if(!S.name.trim()){toast('Впишіть ім’я — воно з’явиться на сертифікаті');$i('csName').focus();return}document.body.classList.add('cs-print');print();setTimeout(()=>document.body.classList.remove('cs-print'),500);return;
-  case'reset':if(!confirm('Скинути прогрес курсу «Продажі 3.0»?'))return;Object.assign(S,{cur:0,done:{},ans:{},fin:''});save();return render(true);
- }});
-nav.addEventListener('click',e=>{const b=e.target.closest('[data-cs=go]');if(!b)return;S.cur=+b.dataset.v;save();render(true)});
-const sb=$i('csStart');if(sb)sb.addEventListener('click',e=>{e.preventDefault();render(true)});
-addEventListener('afterprint',()=>document.body.classList.remove('cs-print'));
-render(false);
+Course({key:'sales3_v2',title:'Продажі 3.0',mods:MOD,pass:5,
+ fin:FIN.map(f=>[f[0],f[1],f[2],f[3],FWHY[f[0]]]),
+ next:'<a class="btn ghost" href="partners.html">До партнерського кабінету</a>',
+ after:[['Наступний крок','<a href="partners.html#scripts">Шаблони відповідей</a> у партнерському кабінеті'],['Ще не партнер?','<a href="dropshipping.html#apply">Подайте заявку</a>']]});
 })();
