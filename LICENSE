@@ -1,0 +1,256 @@
+SAMOSTROY SHOP — PROPRIETARY LICENSE / ВЛАСНА ЛІЦЕНЗІЯ
+==========================================================
+
+Copyright (c) 2019-2026 Samostroy Shop. All rights reserved.
+© 2019-2026 Samostroy Shop. Усі права захищено.
+
+Правовласник / Copyright holder: Samostroy Shop (https://samostroy.shop)
+Контакт з питань ліцензування / Licensing contact: partner@samostroy.shop
+
+У разі розбіжностей між українською та англійською версіями цього документа
+пріоритет має українська версія.
+In case of any discrepancy between the Ukrainian and English versions of this
+document, the Ukrainian version prevails.
+
+
+########################################################################
+#  УКРАЇНСЬКА ВЕРСІЯ
+########################################################################
+
+1. ЗАГАЛЬНІ ПОЛОЖЕННЯ
+
+1.1. Цей репозиторій і весь його вміст (далі — «Матеріали») є власністю
+Samostroy Shop (далі — «Правовласник»). До Матеріалів належать, зокрема:
+вихідний код (HTML, CSS, JavaScript), верстка, структура та дизайн сторінок,
+дизайн-система, тексти, описи товарів, фотографії, зображення, логотипи,
+назви, навчальні матеріали Samostroy Academy, статті блогу, фіди товарів,
+конфігураційні файли та документація.
+
+1.2. Репозиторій є публічним ВИКЛЮЧНО для зручності розміщення сайту.
+Публічна доступність Матеріалів НЕ означає надання будь-якої ліцензії,
+дозволу на копіювання, модифікацію чи використання. Це НЕ відкрите
+програмне забезпечення (not open source).
+
+1.3. Усі права, не надані прямо цим документом, залишаються за Правовласником.
+
+
+2. ЗАБОРОНЕНО БЕЗ ПИСЬМОВОГО ДОЗВОЛУ ПРАВОВЛАСНИКА
+
+Без попередньої письмової згоди Правовласника забороняється:
+
+а) копіювати, клонувати, завантажувати з метою відтворення, форкати
+   (за межами технічно необхідного для перегляду на GitHub), відтворювати
+   повністю або частково будь-які Матеріали;
+б) використовувати Матеріали або їх фрагменти (код, верстку, структуру,
+   дизайн, стилі, скрипти, компоненти) у власних або чужих сайтах, магазинах,
+   застосунках, шаблонах, темах, конструкторах, продуктах чи послугах,
+   комерційних і некомерційних;
+в) створювати похідні твори, переробки, «схожі» копії чи клони сайту
+   samostroy.shop або його окремих сторінок, у тому числі шляхом
+   перекладу, рефакторингу чи зміни назв;
+г) розповсюджувати, продавати, здавати в оренду, субліцензувати, публікувати
+   чи іншим чином передавати Матеріали третім особам;
+ґ) використовувати Матеріали для навчання, налаштування або оцінювання
+   моделей машинного навчання та систем штучного інтелекту, включно з
+   генеративними моделями, а також додавати їх до наборів даних;
+д) здійснювати автоматизований збір (scraping, crawling, масове
+   завантаження) Матеріалів, крім загальноприйнятої індексації пошуковими
+   системами відповідно до robots.txt;
+е) видаляти, змінювати чи приховувати повідомлення про авторське право,
+   назви, логотипи та інші позначення Правовласника;
+є) використовувати назву «Samostroy Shop», домен samostroy.shop, логотипи,
+   фірмові елементи та схожі до них позначення способом, що може ввести
+   в оману щодо походження товарів, послуг чи сайту;
+ж) обходити технічні засоби захисту, обмеження доступу чи конфігурацію
+   інтеграцій (API, форм, сповіщень), а також використовувати виявлені
+   в Матеріалах адреси, ключі чи ідентифікатори сервісів Правовласника
+   в інших цілях, ніж передбачено самим сайтом.
+
+
+3. ДОЗВОЛЕНІ ДІЇ
+
+3.1. Перегляд Матеріалів у браузері та на платформі GitHub в обсязі, що
+необхідний для ознайомлення, відповідно до Умов користування GitHub.
+
+3.2. Відвідувачі сайту samostroy.shop можуть користуватися сайтом за його
+призначенням.
+
+3.3. Партнери та дропшипери Samostroy Shop, які діють у межах партнерської
+програми, можуть використовувати фотографії, описи та тексти товарів
+Samostroy Shop ВИКЛЮЧНО для продажу товарів Samostroy Shop, у порядку,
+визначеному партнерською програмою. Цей дозвіл не поширюється на вихідний
+код, верстку, дизайн-систему, навчальні курси та інші Матеріали.
+
+3.4. Пошукові системи можуть індексувати публічні сторінки сайту.
+
+3.5. Будь-яке інше використання можливе лише на підставі окремого письмового
+договору (ліцензійного договору) з Правовласником.
+
+
+4. СТОРОННІ КОМПОНЕНТИ ТА ТОВАРНІ ЗНАКИ
+
+4.1. Шрифти Golos Text та Unbounded (Google Fonts) розповсюджуються за
+ліцензією SIL Open Font License 1.1 і не є частиною Матеріалів
+Правовласника; на них ця Ліцензія не поширюється.
+
+4.2. Назви та логотипи сторонніх майданчиків, мереж та сервісів (OLX, Prom,
+Rozetka, Facebook, Instagram, TikTok, Telegram, Viber, Нова Пошта, Укрпошта,
+Google та ін.), а також торговельні марки виробників товарів належать їхнім
+власникам і згадуються лише для інформації.
+
+
+5. ВІДПОВІДАЛЬНІСТЬ ЗА ПОРУШЕННЯ
+
+5.1. Порушення цієї Ліцензії є порушенням авторських та суміжних прав і
+може потягти цивільну, адміністративну та кримінальну відповідальність
+відповідно до законодавства України та міжнародних договорів.
+
+5.2. Правовласник залишає за собою право: вимагати припинення порушення;
+вимагати відшкодування збитків або виплати компенсації; звертатися до
+хостинг-провайдерів, реєстраторів доменів і платформ (включно з GitHub)
+із запитом на видалення матеріалів, що порушують права (зокрема за
+процедурою DMCA); звертатися до суду та правоохоронних органів.
+
+5.3. Факт безперешкодного доступу до Матеріалів не є згодою Правовласника
+на їх використання і не позбавляє його права на захист.
+
+
+6. ВІДМОВА ВІД ГАРАНТІЙ
+
+Матеріали надаються «ЯК Є», без жодних гарантій, явних чи неявних.
+Правовласник не несе відповідальності за будь-які збитки, що виникли
+внаслідок використання чи неможливості використання Матеріалів.
+
+
+7. ЗАСТОСОВНЕ ПРАВО
+
+Ця Ліцензія регулюється законодавством України. Спори вирішуються
+у судах України за місцезнаходженням Правовласника, якщо інше не встановлено
+імперативними нормами закону.
+
+
+8. ОТРИМАННЯ ДОЗВОЛУ
+
+Для отримання дозволу чи укладення ліцензійного договору напишіть на
+partner@samostroy.shop або в Telegram: https://t.me/manager_samostroy_shop.
+Вкажіть, які саме Матеріали, у яких цілях і на який строк ви плануєте
+використовувати.
+
+
+########################################################################
+#  ENGLISH VERSION
+########################################################################
+
+1. GENERAL
+
+1.1. This repository and all of its contents (the "Materials") are the
+property of Samostroy Shop (the "Owner"). The Materials include, without
+limitation: source code (HTML, CSS, JavaScript), markup, page structure and
+design, the design system, texts, product descriptions, photographs, images,
+logos, names, Samostroy Academy course materials, blog articles, product
+feeds, configuration files and documentation.
+
+1.2. The repository is public SOLELY for the purpose of hosting the website.
+Public availability of the Materials does NOT grant any license, permission
+to copy, modify or use them. This is NOT open source software.
+
+1.3. All rights not expressly granted herein are reserved by the Owner.
+
+
+2. PROHIBITED WITHOUT THE OWNER'S WRITTEN PERMISSION
+
+Without prior written consent of the Owner you may NOT:
+
+a) copy, clone for reproduction, fork (beyond what is technically necessary
+   to view the repository on GitHub) or reproduce, in whole or in part, any of
+   the Materials;
+b) use the Materials or any portion of them (code, markup, structure, design,
+   styles, scripts, components) in your own or any third party's websites,
+   stores, applications, templates, themes, site builders, products or
+   services, whether commercial or non-commercial;
+c) create derivative works, adaptations, look-alikes or clones of
+   samostroy.shop or any of its pages, including by translation, refactoring
+   or renaming;
+d) distribute, sell, rent, sublicense, publish or otherwise make the Materials
+   available to third parties;
+e) use the Materials to train, fine-tune or evaluate machine learning or
+   artificial intelligence models, including generative models, or include
+   them in any dataset;
+f) scrape, crawl or bulk-download the Materials by automated means, other
+   than standard search-engine indexing in accordance with robots.txt;
+g) remove, alter or obscure copyright notices, names, logos or other marks
+   of the Owner;
+h) use the name "Samostroy Shop", the samostroy.shop domain, logos, brand
+   elements or confusingly similar marks in a manner that may mislead as to the
+   origin of goods, services or a website;
+i) circumvent technical protection measures or access restrictions, or use any
+   addresses, keys or identifiers of the Owner's services found in the
+   Materials for any purpose other than the intended operation of the website.
+
+
+3. PERMITTED USE
+
+3.1. Viewing the Materials in a browser and on GitHub to the extent necessary
+for review, in accordance with the GitHub Terms of Service.
+
+3.2. Visitors of samostroy.shop may use the website for its intended purpose.
+
+3.3. Samostroy Shop partners and dropshippers acting within the partner
+program may use Samostroy Shop product photographs, descriptions and texts
+SOLELY to sell Samostroy Shop products, as defined by the partner program.
+This permission does not extend to source code, markup, the design system,
+training courses or any other Materials.
+
+3.4. Search engines may index the public pages of the website.
+
+3.5. Any other use requires a separate written agreement (license agreement)
+with the Owner.
+
+
+4. THIRD-PARTY COMPONENTS AND TRADEMARKS
+
+4.1. The Golos Text and Unbounded typefaces (Google Fonts) are distributed
+under the SIL Open Font License 1.1 and are not part of the Owner's Materials;
+this License does not apply to them.
+
+4.2. Names and logos of third-party platforms, networks and services (OLX,
+Prom, Rozetka, Facebook, Instagram, TikTok, Telegram, Viber, Nova Poshta,
+Ukrposhta, Google, etc.) and trademarks of product manufacturers belong to
+their respective owners and are mentioned for information only.
+
+
+5. LIABILITY FOR INFRINGEMENT
+
+5.1. Violation of this License constitutes infringement of copyright and
+related rights and may result in civil, administrative and criminal liability
+under the laws of Ukraine and applicable international treaties.
+
+5.2. The Owner reserves the right to: demand that the infringement cease;
+claim damages or compensation; submit takedown requests to hosting providers,
+domain registrars and platforms (including GitHub, e.g. under the DMCA
+procedure); and apply to courts and law enforcement authorities.
+
+5.3. Unrestricted access to the Materials does not constitute consent to their
+use and does not waive the Owner's right to enforce its rights.
+
+
+6. DISCLAIMER OF WARRANTY
+
+THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED. THE OWNER SHALL NOT BE LIABLE FOR ANY DAMAGES ARISING FROM THE USE OF,
+OR INABILITY TO USE, THE MATERIALS.
+
+
+7. GOVERNING LAW
+
+This License is governed by the laws of Ukraine. Disputes shall be resolved by
+the courts of Ukraine at the location of the Owner, unless mandatory law
+provides otherwise.
+
+
+8. REQUESTING PERMISSION
+
+To request permission or to enter into a license agreement, write to
+partner@samostroy.shop or via Telegram: https://t.me/manager_samostroy_shop.
+Please specify which Materials you wish to use, for what purpose and for how
+long.
