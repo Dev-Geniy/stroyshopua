@@ -1,278 +1,227 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Партнерський кабінет — Samostroy Shop</title>
-
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <meta name="description" content="Партнерський кабінет Samostroy Shop — готовий інструмент для дропшиперів та продавців. Каталог товарів, ціни, маржа, копіювання описів та швидкий старт продажів.">
-
-  <style>
-    :root{
-      --bg:#050509;
-      --card:rgba(255,255,255,0.04);
-      --card2:rgba(255,255,255,0.06);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --text:#f1f1f4;
-      --muted:#a4a9b7;
-      --border:rgba(255,255,255,.1);
-      --radius:18px;
-      --shadow:0 20px 50px rgba(0,0,0,.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-    }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      font-family:Inter,sans-serif;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255,122,26,.16), transparent 55%),
-        var(--bg);
-      color:var(--text);
-    }
-    a{text-decoration:none;color:inherit}
-
-    header{
-      position:sticky;top:0;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,9,.82);
-      border-bottom:1px solid var(--border);
-      padding:18px 24px;
-      display:flex;justify-content:space-between;align-items:center;
-      z-index:10;
-    }
-    .logo{
-      font-size:clamp(20px,3vw,28px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      text-transform:uppercase;
-      letter-spacing:1px;
-    }
-
-    .btn{
-      display:flex;gap:8px;align-items:center;
-      padding:12px 20px;
-      background:var(--grad);
-      border-radius:var(--radius);
-      font-weight:700;color:#000;
-      box-shadow:var(--shadow);
-    }
-    .btn-outline{
-      background:transparent;
-      border:1px solid var(--accent);
-      color:var(--accent2);
-      box-shadow:none;
-    }
-
-    main{max-width:1100px;margin:40px auto;padding:0 20px}
-
-    .hero{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:32px;
-      align-items:center;
-      margin-bottom:50px;
-    }
-    .hero-title{
-      font-size:clamp(30px,4vw,46px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      margin-bottom:14px;
-    }
-    .hero-sub{
-      color:var(--muted);
-      max-width:560px;
-      margin-bottom:18px;
-    }
-    .hero-tags{
-      display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;
-    }
-    .hero-tag{
-      padding:6px 12px;
-      font-size:12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-
-    .hero-card{
-      background:var(--card2);
-      padding:22px;
-      border-radius:22px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-    .hero-card h3{
-      display:flex;gap:8px;align-items:center;
-      margin-bottom:6px;
-      color:var(--accent2);
-    }
-    .hero-card p{
-      font-size:14px;color:var(--muted);margin-bottom:14px;
-    }
-
-    .section-title{
-      font-size:28px;font-weight:800;margin-bottom:10px;
-    }
-    .section-sub{
-      color:var(--muted);max-width:620px;margin-bottom:24px;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
-    }
-    .feature-card{
-      background:var(--card);
-      padding:18px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-    .feature-card h3{
-      display:flex;gap:8px;align-items:center;
-      color:var(--accent2);margin-bottom:8px;
-    }
-    .feature-card p{
-      font-size:14px;color:var(--muted);
-    }
-
-    .cta{
-      text-align:center;
-      margin:60px 0;
-      padding:32px;
-      background:var(--card2);
-      border-radius:22px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    footer{
-      text-align:center;
-      padding:22px;
-      border-top:1px solid var(--border);
-      color:var(--muted);
-      font-size:13px;
-    }
-    
-    .btn{
-      min-width:180px; /* минимальная ширина */
-      text-align:center; /* текст по центру */
-      justify-content:center; /* и иконка тоже центрируется */
-    }
-
-    @media(max-width:900px){
-      .hero{grid-template-columns:1fr}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Партнерський кабінет Samostroy Shop — каталог, ціни й готові тексти для оголошень</title>
+<meta name="description" content="Інструмент для партнерів і дропшиперів Samostroy Shop: 1000+ товарів з актуальною ціною й наявністю, ваш дохід, готові тексти оголошень без HTML, фото, експорт у CSV і шаблони відповідей клієнтам.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://samostroy.shop/partners.html">
+<meta name="theme-color" content="#2b3138">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samostroy Shop">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Партнерський кабінет Samostroy Shop">
+<meta property="og:description" content="Каталог для партнерів: ціни, наявність, ваш дохід, готові тексти й фото для оголошень.">
+<meta property="og:url" content="https://samostroy.shop/partners.html">
+<meta property="og:image" content="https://samostroy.shop/DropSamostroyShop.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kabinet.dropoffice.com.ua">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"OnlineStore","@id":"https://samostroy.shop/#store","name":"Samostroy Shop","url":"https://samostroy.shop/","logo":"https://samostroy.shop/samostroy-shop-logo.jpg","image":"https://samostroy.shop/samostroy-preview.jpg","telephone":"+380984927948","description":"Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.","areaServed":"UA","currenciesAccepted":"UAH","paymentAccepted":"Cash on delivery, Card","address":{"@type":"PostalAddress","addressCountry":"UA"},"sameAs":["https://t.me/samostroy_shop","https://www.tiktok.com/@stroyshop_ua","https://www.instagram.com/samostroy.shop"]},
+{"@type":"WebSite","@id":"https://samostroy.shop/#site","url":"https://samostroy.shop/","name":"Samostroy Shop","inLanguage":"uk","publisher":{"@id":"https://samostroy.shop/#store"},"potentialAction":{"@type":"SearchAction","target":"https://samostroy.shop/?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
+<script type="application/ld+json" id="ld"></script>
+<link rel="stylesheet" href="shop.css?v=9572495d">
+<link rel="stylesheet" href="partners.css?v=2897fb9d">
 </head>
-
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+ <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.9V15"/><circle cx="12" cy="18.5" r=".6"/><circle cx="12" cy="12" r="10"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.5 4.5 2.8 11.6c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.3.8 1.3 1 1.9.4l2.6-2.5 4.8 3.5c.7.5 1.7.1 1.9-.7L22.9 5.8c.2-1-.6-1.7-1.4-1.3z"/><path d="m7.5 14.9 10-7.4-7.4 8.5"/></symbol>
+</svg>
 
 <header>
-  <div class="logo">Samostroy Shop</div>
-  <a href="index.html" class="btn btn-outline" target="_blank">
-  <i data-lucide="arrow-left"></i> Назад до магазину
-  </a>
+ <div class="w hd">
+  <a class="logo" href="./"><img src="logo.jpg" alt="Samostroy Shop" width="44" height="44"><span>Samostroy Shop<small data-i="tag">Ремонт своїми руками</small></span></a>
+  <button class="hcat" data-a="mega" aria-expanded="false" aria-controls="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+  <div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q" autocomplete="off" data-ip="ph" placeholder="Пошук: 3D панель, PET плитка, артикул" aria-label="Пошук товарів"><button class="x" data-a="clr" aria-label="Очистити" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
+  <a class="hphone" href="tel:+380984927948">+380 98 492 79 48</a>
+  <div class="lg"><button data-l="uk" class="on">UA</button><button data-l="ru">RU</button></div>
+  <button class="btn hcart" data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="lbl" data-i="cart">Кошик</span><span class="cnt" data-cnt>0</span></button>
+ </div>
+ <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
+ <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
 
-<main>
-
-<section class="hero">
-  <div>
-    <h1 class="hero-title">Партнерський кабінет Samostroy</h1>
-    <p class="hero-sub">
-      Особистий кабінет для дропшиперів та партнерів.
-      Обирай товари, встановлюй свою ціну та продавай без складу і зайвих процесів.
-    </p>
-
-    <div class="hero-tags">
-      <span class="hero-tag">Каталог товарів</span>
-      <span class="hero-tag">Маржа та ціни</span>
-      <span class="hero-tag">Копіювання описів</span>
-      <span class="hero-tag">Швидкий старт</span>
-    </div>
-
-    <a href="partner-cabinet.html" class="btn">
-      <i data-lucide="log-in"></i> Перейти в кабінет
-    </a>
+<main id="top" class="pk-page">
+<section class="w hero pk-hero">
+ <div>
+  <nav class="crumbs" aria-label="Breadcrumb"><span><a href="./">Головна</a></span><span><a href="dropshipping.html">Дропшипінг</a></span><span>Партнерський кабінет</span></nav>
+  <h1>Партнерський кабінет</h1>
+  <p class="lead">Усе для оголошень в одному місці: товари з актуальною ціною й наявністю, готові тексти без HTML, посилання на фото й шаблони відповідей клієнтам. Оберіть товар, скопіюйте текст — і публікуйте.</p>
+  <div class="acts">
+   <a class="btn" href="#tool">Відкрити каталог</a>
+   <a class="btn ghost" href="academy.html">Як почати — академія</a>
   </div>
-
-  <aside class="hero-card">
-    <h3><i data-lucide="layout-dashboard"></i> Що дає кабінет?</h3>
-    <p>Усі інструменти для продажів зібрані в одному місці.</p>
-
-    <h3><i data-lucide="trending-up"></i> Як партнер заробляє?</h3>
-    <p>Ти продаєш за своєю ціною — різниця і є твоїм прибутком.</p>
-
-    <h3><i data-lucide="life-buoy"></i> Підтримка</h3>
-    <p>Допомагаємо зі стартом, товарами та робочими питаннями.</p>
-  </aside>
-</section>
-
-<section>
-  <h2 class="section-title">Можливості кабінету</h2>
-  <p class="section-sub">Все, що потрібно для стабільних продажів.</p>
-
-  <div class="grid">
-    <div class="feature-card">
-      <h3><i data-lucide="package"></i> Каталог товарів</h3>
-      <p>Готові товари з фото, описами та характеристиками.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3><i data-lucide="copy"></i> Копіювання описів</h3>
-      <p>Один клік — і опис готовий для публікації.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3><i data-lucide="calculator"></i> Контроль маржі</h3>
-      <p>Бачиш закупівельну ціну та формуєш свою націнку.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3><i data-lucide="zap"></i> Швидкий старт</h3>
-      <p>Можна почати продавати вже в день підключення.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3><i data-lucide="search"></i> Зручний пошук</h3>
-      <p>Фільтри та категорії для швидкої роботи.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3><i data-lucide="life-buoy"></i> Підтримка</h3>
-      <p>Менеджер допоможе з будь-якими питаннями.</p>
-    </div>
+  <div class="facts">
+   <div><b><span data-avn>1000+</span> товарів</b><span>У наявності на складі</span></div>
+   <div><b>Ціни й наявність</b><span>Оновлюються кожні 3 години</span></div>
+   <div><b>Текст в один клік</b><span>Назва, переваги, характеристики</span></div>
+   <div><b>Без входу</b><span>Список товарів зберігається в браузері</span></div>
   </div>
+ </div>
+ <ol class="pk-steps">
+  <li><b>Оберіть товари</b><span>Пошук, категорії й фільтр наявності. Бачите свою ціну й дохід.</span></li>
+  <li><b>Скопіюйте текст і фото</b><span>Готове оголошення з вашою ціною та посилання на всі фото.</span></li>
+  <li><b>Опублікуйте</b><span>OLX, Prom, соцмережі чи ваш сайт — список майданчиків нижче.</span></li>
+  <li><b>Передайте замовлення</b><span>Менеджеру в Telegram за шаблоном. Пакуємо й відправляємо ми.</span></li>
+  <li class="pk-new"><span>Ще не партнер? <a href="dropshipping.html#apply">Подайте заявку</a> — менеджер надішле прайс з оптовими цінами.</span></li>
+ </ol>
 </section>
 
-<section class="cta">
-  <h2>Готовий почати?</h2>
-  <p class="section-sub">Заходь у кабінет та обирай товари для продажу.</p>
-  <a href="partner-cabinet.html" class="btn">
-    <i data-lucide="arrow-right-circle"></i> Відкрити кабінет
-  </a>
+<section class="w pk-tool" id="tool" aria-label="Каталог для партнерів">
+ <div class="pk-bar">
+  <div class="pk-s"><svg class="i"><use href="#i-search"/></svg><input type="search" id="pkQ" placeholder="Назва, артикул SW-, колір" autocomplete="off" aria-label="Пошук товару"></div>
+  <select id="pkCat" aria-label="Категорія"><option value="">Усі категорії</option></select>
+  <select id="pkSort" aria-label="Сортування"><option value="">Рекомендовані</option><option value="new">Новинки</option><option value="lo">Дешевші</option><option value="hi">Дорожчі</option></select>
+  <label class="pk-av"><input type="checkbox" id="pkAv" checked><span>Лише в наявності</span></label>
+  <button type="button" class="pk-list" id="pkListBtn" aria-pressed="false">Мій список <b id="pkListN">0</b></button>
+ </div>
+ <div class="pk-price">
+  <div class="pk-lv" role="group" aria-label="Ваш рівень"><span>Ваш рівень</span><button type="button" data-pk="lv" data-v="10" class="on">Starter ≈10%</button><button type="button" data-pk="lv" data-v="15">Pro ≈15%</button></div>
+  <label class="pk-mk"><span>Ваша ціна: рекомендована <b id="pkMkO">+0%</b></span><input type="range" id="pkMk" min="0" max="50" step="1" value="0"></label>
+  <p class="pk-pn">Дохід розраховано орієнтовно від рекомендованої ціни. Точні оптові ціни — у прайсі від менеджера.</p>
+ </div>
+ <div class="pk-bulk" id="pkBulk" hidden>
+  <span id="pkBulkT"></span>
+  <button type="button" class="btn sm" data-pk="copyall">Скопіювати всі тексти</button>
+  <button type="button" class="btn sm ghost" data-pk="csv">Завантажити CSV</button>
+  <button type="button" class="btn sm ghost" data-pk="tglist">Надіслати менеджеру</button>
+  <button type="button" class="link" data-pk="clear">Очистити список</button>
+ </div>
+ <p class="pk-cnt" id="pkCnt" aria-live="polite"></p>
+ <div class="pk-grid" id="pkGrid">
+  <div class="sk" style="aspect-ratio:3/5"></div><div class="sk" style="aspect-ratio:3/5"></div><div class="sk" style="aspect-ratio:3/5"></div><div class="sk" style="aspect-ratio:3/5"></div>
+ </div>
+ <p class="pk-more"><button type="button" class="btn ghost" id="pkMore" hidden>Показати ще</button></p>
 </section>
 
+<section class="w sec" id="scripts">
+ <h2>Шаблони відповідей клієнтам</h2>
+ <p class="soft pk-sub">Хто відповів першим і по суті — той і продав. Скопіюйте, підставте товар і надішліть.</p>
+ <div class="pk-tpl" id="pkTpl"></div>
+</section>
+
+<section class="w sec" id="where" style="padding-top:8px">
+ <h2>Де розміщувати оголошення</h2>
+ <p class="soft pk-sub">Комбінуйте 2 канали: дошки дають швидкі заявки, маркетплейси й соцмережі — стабільний потік.</p>
+ <div class="pk-where">
+  <a href="https://www.olx.ua" target="_blank" rel="noopener"><b>OLX</b><span>Найбільша дошка оголошень. Старт без бюджету.</span><em>Дошка</em></a>
+  <a href="https://besplatka.ua" target="_blank" rel="noopener"><b>Besplatka</b><span>Безкоштовні оголошення — додаткове охоплення.</span><em>Дошка</em></a>
+  <a href="https://obyava.ua" target="_blank" rel="noopener"><b>Obyava</b><span>Ще одна дошка для дублювання оголошень.</span><em>Дошка</em></a>
+  <a href="https://prom.ua" target="_blank" rel="noopener"><b>Prom</b><span>Маркетплейс з власним магазином і потоком покупців.</span><em>Маркетплейс</em></a>
+  <a href="https://rozetka.com.ua" target="_blank" rel="noopener"><b>Rozetka</b><span>Великий маркетплейс — для тих, хто продає регулярно.</span><em>Маркетплейс</em></a>
+  <a href="https://www.facebook.com/marketplace" target="_blank" rel="noopener"><b>Facebook Marketplace</b><span>Локальні покупці й групи про ремонт.</span><em>Соцмережа</em></a>
+  <a href="https://www.instagram.com" target="_blank" rel="noopener"><b>Instagram</b><span>Фото й Reels «до/після» — найкращий формат для ремонту.</span><em>Соцмережа</em></a>
+  <a href="https://www.tiktok.com" target="_blank" rel="noopener"><b>TikTok</b><span>Короткі відео монтажу набирають охоплення без реклами.</span><em>Соцмережа</em></a>
+ </div>
+</section>
+
+<section class="w sec" id="help" style="padding-top:8px">
+ <div class="pk-help">
+  <div><h2>Потрібна допомога?</h2><p class="soft">Менеджер відповість на питання, підкаже товари під ваш канал і надішле прайс з оптовими цінами.</p></div>
+  <div class="acts"><a class="btn" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><svg class="i"><use href="#i-tg"/></svg>Написати в Telegram</a><a class="btn ghost" href="tel:+380984927948">+380 98 492 79 48</a></div>
+  <ul><li><a href="academy.html">Академія партнера</a> — з чого почати за 15 хвилин</li><li><a href="dropshipping.html">Умови й рівні партнерів</a> — Starter, Pro, Team</li><li><a href="dropshipping.html#apply">Заявка на партнерство</a> — якщо ви ще не з нами</li></ul>
+ </div>
+</section>
+
+<section class="w sec faq" id="faq" style="padding-top:8px">
+ <h2>Поширені питання</h2>
+ <details><summary>Звідки ціни й наявність?</summary><p>З нашого складу: каталог оновлюється автоматично кожні 3 години. Перед підтвердженням замовлення менеджер ще раз перевіряє наявність.</p></details>
+ <details><summary>Як рахується мій дохід?</summary><p>Ви продаєте за своєю ціною, ми утримуємо оптову, а різниця — ваша. На рекомендованій ціні це в середньому до 10% для Starter і від 15% для Pro. Якщо ставите ціну вищу — різниця теж ваша.</p></details>
+ <details><summary>Чи можна використовувати ваші фото й описи?</summary><p>Так, для продажу наших товарів. Скопіюйте посилання на фото кнопкою «Фото», відкрийте й збережіть їх або додайте в оголошення.</p></details>
+ <details><summary>Як вивантажити багато товарів одразу?</summary><p>Додайте товари в «Мій список» і завантажте CSV: назви, артикули, ціни, фото й описи відкриються в Excel чи Google Таблицях. Для імпорту на сайт чи маркетплейс напишіть менеджеру.</p></details>
+</section>
 </main>
 
+
+
 <footer>
-  © <span id="year"></span> Samostroy Shop
+ <div class="w">
+  <div class="fg">
+   <div>
+    <a class="logo" href="./" style="margin-bottom:12px" data-home><img src="logo.jpg" alt="" width="44" height="44"><span style="color:#fff">Samostroy Shop</span></a>
+    <p style="font-size:14px;max-width:34ch" data-i="fabout">Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.</p>
+    <p style="margin-top:12px"><a href="tel:+380984927948">+380 98 492 79 48</a></p>
+   </div>
+   <div><h3 data-i="fcat">Каталог</h3><ul>
+    <li><a href="?c=3d-paneli">3D панелі</a></li><li><a href="?g=plytka">Плитка</a></li><li><a href="?c=samokleyucha-plivka">Самоклеюча плівка</a></li><li><a href="?c=shpalery">Шпалери</a></li><li><a href="?g=pidloga">Підлога</a></li><li><a href="?c=ekoshkira">Екошкіра</a></li></ul></div>
+   <div><h3 data-i="fspec">Добірки</h3><ul>
+    <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
+   <div><h3 data-i="fbiz">Співпраця</h3><ul>
+    <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="partners.html" data-i="fp">Партнерам</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
+  </div>
+  <div class="fbot"><span>© <span id="yr">2026</span> Samostroy Shop</span><span><a href="https://t.me/samostroy_shop" target="_blank" rel="noopener">Telegram</a> &nbsp; <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" rel="noopener">TikTok</a> &nbsp; <a href="https://www.instagram.com/samostroy.shop" target="_blank" rel="noopener">Instagram</a></span></div>
+ </div>
 </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  if(window.lucide) lucide.createIcons();
-</script>
+<nav class="mbar" aria-label="Швидка навігація">
+ <button data-a="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+ <button data-a="msearch"><svg class="i"><use href="#i-search"/></svg><span data-i="srch">Пошук</span></button>
+ <button data-a="quiz"><svg class="i"><use href="#i-quiz"/></svg><span data-i="pick">Підбір</span></button>
+ <button data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="cnt" data-cnt>0</span><span data-i="cart">Кошик</span></button>
+</nav>
 
+<div class="fab" id="fab">
+ <div class="menu" id="fabm" hidden>
+  <p data-i="fabp">Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.</p>
+  <a id="fabtg" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><span class="dot" style="background:#229ed9"></span>Telegram</a>
+  <a id="fabvb" href="#" hidden><span class="dot" style="background:#7360f2"></span>Viber</a>
+  <a href="tel:+380984927948"><span class="dot" style="background:var(--ok)"></span><span data-i="call">Подзвонити</span></a>
+ </div>
+ <button class="main" data-a="fab" aria-expanded="false" aria-controls="fabm" aria-label="Написати менеджеру"><svg class="i"><use href="#i-chat"/></svg></button>
+</div>
+
+<div class="shade" id="shade" data-a="close"></div>
+<aside id="cart" aria-label="Кошик" aria-hidden="true">
+ <div class="dh"><b><span data-i="cart">Кошик</span> <span class="soft" id="cn" style="font-family:var(--f-b);font-weight:500;font-size:15px"></span></b><button class="xb" data-a="close" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="dbody">
+  <div id="items"></div>
+  <div class="clr" id="clr" hidden><button class="link" data-a="tocat" data-i="more2">Додати ще товари</button><button class="link" style="color:var(--soft)" data-a="clearcart" data-i="clearc">Очистити кошик</button></div>
+  <div class="form" id="cform">
+   <h3 data-i="who">Куди відправити</h3>
+   <input id="fn" autocomplete="name" data-ip="nm" placeholder="Ім’я">
+   <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
+   <div class="hint" id="hint"></div>
+   <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
+   <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
+   <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
+   <div class="guar">
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g1">Безкоштовно порахуємо кількість</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g2">Відправка в день замовлення</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g3">Обмін і повернення 14 днів</span></span>
+   </div>
+  </div>
+ </div>
+ <div class="dfoot" id="dfoot">
+  <div class="tot"><span data-i="tot">Разом</span><span id="total">0 ₴</span></div>
+  <button class="btn" data-a="order" data-i="send">Надіслати замовлення менеджеру</button>
+ </div>
+</aside>
+
+<dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
+
+<script src="config.js?v=52b18222"></script>
+<script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Партнерський кабінет", "listTitle": "Партнерський кабінет", "url": "https://samostroy.shop/partners.html", "title": "Партнерський кабінет Samostroy Shop — каталог, ціни й готові тексти для оголошень", "desc": "Інструмент для партнерів і дропшиперів Samostroy Shop: 1000+ товарів з актуальною ціною й наявністю, ваш дохід, готові тексти оголошень без HTML, фото, експорт у CSV і шаблони відповідей клієнтам.", "guide": "", "calc": 0, "faq": [["Звідки ціни й наявність?", "З нашого складу: каталог оновлюється автоматично кожні 3 години."], ["Як рахується мій дохід?", "Ви продаєте за своєю ціною, ми утримуємо оптову, а різниця — ваша. На рекомендованій ціні це в середньому до 10% для Starter і від 15% для Pro."], ["Як вивантажити багато товарів одразу?", "Додайте товари в «Мій список» і завантажте CSV з назвами, артикулами, цінами, фото й описами."]], "wall": [], "info": true}</script>
+<script src="shop.js?v=34f33025"></script>
+<script src="partners.js?v=2d8cc3fc"></script>
 </body>
 </html>
