@@ -231,3 +231,12 @@
  .ac-week b{display:block}
  .ac-goal output{min-width:96px;font-size:17px}
 }
+
+/* що далі */
+.ac-next{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ac-next a{text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:4px;align-content:start;transition:border-color .15s}
+.ac-next a:hover{border-color:var(--orange)}
+.ac-next em{font-style:normal;font-size:12px;font-weight:600;color:var(--orange-d)}
+.ac-next b{font-size:17px}.ac-next span{font-size:14px;color:var(--soft)}
+@media(max-width:1020px){.ac-next{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.ac-next{grid-template-columns:1fr}}

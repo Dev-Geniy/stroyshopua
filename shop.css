@@ -60,7 +60,9 @@ header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1p
 .mega .w{padding-top:24px;padding-bottom:28px}
 
 /* directory (also used inside mega) */
-.dir-g{display:grid;grid-template-columns:repeat(5,1fr);gap:28px}
+.dir-g{display:grid;grid-template-columns:repeat(6,1fr);gap:24px}
+.dg-coop{background:var(--wall);border-radius:var(--r);padding:14px 16px}
+.dg-coop .dg{border-bottom-color:var(--slate)}
 .dir-g .dg{display:block;font-family:var(--f-d);font-weight:700;font-size:17px;text-decoration:none;margin-bottom:10px;padding-bottom:10px;border-bottom:3px solid var(--orange)}
 .dir-g ul{list-style:none;display:grid;gap:2px}
 .dir-g li a{display:flex;justify-content:space-between;gap:8px;text-decoration:none;padding:5px 0;color:var(--ink);font-size:15px}
@@ -227,7 +229,7 @@ header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1p
 footer{background:var(--slate);color:#c9d0d6;padding:48px 0 32px;margin-top:40px}
 footer a{color:#fff;text-decoration:none}
 footer a:hover{text-decoration:underline}
-.fg{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:28px}
+.fg{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.1fr 1fr;gap:28px}
 .fg h3{color:#fff;font-size:15px;margin-bottom:10px}
 .fg ul{list-style:none;display:grid;gap:6px;font-size:14px}
 .fbot{margin-top:32px;padding-top:18px;border-top:1px solid #ffffff22;font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
@@ -553,3 +555,15 @@ dialog#pd::backdrop{background:#000a}
 @media(max-width:520px){.feat.f3{grid-template-columns:1fr}}
 .xsell{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:var(--r);padding:22px 26px}
 .xsell p{color:var(--soft);max-width:62ch;margin-top:4px}
+
+/* навігація розділу «Партнерам» */
+.pnav{background:var(--slate);color:#fff}
+.pnav .w{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;padding-top:6px;padding-bottom:6px}
+.pnav .w::-webkit-scrollbar{display:none}
+.pnav b{flex:none;font-size:13px;color:#c3cad0;font-weight:600;margin-right:6px}
+.pnav a{flex:none;color:#fff;text-decoration:none;font-size:14px;font-weight:500;padding:7px 11px;border-radius:var(--r-s);white-space:nowrap}
+.pnav a:hover{background:#ffffff1a}
+.pnav a[aria-current]{background:var(--orange);color:var(--orange-ink);font-weight:600}
+@media(prefers-color-scheme:dark){.pnav{background:#11151a}}
+.b2b-more{margin-top:16px;font-size:15px;color:var(--soft)}
+.b2b-more a{color:var(--orange-d);font-weight:600}

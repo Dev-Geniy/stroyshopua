@@ -1,2279 +1,275 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Франшиза / White Label — Samostroy Shop</title>
-
-  <!-- ШРИФТ -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- ІКОНКИ -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Фавікон базовий -->
-  <link rel="icon" type="image/png" href="favicon.png">
-
-  <!-- 🚀 SEO для сторінки "Франшиза / White Label" — Samostroy Shop -->
-  <!-- Ключові слова саме під франшизу -->
-  <meta name="keywords" content="франшиза будматеріали, франшиза інтернет-магазину, white label магазин, франшиза Samostroy Shop, франшиза будівельного бізнесу, власний бренд будматеріалів, дропшипінг будматеріали, бізнес під ключ Україна, інтернет-магазин будматеріалів франшиза, магазин ковроліну франшиза">
-
-  <!-- Опис сторінки -->
-  <meta name="description" content="Франшиза / White Label Samostroy Shop — запустіть власний бренд будматеріалів під ключ. Бренд, сайт, реклама, соцмережі та підключення до складу з 370 000+ товарів. Ви отримуєте 85% чистого прибутку, 15% — роялті за систему та супровід.">
-
-  <!-- Автор -->
-  <meta name="author" content="Samostroy Shop">
-
-  <!-- Канонічне посилання (за потреби зміни шлях) -->
-  <link rel="canonical" href="https://samostroy.shop/franchise">
-
-  <!-- Open Graph (Facebook, Telegram, Viber) -->
-  <meta property="og:title" content="Франшиза / White Label — Samostroy Shop">
-  <meta property="og:description" content="Запустіть власний бренд будматеріалів під ключ: бренд, сайт, реклама, соцмережі та склад 370 000+ товарів. 85% чистого прибутку — ваші.">
-  <meta property="og:image" content="samostroy-shop-logo.jpg">
-  <meta property="og:url" content="https://samostroy.shop/franchise">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="uk_UA">
-
-  <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Франшиза / White Label — Samostroy Shop">
-  <meta name="twitter:description" content="Франшиза будматеріалів та white label-магазин під ключ. Бренд, сайт, реклама та підключення до складу з 370 000+ позицій.">
-  <meta name="twitter:image" content="samostroy-shop-logo.jpg">
-  <meta name="twitter:url" content="https://samostroy.shop/franchise">
-
-  <!-- JSON-LD Schema.org (сервіс / франшиза) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Франшиза / White Label Samostroy Shop",
-    "description": "Франшиза та white label-формат для запуску власного бренду будматеріалів під ключ: бренд, сайт, реклама, соцмережі, підключення до складу з 370 000+ товарів та супровід команди.",
-    "url": "https://samostroy.shop/franchise",
-    "image": "samostroy-shop-logo.jpg",
-    "provider": {
-      "@type": "Organization",
-      "name": "Samostroy Shop",
-      "url": "https://samostroy.shop/"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "Україна"
-    },
-    "telephone": "+380984927948",
-    "offers": {
-      "@type": "Offer",
-      "price": "6000",
-      "priceCurrency": "USD",
-      "description": "Разовий внесок за запуск франшизи / white label-формату з брендом, сайтом, рекламною системою, навчанням та підключенням до складу."
-    },
-    "sameAs": [
-      "https://t.me/samostroy_shop",
-      "https://www.tiktok.com/@stroyshop_ua"
-    ]
-  }
-  </script>
-
-  <!-- Robots -->
-  <meta name="robots" content="index, follow">
-
-  <!-- Карта сайту (та ж, що й на головній) -->
-  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
-
-  <!-- Розширені фавікони -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-  <link rel="manifest" href="/site.webmanifest">
-
-  <style>
-    :root {
-      --bg:#050509;
-      --bg2:#0c0d12;
-      --card:rgba(255,255,255,0.04);
-      --card2:rgba(255,255,255,0.06);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --muted:#a4a9b7;
-      --text:#f1f1f4;
-      --radius:18px;
-      --border:rgba(255,255,255,0.1);
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-      --trans:0.25s;
-    }
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
-    body{
-      font-family:"Inter",sans-serif;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.45;
-    }
-
-    a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    /* HEADER */
-    header{
-      position:sticky;
-      top:0;
-      z-index:10;
-      padding:18px 24px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,9,0.9);
-      border-bottom:1px solid var(--border);
-    }
-
-    .logo{
-      font-size:clamp(20px,3vw,28px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      letter-spacing:1px;
-      text-transform:uppercase;
-    }
-
-    .header-right{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .header-badge{
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.18);
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      color:var(--muted);
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-
-    .header-badge span{
-      color:#fff;
-      font-weight:700;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:12px 20px;
-      background:var(--grad);
-      border-radius:var(--radius);
-      font-size:14px;
-      font-weight:700;
-      color:#000;
-      cursor:pointer;
-      border:none;
-      transition:var(--trans);
-      box-shadow:var(--shadow);
-      white-space:nowrap;
-    }
-
-    .btn:hover{
-      transform:translateY(-3px);
-      box-shadow:0 24px 50px rgba(0,0,0,0.75);
-    }
-
-    .btn-outline{
-      background:transparent;
-      border:1px solid var(--accent);
-      color:var(--accent2);
-      box-shadow:none;
-    }
-
-    .btn-outline:hover{
-      background:rgba(255,122,26,0.08);
-      box-shadow:var(--shadow);
-    }
-
-    .btn i{
-      width:20px;
-      height:20px;
-    }
-
-    /* SECTION BASE */
-    .section{
-      max-width:1150px;
-      margin:50px auto;
-      padding:0 20px;
-    }
-
-    .title{
-      font-size:clamp(24px,4vw,34px);
-      font-weight:800;
-      margin-bottom:10px;
-      line-height:1.2;
-    }
-
-    .title-accent{
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-    }
-
-    .sub{
-      color:var(--muted);
-      font-size:clamp(14px,2.4vw,16px);
-      max-width:780px;
-      margin-bottom:24px;
-    }
-
-    /* HERO */
-    .hero{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:32px;
-      align-items:center;
-      max-width:1150px;
-      margin:50px auto;
-      padding:0 20px;
-    }
-
-    .hero h1{
-      font-size:clamp(30px,4vw,45px);
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      font-weight:800;
-      margin-bottom:12px;
-      line-height:1.15;
-    }
-
-    .hero p{
-      color:var(--muted);
-      font-size:clamp(14px,2.4vw,17px);
-      max-width:580px;
-      margin-bottom:20px;
-    }
-
-    .hero-label{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      color:var(--muted);
-      margin-bottom:10px;
-      background:rgba(255,255,255,0.02);
-      padding:6px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.12);
-    }
-
-    .hero-label span{
-      color:var(--accent2);
-    }
-
-    .hero-spots{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:5px 11px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.2);
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      background:rgba(255,122,26,0.14);
-      color:#fff;
-    }
-
-    .hero-spots strong{
-      font-weight:800;
-      color:#fff;
-    }
-
-    .tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin:18px 0 22px;
-    }
-
-    .tag{
-      padding:6px 12px;
-      font-size:12px;
-      background:rgba(255,255,255,0.05);
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-
-    .tag i{
-      width:14px;
-      height:14px;
-      margin-right:4px;
-      vertical-align:-2px;
-      color:var(--accent2);
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:6px;
-    }
-
-    .hero-side{
-      padding:20px;
-      background:var(--card2);
-      border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .hero-side::before{
-      content:"White Label";
-      position:absolute;
-      right:-40px;
-      top:16px;
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.2em;
-      color:rgba(255,255,255,0.06);
-      transform:rotate(90deg);
-    }
-
-    .hero-side-title{
-      font-size:15px;
-      font-weight:700;
-      margin-bottom:8px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .hero-side-title i{
-      width:18px;
-      height:18px;
-      color:var(--accent2);
-    }
-
-    .side-row{
-      display:flex;
-      justify-content:space-between;
-      color:var(--muted);
-      font-size:13px;
-      padding:6px 0;
-      border-bottom:1px solid rgba(255,255,255,0.07);
-      gap:10px;
-    }
-
-    .side-row:last-child{
-      border-bottom:none;
-    }
-
-    .side-row strong{
-      color:var(--accent2);
-      font-weight:600;
-      text-align:right;
-    }
-
-    .side-note{
-      margin-top:10px;
-      font-size:11px;
-      color:var(--muted);
-      opacity:0.9;
-    }
-
-    /* GRID */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:20px;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .card h3{
-      font-size:18px;
-      color:var(--accent2);
-      margin-bottom:8px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .card h3 i{
-      width:18px;
-      height:18px;
-    }
-
-    .card p{
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    /* BENEFITS / BULLETS */
-    .benefits-list{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:16px;
-    }
-
-    .benefit{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:16px 18px;
-      font-size:14px;
-      color:var(--muted);
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-    }
-
-    .benefit i{
-      width:18px;
-      height:18px;
-      flex-shrink:0;
-      color:var(--accent2);
-    }
-
-    .benefit-title{
-      font-weight:600;
-      color:var(--text);
-      margin-bottom:4px;
-      font-size:14px;
-    }
-
-    /* STEPS */
-    .steps .step{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .step-num{
-      position:absolute;
-      right:12px;
-      top:12px;
-      font-size:20px;
-      font-weight:800;
-      color:rgba(255,255,255,0.12);
-    }
-
-    .step-title{
-      font-size:16px;
-      font-weight:600;
-      margin-bottom:6px;
-    }
-
-    .step-text{
-      font-size:14px;
-      color:var(--muted);
-    }
-
-    /* METRICS / STATS */
-    .metrics{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:16px;
-      margin-top:18px;
-    }
-
-    .metric{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:16px 18px;
-    }
-
-    .metric-label{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      color:var(--muted);
-      margin-bottom:5px;
-    }
-
-    .metric-value{
-      font-size:20px;
-      font-weight:800;
-      color:var(--accent2);
-      margin-bottom:4px;
-    }
-
-    .metric-text{
-      font-size:13px;
-      color:var(--muted);
-    }
-
-    /* PACKAGE / CONTENT */
-    .package-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
-    }
-
-    .package-card{
-      background:var(--card2);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:18px 18px 16px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .package-card h3{
-      font-size:16px;
-      margin-bottom:6px;
-      color:var(--accent2);
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .package-card h3 i{
-      width:18px;
-      height:18px;
-    }
-
-    .package-tag{
-      position:absolute;
-      top:16px;
-      right:16px;
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      color:rgba(255,255,255,0.3);
-    }
-
-    .package-list{
-      margin-top:8px;
-      font-size:13px;
-      color:var(--muted);
-      list-style:none;
-    }
-
-    .package-list li{
-      margin-bottom:4px;
-      padding-left:14px;
-      position:relative;
-    }
-
-    .package-list li::before{
-      content:"•";
-      position:absolute;
-      left:0;
-      color:var(--accent2);
-    }
-
-    /* TIMELINE */
-    .timeline{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:18px;
-    }
-
-    .timeline-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:18px;
-    }
-
-    .timeline-badge{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      color:var(--accent2);
-      margin-bottom:6px;
-    }
-
-    .timeline-title{
-      font-size:16px;
-      font-weight:700;
-      margin-bottom:4px;
-    }
-
-    .timeline-text{
-      font-size:13px;
-      color:var(--muted);
-    }
-
-    /* COLUMNS: WHO FOR / NOT */
-    .columns-2{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
-    }
-
-    .pill-list{
-      list-style:none;
-      font-size:13px;
-      color:var(--muted);
-      margin-top:8px;
-    }
-
-    .pill-list li{
-      margin-bottom:6px;
-      display:flex;
-      align-items:flex-start;
-      gap:6px;
-    }
-
-    .pill-dot{
-      width:16px;
-      height:16px;
-      border-radius:999px;
-      border:1px solid var(--accent2);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:11px;
-      flex-shrink:0;
-      color:var(--accent2);
-    }
-
-    /* MONEY / FINANCE */
-    .finance-grid{
-      display:grid;
-      grid-template-columns:1.1fr 0.9fr;
-      gap:20px;
-    }
-
-    .finance-block{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .finance-block h3{
-      font-size:16px;
-      font-weight:700;
-      margin-bottom:8px;
-      color:var(--accent2);
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .finance-block h3 i{
-      width:18px;
-      height:18px;
-    }
-
-    .finance-tagline{
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:10px;
-    }
-
-    .finance-row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      font-size:13px;
-      color:var(--muted);
-      padding:6px 0;
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
-
-    .finance-row:last-child{
-      border-bottom:none;
-    }
-
-    .finance-row strong{
-      color:var(--accent2);
-      font-weight:600;
-      text-align:right;
-    }
-
-    .finance-note{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:10px;
-    }
-
-    .finance-example{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:var(--radius);
-      border:1px dashed rgba(255,255,255,0.22);
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    /* CTA */
-    .cta{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:26px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:20px;
-      flex-wrap:wrap;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .cta h3{
-      font-size:clamp(22px,4vw,28px);
-      font-weight:800;
-      margin-bottom:4px;
-    }
-
-    .cta p{
-      color:var(--muted);
-      font-size:14px;
-      max-width:460px;
-    }
-
-    .cta-badge{
-      position:absolute;
-      right:20px;
-      top:16px;
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:0.12em;
-      color:rgba(255,255,255,0.14);
-    }
-
-    /* FAQ */
-    .faq-item{
-      background:var(--card);
-      padding:20px;
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      margin-bottom:14px;
-    }
-
-    .faq-item h3{
-      font-size:16px;
-      color:var(--accent2);
-      margin-bottom:6px;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-
-    .faq-item h3 i{
-      width:18px;
-      height:18px;
-    }
-
-    .faq-item p{
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    /* FORM / APPLICATION */
-    .form-grid{
-      display:grid;
-      grid-template-columns:1.1fr 0.9fr;
-      gap:18px;
-    }
-
-    .form-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .form-card label{
-      display:block;
-      font-size:13px;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-
-    .form-card input,
-    .form-card textarea{
-      width:100%;
-      padding:9px 11px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.16);
-      background:rgba(0,0,0,0.35);
-      color:var(--text);
-      font-family:inherit;
-      font-size:13px;
-      outline:none;
-      margin-bottom:10px;
-    }
-
-    .form-card textarea{
-      resize:vertical;
-      min-height:80px;
-    }
-
-    .form-hint{
-      font-size:11px;
-      color:var(--muted);
-      margin-bottom:10px;
-    }
-
-    /* FOOTER */
-    footer{
-      text-align:center;
-      padding:22px;
-      color:var(--muted);
-      font-size:13px;
-      border-top:1px solid var(--border);
-      margin-top:40px;
-    }
-
-    /* ===== Додаткові стилі для нових секцій ===== */
-
-/* Маленькі пояснювальні абзаци */
-.section-note{
-  font-size:13px;
-  color:var(--muted);
-  max-width:780px;
-  margin-top:16px;
-}
-
-/* Короткий текст в картках-сценаріях */
-.scenario-card-text{
-  font-size:13px;
-  color:var(--muted);
-  margin-bottom:10px;
-}
-
-/* Примітка під сценаріями доходу */
-.scenario-note{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:16px;
-  max-width:780px;
-}
-
-/* Заголовок для маленьких підписів (використовуємо існуючу логіку metric-стилів, але окремо) */
-.scenario-metric-label{
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:0.12em;
-  color:var(--muted);
-  margin-bottom:5px;
-}
-
-/* Значення-цифри в сценаріях */
-.scenario-metric-value{
-  font-size:20px;
-  font-weight:800;
-  color:var(--accent2);
-  margin-bottom:4px;
-}
-
-/* Додатковий текст під цифрами */
-.scenario-metric-text{
-  font-size:13px;
-  color:var(--muted);
-}
-
-/* Щоб порівняльний блок виглядав акуратно в картках з маркованим списком */
-.compare-list{
-  margin-top:10px;
-  font-size:13px;
-  color:var(--muted);
-  list-style:none;
-}
-
-.compare-list li{
-  margin-bottom:4px;
-  padding-left:14px;
-  position:relative;
-}
-
-.compare-list li::before{
-  content:"•";
-  position:absolute;
-  left:0;
-  color:var(--accent2);
-}
-
-    /* --------- НГ --------- */
-/* 🎄 + год возле названия (год подставит JS в data-ny-year) */
-html.ny .ac-logo{ position:relative; }
-html.ny .ac-logo::after{
-  content: " 🎄 " attr(data-ny-year);
-  display:inline-block;
-  margin-left:10px;
-  font-size:12px;
-  font-weight:900;
-  padding:4px 10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.04);
-  color:var(--accent2);
-  vertical-align:middle;
-}
-
-/* ===== ГИРЛЯНДА (лампочки сверху) ===== */
-.ny-garland{
-  position:fixed;
-  left:0; right:0; top:0;
-  height:44px;          /* выше и меньше */
-  z-index:55;
-  pointer-events:auto;  /* клики по лампочкам */
-  display:none;
-}
-html.ny .ny-garland{ display:block; }
-
-/* УБРАНО: горизонтальная верёвка полностью */
-/* .ny-garland::before — не используем */
-
-.ny-garland-row{
-  position:absolute;
-  left:0; right:0; top:0;
-  height:44px;
-  display:flex;
-  justify-content:space-evenly;
-  align-items:flex-start;
-  padding:0 12px 0;
-  gap:10px;
-}
-
-/* лампочка: контейнер НЕ переворачиваем (чтоб подвес сверху был сверху) */
-.ny-bulb{
-  position:relative;
-  width:18px;                 /* меньше */
-  height:18px;                /* меньше */
-  transform: translateY(var(--ny-drop, -3px)) rotate(var(--ny-rot, 0deg));
-  opacity:.92;
-  cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
-
-  /* лёгкая тень (дешевле чем filter drop-shadow) */
-  box-shadow: 0 0 10px rgba(0,0,0,.25);
-}
-
-/* подвес сверху */
-.ny-bulb::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:-11px;
-  width:2px;
-  height:11px;
-  transform: translateX(-50%);
-  background: rgba(255,255,255,.16);
-  border-radius: 2px;
-  pointer-events:none;
-  box-shadow: 0 6px 10px rgba(0,0,0,.35);
-}
-
-/* переворачиваем ТОЛЬКО SVG лампочки */
-.ny-bulb svg{
-  width:100%;
-  height:100%;
-  display:block;
-  transform: rotate(180deg);
-  transform-origin:center;
-}
-
-/* контур лампочки */
-.ny-bulb .ny-stroke{
-  stroke: var(--ny-c);
-  stroke-width: 2.1;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* “стекло” внутри */
-.ny-bulb .ny-glass{
-  fill: color-mix(in srgb, var(--ny-c) 14%, transparent);
-  opacity: .8;
-}
-
-/* дешёвые анимации (только opacity) */
-@keyframes nyWave{
-  0%,100% { opacity:.35; }
-  40%     { opacity:1; }
-}
-@keyframes nyBlinkFast{
-  0%,100% { opacity:.25; }
-  35%     { opacity:1; }
-  65%     { opacity:.35; }
-}
-@keyframes nyBlinkSlow{
-  0%   { opacity:.35; }
-  35%  { opacity:1; }
-  75%  { opacity:.55; }
-  100% { opacity:.35; }
-}
-
-/* базовая “жизнь” */
-.ny-bulb{
-  animation: nyWave var(--ny-wave, 3.4s) ease-in-out infinite;
-}
-.ny-bulb.ny-fast{
-  animation:
-    nyWave var(--ny-wave, 3.2s) ease-in-out infinite,
-    nyBlinkFast var(--ny-blink, 1.2s) steps(2, end) infinite;
-}
-.ny-bulb.ny-slow{
-  animation:
-    nyWave var(--ny-wave, 4.2s) ease-in-out infinite,
-    nyBlinkSlow var(--ny-blink, 2.8s) ease-in-out infinite;
-}
-
-/* ===== СНЕЖИНКИ (ультра-лёгкий DOM) ===== */
-.ny-snow{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:40;
-  display:none;
-}
-html.ny .ny-snow{ display:block; }
-
-/* падение анимируем на контейнере (transform) */
-.ny-flake{
-  position:absolute;
-  top:-12vh;
-  left:0;
-  width: var(--ny-size, 14px);
-  height: var(--ny-size, 14px);
-
-  /* в 2 раза прозрачнее */
-  opacity: var(--ny-op, .28);
-
-  will-change: transform;
-  transform: translate3d(0,0,0);
-
-  animation: nyFall var(--ny-dur, 14s) linear infinite;
-}
-
-/* sway отдельно на вложенном (transform translateX — дешево) */
-.ny-flake-inner{
-  width:100%;
-  height:100%;
-  animation: nySway var(--ny-sway-dur, 5s) ease-in-out infinite;
-}
-
-.ny-flake svg{ width:100%; height:100%; display:block; }
-.ny-flake path{
-  stroke: rgba(255,255,255,.85);
-  stroke-width: 1.6;
-  fill:none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* только transform/opacity */
-@keyframes nyFall{
-  from { transform: translate3d(var(--ny-x,0px), -12vh, 0) rotate(0deg); opacity: var(--ny-op, .28); }
-  to   { transform: translate3d(var(--ny-x2,0px), 112vh, 0) rotate(var(--ny-r2, 540deg)); opacity: var(--ny-op, .28); }
-}
-@keyframes nySway{
-  0%   { transform: translateX(0px); }
-  25%  { transform: translateX(var(--ny-sway, 14px)); }
-  50%  { transform: translateX(calc(var(--ny-sway, 14px) * -1)); }
-  75%  { transform: translateX(calc(var(--ny-sway, 14px) * .6)); }
-  100% { transform: translateX(0px); }
-}
-
-/* мобилка ещё легче */
-@media (max-width:640px){
-  .ny-bulb{ width:16px; height:16px; }
-  .ny-garland{ height:40px; }
-  .ny-garland-row{ height:40px; }
-  .ny-flake{ opacity: .22; }
-}
-
-/* если пользователь/устройство просит меньше анимации — отключаем */
-@media (prefers-reduced-motion: reduce){
-  html.ny .ny-snow{ display:none !important; }
-  html.ny .ny-garland{ display:none !important; }
-  html.ny .ac-logo::after{ display:none !important; }
-}
-
-/* =========================
-   NEWYEAR END (REMOVE LATER)
-   ========================= */
-    
-    /* RESPONSIVE */
-    @media(max-width:900px){
-      .hero{
-        grid-template-columns:1fr;
-        margin-top:24px;
-        gap:24px;
-      }
-
-      .cta{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .finance-grid,
-      .form-grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media(max-width:640px){
-      header{
-        padding:14px 16px;
-      }
-
-      .btn{
-        padding:10px 14px;
-        font-size:13px;
-      }
-
-      .section{
-        margin:40px auto;
-      }
-
-      .header-badge{
-        display:none;
-      }
-    }
-
-    @media(max-width:480px){
-      .hero h1{
-        font-size:28px;
-      }
-
-      .hero p{
-        font-size:14px;
-      }
-
-      .title{
-        font-size:22px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Франшиза / White Label Samostroy Shop — власний бренд будматеріалів під ключ</title>
+<meta name="description" content="Франшиза й white label від Samostroy Shop: бренд, сайт, реклама, маркетплейси й навчання під ключ та підключення до складу постачальника. Разовий внесок 6 000 $, роялті 15% від чистого прибутку, лише 5 партнерів.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://samostroy.shop/franchise.html">
+<meta name="theme-color" content="#2b3138">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samostroy Shop">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Франшиза / White Label — Samostroy Shop">
+<meta property="og:description" content="Власний бренд будматеріалів під ключ: бренд, сайт, реклама й склад постачальника. 85% чистого прибутку — ваші.">
+<meta property="og:url" content="https://samostroy.shop/franchise.html">
+<meta property="og:image" content="https://samostroy.shop/samostroy-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kabinet.dropoffice.com.ua">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"OnlineStore","@id":"https://samostroy.shop/#store","name":"Samostroy Shop","url":"https://samostroy.shop/","logo":"https://samostroy.shop/samostroy-shop-logo.jpg","image":"https://samostroy.shop/samostroy-preview.jpg","telephone":"+380984927948","description":"Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.","areaServed":"UA","currenciesAccepted":"UAH","paymentAccepted":"Cash on delivery, Card","address":{"@type":"PostalAddress","addressCountry":"UA"},"sameAs":["https://t.me/samostroy_shop","https://www.tiktok.com/@stroyshop_ua","https://www.instagram.com/samostroy.shop"]},
+{"@type":"WebSite","@id":"https://samostroy.shop/#site","url":"https://samostroy.shop/","name":"Samostroy Shop","inLanguage":"uk","publisher":{"@id":"https://samostroy.shop/#store"},"potentialAction":{"@type":"SearchAction","target":"https://samostroy.shop/?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
+<script type="application/ld+json" id="ld"></script>
+<link rel="stylesheet" href="shop.css?v=6f925fa6">
+<link rel="stylesheet" href="franchise.css?v=891cebf9">
 </head>
 <body>
-
-<!-- =========================
-     NEWYEAR START (REMOVE LATER)
-     ========================= -->
-<div class="ny-garland" aria-hidden="true"></div>
-<div class="ny-snow" aria-hidden="true"></div>
-<!-- =========================
-     NEWYEAR END (REMOVE LATER)
-     ========================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+ <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.9V15"/><circle cx="12" cy="18.5" r=".6"/><circle cx="12" cy="12" r="10"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.5 4.5 2.8 11.6c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.3.8 1.3 1 1.9.4l2.6-2.5 4.8 3.5c.7.5 1.7.1 1.9-.7L22.9 5.8c.2-1-.6-1.7-1.4-1.3z"/><path d="m7.5 14.9 10-7.4-7.4 8.5"/></symbol>
+</svg>
 
 <header>
-  <div class="logo">Samostroy Shop</div>
-  <div class="header-right">
-    <div class="header-badge">
-      <i data-lucide="users"></i>
-      Ліміт партнерів: <span>5</span>
-    </div>
-    <a href="index.html" class="btn btn-outline">
-      <i data-lucide="arrow-left"></i>
-      Назад до магазину
-    </a>
-  </div>
+ <div class="w hd">
+  <a class="logo" href="./"><img src="logo.jpg" alt="Samostroy Shop" width="44" height="44"><span>Samostroy Shop<small data-i="tag">Ремонт своїми руками</small></span></a>
+  <button class="hcat" data-a="mega" aria-expanded="false" aria-controls="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+  <div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q" autocomplete="off" data-ip="ph" placeholder="Пошук: 3D панель, PET плитка, артикул" aria-label="Пошук товарів"><button class="x" data-a="clr" aria-label="Очистити" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
+  <a class="hphone" href="tel:+380984927948">+380 98 492 79 48</a>
+  <div class="lg"><button data-l="uk" class="on">UA</button><button data-l="ru">RU</button></div>
+  <button class="btn hcart" data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="lbl" data-i="cart">Кошик</span><span class="cnt" data-cnt>0</span></button>
+ </div>
+ <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
+ <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
+<main id="top" class="fr-page">
+<section class="w hero lhero fr-hero">
+ <div>
+  <nav class="crumbs" aria-label="Breadcrumb"><span><a href="./">Головна</a></span><span>Франшиза / White Label</span></nav>
+  <h1>Ваш бренд будматеріалів під ключ</h1>
+  <p class="lead">Створюємо для вас бренд, сайт, соцмережі й рекламу та підключаємо до складу постачальника. Ви керуєте власним бізнесом і залишаєте собі 85% чистого прибутку.</p>
+  <div class="acts">
+   <a class="btn" href="#apply">Обговорити партнерство</a>
+   <a class="btn ghost" href="#money">Порахувати модель</a>
+  </div>
+  <div class="facts">
+   <div><b>6 000 $</b><span>Разовий внесок за запуск</span></div>
+   <div><b>15% роялті</b><span>Від чистого прибутку</span></div>
+   <div><b>90 днів</b><span>Від договору до стабільних продажів</span></div>
+   <div><b>Лише 5 партнерів</b><span>Закріплення регіону</span></div>
+  </div>
+ </div>
+ <div class="fr-card">
+  <b class="fr-ct">Що ви отримуєте</b>
+  <ul class="fr-get">
+   <li><b>Бренд</b><span>Назва, логотип, фірмовий стиль, брендбук</span></li>
+   <li><b>Сайт-магазин</b><span>Під ваш бренд, з актуальними цінами й залишками</span></li>
+   <li><b>Маркетинг</b><span>Google Ads, Meta Ads, контент-план на 30 днів</span></li>
+   <li><b>Майданчики</b><span>OLX, Prom, Хорошоп в єдиному стилі</span></li>
+   <li><b>Команда</b><span>Скрипти, чеклісти й навчання менеджера</span></li>
+   <li><b>Супровід</b><span>Стратегія, розбір цифр, закритий чат партнерів</span></li>
+  </ul>
+ </div>
+</section>
+
+<section class="w sec" id="formats" style="padding-top:8px">
+ <h2>Франшиза, дропшипінг чи старт самостійно?</h2>
+ <p class="soft fr-sub">Франшиза — для тих, хто будує бізнес-актив на роки. Якщо ви тільки знайомитеся з товарним бізнесом — почніть з дропшипінгу.</p>
+ <div class="cmpw"><table class="cmp fr-cmp">
+  <thead><tr><th></th><th>Самостійно</th><th>Дропшипінг з нами</th><th>Франшиза / White Label</th></tr></thead>
+  <tbody>
+   <tr><th>Вхід</th><td data-l="Самостійно">Без внеску, але витрати на тести всього</td><td data-l="Дропшипінг">0 ₴</td><td data-l="Франшиза">6 000 $ разово</td></tr>
+   <tr><th>Бренд</th><td data-l="Самостійно">Ваш, створюєте самі</td><td data-l="Дропшипінг">Наш асортимент і матеріали</td><td data-l="Франшиза">Ваш, під ключ</td></tr>
+   <tr><th>Сайт і реклама</th><td data-l="Самостійно">Самі</td><td data-l="Дропшипінг">Не потрібні на старті</td><td data-l="Франшиза">Створюємо й налаштовуємо ми</td></tr>
+   <tr><th>Дохід</th><td data-l="Самостійно">100%, але й усі ризики</td><td data-l="Дропшипінг">Різниця між вашою й оптовою ціною</td><td data-l="Франшиза">85% чистого прибутку</td></tr>
+   <tr><th>Кому підходить</th><td data-l="Самостійно">Досвідченим із часом на експерименти</td><td data-l="Дропшипінг">Новачкам і тим, хто тестує нішу</td><td data-l="Франшиза">Підприємцям, магазинам, маркетологам</td></tr>
+   <tr><th></th><td></td><td><a class="btn sm ghost" href="dropshipping.html">Умови дропшипінгу</a></td><td><a class="btn sm" href="#apply">Обговорити франшизу</a></td></tr>
+  </tbody>
+ </table></div>
+</section>
+
+<section class="w sec" id="money" style="padding-top:8px">
+ <h2>Фінансова модель</h2>
+ <p class="soft fr-sub">Ви купуєте товар за закупівельною ціною, самі формуєте роздрібну, а з чистого прибутку сплачуєте 15% роялті. Чистий прибуток = виручка − собівартість − реклама − зарплати − інші витрати.</p>
+ <div class="inc fr-inc">
+  <div class="in">
+   <label><span class="row">Чистий прибуток на місяць<output id="frPO">2 000 $</output></span><input type="range" id="frP" min="300" max="8000" step="100" value="2000"><span class="hint2">Орієнтири: 1 000–1 500 $ — обережний старт, 2 000–3 000 $ — робочий бізнес, 3 000–5 000 $+ — масштаб і команда.</span></label>
+   <div class="fr-fee"><b>Разовий внесок 6 000 $</b><span>до 1 000 $ — запуск: домен, хостинг, стартова реклама, акаунти<br>5 000 $ — створення системи: бренд, сайт, маркетинг, навчання</span></div>
+  </div>
+  <div class="out" aria-live="polite">
+   <span>Ваш дохід на місяць</span>
+   <div class="big" id="frMine">1 700 $</div>
+   <div class="k"><span>Роялті 15%</span><b id="frRoy">300 $</b></div>
+   <div class="k"><span>Окупність внеску</span><b id="frPay">≈ 4 міс.</b></div>
+   <div class="k"><span>Ваш дохід за рік</span><b id="frYear">20 400 $</b></div>
+   <p>Розрахунок орієнтовний і не є гарантією: результат залежить від регіону, рекламних бюджетів і вашої залученості. Після стартового бюджету реклама, хостинг і менеджер — за рахунок партнера.</p>
+  </div>
+ </div>
+</section>
+
+<section class="w sec" id="road" style="padding-top:8px">
+ <h2>Запуск: 30 / 60 / 90 днів</h2>
+ <div class="fr-road">
+  <div><em>Перші 30 днів</em><b>Фундамент бренду</b><ul class="fr-ul"><li>Назва, логотип, фірмовий стиль</li><li>Структура сайту, наповнення, SEO-основа</li><li>Оформлення соцмереж і акаунтів</li><li>Аналітика й пікселі</li></ul></div>
+  <div><em>До 60 днів</em><b>Запуск продажів</b><ul class="fr-ul"><li>Реклама в Google і Meta</li><li>OLX, Prom, Хорошоп</li><li>Перші регулярні заявки</li><li>Навчання менеджера на реальних діалогах</li></ul></div>
+  <div><em>До 90 днів</em><b>Стабільність і масштаб</b><ul class="fr-ul"><li>Оптимізація реклами й бюджетів</li><li>Маржинальність за категоріями</li><li>Асортимент під ваш регіон</li><li>Вихід на прогнозований прибуток</li></ul></div>
+ </div>
+ <ol class="flow fr-steps">
+  <li><b>Знайомство</b><span>Заявка й консультація: чи підходить вам формат.</span></li>
+  <li><b>Договір</b><span>Фінмодель, зони відповідальності, «чистий прибуток» і роялті.</span></li>
+  <li><b>Бренд і сайт</b><span>Айдентика, сайт, аналітика, каталог постачальника.</span></li>
+  <li><b>Майданчики й команда</b><span>Соцмережі, маркетплейси, скрипти й навчання.</span></li>
+  <li><b>Реклама</b><span>Перші заявки, розбір результатів, оптимізація.</span></li>
+ </ol>
+</section>
+
+<section class="w sec" id="base" style="padding-top:8px">
+ <div class="split">
+  <div class="box"><h3>Кому підходить</h3><p>Тим, хто будує бізнес на роки й готовий працювати за системою.</p>
+   <ul><li>Підприємцям, які хочуть товарний бізнес без власної логістики</li><li>Власникам локальних магазинів і шоурумів, яким потрібен сильний онлайн</li><li>Маркетологам і сейлз-фахівцям, які хочуть працювати на себе</li></ul></div>
+  <div class="box we"><h3>Не підходить, якщо</h3><p>Це повноцінний бізнес, а не пасивний дохід.</p>
+   <ul><li>Очікуєте великий дохід без власної участі</li><li>Не готові вкладати в рекламу після запуску</li><li>Важко працювати за регламентами, чеклістами й скриптами</li></ul></div>
+ </div>
+ <div class="fr-why">
+  <div><b>Чому лише 5 партнерів</b><span>Без внутрішньої конкуренції: кожен отримує свій ринок, а ми — час на якісний супровід.</span></div>
+  <div><b>Закріплення регіону</b><span>Місто, регіон чи ніша закріплюються за партнером, щоб аудиторії не перетиналися.</span></div>
+  <div><b>Склад постачальника</b><span>Прямий імпортер будматеріалів і декору: регулярні поставки й новинки, яких ще мало на ринку.</span></div>
+  <div><b>Ваш актив</b><span>Бренд, клієнтська база й процеси належать вам — бізнес можна масштабувати або продати.</span></div>
+ </div>
+</section>
+
+<section class="w sec" id="apply">
+ <div class="apply">
   <div>
-    <div class="hero-label">
-      <i data-lucide="shield-check" style="width:14px;height:14px;"></i>
-      Франшиза + <span>White Label</span> формат
-    </div>
-
-    <h1>Запустіть свій бренд будматеріалів під ключ</h1>
-
-    <p>
-      Ми створюємо вам повноцінний бренд: назву, логотип, сайт, рекламу,
-      соцмережі та підключаємо до складу з 370&nbsp;000+ одиниць товару.
-      Ви отримуєте <strong>100% прибутку</strong> і ділитеся лише
-      <strong>15% чистого доходу</strong> за договором.
-    </p>
-
-    <div class="tags">
-      <span class="tag">
-        <i data-lucide="sparkles"></i> Власний бренд без складу
-      </span>
-      <span class="tag">
-        <i data-lucide="globe-2"></i> White Label інтернет-магазин
-      </span>
-      <span class="tag">
-        <i data-lucide="line-chart"></i> 100% прибутку у партнера
-      </span>
-      <span class="tag">
-        <i data-lucide="factory"></i> Прямий імпортер та ексклюзивні новинки
-      </span>
-      <span class="tag hero-spots">
-        <i data-lucide="alert-circle"></i>
-        Залишилось місць: <strong>5</strong>
-      </span>
-    </div>
-
-    <div class="hero-actions">
-      <a
-        href="https://t.me/manager_samostroy_shop?text=Доброго%20дня!%20Хочу%20обговорити%20франшизу%20%2F%20white%20label%20Samostroy%20Shop."
-        class="btn"
-        target="_blank"
-      >
-        <i data-lucide="handshake"></i>
-        Подати заявку на партнерство
-      </a>
-
-      <a
-        href="https://t.me/manager_samostroy_shop?text=Прошу%20надіслати%20деталі%20по%20фінансовій%20моделі%20та%20умовам%20франшизи."
-        class="btn btn-outline"
-        target="_blank"
-      >
-        <i data-lucide="file-text"></i>
-        Отримати презентацію франшизи
-      </a>
-    </div>
+   <h2>Заявка на франшизу</h2>
+   <p class="lead2">Проведемо стратегічну консультацію: цифри, очікування, ваш регіон — і чесно скажемо, чи підходить вам формат.</p>
+   <ol><li>Зв’яжемося в зручний час</li><li>Поставимо кілька питань про досвід і цілі</li><li>Покажемо фінмодель під ваш регіон</li><li>Якщо підходимо одне одному — договір і запуск</li></ol>
   </div>
-
-  <aside class="hero-side">
-    <div class="hero-side-title">
-      <i data-lucide="layout-dashboard"></i>
-      Формат партнерства
-    </div>
-
-    <div class="side-row">
-      <span>Формат</span>
-      <strong>Франшиза + White Label</strong>
-    </div>
-    <div class="side-row">
-      <span>Разовий внесок</span>
-      <strong>6000&nbsp;$</strong>
-    </div>
-    <div class="side-row">
-      <span>Розподіл внеску</span>
-      <strong>до 1000&nbsp;$ запуск, 5000&nbsp;$ — створення системи</strong>
-    </div>
-    <div class="side-row">
-      <span>Щомісячно</span>
-      <strong>15% від чистого прибутку</strong>
-    </div>
-    <div class="side-row">
-      <span>Прибуток партнера</span>
-      <strong>100% маржі – 15% роялті</strong>
-    </div>
-    <div class="side-row">
-      <span>Обмеження</span>
-      <strong>Лише 5 партнерів</strong>
-    </div>
-
-    <div class="side-note">
-      Після запуску всі регулярні витрати (реклама, хостинг, домен,
-      зарплата менеджера) переходять на сторону партнера, а ми
-      продовжуємо підтримувати вас по стратегії та системам.
-    </div>
-  </aside>
+  <form class="af" id="frForm" novalidate>
+   <label>Ім’я<input id="fName" autocomplete="name" required></label>
+   <label>Телефон<input id="fPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required></label>
+   <label>Місто або регіон<input id="fCity" autocomplete="address-level2"></label>
+   <label>Telegram (необов’язково)<input id="fTg" placeholder="@нік"></label>
+   <fieldset><legend>Ваш досвід</legend><div class="tgl">
+    <label><input type="radio" name="fExp" value="Маю бізнес або магазин" checked><span>Маю бізнес або магазин</span></label>
+    <label><input type="radio" name="fExp" value="Досвід у продажах чи маркетингу"><span>Продажі чи маркетинг</span></label>
+    <label><input type="radio" name="fExp" value="Починаю з нуля"><span>Починаю з нуля</span></label>
+   </div></fieldset>
+   <fieldset><legend>Коли готові стартувати</legend><div class="tgl">
+    <label><input type="radio" name="fWhen" value="Цього місяця" checked><span>Цього місяця</span></label>
+    <label><input type="radio" name="fWhen" value="За 1–3 місяці"><span>За 1–3 місяці</span></label>
+    <label><input type="radio" name="fWhen" value="Поки вивчаю"><span>Поки вивчаю</span></label>
+   </div></fieldset>
+   <label class="full">Коментар (необов’язково)<textarea id="fCom" placeholder="Що вже маєте, які цілі, питання"></textarea></label>
+   <input id="fHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+   <div class="hint full" id="fHint"></div>
+   <button class="btn" id="fBtn" type="submit">Надіслати заявку</button>
+   <p class="note2">Або напишіть одразу в <a href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">Telegram</a>.</p>
+  </form>
+ </div>
 </section>
 
-<!-- ДЛЯ КОГО ФРАНШИЗА -->
-<section class="section">
-  <h2 class="title">Кому підходить франшиза Samostroy Shop</h2>
-  <p class="sub">
-    Цей формат створений для підприємців, які хочуть запустити
-    <strong>товарний бізнес з готовою системою</strong>, а не просто купити сайт.
-    Ви отримуєте бренд, процеси та стратегію, які вже працюють.
-  </p>
-
-  <div class="grid">
-    <div class="card">
-      <h3><i data-lucide="briefcase"></i> Підприємці та власники бізнесу</h3>
-      <p>
-        Якщо ви хочете стабільний бізнес на фізичних товарах, але не плануєте
-        самостійно будувати логістику, сайт, маркетинг і працювати з постачальниками.
-      </p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="building-2"></i> Власники локальних магазинів</h3>
-      <p>
-        У вас уже є офлайн-точка або маленький шоурум, але потрібен сильний
-        онлайн-напрямок: сайт, соцмережі, реклама, маркетплейси.
-      </p>
-    </div>
-    <div class="card">
-      <h3><i data-lucide="line-chart"></i> Маркетологи / сейлз-фахівці</h3>
-      <p>
-        Ви вмієте продавати або налаштовувати рекламу, але хочете працювати
-        “на себе” і мати готовий продукт та склад за спиною.
-      </p>
-    </div>
-  </div>
+<section class="w sec faq" id="faq">
+ <h2>Поширені питання</h2>
+ <details><summary>Чим ваша франшиза відрізняється від класичної?</summary><p>Ви працюєте не під нашим брендом, а під власним. Ми — white label-партнер: даємо товар, системи, досвід і підтримку. Для клієнтів ви окремий повноцінний бренд.</p></details>
+ <details><summary>Чому роялті саме 15% від чистого прибутку?</summary><p>Щоб модель була вигідна обом: ми підтримуємо систему, постачання й стандарти, а 85% чистого прибутку залишаються у вас.</p></details>
+ <details><summary>Як фіксується «чистий прибуток»?</summary><p>У договорі: виручка мінус собівартість, реклама, зарплати й інші прямі витрати. Ви ведете облік, ми періодично звіряємося за звітами.</p></details>
+ <details><summary>Хто працює з клієнтами?</summary><p>Клієнти — ваші. Ви або ваш менеджер відповідаєте на дзвінки й повідомлення. Ми даємо скрипти, інструкції й навчання.</p></details>
+ <details><summary>Що буде, якщо партнер перестане працювати?</summary><p>Це прописано в договорі: якщо партнер системно не виконує зобов’язань чи не сплачує роялті, договір може бути розірвано, а регіон — відкрито для іншого партнера.</p></details>
 </section>
+</main>
 
-<!-- ХТО НЕ НАШ ФОРМАТ -->
-<section class="section">
-  <h2 class="title">Кому це не підходить</h2>
-  <p class="sub">
-    Щоб зберегти сильну репутацію та результати всіх партнерів, ми чесно кажемо,
-    для кого формат не підійде. Це не “кнопка бабло”, а повноцінний бізнес.
-  </p>
 
-  <div class="columns-2">
-    <div class="card">
-      <h3><i data-lucide="smile-plus"></i> Ми шукаємо</h3>
-      <ul class="pill-list">
-        <li>
-          <span class="pill-dot">+</span>
-          <span>Людей, готових працювати по стандартах та системі.</span>
-        </li>
-        <li>
-          <span class="pill-dot">+</span>
-          <span>Партнерів, які розуміють важливість реклами та інвестицій у маркетинг.</span>
-        </li>
-        <li>
-          <span class="pill-dot">+</span>
-          <span>Тих, хто хоче будувати бренд на роки, а не “тестувати місяць”.</span>
-        </li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3><i data-lucide="circle-off"></i> Не підходить, якщо</h3>
-      <ul class="pill-list">
-        <li>
-          <span class="pill-dot">–</span>
-          <span>Ви хочете нічого не робити, але очікуєте великий пасивний дохід.</span>
-        </li>
-        <li>
-          <span class="pill-dot">–</span>
-          <span>Ви не готові вкладати у рекламу після запуску.</span>
-        </li>
-        <li>
-          <span class="pill-dot">–</span>
-          <span>Вам важко працювати по регламентах, чек-листах та скриптах.</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ПОРІВНЯННЯ ФОРМАТІВ: ФРАНШИЗА VS ДРОПШИПІНГ VS СТАРТ САМОСТІЙНО -->
-<section class="section">
-  <h2 class="title">Франшиза, дропшипінг чи старт самостійно?</h2>
-  <p class="sub">
-    У нас є кілька форматів співпраці: дропшипінг, франшиза / white label та
-    ваш самостійний запуск. Щоб вам було простіше обрати, зведемо різницю в один блок.
-  </p>
-
-  <div class="grid">
-    <!-- Самостійний старт -->
-    <div class="card">
-      <h3><i data-lucide="person-standing"></i> Старт самостійно</h3>
-      <p class="scenario-card-text">
-        Ви самі шукаєте постачальників, створюєте сайт, тестуєте рекламу, 
-        будуєте операційку. Повна свобода — і повна відповідальність.
-      </p>
-      <ul class="compare-list">
-        <li>Немає внеску за франшизу.</li>
-        <li>Потрібен час і гроші на тестування всіх гіпотез.</li>
-        <li>Високий ризик “застрягти” на етапі налаштування систем.</li>
-      </ul>
-    </div>
-
-    <!-- Дропшипінг -->
-    <div class="card">
-      <h3><i data-lucide="package-open"></i> Дропшипінг з Samostroy Shop</h3>
-      <p class="scenario-card-text">
-        Ви працюєте під нашим брендом і асортиментом. Стартуєте без внеску, 
-        заробляєте на різниці між оптом і роздробом, не вкладаючись у склад.
-      </p>
-      <ul class="compare-list">
-        <li>Низький поріг входу — без разового внеску.</li>
-        <li>Ідеально для першого досвіду в товарному бізнесі.</li>
-        <li>Основний фокус — продажі та робота з клієнтами.</li>
-      </ul>
-    </div>
-
-    <!-- Франшиза / White Label -->
-    <div class="card">
-      <h3><i data-lucide="crown"></i> Франшиза / White Label</h3>
-      <p class="scenario-card-text">
-        Ви отримуєте <strong>власний бренд</strong>, сайт, маркетинг, асортимент та
-        навчання під ключ. Це вже не просто підробіток, а повноцінний бізнес-актив.
-      </p>
-      <ul class="compare-list">
-        <li>Разовий внесок 6000&nbsp;$ за створення всієї системи.</li>
-        <li>Ви володієте брендом і керуєте всією виручкою та прибутком.</li>
-        <li>Роялті лише 15% від чистого прибутку — 85% залишаються у вас.</li>
-      </ul>
-    </div>
-  </div>
-
-  <p class="section-note">
-    Якщо ви тільки знайомитеся з товарним бізнесом — можна почати з дропшипінгу. 
-    Якщо ви готові будувати <strong>свій бренд і систему на роки</strong> — 
-    логічний формат саме франшиза / white label.
-  </p>
-</section>
-  
-<!-- ЩО МИ РОБИМО ПІД КЛЮЧ -->
-<section class="section">
-  <h2 class="title">Що саме ми створюємо вам “під ключ”</h2>
-  <p class="sub">
-    Ви даєте тільки назву свого бренду — все інше ми беремо на себе. В результаті
-    ви отримуєте повноцінну екосистему продажів, побудовану на нашому досвіді та
-    складі постачальника.
-  </p>
-
-  <div class="package-grid">
-    <div class="package-card">
-      <div class="package-tag">Бренд</div>
-      <h3><i data-lucide="sparkles"></i> Бренд та айдентика</h3>
-      <ul class="package-list">
-        <li>Опрацювання назви бренду (якщо потрібно — допомога з неймінгом).</li>
-        <li>Розробка логотипу (кілька варіантів + фінальне затвердження).</li>
-        <li>Фірмові кольори, шрифти, стилістика.</li>
-        <li>Аватарки та обкладинки для соцмереж, сайту, маркетплейсів.</li>
-        <li>Базовий брендбук з правилами використання стилю.</li>
-      </ul>
-    </div>
-
-    <div class="package-card">
-      <div class="package-tag">Сайт</div>
-      <h3><i data-lucide="globe"></i> Сайт / інтернет-магазин White Label</h3>
-      <ul class="package-list">
-        <li>Сучасний сайт/магазин у стилі Samostroy Shop, але під ваш бренд.</li>
-        <li>Категорії: ковролін, самоклейка, плитка, вініл, екошкіра, теплі шпалери тощо.</li>
-        <li>Підключення до нашого постачальника з актуальними залишками та цінами.</li>
-        <li>SEO-база: мета-теги, структури заголовків, ЧПУ, schema.org.</li>
-        <li>Підключення аналітики: Google Analytics / GA4, пікселі Facebook / TikTok.</li>
-      </ul>
-    </div>
-
-    <div class="package-card">
-      <div class="package-tag">Маркетинг</div>
-      <h3><i data-lucide="megaphone"></i> Реклама та соціальні мережі</h3>
-      <ul class="package-list">
-        <li>Налаштування Google Ads (пошук + ремаркетинг).</li>
-        <li>Налаштування реклами в Instagram + Facebook (Meta Ads).</li>
-        <li>Створення / покупка акаунтів із живими підписниками від 1000+ (FB, IG, TikTok, Telegram).</li>
-        <li>Початковий контент-план на 30 днів: пости, сторіс, приклади креативів.</li>
-        <li>Шаблони оголошень, текстів та банерів для швидкого запуску кампаній.</li>
-      </ul>
-    </div>
-
-    <div class="package-card">
-      <div class="package-tag">Маркетплейси</div>
-      <h3><i data-lucide="shopping-bag"></i> Маркетплейси та додаткові майданчики</h3>
-      <ul class="package-list">
-        <li>Створення або налаштування OLX бізнес-сторінки.</li>
-        <li>Створення магазину на Prom.ua.</li>
-        <li>Підключення / налаштування магазину на Хорошоп.</li>
-        <li>Єдиний візуальний стиль на всіх майданчиках.</li>
-        <li>Рекомендації по ціноутворенню для кожного майданчика.</li>
-      </ul>
-    </div>
-
-    <div class="package-card">
-      <div class="package-tag">Операційка</div>
-      <h3><i data-lucide="headset"></i> Менеджер, скрипти та навчання</h3>
-      <ul class="package-list">
-        <li>Ми допомагаємо прописати профіль менеджера та вимоги до кандидата.</li>
-        <li>Видаємо готові скрипти дзвінків, переписки, консультацій.</li>
-        <li>Чек-листи для обробки замовлень від заявки до відправлення.</li>
-        <li>Навчання менеджера по наших стандартах комунікації та продажів.</li>
-        <li>Супровід на перших етапах, розбір складних ситуацій.</li>
-      </ul>
-    </div>
-
-    <div class="package-card">
-      <div class="package-tag">Підтримка</div>
-      <h3><i data-lucide="users"></i> Супровід та партнерська спільнота</h3>
-      <ul class="package-list">
-        <li>Закритий чат партнерів для обміну досвідом.</li>
-        <li>Регулярні онлайн-зустрічі з розбором результатів та маркетингу.</li>
-        <li>Оновлення по асортименту, новинкам та акціям разом із готовими матеріалами.</li>
-        <li>Спільні промо-акції та масштабні розпродажі.</li>
-        <li>Підтримка в юридичних та організаційних питаннях по бізнесу.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ПОСТАЧАЛЬНИК ТА ТОВАР -->
-<section class="section">
-  <h2 class="title">На чому все тримається: склад, імпорт і новинки</h2>
-  <p class="sub">
-    Ваш бренд працює на базі нашого постачальника — прямого імпортера трендових
-    будматеріалів з Європи. Це дозволяє давати клієнтам не “як у всіх”, а
-    <strong>справжні новинки, яких ще майже немає на ринку</strong>.
-  </p>
-
-  <div class="metrics">
-    <div class="metric">
-      <div class="metric-label">Досвід</div>
-      <div class="metric-value">13+ років</div>
-      <div class="metric-text">на ринку України в сегменті будматеріалів та декору</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Асортимент</div>
-      <div class="metric-value">370&nbsp;000+</div>
-      <div class="metric-text">одиниць товару на складі станом на сьогодні</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Логістика</div>
-      <div class="metric-value">2 контейнери</div>
-      <div class="metric-text">кожні 2 тижні — регулярні поставки нових позицій</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Зростання</div>
-      <div class="metric-value">×2 щороку</div>
-      <div class="metric-text">обсяги та асортимент збільшуються мінімум удвічі</div>
-    </div>
-  </div>
-
-  <div style="margin-top:18px;font-size:14px;color:var(--muted);max-width:780px;">
-    Постачальник першим завозить інноваційні матеріали з Європи: нові типи
-    самоклейки, теплі шпалери, сучасні рішення для підлоги, декору стін,
-    дзеркальні та 3D-панелі. Ви можете запускати локальні акції та кампанії
-    з позиціонуванням:
-    <strong>“перші в місті / регіоні, хто продає ці матеріали”</strong>.
-  </div>
-</section>
-
-<!-- ФІНАНСОВА МОДЕЛЬ -->
-<section class="section">
-  <h2 class="title">Фінансова модель: як ви заробляєте</h2>
-  <p class="sub">
-    Ми прагнемо максимально прозорої моделі. Ви отримуєте товар
-    по закупочній ціні, самі формуєте роздрібну ціну, а з чистого
-    прибутку виплачуєте нам <strong>15% роялті</strong>.
-  </p>
-
-  <div class="finance-grid">
-    <div class="finance-block">
-      <h3><i data-lucide="wallet-cards"></i> Разовий внесок — 6000&nbsp;$</h3>
-      <div class="finance-tagline">
-        Цей внесок запускає весь процес: від бренду та сайту до реклами та
-        навчання. Усередині:
-      </div>
-
-      <div class="finance-row">
-        <span>До 1000&nbsp;$</span>
-        <strong>Запуск: домен, хостинг, реклама, акаунти</strong>
-      </div>
-      <div class="finance-row">
-        <span>5000&nbsp;$</span>
-        <strong>Створення екосистеми: бренд, сайт, маркетинг, навчання</strong>
-      </div>
-      <div class="finance-row">
-        <span>Реклама на старті</span>
-        <strong>Оплачується з цих 1000&nbsp;$</strong>
-      </div>
-      <div class="finance-row">
-        <span>Сервіси та підписки</span>
-        <strong>На старті — з внеску, далі — за рахунок партнера</strong>
-      </div>
-
-      <div class="finance-note">
-        Після використання стартового бюджету всі подальші витрати (реклама,
-        домен, хостинг, менеджер) — за рахунок партнера. Ми при цьому
-        залишаємося поруч: коригуємо стратегію, аналізуємо результати,
-        допомагаємо рости.
-      </div>
-    </div>
-
-    <div class="finance-block">
-      <h3><i data-lucide="percent"></i> Щомісячне роялті — 15% чистого прибутку</h3>
-      <div class="finance-tagline">
-        Формула проста: все, що ви заробляєте після всіх витрат — ваша чиста
-        прибуток. З неї ви ділитеся 15%.
-      </div>
-
-      <div class="finance-row">
-        <span>Чистий прибуток</span>
-        <strong>Виручка – собівартість – реклама – зарплати – інші витрати</strong>
-      </div>
-      <div class="finance-row">
-        <span>Роялті</span>
-        <strong>15% від чистого прибутку за договором</strong>
-      </div>
-      <div class="finance-row">
-        <span>Частка партнера</span>
-        <strong>85% чистого прибутку залишаються у вас</strong>
-      </div>
-
-      <div class="finance-example">
-        <strong>Приклад:</strong><br>
-        Якщо ваш магазин заробляє 3000&nbsp;$ чистого прибутку на місяць:<br>
-        • 2550&nbsp;$ ви залишаєте собі;<br>
-        • 450&nbsp;$ перераховуєте нам як роялті.<br><br>
-        При 5000&nbsp;$ чистого прибутку:<br>
-        • 4250&nbsp;$ — ваш дохід;<br>
-        • 750&nbsp;$ — роялті за використання системи, бренду та супровід.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- СЦЕНАРІЇ ДОХОДУ ФРАНШИЗИ -->
-<section class="section">
-  <h2 class="title">Які цілі по прибутку можна ставити</h2>
-  <p class="sub">
-    Точні цифри завжди залежать від міста, рекламних бюджетів та вашої
-    залученості. Але щоб розуміти порядок, подивімося на кілька реалістичних
-    сценаріїв при роботі по нашій фінмоделі (85% чистого прибутку — ваші).
-  </p>
-
-  <div class="grid">
-    <!-- Обережний старт -->
-    <div class="card">
-      <h3><i data-lucide="leaf"></i> Обережний старт</h3>
-      <p class="scenario-card-text">
-        Невеликі рекламні бюджети, поступове зростання. Формат для тих, хто 
-        хоче “придивитися”, але вже будувати систему.
-      </p>
-      <div class="scenario-metric-label">Ціль по чистому прибутку</div>
-      <div class="scenario-metric-value">1&nbsp;000–1&nbsp;500&nbsp;$ / місяць</div>
-      <div class="scenario-metric-text">
-        Ви тестуєте різні канали, працюєте з базою клієнтів, формуєте перші 
-        повторні продажі. Це рівень “стабільної другої зарплати”.
-      </div>
-    </div>
-
-    <!-- Робочий бізнес -->
-    <div class="card">
-      <h3><i data-lucide="factory"></i> Робочий бізнес</h3>
-      <p class="scenario-card-text">
-        Регулярні рекламні кампанії, оптимізовані зв’язки, досвідчений менеджер.
-        Це вже не тест, а повноцінний напрямок.
-      </p>
-      <div class="scenario-metric-label">Ціль по чистому прибутку</div>
-      <div class="scenario-metric-value">2&nbsp;000–3&nbsp;000&nbsp;$ / місяць</div>
-      <div class="scenario-metric-text">
-        На цьому рівні бренд може повністю закривати ваші особисті витрати 
-        або стати основним джерелом доходу сім’ї.
-      </div>
-    </div>
-
-    <!-- Масштабування -->
-    <div class="card">
-      <h3><i data-lucide="rocket"></i> Масштабування та команда</h3>
-      <p class="scenario-card-text">
-        Ви працюєте з кількома каналами продажу, розширюєте регіони, додаєте
-        команду та збільшуєте рекламні бюджети.
-      </p>
-      <div class="scenario-metric-label">Ціль по чистому прибутку</div>
-      <div class="scenario-metric-value">3&nbsp;000–5&nbsp;000+&nbsp;$ / місяць</div>
-      <div class="scenario-metric-text">
-        На цьому етапі бренд стає активом, який можна масштабувати,
-        відкривати додаткові склади/точки або готувати до продажу інвестору.
-      </div>
-    </div>
-  </div>
-
-  <p class="scenario-note">
-    Ці цифри <strong>не є гарантією</strong>, але показують реалістичний діапазон
-    цілей при адекватній роботі з рекламою, асортиментом та сервісом. 
-    На консультації ми прорахуємо сценарій саме під ваш регіон та бюджети.
-  </p>
-</section>
-
-<!-- ЕТАПИ ЗАПУСКУ -->
-<section class="section">
-  <h2 class="title">Як усе відбувається: поетапний запуск</h2>
-  <p class="sub">
-    Ми працюємо за чітким планом. Кожен етап закриває конкретний блок
-    робіт: від договору до перших оплат від клієнтів.
-  </p>
-
-  <div class="grid steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-title">Знайомство та заявка</div>
-      <div class="step-text">
-        Ви пишете в Telegram, коротко розповідаєте про себе та свої цілі.
-        Ми проводимо первинну консультацію та дивимося, чи підходить вам формат.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-title">Договір та оплата 6000&nbsp;$</div>
-      <div class="step-text">
-        Узгоджуємо всі умови, підписуємо договір, де прописана фінмодель,
-        зона відповідальності, поняття “чистого прибутку” та роялті.
-        Після оплати стартуємо роботу.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-title">Бренд, сайт та технічна база</div>
-      <div class="step-text">
-        Створюємо айдентику, готуємо сайт, підключаємо аналітику та
-        інструменти реклами. Паралельно формуємо структуру каталогу
-        та підключаємо асортимент постачальника.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-title">Соцмережі, маркетплейси та контент</div>
-      <div class="step-text">
-        Запускаємо соцмережі, налаштовуємо акаунти з живими підписниками,
-        оформлюємо OLX, Prom.ua, Хорошоп. Підготуємо перший контент і акції.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">05</div>
-      <div class="step-title">Навчання менеджера та скрипти</div>
-      <div class="step-text">
-        Ви або ваш менеджер проходите навчання: як приймати заявки, як
-        консультувати, що питати, як рахувати м², запас і т.д.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">06</div>
-      <div class="step-title">Старт реклами та перші продажі</div>
-      <div class="step-text">
-        Запускаємо рекламні кампанії, відстежуємо перші заявки та дзвінки,
-        разом розбираємо результати та оптимізуємо рекламні зв’язки.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ДОРОЖНЯ КАРТА 30 / 60 / 90 ДНІВ -->
-<section class="section">
-  <h2 class="title">Дорожня карта: 30 / 60 / 90 днів</h2>
-  <p class="sub">
-    Щоб вам було простіше орієнтуватися, ми розбиваємо запуск на три
-    відрізки. Це не “жорсткі гарантії”, а реалістичний план при
-    нормальній спільній роботі.
-  </p>
-
-  <div class="timeline">
-    <div class="timeline-card">
-      <div class="timeline-badge">Перші 30 днів</div>
-      <div class="timeline-title">Фундамент бренду</div>
-      <div class="timeline-text">
-        • Назва, логотип, фірмовий стиль.<br>
-        • Структура сайту, базове наповнення та SEO-основа.<br>
-        • Стартове оформлення соцмереж та акаунтів.<br>
-        • Налаштування аналітики та пікселів.
-      </div>
-    </div>
-
-    <div class="timeline-card">
-      <div class="timeline-badge">До 60 днів</div>
-      <div class="timeline-title">Запуск продажів</div>
-      <div class="timeline-text">
-        • Старт рекламних кампаній у Google та Meta.<br>
-        • Запуск OLX, Prom.ua, Хорошоп.<br>
-        • Перші регулярні заявки та замовлення.<br>
-        • Навчання менеджера на реальних діалогах.
-      </div>
-    </div>
-
-    <div class="timeline-card">
-      <div class="timeline-badge">До 90 днів</div>
-      <div class="timeline-title">Стабільність і масштабування</div>
-      <div class="timeline-text">
-        • Оптимізація рекламних зв’язок і бюджетів.<br>
-        • Аналіз маржинальності по категоріях.<br>
-        • Корекція асортименту під ваш регіон.<br>
-        • Вихід на прогнозований щомісячний прибуток.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ОБМЕЖЕННЯ 5 ПАРТНЕРІВ -->
-<section class="section">
-  <h2 class="title">Чому лише <span class="title-accent">5 партнерів</span>?</h2>
-  <p class="sub">
-    Ми навмисно обмежуємо кількість франчайзі/white label-партнерів, щоб
-    не створювати внутрішню конкуренцію та мати можливість якісно
-    супроводжувати кожен проєкт.
-  </p>
-
-  <div class="benefits-list">
-    <div class="benefit">
-      <i data-lucide="target"></i>
-      <div>
-        <div class="benefit-title">Без перенасичення ринку</div>
-        <div>
-          Ми не відкриваємо десятки однакових точок у кожному місті. Кожен
-          партнер отримує свій ринок, а не боротьбу з “клонованими” магазинами.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="group"></i>
-      <div>
-        <div class="benefit-title">Партнерська екосистема, а не конкуренти</div>
-        <div>
-          Партнери можуть обмінюватися досвідом, результатами, кращими
-          рекламними зв’язками, а не “воювати” один з одним.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="hand-heart"></i>
-      <div>
-        <div class="benefit-title">Якісний супровід</div>
-        <div>
-          Обмежена кількість дозволяє реально виділяти час на кожного:
-          розбирати цифри, аналізувати маркетинг, підказувати по стратегії.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="map-pin"></i>
-      <div>
-        <div class="benefit-title">Зона відповідальності</div>
-        <div>
-          Можливість закріпити за партнером місто/регіон або нішеву зону,
-          щоб уникнути перетинів по основних аудиторіях.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- МИСЛЕННЯ ВЛАСНИКА БРЕНДУ -->
-<section class="section">
-  <h2 class="title">Що змінюється, коли у вас з’являється власний бренд</h2>
-  <p class="sub">
-    Франшиза / white label — це не тільки про сайт і товари. Це про зміну
-    позиції: ви стаєте власником системи, яка може працювати роками,
-    масштабуватися і передаватися далі.
-  </p>
-
-  <div class="benefits-list">
-    <div class="benefit">
-      <i data-lucide="brain"></i>
-      <div>
-        <div class="benefit-title">Мислення власника, а не «підробіток»</div>
-        <div>
-          Ви плануєте не “як заробити цього місяця”, а як будувати бренд,
-          який росте, відомий у вашому місті/регіоні і формує базу лояльних клієнтів.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="boxes"></i>
-      <div>
-        <div class="benefit-title">Бізнес-актив, який можна масштабувати</div>
-        <div>
-          Власний бренд, клієнтська база, відпрацьовані процеси — це актив,
-          який з часом можна або масштабувати, або навіть продати як готовий бізнес.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="gauge-circle"></i>
-      <div>
-        <div class="benefit-title">Контроль над цифрами</div>
-        <div>
-          Ви бачите виручку, маржу, витрати на рекламу, зарплати, чистий прибуток.
-          Ми допомагаємо читати аналітику і приймати рішення на цифрах, а не на емоціях.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="users"></i>
-      <div>
-        <div class="benefit-title">Команда та делегування</div>
-        <div>
-          З часом ви переходите від “роблю все сам” до управління менеджером,
-          підрядниками, кур’єрами. Це новий рівень відповідальності — і свободи.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="school"></i>
-      <div>
-        <div class="benefit-title">Прискорений розвиток як підприємця</div>
-        <div>
-          Ви одночасно працюєте з маркетингом, продажами, сервісом, цифрами 
-          і командою. Це концентрований досвід, який важко отримати в наймі.
-        </div>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="sparkles"></i>
-      <div>
-        <div class="benefit-title">Відчуття “це моє”</div>
-        <div>
-          Ви будуєте не “ще один магазин Samostroy Shop”, а власний бренд
-          під ключ. Коли люди запитують, де ви працюєте — ви говорите
-          про <strong>свій бізнес</strong>, а не про чужий проєкт.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-  
-<!-- FAQ -->
-<section class="section">
-  <h2 class="title">Поширені питання про франшизу</h2>
-
-  <div class="faq-item">
-    <h3><i data-lucide="help-circle"></i> Чим ваша франшиза відрізняється від класичної?</h3>
-    <p>
-      Класична франшиза — це зазвичай робота під єдиним брендом. У нашому випадку
-      ви отримуєте <strong>свій власний бренд</strong>, а ми виступаємо як
-      white label-партнер: даємо товари, системи, досвід, підтримку. Для
-      клієнтів ви — окремий, повноцінний бренд на ринку.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3><i data-lucide="coins"></i> Чому роялті саме 15% від чистого прибутку?</h3>
-    <p>
-      Нам важливо, щоб франшиза була вигідною обом сторонам. 15% від чистого
-      прибутку дозволяють нам підтримувати систему, розвивати постачальника,
-      маркетинг та стандарти, при цьому у вас залишається 85% чистого доходу.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3><i data-lucide="receipt-text"></i> Як фіксується “чистий прибуток”?</h3>
-    <p>
-      Це чітко прописано в договорі: виручка мінус собівартість товару,
-      рекламні витрати, зарплати та інші прямі витрати. Формула прозора,
-      ви ведете облік, ми періодично звіряємося по звітах та аналітиці.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3><i data-lucide="user-round"></i> Хто займається клієнтами та дзвінками?</h3>
-    <p>
-      Всі клієнти — ваші. Або ви самі, або найнятий вами менеджер відповідає
-      на дзвінки, повідомлення, консультує та супроводжує замовлення.
-      Ми даємо скрипти, інструкції, навчання, але відповідальність за
-      сервіс перед клієнтом несемо разом з вами.
-    </p>
-  </div>
-
-  <div class="faq-item">
-    <h3><i data-lucide="flame"></i> Що буде, якщо партнер перестане працювати?</h3>
-    <p>
-      Цей момент також фіксується в договорі. Якщо партнер системно
-      не виконує зобов’язання або не сплачує роялті, ми маємо право
-      розірвати договір і відкрити можливість для іншого партнера в
-      цьому регіоні. Це потрібно, щоб не “тримати” мертві проєкти.
-    </p>
-  </div>
-</section>
-
-<!-- ФОРМА / ЗАЯВКА -->
-<section class="section">
-  <h2 class="title">Залишити заявку на франшизу / white label</h2>
-  <p class="sub">
-    Заповніть коротку форму, і ми проведемо з вами стратегічну консультацію:
-    пройдемося по цифрах, очікуваннях, місту/регіону та чесно скажемо,
-    чи підходить вам цей формат.
-  </p>
-
-  <div class="form-grid">
-    <div class="form-card">
-      <div class="form-hint">
-        Після заповнення форми ми відкриємо Telegram із готовим повідомленням
-        менеджеру <strong>@manager_samostroy_shop</strong> — ви зможете
-        відредагувати текст перед відправкою.
-      </div>
-
-      <label for="frName">Ім’я</label>
-      <input id="frName" type="text" placeholder="Як до вас звертатися?" />
-
-      <label for="frCity">Місто / регіон</label>
-      <input id="frCity" type="text" placeholder="Ваше місто або область" />
-
-      <label for="frExperience">Досвід у бізнесі або продажах (якщо є)</label>
-      <textarea id="frExperience" placeholder="Коротко опишіть свій досвід, якщо він є"></textarea>
-
-      <label for="frContact">Телефон / Telegram</label>
-      <input id="frContact" type="text" placeholder="@username або номер телефону" />
-
-      <button
-        class="btn"
-        type="button"
-        onclick="sendFranchiseForm()"
-      >
-        <i data-lucide="send"></i>
-        Надіслати заявку в Telegram
-      </button>
-    </div>
-
-    <div class="card">
-      <h3><i data-lucide="info"></i> Що буде після заявки</h3>
-      <p style="font-size:14px;color:var(--muted);margin-bottom:10px;">
-        1. Ми зв’яжемося з вами в Telegram у зручний час.<br>
-        2. Поставимо кілька запитань про ваш досвід, цілі та регіон.<br>
-        3. Покажемо фінмодель і варіанти розвитку саме у вашому випадку.<br>
-        4. Якщо “клікне” з обох сторін — перейдемо до договору та запуску.
-      </p>
-
-      <div class="benefit" style="margin-top:10px;">
-        <i data-lucide="alarm-clock"></i>
-        <div>
-          <div class="benefit-title">Пропозиція обмежена</div>
-          <div>
-            Ми працюємо максимум з 5 партнерами, щоб зберегти якість
-            супроводу та не створювати зайву конкуренцію. Якщо місця
-            закриються, прийом заявок буде зупинений.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- CTA ФІНАЛ -->
-<section class="section">
-  <div class="cta">
-    <div class="cta-badge">Ліміт — 5 партнерів</div>
-    <div>
-      <h3>Готові будувати власний бренд на базі Samostroy Shop?</h3>
-      <p>
-        Якщо ви бачите себе в цьому форматі, хочете прозору фінмодель,
-        сильний продукт та підтримку досвідченої команди — зробіть перший
-        крок. Напишіть нам у Telegram, і ми детально все розберемо.
-      </p>
-    </div>
-
-    <a
-      href="https://t.me/manager_samostroy_shop?text=Доброго%20дня!%20Хочу%20стати%20white%20label%20%2F%20франшиза%20партнером%20Samostroy%20Shop.%20Готовий%2Fготова%20обговорити%20умови."
-      class="btn"
-      target="_blank"
-    >
-      <i data-lucide="handshake"></i>
-      Обговорити партнерство
-    </a>
-  </div>
-</section>
 
 <footer>
-  © <span id="year"></span> Samostroy Shop — Франшиза / White Label для будівельного бізнесу
+ <div class="w">
+  <div class="fg">
+   <div>
+    <a class="logo" href="./" style="margin-bottom:12px" data-home><img src="logo.jpg" alt="" width="44" height="44"><span style="color:#fff">Samostroy Shop</span></a>
+    <p style="font-size:14px;max-width:34ch" data-i="fabout">Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.</p>
+    <p style="margin-top:12px"><a href="tel:+380984927948">+380 98 492 79 48</a></p>
+   </div>
+   <div><h3 data-i="fcat">Каталог</h3><ul>
+    <li><a href="?c=3d-paneli">3D панелі</a></li><li><a href="?g=plytka">Плитка</a></li><li><a href="?c=samokleyucha-plivka">Самоклеюча плівка</a></li><li><a href="?c=shpalery">Шпалери</a></li><li><a href="?g=pidloga">Підлога</a></li><li><a href="?c=ekoshkira">Екошкіра</a></li></ul></div>
+   <div><h3 data-i="fspec">Добірки</h3><ul>
+    <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
+   <div><h3 data-i="fpart">Партнерам</h3><ul>
+    <li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="academy.html" data-i="facad">Академія партнера</a></li><li><a href="partners.html" data-i="fcab">Партнерський кабінет</a></li><li><a href="lk.html" data-i="fhub">Де й як продавати</a></li><li><a href="course-dropshipping.html" data-i="fc1">Курс «Дропшипінг з нуля»</a></li><li><a href="course-sales3.html" data-i="fc2">Курс «Продажі 3.0»</a></li></ul></div>
+   <div><h3 data-i="fbiz">Співпраця</h3><ul>
+    <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
+  </div>
+  <div class="fbot"><span>© <span id="yr">2026</span> Samostroy Shop</span><span><a href="https://t.me/samostroy_shop" target="_blank" rel="noopener">Telegram</a> &nbsp; <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" rel="noopener">TikTok</a> &nbsp; <a href="https://www.instagram.com/samostroy.shop" target="_blank" rel="noopener">Instagram</a></span></div>
+ </div>
 </footer>
 
-<script>
-  // Рік у футері
-  document.getElementById('year').textContent = new Date().getFullYear();
-  if (window.lucide) {
-    lucide.createIcons();
-  }
+<nav class="mbar" aria-label="Швидка навігація">
+ <button data-a="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+ <button data-a="msearch"><svg class="i"><use href="#i-search"/></svg><span data-i="srch">Пошук</span></button>
+ <button data-a="quiz"><svg class="i"><use href="#i-quiz"/></svg><span data-i="pick">Підбір</span></button>
+ <button data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="cnt" data-cnt>0</span><span data-i="cart">Кошик</span></button>
+</nav>
 
-  // Відправка даних форми в Telegram як предзаповнене повідомлення
-  function sendFranchiseForm() {
-    const name = document.getElementById('frName').value.trim();
-    const city = document.getElementById('frCity').value.trim();
-    const experience = document.getElementById('frExperience').value.trim();
-    const contact = document.getElementById('frContact').value.trim();
+<div class="fab" id="fab">
+ <div class="menu" id="fabm" hidden>
+  <p data-i="fabp">Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.</p>
+  <a id="fabtg" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><span class="dot" style="background:#229ed9"></span>Telegram</a>
+  <a id="fabvb" href="#" hidden><span class="dot" style="background:#7360f2"></span>Viber</a>
+  <a href="tel:+380984927948"><span class="dot" style="background:var(--ok)"></span><span data-i="call">Подзвонити</span></a>
+ </div>
+ <button class="main" data-a="fab" aria-expanded="false" aria-controls="fabm" aria-label="Написати менеджеру"><svg class="i"><use href="#i-chat"/></svg></button>
+</div>
 
-    // Простенька перевірка: без імені та контакту не відправляємо
-    if (!name || !contact) {
-      alert("Будь ласка, заповніть мінімум поля: Ім’я та Телефон / Telegram.");
-      return;
-    }
+<div class="shade" id="shade" data-a="close"></div>
+<aside id="cart" aria-label="Кошик" aria-hidden="true">
+ <div class="dh"><b><span data-i="cart">Кошик</span> <span class="soft" id="cn" style="font-family:var(--f-b);font-weight:500;font-size:15px"></span></b><button class="xb" data-a="close" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="dbody">
+  <div id="items"></div>
+  <div class="clr" id="clr" hidden><button class="link" data-a="tocat" data-i="more2">Додати ще товари</button><button class="link" style="color:var(--soft)" data-a="clearcart" data-i="clearc">Очистити кошик</button></div>
+  <div class="form" id="cform">
+   <h3 data-i="who">Куди відправити</h3>
+   <input id="fn" autocomplete="name" data-ip="nm" placeholder="Ім’я">
+   <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
+   <div class="hint" id="hint"></div>
+   <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
+   <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
+   <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
+   <div class="guar">
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g1">Безкоштовно порахуємо кількість</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g2">Відправка в день замовлення</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g3">Обмін і повернення 14 днів</span></span>
+   </div>
+  </div>
+ </div>
+ <div class="dfoot" id="dfoot">
+  <div class="tot"><span data-i="tot">Разом</span><span id="total">0 ₴</span></div>
+  <button class="btn" data-a="order" data-i="send">Надіслати замовлення менеджеру</button>
+ </div>
+</aside>
 
-    let message = "Доброго дня! Хочу залишити заявку на франшизу Samostroy Shop.\n\n";
+<dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
 
-    message += "Ім’я: " + name + "\n";
-    if (city) {
-      message += "Місто / регіон: " + city + "\n";
-    }
-    if (experience) {
-      message += "Досвід: " + experience + "\n";
-    }
-    message += "Контакт: " + contact + "\n";
-
-    const encoded = encodeURIComponent(message);
-    const url = "https://t.me/manager_samostroy_shop?text=" + encoded;
-
-    window.open(url, "_blank");
-  }
-
-  /* ============================================================
-   🟧 24. NEWYEAR START (REMOVE LATER)
-============================================================ */
-(function () {
-  // Сезон каждый год: 15 Dec - 15 Jan (включительно)
-  function isNewYearSeason(d) {
-    const m = d.getMonth(); // 0=Jan ... 11=Dec
-    const day = d.getDate();
-    return (m === 11 && day >= 15) || (m === 0 && day <= 15);
-  }
-
-  const now = new Date();
-  if (!isNewYearSeason(now)) {
-    document.documentElement.classList.remove("ny");
-    return;
-  }
-  document.documentElement.classList.add("ny");
-
-  // Год у логотипа: декабрь -> следующий год, январь -> текущий
-  const nyYear =
-    now.getMonth() === 11 ? now.getFullYear() + 1 : now.getFullYear();
-  const logo = document.querySelector(".ac-logo");
-  if (logo) logo.setAttribute("data-ny-year", String(nyYear));
-
-  // SVG лампочка
-  function bulbSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path class="ny-glass" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M12 3c-3.6 0-6.5 2.8-6.5 6.4 0 2.3 1.1 3.9 2.5 5.2.9.8 1.6 1.7 1.8 2.8h4.4c.2-1.1.9-2 1.8-2.8 1.4-1.3 2.5-2.9 2.5-5.2C18.5 5.8 15.6 3 12 3z"/>
-        <path class="ny-stroke" d="M9.2 18.4h5.6"/>
-        <path class="ny-stroke" d="M9.8 21h4.4"/>
-      </svg>
-    `;
-  }
-
-  // SVG снежинка
-  function snowflakeSVG() {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 2v20M4 6l16 12M20 6L4 18M6 4l2 2M18 4l-2 2M6 20l2-2M18 20l-2-2M2 12h3M19 12h3"/>
-      </svg>
-    `;
-  }
-
-  // ============ ГИРЛЯНДА (ТОЛЬКО ВИЗУАЛ, БЕЗ КЛИКОВ) ============
-  const garland = document.querySelector(".ny-garland");
-  if (garland && !garland.querySelector(".ny-garland-row")) {
-    // Важно: гирлянда не перехватывает клики вообще
-    garland.style.pointerEvents = "none";
-
-    const row = document.createElement("div");
-    row.className = "ny-garland-row";
-
-    const colors = [
-      "#ff4e6d",
-      "#5ce3a0",
-      "#38bdf8",
-      "#ffb347",
-      "#a855f7",
-      "#f97316",
-      "#ffffff",
-    ];
-
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-    const count = isMobile ? 14 : 22;
-
-    for (let i = 0; i < count; i++) {
-      const b = document.createElement("div");
-      b.className = "ny-bulb";
-
-      const r = Math.random();
-      if (r < 0.3) b.classList.add("ny-fast");
-      else if (r < 0.65) b.classList.add("ny-slow");
-
-      b.style.setProperty("--ny-drop", `${Math.round(Math.random() * 6 - 3)}px`);
-      b.style.setProperty("--ny-rot", `${Math.round(Math.random() * 10 - 5)}deg`);
-      b.style.setProperty("--ny-wave", `${(2.8 + Math.random() * 2.0).toFixed(2)}s`);
-      b.style.setProperty("--ny-blink", `${(0.9 + Math.random() * 3.0).toFixed(2)}s`);
-
-      const c = colors[i % colors.length];
-      b.style.setProperty("--ny-c", c);
-      b.style.animationDelay = `${(i * 0.1 + Math.random() * 0.25).toFixed(2)}s`;
-
-      b.innerHTML = bulbSVG();
-      row.appendChild(b);
-    }
-
-    garland.appendChild(row);
-
-    // ВАЖНО: никаких addEventListener("click") тут нет — только визуал
-  }
-
-  // ============ СНЕГ ============
-  const snow = document.querySelector(".ny-snow");
-  if (snow && !snow.querySelector(".ny-flake")) {
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
-
-    // ультра-лайт: минимум элементов
-    const flakesCount = isMobile ? 5 : 9;
-
-    for (let i = 0; i < flakesCount; i++) {
-      const f = document.createElement("div");
-      f.className = "ny-flake";
-
-      // внутренний слой для sway (дешево)
-      f.innerHTML = `<div class="ny-flake-inner">${snowflakeSVG()}</div>`;
-
-      const left = Math.random() * 100;
-      const size =
-        (isMobile ? 10 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const op = 0.16 + Math.random() * 0.16;
-      const dur =
-        (isMobile ? 11 : 12) + Math.random() * (isMobile ? 8 : 12);
-      const sway = 10 + Math.random() * 18;
-      const swayDur = 3.6 + Math.random() * 3.6;
-
-      // дрейф по x
-      const x = Math.random() * 30 - 15;
-      const x2 = x + (Math.random() * 50 - 25);
-      const r2 = 360 + Math.round(Math.random() * 360);
-
-      f.style.left = `${left}%`;
-      f.style.setProperty("--ny-size", `${size.toFixed(1)}px`);
-      f.style.setProperty("--ny-op", op.toFixed(2));
-      f.style.setProperty("--ny-dur", `${dur.toFixed(2)}s`);
-      f.style.setProperty("--ny-sway", `${sway.toFixed(1)}px`);
-      f.style.setProperty("--ny-sway-dur", `${swayDur.toFixed(2)}s`);
-      f.style.setProperty("--ny-x", `${x.toFixed(1)}px`);
-      f.style.setProperty("--ny-x2", `${x2.toFixed(1)}px`);
-      f.style.setProperty("--ny-r2", `${r2}deg`);
-
-      // разнесём старт
-      const delay = Math.random() * (isMobile ? 4 : 6);
-      f.style.animationDelay = `${delay.toFixed(2)}s`;
-
-      snow.appendChild(f);
-    }
-  }
-})();
-// =========================
-// NEWYEAR END (REMOVE LATER)
-// =========================
-  
-</script>
+<script src="config.js?v=52b18222"></script>
+<script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Франшиза", "listTitle": "Франшиза", "url": "https://samostroy.shop/franchise.html", "title": "Франшиза / White Label Samostroy Shop — власний бренд будматеріалів під ключ", "desc": "Франшиза й white label від Samostroy Shop: бренд, сайт, реклама, маркетплейси й навчання під ключ та підключення до складу постачальника. Разовий внесок 6 000 $, роялті 15% від чистого прибутку, лише 5 партнерів.", "guide": "", "calc": 0, "faq": [["Чим ваша франшиза відрізняється від класичної?", "Ви працюєте не під нашим брендом, а під власним. Ми — white label-партнер: даємо товар, системи, досвід і підтримку. Для клієнтів ви окремий повноцінний бренд."], ["Чому роялті саме 15% від чистого прибутку?", "Щоб модель була вигідна обом: ми підтримуємо систему, постачання й стандарти, а 85% чистого прибутку залишаються у вас."], ["Як фіксується «чистий прибуток»?", "У договорі: виручка мінус собівартість, реклама, зарплати й інші прямі витрати. Ви ведете облік, ми періодично звіряємося за звітами."], ["Хто працює з клієнтами?", "Клієнти — ваші. Ви або ваш менеджер відповідаєте на дзвінки й повідомлення. Ми даємо скрипти, інструкції й навчання."], ["Що буде, якщо партнер перестане працювати?", "Це прописано в договорі: якщо партнер системно не виконує зобов’язань чи не сплачує роялті, договір може бути розірвано, а регіон — відкрито для іншого партнера."]], "wall": [], "info": true}</script>
+<script src="shop.js?v=f26aeb5a"></script>
+<script src="franchise.js?v=64f9b65d"></script>
 </body>
 </html>

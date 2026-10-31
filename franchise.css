@@ -1,0 +1,26 @@
+/* Франшиза — доповнює shop.css */
+.fr-sub{margin:-8px 0 20px;max-width:74ch}
+.fr-card{background:var(--slate);color:#fff;border-radius:var(--r);padding:26px;display:grid;gap:14px}
+.fr-ct{font-family:var(--f-d);font-size:18px}
+.fr-get{list-style:none;display:grid;gap:10px}
+.fr-get li{display:grid;grid-template-columns:120px 1fr;gap:12px;border-bottom:1px solid #ffffff1f;padding-bottom:10px;font-size:14px}
+.fr-get li:last-child{border-bottom:0;padding-bottom:0}
+.fr-get b{color:var(--orange)}.fr-get span{color:#dfe4e8}
+.fr-cmp td .btn{margin-top:2px}
+.fr-cmp tbody tr:last-child th,.fr-cmp tbody tr:last-child td{border-bottom:0}
+.fr-fee{background:var(--wall);border-radius:var(--r-s);padding:14px 16px;display:grid;gap:4px;font-size:14px}
+.fr-fee span{color:var(--soft)}
+.fr-road{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.fr-road>div{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:8px;align-content:start}
+.fr-road em{font-style:normal;font-size:13px;font-weight:600;color:var(--orange-d)}
+.fr-road b{font-family:var(--f-d);font-size:18px}
+.fr-ul{list-style:none;display:grid;gap:6px;font-size:15px}
+.fr-ul li{padding-left:22px;position:relative}
+.fr-ul li:before{content:"";position:absolute;left:2px;top:8px;width:12px;height:7px;border:solid var(--ok);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg)}
+.fr-steps li:last-child:before{content:"5"}
+.fr-why{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
+.fr-why div{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:6px;align-content:start}
+.fr-why span{color:var(--soft);font-size:15px}
+@media(max-width:1020px){.fr-why{grid-template-columns:1fr 1fr}}
+@media(max-width:820px){.fr-road{grid-template-columns:1fr}}
+@media(max-width:520px){.fr-why{grid-template-columns:1fr}.fr-get li{grid-template-columns:96px 1fr}}
