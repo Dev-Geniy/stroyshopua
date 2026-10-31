@@ -1,0 +1,57 @@
+name: Синхронізація товарів DROPOFFICE
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */3 * * *'   # кожні 3 години
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-feed.yml'
+      - 'tools/sync_feed.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-feed
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Завантажити фід постачальника
+        run: |
+          mkdir -p /tmp/feed
+          curl -fsSL --retry 4 --retry-delay 10 -m 300 \
+            -o /tmp/feed/dropoffice.xml \
+            "https://kabinet.dropoffice.com.ua/data/133e00933fe472a1cdb222016e9631f4.xml"
+          ls -la /tmp/feed
+          grep -c "<offer " /tmp/feed/dropoffice.xml || true
+
+      - name: Зберегти сирий фід у гілку feed-source
+        run: |
+          git config user.name "feed-bot"
+          git config user.email "feed-bot@users.noreply.github.com"
+          rm -rf /tmp/src && mkdir /tmp/src && cd /tmp/src
+          git init -q -b feed-source
+          cp /tmp/feed/dropoffice.xml .
+          git add dropoffice.xml
+          git -c user.name=feed-bot -c user.email=feed-bot@users.noreply.github.com commit -qm "Фід DROPOFFICE $(date -u +%F' '%H:%M)"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" feed-source:feed-source
+
+      - name: Оновити каталог магазину
+        if: hashFiles('tools/sync_feed.py') != ''
+        run: |
+          python3 tools/sync_feed.py /tmp/feed/dropoffice.xml
+          git add -A products.xml catalog
+          if git diff --cached --quiet; then echo "Без змін"; exit 0; fi
+          git commit -qm "Оновлення товарів і цін з DROPOFFICE"
+          git pull -q --rebase origin main
+          git push -q origin HEAD:main
