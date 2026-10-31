@@ -469,8 +469,8 @@ function load(){
  go(CFG.xml).catch(()=>go(CFG.xmlBackup)).then(x=>{
   all=parse(x);if(!all.length)throw 0;
   byId=new Map(all.map(p=>[p.id,p]));counts={};all.forEach(p=>counts[p.cat]=(counts[p.cat]||0)+1);
-  loaded=true;[decorateDir,fillWall,fillNew,drawKB].forEach(f=>safe(f,f.name));route(false);if(location.hash)setTimeout(()=>{const x=$(location.hash);x&&x.scrollIntoView()},60);
- }).catch(()=>{$('#grid').innerHTML='';$('#msg').innerHTML=`<div class="empty">${t('err')}<br><button class="btn" data-a="retry">${t('retry')}</button></div>`});
+  loaded=true;[decorateDir,fillWall,fillNew,drawKB].forEach(f=>safe(f,f.name));route(false);try{dispatchEvent(new Event('catalog'))}catch(e){}if(location.hash)setTimeout(()=>{const x=$(location.hash);x&&x.scrollIntoView()},60);
+ }).catch(()=>{try{dispatchEvent(new Event('catalogfail'))}catch(e){}$('#grid').innerHTML='';$('#msg').innerHTML=`<div class="empty">${t('err')}<br><button class="btn" data-a="retry">${t('retry')}</button></div>`});
 }
 
 /* ---------- маршрути: ?c= ?g= ?q= ?p= ---------- */
