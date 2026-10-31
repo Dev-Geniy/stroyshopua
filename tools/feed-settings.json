@@ -1,0 +1,7 @@
+{
+  "_help": "Націнка до ціни постачальника DROPOFFICE. markup_percent — для всіх товарів. round_up_to — округлення вгору (1 = до гривні, 5 = до 5 грн). price_ending_9 — true, щоб ціни закінчувались на 9 (129, 499). category_markup_percent — окрема націнка для категорії постачальника, напр. {\"95118342\": 40}. Після зміни сайт оновиться автоматично за 1–2 хвилини.",
+  "markup_percent": 30,
+  "round_up_to": 1,
+  "price_ending_9": false,
+  "category_markup_percent": {}
+}

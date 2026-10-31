@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/sync-feed.yml'
       - 'tools/sync_feed.py'
+      - 'tools/feed-settings.json'
 
 permissions:
   contents: write

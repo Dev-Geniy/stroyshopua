@@ -28,7 +28,7 @@ rm:['Читати далі','Читать далее'],rl:['Згорнути','�
 fabp:['Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.','Нужна помощь с расчётом? Отправьте фото или размеры стены, менеджер подберёт и посчитает.'],call:['Подзвонити','Позвонить'],
 tot:['Разом','Итого'],nm:['Ім’я','Имя'],phn:['Телефон','Телефон'],cy:['Місто та відділення пошти','Город и отделение почты'],pay:['Оплата','Оплата'],p1:['При отриманні','При получении'],p2:['На картку','На карту'],dl:['Доставка','Доставка'],send:['Надіслати замовлення менеджеру','Отправить заказ менеджеру'],
 g1:['Безкоштовно порахуємо кількість','Бесплатно посчитаем количество'],g2:['Відправка в день замовлення','Отправка в день заказа'],g3:['Обмін і повернення 14 днів','Обмен и возврат 14 дней'],
-empty:['Кошик порожній. Додайте товари з каталогу.','Корзина пуста. Добавьте товары из каталога.'],toCat:['Перейти до каталогу','Перейти в каталог'],add:['У кошик','В корзину'],inCart:['Додано в кошик','Добавлено в корзину'],one:['Купити в 1 клік','Купить в 1 клик'],q1b:['В 1 клік','В 1 клик'],inst:['В наявності','В наличии'],outst:['Немає в наявності','Нет в наличии'],ask:['Запитати','Спросить'],
+left:['Залишилось {n} шт.','Осталось {n} шт.'],empty:['Кошик порожній. Додайте товари з каталогу.','Корзина пуста. Добавьте товары из каталога.'],toCat:['Перейти до каталогу','Перейти в каталог'],add:['У кошик','В корзину'],inCart:['Додано в кошик','Добавлено в корзину'],one:['Купити в 1 клік','Купить в 1 клик'],q1b:['В 1 клік','В 1 клик'],inst:['В наявності','В наличии'],outst:['Немає в наявності','Нет в наличии'],ask:['Запитати','Спросить'],
 none:['За цим запитом нічого не знайшли. Спробуйте коротше слово або напишіть менеджеру, він підбере.','По этому запросу ничего не нашли. Попробуйте слово короче или напишите менеджеру, он подберёт.'],askm:['Написати менеджеру','Написать менеджеру'],reset:['Скинути фільтри','Сбросить фильтры'],
 err:['Не вдалося завантажити каталог. Перевірте інтернет і спробуйте ще раз.','Не удалось загрузить каталог. Проверьте интернет и попробуйте ещё раз.'],retry:['Спробувати ще раз','Попробовать ещё раз'],
 copied:['Замовлення скопійовано. Якщо воно не з’явилось у чаті, вставте його в повідомлення.','Заказ скопирован. Если он не появился в чате, вставьте его в сообщение.'],phr:['Вкажіть телефон, щоб менеджер міг зв’язатися з вами','Укажите телефон, чтобы менеджер мог связаться с вами'],inc:['Спочатку додайте товар у кошик','Сначала добавьте товар в корзину'],
@@ -52,12 +52,14 @@ const CATS=[
 ['konteynery','dim','Контейнери для зберігання','Контейнеры для хранения',/контейнер|органайзер/],
 ['naduvni-mebli','dim','Надувні меблі','Надувная мебель',/надувн/],
 ['stelazhi','dim','Стелажі, етажерки й шафи','Стеллажи, этажерки и шкафы',/стелаж|етажерк|шафа|тумба/],
+['stolyky','dim','Столики','Столики',/столик/],
 ['skladni-mebli','dim','Складні столи й стільці','Складные столы и стулья',/стіл\b|стіл |стілець|стільц|мебел|меблі/],
 ['termokylymky','dim','Килимки термо (дитячі)','Термоковрики (детские)',/термокилим|розвиваюч|камуфляж|дитячий склад/],
 ['vologopoglynayuchi-kylymky','dim','Килимки вологопоглинаючі','Влагопоглощающие коврики',/вологопоглин/],
 ['pidloga-pazl-plyushevyy','pidloga','Підлога-пазл плюшевий','Пол-пазл плюшевый',/пазл.*плюш/],
 ['pidloga-pazl','pidloga','Підлога-пазл EVA','Пол-пазл EVA',/пазл|двостороннє покриття/],
 ['ekoshkira','dim','Екошкіра у рулоні','Экокожа в рулоне',/екошкір|еко шкір/],
+['satyn','dim','Сатин самоклеючий','Сатин самоклеящийся',/сатин/],
 ['mozayika-sklo','stiny','Мозаїка з декоративного скла','Мозаика из декоративного стекла',/мозаїка з декоративного|мозаїка дзеркальн/],
 ['alyuminiyeva-plytka','plytka','Алюмінієва плитка','Алюминиевая плитка',/алюмінієва плит/],
 ['dzerkalnyi-dekor','dekor','Дзеркальний декор','Зеркальный декор',/дзеркальний декор|дзеркальн.*шт/],
@@ -84,9 +86,9 @@ const CATS=[
 ['stinovi-paneli','stiny','Стінові панелі','Стеновые панели',/панел/],
 ['inshe','dim','Інше','Другое',/./]];
 // складені категорії
-const VIRT={'pokryttya-vinilove':{g:'pidloga',uk:'Покриття вінілове',ru:'Виниловое покрытие',inc:['3d-reyky','pidlogove-vinilove-pokryttya']},'mebli':{g:'dim',uk:'Меблі для дому та саду',ru:'Мебель для дома и сада',inc:['stelazhi','skladni-mebli','naduvni-mebli']},'dzerkala':{g:'dekor',uk:'Дзеркала',ru:'Зеркала',inc:['akrylovi-dzerkala','dzerkalnyi-dekor']}};
+const VIRT={'pokryttya-vinilove':{g:'pidloga',uk:'Покриття вінілове',ru:'Виниловое покрытие',inc:['3d-reyky','pidlogove-vinilove-pokryttya']},'mebli':{g:'dim',uk:'Меблі для дому та саду',ru:'Мебель для дома и сада',inc:['stelazhi','stolyky','skladni-mebli','naduvni-mebli']},'dzerkala':{g:'dekor',uk:'Дзеркала',ru:'Зеркала',inc:['akrylovi-dzerkala','dzerkalnyi-dekor']}};
 // з чим купують
-const COMP={'akrylovi-dzerkala':['dzerkalnyi-dekor','mozayika-sklo'],'dzerkalnyi-dekor':['akrylovi-dzerkala','3d-paneli'],stiny:['profili-dekor','plintusy','dzerkala','akrylovi-dzerkala','dzerkalnyi-dekor'],plytka:['profili-dekor','plintusy'],pidloga:['plintusy','vologopoglynayuchi-kylymky'],dekor:['3d-paneli','pet-plytka'],'pidloga-pazl':['pidloga-pazl-plyushevyy','termokylymky'],'pidloga-pazl-plyushevyy':['termokylymky','pidloga-pazl'],termokylymky:['pidloga-pazl-plyushevyy','pidloga-pazl'],ekoshkira:['profili-dekor','plintusy'],stelazhi:['konteynery'],'skladni-mebli':['naduvni-mebli'],'naduvni-mebli':['skladni-mebli'],konteynery:['stelazhi'],manikyur:['dzerkala'],'vologopoglynayuchi-kylymky':['plytka-vinilova','plintusy']};
+const COMP={'akrylovi-dzerkala':['dzerkalnyi-dekor','mozayika-sklo'],'dzerkalnyi-dekor':['akrylovi-dzerkala','3d-paneli'],stiny:['profili-dekor','plintusy','dzerkala','akrylovi-dzerkala','dzerkalnyi-dekor'],plytka:['profili-dekor','plintusy'],pidloga:['plintusy','vologopoglynayuchi-kylymky'],dekor:['3d-paneli','pet-plytka'],'pidloga-pazl':['pidloga-pazl-plyushevyy','termokylymky'],'pidloga-pazl-plyushevyy':['termokylymky','pidloga-pazl'],termokylymky:['pidloga-pazl-plyushevyy','pidloga-pazl'],ekoshkira:['profili-dekor','plintusy'],stelazhi:['konteynery'],'skladni-mebli':['naduvni-mebli','stolyky'],stolyky:['skladni-mebli','stelazhi'],satyn:['ekoshkira'],'naduvni-mebli':['skladni-mebli'],konteynery:['stelazhi'],manikyur:['dzerkala'],'vologopoglynayuchi-kylymky':['plytka-vinilova','plintusy']};
 // для калькулятора розраховуємо площу з назви
 const CALCG=new Set(['stiny','plytka','pidloga']);
 const PRESETS=[['3d-paneli','3D панель 700×700 мм',.7,.7],['3d-paneli','3D панель 700×770 мм (цегла)',.7,.77],['3d-paneli','3D панель у рулоні 0,7×19,6 м',.7,19.6],['pvh-paneli-plyty','ПВХ панель 960×480 мм',.96,.48],['pvh-paneli-plyty','ПВХ плита 1,22×2,44 м',1.22,2.44],['pet-plytka','PET плитка 600×300 мм',.6,.3],['pet-plytka-rulon','PET плитка в рулоні 0,6×3 м',.6,3],['alyuminiyeva-plytka','Алюмінієва плитка 300×300 мм',.3,.3],['plytka-vinilova','Вінілова плитка 600×300 мм',.6,.3],['plytka-vinilova','Вінілова дошка 152×914 мм',.1524,.9144],['lvt-plytka','LVT плитка 457×457 мм',.457,.457],['3d-reyky','Вінілові 3D рейки 600×600 мм',.6,.6],['shtukaturka','Гнучка штукатурка 600×600 мм',.6,.6],['samokleyucha-plivka','Плівка, рулон 0,45×10 м',.45,10],['shpalery','Шпалери 2800×500 мм',.5,2.8],['pidloga-pazl-plyushevyy','Підлога-пазл 600×600 мм',.6,.6],['pidloga-pazl-plyushevyy','Підлога-пазл 300×300 мм',.3,.3]];
@@ -455,9 +457,10 @@ function parse(xml){
   const img=f.image_link||imgs.shift()||'';if(f.image_link&&imgs[0]==img)imgs.shift();
   const avs=(f.availability||e.getAttribute('available')||'in stock').toLowerCase();
   const av=!/out|false|^0|нема|нет|ні$|preorder/.test(avs);
-  const cat=classify(name),P=Object.fromEntries(par),el=elOf(name,P,cat),area=el?el.a*el.b*el.per:0;
-  out.push({id,name,sku,price,old:num(f.sale_price&&f.price?f.price:0),img,imgs:[img,...imgs].filter(Boolean).slice(0,8),av,cat,area,el,P,brand:f.brand||'',color:f.color||'',par,desc:f.description||'',sale:/уцінк|уценк/i.test(name),n:parseInt((sku.match(/\d+/)||['0'])[0],10)||0,i,
-   key:(name+' '+sku+' '+id+' '+cname(cat)+' '+catBy[cat][3]+' '+(f.color||'')).toLowerCase().replace(/[x*×]/g,'х')});
+  const cat=catBy[f.cat]?f.cat:classify(name),P=Object.fromEntries(par),el=elOf(name,P,cat),area=el?el.a*el.b*el.per:0;
+  const nr=(f.title_ru||'').replace(/\s*SW-\d+\s*$/i,'').trim(),qty=f.quantity!=null&&f.quantity!==''?parseInt(f.quantity,10):null;
+  out.push({id,nu:name,nr,get name(){return lang=='ru'&&this.nr||this.nu},qty,kw:f.keywords||'',sku,price,old:num(f.sale_price&&f.price?f.price:0),img,imgs:[img,...imgs].filter(Boolean).slice(0,8),av,cat,area,el,P,brand:f.brand||'',color:f.color||'',par,desc:f.description||'',sale:/уцінк|уценк/i.test(name),n:parseInt((sku.match(/\d+/)||['0'])[0],10)||0,i,
+   key:(name+' '+nr+' '+sku+' '+id+' '+cname(cat)+' '+catBy[cat][3]+' '+(f.color||'')+' '+(f.keywords||'')).toLowerCase().replace(/[x*×]/g,'х')});
  }
  return out}
 function load(){
@@ -574,7 +577,7 @@ function fillAssort(){
 function drawSide(){
  const g=view.c?cgroup(view.c):view.g;
  $('#side').innerHTML=`<a class="gl ${!view.c&&!view.g?'on':''}" href="./" data-nav>${t('allh')} <span class="soft" style="font-weight:400">${all.length||''}</span></a>`+GROUPS.map(([gg])=>`<h3><a class="gl ${view.g==gg&&!view.c?'on':''}" href="?g=${gg}" data-nav style="padding:0">${esc(gname(gg))}</a></h3><ul>${subsOf(gg).map(s=>`<li><a class="${view.c==s?'on':''}" href="?c=${s}" data-nav>${esc(cname(s))}<i>${cnt(s)||''}</i></a></li>`).join('')}</ul>`).join('')}
-const ORDER={stiny:['3d-paneli','pvh-paneli-plyty','stinovi-paneli','samokleyucha-plivka','shpalery','tepli-shpalery','shtukaturka','mozayika-sklo'],plytka:['plytka-vinilova','pvh-plytka','poliuretanova-plytka','alyuminiyeva-plytka','lvt-plytka','plytka-pid-kovrolin','pet-plytka','pet-mozayika','pet-plytka-rulon','kompozytna-plytka'],pidloga:['pokryttya-vinilove','pidlogove-vinilove-pokryttya','3d-reyky','pidloga-pazl','pidloga-pazl-plyushevyy'],dekor:['profili-dekor','plintusy','dzerkala','akrylovi-dzerkala','dzerkalnyi-dekor'],dim:['termokylymky','vologopoglynayuchi-kylymky','ekoshkira','konteynery','mebli','stelazhi','skladni-mebli','naduvni-mebli','manikyur','inshe']};
+const ORDER={stiny:['3d-paneli','pvh-paneli-plyty','stinovi-paneli','samokleyucha-plivka','shpalery','tepli-shpalery','shtukaturka','mozayika-sklo'],plytka:['plytka-vinilova','pvh-plytka','poliuretanova-plytka','alyuminiyeva-plytka','lvt-plytka','plytka-pid-kovrolin','pet-plytka','pet-mozayika','pet-plytka-rulon','kompozytna-plytka'],pidloga:['pokryttya-vinilove','pidlogove-vinilove-pokryttya','3d-reyky','pidloga-pazl','pidloga-pazl-plyushevyy'],dekor:['profili-dekor','plintusy','dzerkala','akrylovi-dzerkala','dzerkalnyi-dekor'],dim:['termokylymky','vologopoglynayuchi-kylymky','ekoshkira','satyn','konteynery','mebli','stelazhi','stolyky','skladni-mebli','naduvni-mebli','manikyur','inshe']};
 function subsOf(g){return(ORDER[g]||[]).filter(s=>!loaded||cnt(s))}
 const cnt=s=>catsOf(s).reduce((a,c)=>a+(counts[c]||0),0);
 function drawSubs(g){
@@ -640,6 +643,8 @@ function related(p){
  const h=(p.n*7)%97;const wth=pick(comp.flatMap(c=>all.filter(x=>catsOf(c).includes(x.cat))).sort((a,b)=>((a.n*13+h)%101)-((b.n*13+h)%101)),4);
  return{sim,wth}}
 const mini=L=>`<div class="mini">${L.map(x=>`<a href="${href(x)}" data-p="${esc(x.id)}"><img loading="lazy" src="${esc(x.img)}" alt="" onerror="this.style.opacity=0">${esc(x.name)}<b>${money(x.price)}</b></a>`).join('')}</div>`;
+// російський опис товару лежить окремим файлом catalog/ru/<id>.html — вантажимо лише коли потрібен
+const RUD={};function descRu(p){return RUD[p.id]||(RUD[p.id]=fetch('catalog/ru/'+encodeURIComponent(p.id)+'.html').then(r=>r.ok?r.text():'').catch(()=>''))}
 function openP(id,push=true){
  const p=byId.get(String(id));if(!p)return;
  ls.set('seen',[p.id,...ls.get('seen',[]).filter(x=>x!=p.id)].slice(0,12));
@@ -650,20 +655,21 @@ function openP(id,push=true){
   <div class="pi">
    <nav class="crumbs" style="margin:0"><span><a href="?g=${g}" data-nav>${esc(gname(g))}</a></span><span><a href="?c=${p.cat}" data-nav>${esc(cname(p.cat))}</a></span></nav>
    <h2>${esc(p.name)}</h2>
-   <div class="av ${p.av?'':'no'}">${t(p.av?'inst':'outst')}${p.sku?`<span class="soft" style="margin-left:10px">${t('sku')} ${esc(p.sku)}</span>`:''}</div>
+   <div class="av ${p.av?'':'no'}">${t(p.av?'inst':'outst')}${p.av&&p.qty>0&&p.qty<=10?`<span class="soft" style="margin-left:10px">${t('left',{n:p.qty})}</span>`:''}${p.sku?`<span class="soft" style="margin-left:10px">${t('sku')} ${esc(p.sku)}</span>`:''}</div>
    <div class="price">${money(p.price)}${ppm(p)}</div>
    ${p.av?`<div class="pacts"><button class="btn" data-add="${esc(p.id)}">${t('add')}</button><button class="btn ghost" data-smp="${esc(p.id)}">${t('smp')}</button></div>
    <div class="oc"><input id="mp" type="tel" inputmode="tel" placeholder="${t('phn')}" value="${esc(cust.fp||'')}" aria-label="${t('phn')}"><button class="btn ghost" data-oc="${esc(p.id)}">${t('one')}</button></div>`:`<button class="btn" data-askp="${esc(p.id)}">${t('askm')}</button>`}
    ${p.el?`<div class="pcalc" data-id="${esc(p.id)}"><b class="t">${t('pcalc')}</b><div class="el">${elInfo(p)}</div><div class="row"><label>${t(p.cat=='ekoshkira'?'cWe':'cW')}<input data-k="w" inputmode="decimal" autocomplete="off"></label><label>${t(p.cat=='ekoshkira'?'cHe':'cH')}<input data-k="h" inputmode="decimal" autocomplete="off"></label></div><div class="row"><label>${t('cA')}<input data-k="a" inputmode="decimal" autocomplete="off"></label><label${p.cat=='ekoshkira'?' hidden':''}>${t('cO')}<input data-k="o" inputmode="decimal" autocomplete="off" placeholder="0"></label><label>${t('cR')}<select data-k="r">${resOpts()}</select></label></div><div class="cres"></div></div>`:''}
    <div class="guar"><span><svg class="i"><use href="#i-check"/></svg><span>${t('g1')}</span></span><span><svg class="i"><use href="#i-check"/></svg><span>${t('g2')}</span></span><span><svg class="i"><use href="#i-check"/></svg><span>${t('g3')}</span></span></div>
-   ${pars.length?`<dl class="params">${pars.slice(0,12).map(x=>`<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>`:''}
+   ${pars.length?`<dl class="params">${pars.map(x=>`<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join('')}</dl>`:''}
   </div></div>
   <div class="pmore">
    ${pGuide(p)}
-   ${p.desc?`<h3>${t('desc')}</h3><div class="desc">${safeHTML(p.desc)}</div>`:''}
+   ${p.desc?`<h3>${t('desc')}</h3><div class="desc" id="pdesc">${safeHTML(p.desc)}</div>`:''}
    ${wth.length?`<h3>${t('with')}</h3>${mini(wth)}`:''}
    ${sim.length?`<h3>${t('sim')}</h3>${mini(sim)}`:''}
   </div>`;
+ if(lang=='ru'&&p.desc){const d=document.getElementById('pdesc');descRu(p).then(h=>{if(h&&d&&d.isConnected)d.innerHTML=safeHTML(h)})}
  if(!pdOpen())$('#pd').showModal();$('#pd').scrollTop=0;$('#pdc').scrollTop=0;
  if(push){view={...readURL(),p:p.id};history.pushState(view,'',makeURL(view))}
  document.title=`${p.name} — ${money(p.price)} | Samostroy Shop`;setMeta('meta[name=description]','content',`${p.name}. Ціна ${money(p.price)}. ${p.av?'В наявності':'Під замовлення'}, доставка по Україні, оплата при отриманні.`);
