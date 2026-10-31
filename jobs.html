@@ -1,592 +1,249 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Робота та вакансії — Samostroy Shop</title>
-
-  <!-- Фавікон -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  
-  <!-- ШРИФТ -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- ІКОНКИ -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- 🚀 SEO — Робота та вакансії Samostroy Shop -->
-
-  <!-- Ключові слова -->
-  <meta name="keywords" content="робота, вакансії, Samostroy Shop, менеджер продаж, SMM, найм, віддалена робота, робота онлайн, HR, працевлаштування Україна, карʼєра">
-
-  <!-- Опис -->
-  <meta name="description" content="Робота в Samostroy Shop — вакансії менеджерів, SMM, відділу продажів та ключових клієнтів. Карʼєрний ріст, стабільні виплати, дружня команда. Надсилайте заявку в Telegram.">
-
-  <!-- Автор -->
-  <meta name="author" content="Samostroy Shop">
-
-  <!-- Канонічна сторінка -->
-  <link rel="canonical" href="https://samostroy.shop/jobs.html">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Робота та вакансії — Samostroy Shop">
-  <meta property="og:description" content="Приєднуйтеся до команди Samostroy Shop. Відкриті вакансії, можливість віддаленої роботи, стабільні виплати та карʼєрний ріст.">
-  <meta property="og:url" content="https://samostroy.shop/jobs.html">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="uk_UA">
-  <meta property="og:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Робота та вакансії — Samostroy Shop">
-  <meta name="twitter:description" content="Працюйте разом із Samostroy Shop — онлайн менеджери, SMM, відділ продажів, карʼєрний ріст і стабільна оплата.">
-  <meta name="twitter:image" content="https://i.ibb.co/39gpWh8M/Gemini-Generated-Image-mls1oemls1oemls1.png">
-
-  <!-- JSON-LD Schema.org — JobPosting -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org/",
-    "@type": "Organization",
-    "name": "Samostroy Shop",
-    "url": "https://samostroy.shop/",
-    "logo": "https://i.ibb.co/PZGTwyqp/unnamed.jpg"
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org/",
-    "@type": "JobPosting",
-    "title": "Менеджер з продажу (онлайн)",
-    "description": "Консультації клієнтів, робота з заявками, підбір товарів. Віддалено або офіс.",
-    "employmentType": "FULL_TIME",
-    "hiringOrganization": {
-      "@type": "Organization",
-      "name": "Samostroy Shop",
-      "sameAs": "https://samostroy.shop"
-    },
-    "jobLocationType": "TELECOMMUTE",
-    "applicantLocationRequirements": {
-      "@type": "Country",
-      "name": "Ukraine"
-    }
-  }
-  </script>
-
-  <meta name="robots" content="index, follow">
-  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
-
-  <style>
-    :root {
-      --bg:#050509;
-      --bg2:#0c0d12;
-      --card:rgba(255,255,255,0.04);
-      --card2:rgba(255,255,255,0.06);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --muted:#a4a9b7;
-      --text:#f1f1f4;
-      --radius:18px;
-      --border:rgba(255,255,255,0.1);
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-      --trans:0.25s;
-    }
-
-    *{margin:0;padding:0;box-sizing:border-box;}
-
-    body{
-      font-family:"Inter",sans-serif;
-      background:radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%),var(--bg);
-      color:var(--text); line-height:1.45;
-    }
-
-    a{color:inherit;text-decoration:none;}
-
-    /* HEADER */
-    header{
-      position:sticky;top:0;z-index:10;
-      padding:18px 24px;
-      display:flex;justify-content:space-between;align-items:center;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,9,0.82);
-      border-bottom:1px solid var(--border);
-    }
-
-    .logo{
-      font-size:clamp(20px,3vw,28px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      text-transform:uppercase;letter-spacing:1px;
-    }
-
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:12px 20px;
-      border-radius:var(--radius);
-      background:var(--grad);
-      color:#000;font-weight:700;font-size:14px;
-      border:none;cursor:pointer;
-      box-shadow:var(--shadow);
-      transition:var(--trans);
-      white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-3px);box-shadow:0 24px 50px rgba(0,0,0,0.75);}
-
-    .btn-outline{
-      background:transparent;
-      border:1px solid var(--accent);
-      color:var(--accent2);
-      box-shadow:none;
-    }
-    .btn-outline:hover{
-      background:rgba(255,122,26,0.08);
-      box-shadow:var(--shadow);
-    }
-
-    .btn i{width:20px;height:20px;}
-
-    /* SECTION */
-    .section{
-      max-width:1150px;margin:50px auto;padding:0 20px;
-    }
-
-    .title{
-      font-size:clamp(26px,4vw,36px);
-      font-weight:800;margin-bottom:10px;
-    }
-    .sub{
-      font-size:clamp(14px,2.6vw,16px);
-      color:var(--muted);max-width:680px;margin-bottom:24px;
-    }
-
-    /* HERO */
-    .hero{
-      max-width:1150px;margin:50px auto;padding:0 20px;
-      display:grid;grid-template-columns:1.2fr 0.8fr;
-      gap:32px;align-items:center;
-    }
-
-    .hero h1{
-      font-size:clamp(32px,4.6vw,46px);
-      background:var(--grad);-webkit-background-clip:text;color:transparent;
-      font-weight:800;margin-bottom:12px;
-    }
-
-    .hero p{
-      color:var(--muted);font-size:clamp(14px,2.8vw,17px);
-      max-width:520px;margin-bottom:22px;
-    }
-
-    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
-    .tag{
-      padding:6px 12px;border-radius:999px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid var(--border);
-      font-size:12px;color:var(--muted);
-    }
-
-    .hero-side{
-      background:var(--card2);
-      padding:20px;border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .hero-side-title{
-      font-weight:700;font-size:15px;margin-bottom:8px;
-    }
-
-    .side-row{
-      display:flex;justify-content:space-between;
-      padding:6px 0;color:var(--muted);font-size:14px;
-      border-bottom:1px solid rgba(255,255,255,0.07);
-    }
-    .side-row:last-child{border-bottom:none;}
-    .side-row strong{color:var(--accent2);}
-
-    /* JOB CARDS */
-    .jobs{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:20px;
-    }
-
-    .job-card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:22px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-    }
-
-    .job-title{
-      font-size:18px;font-weight:700;margin-bottom:8px;
-      color:var(--accent2);
-      display:flex;align-items:center;gap:8px;
-    }
-
-    .job-info{font-size:14px;color:var(--muted);margin-bottom:14px;}
-
-    .job-btn{margin-top:10px;}
-
-    /* BENEFITS */
-    .benefits{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-      gap:18px;
-    }
-
-    .benefit{
-      background:var(--card2);
-      border-radius:var(--radius);
-      padding:18px;border:1px solid var(--border);
-      display:flex;gap:12px;align-items:flex-start;
-    }
-
-    .benefit i{width:20px;height:20px;color:var(--accent2);}
-    .benefit-title{font-weight:600;font-size:15px;color:var(--text);}
-    .benefit p{font-size:13px;color:var(--muted);margin-top:3px;}
-
-    /* STEPS */
-    .steps{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:20px;
-    }
-    .step{
-      background:var(--card2);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;position:relative;
-    }
-    .step-num{
-      position:absolute;right:12px;top:12px;
-      font-size:20px;font-weight:800;color:rgba(255,255,255,0.14);
-    }
-    .step-title{font-weight:700;font-size:16px;margin-bottom:6px;}
-    .step-text{font-size:14px;color:var(--muted);}
-
-    /* CTA */
-    .cta{
-      background:var(--card2);
-      border-radius:26px;
-      padding:28px;border:1px solid var(--border);
-      display:flex;justify-content:space-between;
-      align-items:center;gap:20px;flex-wrap:wrap;
-      box-shadow:var(--shadow);
-    }
-    .cta h3{font-size:clamp(22px,4vw,28px);font-weight:800;margin-bottom:4px;}
-    .cta p{color:var(--muted);font-size:14px;max-width:420px;}
-
-    /* FAQ */
-    .faq-item{
-      background:var(--card);
-      padding:20px;border-radius:var(--radius);
-      border:1px solid var(--border);
-      margin-bottom:14px;
-    }
-    .faq-item h3{font-size:16px;color:var(--accent2);margin-bottom:6px;}
-    .faq-item p{color:var(--muted);font-size:14px;}
-
-    footer{
-      text-align:center;padding:22px;margin-top:40px;
-      color:var(--muted);font-size:13px;border-top:1px solid var(--border);
-    }
-
-    /* RESPONSIVE */
-    @media(max-width:900px){
-      .hero{grid-template-columns:1fr;gap:18px;}
-      .cta{flex-direction:column;align-items:flex-start;}
-    }
-
-    @media(max-width:480px){
-      .btn{padding:10px 14px;font-size:13px;}
-      .hero h1{font-size:28px;}
-      .title{font-size:24px;}
-    }
-    
-    
-    
-    
-    .stats-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
-  margin-top:20px;
-}
-
-.stat-box{
-  background:var(--card2);
-  padding:22px;
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  text-align:center;
-  box-shadow:var(--shadow);
-  transition:.3s;
-}
-
-.stat-box:hover{
-  transform:translateY(-6px);
-}
-
-.stat-number{
-  font-size:32px;
-  font-weight:800;
-  color:var(--accent2);
-  margin-bottom:6px;
-}
-
-.stat-label{
-  font-size:14px;
-  color:var(--muted);
-}
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Вакансії Samostroy Shop — робота менеджером з продажу, з партнерами, SMM</title>
+<meta name="description" content="Робота в Samostroy Shop: менеджер з продажу, менеджер з роботи з партнерами (опт і дропшипінг), контент-менеджер / SMM. Дистанційно або в офісі, стабільні виплати й бонуси, навчання з наставником.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://samostroy.shop/jobs.html">
+<meta name="theme-color" content="#2b3138">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samostroy Shop">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Вакансії Samostroy Shop">
+<meta property="og:description" content="Шукаємо менеджерів з продажу, менеджера з роботи з партнерами й SMM. Дистанційно або в офісі, навчання з наставником.">
+<meta property="og:url" content="https://samostroy.shop/jobs.html">
+<meta property="og:image" content="https://samostroy.shop/samostroy-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kabinet.dropoffice.com.ua">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"OnlineStore","@id":"https://samostroy.shop/#store","name":"Samostroy Shop","url":"https://samostroy.shop/","logo":"https://samostroy.shop/samostroy-shop-logo.jpg","image":"https://samostroy.shop/samostroy-preview.jpg","telephone":"+380984927948","description":"Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.","areaServed":"UA","currenciesAccepted":"UAH","paymentAccepted":"Cash on delivery, Card","address":{"@type":"PostalAddress","addressCountry":"UA"},"sameAs":["https://t.me/samostroy_shop","https://www.tiktok.com/@stroyshop_ua","https://www.instagram.com/samostroy.shop"]},
+{"@type":"WebSite","@id":"https://samostroy.shop/#site","url":"https://samostroy.shop/","name":"Samostroy Shop","inLanguage":"uk","publisher":{"@id":"https://samostroy.shop/#store"},"potentialAction":{"@type":"SearchAction","target":"https://samostroy.shop/?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
+<script type="application/ld+json" id="ld"></script>
+<link rel="stylesheet" href="shop.css?v=9572495d">
+<link rel="stylesheet" href="jobs.css?v=d1fe7a45">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+ <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.9V15"/><circle cx="12" cy="18.5" r=".6"/><circle cx="12" cy="12" r="10"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.5 4.5 2.8 11.6c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.3.8 1.3 1 1.9.4l2.6-2.5 4.8 3.5c.7.5 1.7.1 1.9-.7L22.9 5.8c.2-1-.6-1.7-1.4-1.3z"/><path d="m7.5 14.9 10-7.4-7.4 8.5"/></symbol>
+</svg>
 
 <header>
-  <div class="logo">Samostroy Shop</div>
-  <a href="index.html" class="btn btn-outline">
-    <i data-lucide="arrow-left"></i> Назад до магазину
-  </a>
+ <div class="w hd">
+  <a class="logo" href="./"><img src="logo.jpg" alt="Samostroy Shop" width="44" height="44"><span>Samostroy Shop<small data-i="tag">Ремонт своїми руками</small></span></a>
+  <button class="hcat" data-a="mega" aria-expanded="false" aria-controls="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+  <div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q" autocomplete="off" data-ip="ph" placeholder="Пошук: 3D панель, PET плитка, артикул" aria-label="Пошук товарів"><button class="x" data-a="clr" aria-label="Очистити" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
+  <a class="hphone" href="tel:+380984927948">+380 98 492 79 48</a>
+  <div class="lg"><button data-l="uk" class="on">UA</button><button data-l="ru">RU</button></div>
+  <button class="btn hcart" data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="lbl" data-i="cart">Кошик</span><span class="cnt" data-cnt>0</span></button>
+ </div>
+ <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
+ <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
+<main id="top" class="jb-page">
+<section class="w hero lhero jb-hero">
+ <div>
+  <nav class="crumbs" aria-label="Breadcrumb"><span><a href="./">Головна</a></span><span>Вакансії</span></nav>
+  <h1>Робота в Samostroy Shop</h1>
+  <p class="lead">Ми продаємо матеріали для ремонту своїми руками по всій Україні й розвиваємо мережу партнерів. Шукаємо людей, які люблять спілкуватися з клієнтами, створювати контент і доводити справи до результату.</p>
+  <div class="acts">
+   <a class="btn" href="#jobs">Дивитися вакансії</a>
+   <a class="btn ghost" href="#match">Підібрати роль за 30 секунд</a>
+  </div>
+  <div class="facts">
+   <div><b>Дистанційно або в офісі</b><span>Залежно від ролі</span></div>
+   <div><b>5/2 або гнучко</b><span>Графік погоджуємо разом</span></div>
+   <div><b>Стабільні виплати</b><span>Без затримок, бонуси за результат</span></div>
+   <div><b>Наставник</b><span>Навчання з першого дня</span></div>
+  </div>
+ </div>
+ <div class="jb-card">
+  <b class="jb-ct">Чим живе команда</b>
+  <ul class="jb-live">
+   <li><b data-avn>1000+</b><span>товарів у наявності, які ми продаємо щодня</span></li>
+   <li><b>1 день</b><span>від замовлення до відправки Новою Поштою чи Укрпоштою</span></li>
+   <li><b>3 напрями</b><span>роздріб, оптові клієнти й партнери-дропшипери</span></li>
+  </ul>
+  <p>Невелика команда — тому кожен бачить свій результат і швидко росте разом з компанією.</p>
+ </div>
+</section>
+
+<section class="w sec" id="jobs" style="padding-top:8px">
+ <h2>Відкриті вакансії</h2>
+ <p class="soft jb-sub">Натисніть на вакансію, щоб побачити задачі й вимоги. Відгук займає 2 хвилини.</p>
+ <div class="jb-list" id="jbList"></div>
+</section>
+
+<section class="w sec" id="match" style="padding-top:8px">
+ <div class="jb-match">
+  <div class="jb-mh"><h2>Яка роль вам підходить?</h2><p class="soft">Три питання — і ми підкажемо вакансію, де ваші сильні сторони дадуть найбільше результату.</p></div>
+  <div id="jbQuiz"></div>
+ </div>
+</section>
+
+<section class="w sec" id="why" style="padding-top:8px">
+ <h2>Що ви отримуєте</h2>
+ <div class="jb-why">
+  <div><b>Стабільні виплати</b><span>Вчасно й без затримок. Бонуси прив’язані до зрозумілих результатів.</span></div>
+  <div><b>Навчання й наставник</b><span>Покажемо товар, процеси й скрипти. Перші тижні поруч наставник.</span></div>
+  <div><b>Гнучкий формат</b><span>Дистанційно або в офісі, графік 5/2 чи гнучкий — залежно від ролі.</span></div>
+  <div><b>Видимий результат</b><span>Без бюрократії: ваші ідеї швидко потрапляють у роботу.</span></div>
+  <div><b>Ріст</b><span>Сильні співробітники швидко отримують більше відповідальності й вищі позиції.</span></div>
+  <div><b>Товар, який легко любити</b><span>Ремонт за вечір без майстра — клієнти щиро радіють результату.</span></div>
+ </div>
+</section>
+
+<section class="w sec" id="steps" style="padding-top:8px">
+ <h2>Як проходить найм</h2>
+ <ol class="flow jb-steps">
+  <li><b>Відгук</b><span>Форма нижче або повідомлення в Telegram — 2 хвилини.</span></li>
+  <li><b>Розмова</b><span>15–20 хвилин онлайн: про ваш досвід, мотивацію й очікування.</span></li>
+  <li><b>Тестове</b><span>За потреби — коротке практичне завдання за профілем ролі.</span></li>
+  <li><b>Старт</b><span>Оформлення й навчання з наставником.</span></li>
+  <li><b>Випробувальний термін</b><span>Від 7 до 21 дня — залежно від посади.</span></li>
+ </ol>
+</section>
+
+<section class="w sec" id="apply">
+ <div class="apply">
   <div>
-    <h1>Робота в Samostroy Shop</h1>
-    <p>
-      Ми створюємо один із найдинамічніших маркетплейсів будівельних матеріалів в Україні.
-      Якщо хочеш працювати в сильній команді, рости разом з брендом та впливати на результат —
-      приєднуйся!
-    </p>
-
-    <div class="tags">
-      <span class="tag">Розвиток та навчання</span>
-      <span class="tag">Карʼєрний ріст</span>
-      <span class="tag">Стабільна оплата</span>
-    </div>
-
-    <a href="https://t.me/manager_samostroy_shop" target="_blank" class="btn">
-      <i data-lucide="send"></i> Зв’язатися з HR
-    </a>
+   <h2>Відгукнутися на вакансію</h2>
+   <p class="lead2">Розкажіть коротко про себе — ми відповімо протягом робочого дня.</p>
+   <ol>
+    <li>Оберіть вакансію або «Відкрита заявка»</li>
+    <li>Додайте посилання на резюме чи портфоліо, якщо є</li>
+    <li>Чекайте на повідомлення від нас у Telegram або дзвінок</li>
+   </ol>
+   <div class="jb-alt"><b>Хочете заробляти без найму?</b><span>Станьте партнером: продавайте наші товари за своєю ціною у вільний час, без вкладень і складу.</span><a href="academy.html">Пройти академію партнера →</a></div>
   </div>
-
-  <div class="hero-side">
-    <div class="hero-side-title">Формат роботи</div>
-
-    <div class="side-row">
-      <span>Графік</span>
-      <strong>5/2 або гнучко</strong>
-    </div>
-    <div class="side-row">
-      <span>Локація</span>
-      <strong>Дистанційно / Офіс</strong>
-    </div>
-    <div class="side-row">
-      <span>Стабільність</span>
-      <strong>Офіційні виплати</strong>
-    </div>
-    <div class="side-row">
-      <span>Карʼєра</span>
-      <strong>Ріст та розвиток</strong>
-    </div>
-  </div>
+  <form class="af" id="jbForm" novalidate>
+   <label>Ім’я та прізвище<input id="jName" autocomplete="name" required></label>
+   <label>Телефон<input id="jPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required></label>
+   <label class="full">Вакансія<select id="jRole"></select></label>
+   <fieldset><legend>Досвід у схожій ролі</legend><div class="tgl">
+    <label><input type="radio" name="jExp" value="Без досвіду" checked><span>Без досвіду</span></label>
+    <label><input type="radio" name="jExp" value="До 1 року"><span>До 1 року</span></label>
+    <label><input type="radio" name="jExp" value="1–3 роки"><span>1–3 роки</span></label>
+    <label><input type="radio" name="jExp" value="Понад 3 роки"><span>Понад 3 роки</span></label>
+   </div></fieldset>
+   <fieldset><legend>Формат роботи</legend><div class="tgl">
+    <label><input type="radio" name="jFmt" value="Дистанційно" checked><span>Дистанційно</span></label>
+    <label><input type="radio" name="jFmt" value="Офіс"><span>Офіс</span></label>
+    <label><input type="radio" name="jFmt" value="Будь-який"><span>Будь-який</span></label>
+   </div></fieldset>
+   <label>Telegram (необов’язково)<input id="jTg" autocomplete="off" placeholder="@нік"></label>
+   <label>Місто<input id="jCity" autocomplete="address-level2"></label>
+   <label class="full">Резюме, портфоліо або профіль (необов’язково)<input id="jUrl" inputmode="url" placeholder="https://"></label>
+   <label class="full">Чому вам цікава ця робота?<textarea id="jAbout" placeholder="2–3 речення про себе, досвід і чого хочете досягти"></textarea></label>
+   <input id="jHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+   <div class="hint full" id="jHint"></div>
+   <button class="btn" id="jBtn" type="submit">Надіслати відгук</button>
+   <p class="note2">Або напишіть одразу в <a href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener">Telegram</a>. Дані використовуємо лише для зв’язку щодо вакансії.</p>
+  </form>
+ </div>
 </section>
 
-  <section class="section stats-section">
-  <h2 class="title">Samostroy Shop у цифрах</h2>
-  <p class="sub">Розвиваємось та ростемо разом з командою і партнерами.</p>
-
-  <div class="stats-grid">
-    <div class="stat-box">
-      <div class="stat-number" data-target="7">1</div>
-      <div class="stat-label">Років на ринку</div>
-    </div>
-
-    <div class="stat-box">
-      <div class="stat-number" data-target="35">36</div>
-      <div class="stat-label">Співробітників у команді</div>
-    </div>
-
-    <div class="stat-box">
-      <div class="stat-number" data-target="180000">1000.000+</div>
-      <div class="stat-label">Відправлених замовлень</div>
-    </div>
-
-    <div class="stat-box">
-      <div class="stat-number" data-target="12000">10.000+</div>
-      <div class="stat-label">Постійних клієнтів</div>
-    </div>
-  </div>
+<section class="w sec faq" id="faq">
+ <h2>Поширені питання</h2>
+ <details><summary>Чи можна працювати віддалено?</summary><p>Так, частина ролей — повністю дистанційна. Формат для конкретної вакансії вказано в її описі й уточнюємо на розмові.</p></details>
+ <details><summary>Чи беруть без досвіду?</summary><p>На роль менеджера з продажу — так: навчимо товару, скриптам і роботі з заявками. Для інших ролей досвід — плюс, але головне — ваша мотивація й приклади робіт.</p></details>
+ <details><summary>Коли чекати відповідь?</summary><p>Зазвичай протягом робочого дня, максимум — 24 години в робочі дні.</p></details>
+ <details><summary>Чи є випробувальний термін?</summary><p>Так, від 7 до 21 дня залежно від посади. За цей час ви знайомитеся з роботою, а ми — з вашим результатом.</p></details>
+ <details><summary>Як побудована оплата?</summary><p>Стабільна частина плюс бонуси за результат. Конкретні цифри залежать від ролі й досвіду — обговорюємо на першій розмові.</p></details>
 </section>
+</main>
 
-<!-- ВАКАНСІЇ -->
-<section class="section">
-  <h2 class="title">Актуальні вакансії</h2>
-  <p class="sub">Шукаємо проактивних людей, які хочуть рости разом із компанією.</p>
 
-  <div class="jobs">
-
-    <div class="job-card">
-      <div class="job-title">
-        <i data-lucide="message-circle"></i> Менеджер з продажу (онлайн)
-      </div>
-      <div class="job-info">
-        Робота з вхідними заявками, консультації клієнтів, підбір товарів.
-      </div>
-      <a href="https://t.me/manager_samostroy_shop" class="btn job-btn" target="_blank">
-        Відгукнутись
-      </a>
-    </div>
-
-    <div class="job-card" data-category="sales management remote">
-  <div class="job-title"><i data-lucide="handshake"></i> Менеджер по роботі з ключовими клієнтами (Опт/Дроп)</div>
-  <div class="job-info">
-    Ведення великих клієнтів, консультування, збільшення обсягів продажу.
-  </div>
-  <a href="https://t.me/manager_samostroy_shop" class="btn job-btn" target="_blank">Відгукнутись</a>
-</div>
-
-    <div class="job-card" data-category="marketing remote">
-  <div class="job-title"><i data-lucide="camera"></i> Менеджер соцмереж (SMM)</div>
-  <div class="job-info">
-    Контент, сторіс, оформлення профілю, підвищення залученості та продажів.
-  </div>
-  <a href="https://t.me/manager_samostroy_shop" class="btn job-btn" target="_blank">Відгукнутись</a>
-</div>
-    
-    <div class="job-card" data-category="management sales office">
-  <div class="job-title"><i data-lucide="crown"></i> Директор відділу продажів</div>
-  <div class="job-info">
-    Управління командою продажів, оптимізація процесів, виконання планів.
-  </div>
-  <a href="https://t.me/manager_samostroy_shop" class="btn job-btn" target="_blank">Відгукнутись</a>
-</div>
-
-  </div>
-</section>
-
-<!-- ПЕРЕВАГИ -->
-<section class="section">
-  <h2 class="title">Переваги роботи у Samostroy Shop</h2>
-
-  <div class="benefits">
-
-    <div class="benefit">
-      <i data-lucide="trophy"></i>
-      <div>
-        <div class="benefit-title">Стабільні виплати</div>
-        <p>Ніяких затримок. Прозора система бонусів.</p>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="graduation-cap"></i>
-      <div>
-        <div class="benefit-title">Навчання та розвиток</div>
-        <p>Навчальні матеріали, підтримка наставника, робоче навчання.</p>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="users"></i>
-      <div>
-        <div class="benefit-title">Дружня команда</div>
-        <p>Ми цінуємо комфорт, повагу та позитивну атмосферу.</p>
-      </div>
-    </div>
-
-    <div class="benefit">
-      <i data-lucide="rocket"></i>
-      <div>
-        <div class="benefit-title">Карʼєрний ріст</div>
-        <p>Можливість швидко переходити на вищі позиції.</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- STEPS -->
-<section class="section">
-  <h2 class="title">Як проходитимуть етапи найму</h2>
-  <p class="sub">Все просто та прозоро — цінуємо ваш час.</p>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-title">Заявка</div>
-      <div class="step-text">Пишете HR у Telegram та надсилаєте коротку інформацію про себе.</div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-title">Міні-співбесіда</div>
-      <div class="step-text">Коротке інтерв’ю, щоб зрозуміти ваш досвід та мотивацію.</div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-title">Тестове завдання</div>
-      <div class="step-text">За потреби — легке тестове, щоб оцінити навички.</div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-title">Старт роботи</div>
-      <div class="step-text">Оформлення та адаптація з наставником.</div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section">
-  <div class="cta">
-    <div>
-      <h3>Хочеш стати частиною Samostroy Shop?</h3>
-      <p>Напиши нам у Telegram — відповімо на всі питання та надамо деталі.</p>
-    </div>
-
-    <a href="https://t.me/manager_samostroy_shop" class="btn" target="_blank">
-      <i data-lucide="send"></i>
-      Зв’язатися з HR
-    </a>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section">
-  <h2 class="title">Поширені питання</h2>
-
-  <div class="faq-item">
-    <h3>Чи можна працювати віддалено?</h3>
-    <p>Так, частина вакансій передбачає дистанційну роботу.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Коли можна отримати відповідь?</h3>
-    <p>Зазвичай HR відповідає протягом 24 годин у робочі дні.</p>
-  </div>
-
-  <div class="faq-item">
-    <h3>Чи є випробувальний термін?</h3>
-    <p>Так, від 7 до 21 днів залежно від посади.</p>
-  </div>
-
-</section>
 
 <footer>
-  © <span id="year"></span> Samostroy Shop — Робота та вакансії
+ <div class="w">
+  <div class="fg">
+   <div>
+    <a class="logo" href="./" style="margin-bottom:12px" data-home><img src="logo.jpg" alt="" width="44" height="44"><span style="color:#fff">Samostroy Shop</span></a>
+    <p style="font-size:14px;max-width:34ch" data-i="fabout">Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.</p>
+    <p style="margin-top:12px"><a href="tel:+380984927948">+380 98 492 79 48</a></p>
+   </div>
+   <div><h3 data-i="fcat">Каталог</h3><ul>
+    <li><a href="?c=3d-paneli">3D панелі</a></li><li><a href="?g=plytka">Плитка</a></li><li><a href="?c=samokleyucha-plivka">Самоклеюча плівка</a></li><li><a href="?c=shpalery">Шпалери</a></li><li><a href="?g=pidloga">Підлога</a></li><li><a href="?c=ekoshkira">Екошкіра</a></li></ul></div>
+   <div><h3 data-i="fspec">Добірки</h3><ul>
+    <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
+   <div><h3 data-i="fbiz">Співпраця</h3><ul>
+    <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="partners.html" data-i="fp">Партнерам</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
+  </div>
+  <div class="fbot"><span>© <span id="yr">2026</span> Samostroy Shop</span><span><a href="https://t.me/samostroy_shop" target="_blank" rel="noopener">Telegram</a> &nbsp; <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" rel="noopener">TikTok</a> &nbsp; <a href="https://www.instagram.com/samostroy.shop" target="_blank" rel="noopener">Instagram</a></span></div>
+ </div>
 </footer>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  if(window.lucide){ lucide.createIcons(); }
-</script>
+<nav class="mbar" aria-label="Швидка навігація">
+ <button data-a="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+ <button data-a="msearch"><svg class="i"><use href="#i-search"/></svg><span data-i="srch">Пошук</span></button>
+ <button data-a="quiz"><svg class="i"><use href="#i-quiz"/></svg><span data-i="pick">Підбір</span></button>
+ <button data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="cnt" data-cnt>0</span><span data-i="cart">Кошик</span></button>
+</nav>
 
+<div class="fab" id="fab">
+ <div class="menu" id="fabm" hidden>
+  <p data-i="fabp">Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.</p>
+  <a id="fabtg" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><span class="dot" style="background:#229ed9"></span>Telegram</a>
+  <a id="fabvb" href="#" hidden><span class="dot" style="background:#7360f2"></span>Viber</a>
+  <a href="tel:+380984927948"><span class="dot" style="background:var(--ok)"></span><span data-i="call">Подзвонити</span></a>
+ </div>
+ <button class="main" data-a="fab" aria-expanded="false" aria-controls="fabm" aria-label="Написати менеджеру"><svg class="i"><use href="#i-chat"/></svg></button>
+</div>
+
+<div class="shade" id="shade" data-a="close"></div>
+<aside id="cart" aria-label="Кошик" aria-hidden="true">
+ <div class="dh"><b><span data-i="cart">Кошик</span> <span class="soft" id="cn" style="font-family:var(--f-b);font-weight:500;font-size:15px"></span></b><button class="xb" data-a="close" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="dbody">
+  <div id="items"></div>
+  <div class="clr" id="clr" hidden><button class="link" data-a="tocat" data-i="more2">Додати ще товари</button><button class="link" style="color:var(--soft)" data-a="clearcart" data-i="clearc">Очистити кошик</button></div>
+  <div class="form" id="cform">
+   <h3 data-i="who">Куди відправити</h3>
+   <input id="fn" autocomplete="name" data-ip="nm" placeholder="Ім’я">
+   <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
+   <div class="hint" id="hint"></div>
+   <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
+   <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
+   <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
+   <div class="guar">
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g1">Безкоштовно порахуємо кількість</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g2">Відправка в день замовлення</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g3">Обмін і повернення 14 днів</span></span>
+   </div>
+  </div>
+ </div>
+ <div class="dfoot" id="dfoot">
+  <div class="tot"><span data-i="tot">Разом</span><span id="total">0 ₴</span></div>
+  <button class="btn" data-a="order" data-i="send">Надіслати замовлення менеджеру</button>
+ </div>
+</aside>
+
+<dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
+
+<script src="config.js?v=52b18222"></script>
+<script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Вакансії", "listTitle": "Вакансії", "url": "https://samostroy.shop/jobs.html", "title": "Вакансії Samostroy Shop — робота менеджером з продажу, з партнерами, SMM", "desc": "Робота в Samostroy Shop: менеджер з продажу, менеджер з роботи з партнерами (опт і дропшипінг), контент-менеджер / SMM. Дистанційно або в офісі, стабільні виплати й бонуси, навчання з наставником.", "guide": "", "calc": 0, "faq": [["Чи можна працювати віддалено?", "Так, частина ролей — повністю дистанційна. Формат для конкретної вакансії вказано в її описі й уточнюємо на розмові."], ["Чи беруть без досвіду?", "На роль менеджера з продажу — так: навчимо товару, скриптам і роботі з заявками. Для інших ролей досвід — плюс, але головне — ваша мотивація й приклади робіт."], ["Коли чекати відповідь?", "Зазвичай протягом робочого дня, максимум — 24 години в робочі дні."], ["Чи є випробувальний термін?", "Так, від 7 до 21 дня залежно від посади. За цей час ви знайомитеся з роботою, а ми — з вашим результатом."], ["Як побудована оплата?", "Стабільна частина плюс бонуси за результат. Конкретні цифри залежать від ролі й досвіду — обговорюємо на першій розмові."]], "wall": [], "info": true}</script>
+<script src="shop.js?v=34f33025"></script>
+<script src="jobs.js?v=07d1c674"></script>
 </body>
 </html>

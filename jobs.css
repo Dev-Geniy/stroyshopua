@@ -1,0 +1,70 @@
+/* Сторінка вакансій — доповнює shop.css */
+.jb-sub{margin:-8px 0 20px;max-width:72ch}
+.ac-pb{height:6px;border-radius:3px;background:var(--wall);overflow:hidden}
+.ac-pb i{display:block;height:100%;background:var(--orange);transition:width .3s}
+.ac-check{list-style:none;display:grid;gap:8px}
+.ac-check li{padding-left:26px;position:relative;font-size:15px}
+.ac-check li:before{content:"";position:absolute;left:3px;top:8px;width:12px;height:7px;border:solid var(--ok);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg)}
+
+/* герой */
+.jb-card{background:var(--slate);color:#fff;border-radius:var(--r);padding:28px;display:grid;gap:16px}
+.jb-ct{font-family:var(--f-d);font-size:18px}
+.jb-live{list-style:none;display:grid;gap:14px}
+.jb-live li{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:baseline;border-bottom:1px solid #ffffff1f;padding-bottom:12px}
+.jb-live b{font-family:var(--f-d);font-size:24px;color:var(--orange)}
+.jb-live span{font-size:14px;color:#c3cad0}
+.jb-card>p{font-size:14px;color:#dfe4e8}
+
+/* вакансії */
+.jb-list{display:grid;gap:12px}
+.jb-job{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.jb-job[open]{border-color:var(--grout)}
+.jb-jh{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:22px 24px;cursor:pointer;list-style:none}
+.jb-jh::-webkit-details-marker{display:none}
+.jb-jh h3{font-family:var(--f-d);font-size:19px;margin-bottom:8px}
+.jb-jh p{color:var(--soft);max-width:72ch}
+.jb-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.jb-tags span{font-size:12px;font-weight:600;background:var(--wall);border-radius:4px;padding:3px 9px}
+.jb-tg{flex:none;width:36px;height:36px;border-radius:50%;background:var(--wall);position:relative;margin-top:2px}
+.jb-tg:before,.jb-tg:after{content:"";position:absolute;left:11px;top:17px;width:14px;height:2px;background:var(--orange-d)}
+.jb-tg:after{transform:rotate(90deg);transition:transform .2s}
+.jb-job[open] .jb-tg:after{transform:rotate(0)}
+.jb-jb{display:grid;grid-template-columns:1fr 1fr .9fr;gap:24px;padding:4px 24px 24px;border-top:1px solid var(--line);padding-top:20px}
+.jb-jb h4{font-size:15px;margin-bottom:10px}
+.jb-fit{background:var(--wall);border-radius:var(--r-s);padding:16px;display:grid;gap:6px;align-content:start}
+.jb-fit span{font-size:13px;color:var(--soft)}
+.jb-fit .btn{margin-top:8px;justify-self:start}
+.jb-job.open{border-style:dashed;background:transparent}
+.jb-job.open .jb-jh{cursor:default;align-items:center}
+
+/* підбір ролі */
+.jb-match{display:grid;grid-template-columns:.8fr 1.2fr;gap:28px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:30px}
+.jb-mh h2{margin-bottom:8px}
+.jb-q{display:grid;gap:12px}
+.jb-qn{font-size:13px;font-weight:600;color:var(--soft)}
+.jb-q h3{font-size:19px}
+.jb-opts{display:grid;gap:8px}
+.jb-opts button{text-align:left;border:1.5px solid var(--line);background:var(--wall);border-radius:var(--r-s);padding:12px 14px;font-weight:500}
+.jb-opts button:hover{border-color:var(--orange);background:var(--panel)}
+.jb-q .link{justify-self:start;font-size:14px}
+.jb-res{background:color-mix(in srgb,var(--orange) 10%,var(--panel));border:1px solid color-mix(in srgb,var(--orange) 35%,var(--line));border-radius:var(--r);padding:20px}
+.jb-res h3{font-family:var(--f-d);font-size:21px}
+.jb-res p{color:var(--soft)}
+.jb-ra{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+@media(prefers-reduced-motion:no-preference){.jb-q{animation:jbIn .25s}}
+@keyframes jbIn{from{opacity:0;transform:translateY(4px)}}
+
+/* переваги */
+.jb-why{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.jb-why div{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:6px;align-content:start}
+.jb-why b{font-size:16px}.jb-why span{color:var(--soft);font-size:15px}
+.jb-steps li:last-child:before{content:"5"}
+
+/* альтернатива — партнерство */
+.jb-alt{margin-top:24px;background:var(--slate);color:#fff;border-radius:var(--r);padding:18px 20px;display:grid;gap:6px}
+.jb-alt span{color:#c3cad0;font-size:14px}
+.jb-alt a{color:var(--orange);font-weight:600;text-decoration:none}
+
+@media(max-width:1020px){.jb-jb{grid-template-columns:1fr 1fr}.jb-fit{grid-column:1/-1}}
+@media(max-width:820px){.jb-match{grid-template-columns:1fr;padding:22px}.jb-why{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.jb-jb{grid-template-columns:1fr}.jb-jh{padding:18px}.jb-jb{padding:16px 18px 18px}.jb-why{grid-template-columns:1fr}.jb-job.open .jb-jh{flex-direction:column;align-items:flex-start}.jb-live li{grid-template-columns:110px 1fr}.jb-live b{font-size:20px}}
