@@ -1,0 +1,50 @@
+/* Робочий кабінет команди — доповнює shop.css і partners.css */
+.pk-team .pk-price{display:none}
+.tm-h2{margin-bottom:6px}
+.tm-sub{margin:0 0 14px;max-width:72ch}
+.ac-pb{height:6px;border-radius:3px;background:var(--wall);overflow:hidden}
+.ac-pb i{display:block;height:100%;width:0;background:var(--orange);transition:width .3s}
+
+/* план на день */
+.tm-today{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:12px;scroll-margin-top:80px}
+.tm-th{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.tm-th b{font-family:var(--f-d);font-size:18px}
+.tm-th span{font-size:13px;color:var(--soft)}
+.tm-list{list-style:none;display:grid;gap:6px}
+.tm-list label{display:flex;gap:12px;align-items:flex-start;background:var(--wall);border:1.5px solid transparent;border-radius:var(--r-s);padding:10px 12px;cursor:pointer;font-size:15px}
+.tm-list input{width:20px;height:20px;margin-top:1px;accent-color:var(--ok);flex:none}
+.tm-list label.on{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--panel))}
+.tm-list label.on>span{color:var(--soft)}
+.tm-note{font-size:13px;color:var(--soft)}
+
+/* майданчики */
+.tm-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.tm-tabs button{flex:none;border:0;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-s);padding:9px 14px;font-weight:600;font-size:14px}
+.tm-tabs button.on{background:var(--slate);border-color:var(--slate);color:#fff}
+.tm-tabs i{font-style:normal;display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:10px;background:var(--ok);color:#fff;font-size:12px;margin-left:4px}
+.tm-gd{font-size:14px;color:var(--soft);margin-bottom:10px}
+.tm-pl{display:grid;gap:8px}
+.tm-p{display:grid;grid-template-columns:1.3fr 160px 1fr 1.2fr auto;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:var(--r-s);padding:12px 14px}
+.tm-p.s-on{border-left-color:var(--ok)}.tm-p.s-work{border-left-color:var(--orange)}.tm-p.s-pause{border-left-color:var(--soft)}
+.tm-pi{display:grid;gap:2px;min-width:0}
+.tm-pi b{font-size:15px}
+.tm-pi span{font-size:13px;color:var(--soft)}
+.tm-pi a{font-size:13px;color:var(--orange-d);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tm-p select,.tm-p input,.tm-add input{height:40px;border:1.5px solid var(--line);border-radius:var(--r-s);background:var(--wall);padding:0 10px;font-size:14px;width:100%;min-width:0}
+.tm-p select:focus,.tm-p input:focus,.tm-add input:focus{border-color:var(--orange);outline:0}
+.tm-del{font-size:13px}
+.tm-add{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tm-add input{flex:1 1 200px;width:auto;background:var(--panel)}
+
+/* чекліст */
+.tm-check{display:grid;grid-template-columns:.8fr 1.2fr;gap:28px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:28px}
+.tm-check h2{margin-bottom:8px}
+.tm-score{display:flex;align-items:center;gap:16px;margin-top:16px}
+.tm-score b{font-family:var(--f-d);font-size:28px;color:var(--orange-d)}
+.tm-cl span{display:grid;gap:2px}
+.tm-cl em{font-style:normal;font-size:13px;color:var(--soft)}
+.tm-cl label.on b{text-decoration:line-through}
+
+@media(max-width:1020px){.tm-p{grid-template-columns:1fr 160px}.tm-p input{grid-column:1/-1}}
+@media(max-width:820px){.tm-check{grid-template-columns:1fr;padding:20px}}
+@media(max-width:520px){.tm-p{grid-template-columns:1fr}}

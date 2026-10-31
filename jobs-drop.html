@@ -1,1363 +1,220 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Робоча сторінка — оголошення та маркетплейси</title>
-
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- БЕЗ SEO-БЛОКІВ -->
-
-  <style>
-    :root {
-      --bg:#050509;
-      --bg2:#0c0d12;
-      --card:rgba(255,255,255,0.04);
-      --card2:rgba(255,255,255,0.06);
-      --accent:#ff7a1a;
-      --accent2:#ffb347;
-      --muted:#a4a9b7;
-      --text:#f1f1f4;
-      --radius:18px;
-      --border:rgba(255,255,255,0.1);
-      --shadow:0 20px 50px rgba(0,0,0,0.55);
-      --grad:linear-gradient(135deg,var(--accent),var(--accent2));
-      --trans:0.25s;
-    }
-
-    *{margin:0;padding:0;box-sizing:border-box;}
-
-    body{
-      font-family:"Inter",sans-serif;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255,122,26,0.18), transparent 55%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.45;
-    }
-
-    a{color:inherit;text-decoration:none;}
-
-    /* HEADER */
-    header{
-      position:sticky;top:0;z-index:10;
-      padding:18px 24px;
-      display:flex;justify-content:space-between;align-items:center;
-      backdrop-filter:blur(14px);
-      background:rgba(5,5,9,0.72);
-      border-bottom:1px solid var(--border);
-    }
-    .logo{
-      font-size:clamp(20px,3vw,28px);
-      font-weight:800;
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      letter-spacing:1px;
-      text-transform:uppercase;
-    }
-
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      gap:8px;padding:12px 20px;
-      background:var(--grad);
-      border-radius:var(--radius);
-      font-size:14px;font-weight:700;
-      color:#000;cursor:pointer;border:none;
-      transition:var(--trans);
-      box-shadow:var(--shadow);
-      white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-3px);box-shadow:0 24px 50px rgba(0,0,0,0.75);}
-    .btn-outline{
-      background:transparent;border:1px solid var(--accent);
-      color:var(--accent2);box-shadow:none;
-    }
-    .btn-outline:hover{
-      background:rgba(255,122,26,0.08);
-      box-shadow:var(--shadow);
-    }
-    .btn.small{
-      padding:8px 14px;
-      font-size:12px;
-      box-shadow:none;
-    }
-    .btn i{width:20px;height:20px;}
-
-    /* SECTION BASE */
-    .section{
-      max-width:1150px;margin:50px auto;padding:0 20px;
-    }
-
-    .title{
-      font-size:clamp(24px,4vw,34px);
-      font-weight:800;margin-bottom:10px;
-      line-height:1.2;
-    }
-    .sub{
-      color:var(--muted);font-size:clamp(14px,2.4vw,16px);
-      max-width:800px;margin-bottom:24px;
-    }
-
-    /* HERO */
-    .hero{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:32px;align-items:center;
-      max-width:1150px;margin:40px auto 20px;
-      padding:0 20px;
-    }
-    .hero h1{
-      font-size:clamp(30px,4vw,45px);
-      background:var(--grad);
-      -webkit-background-clip:text;
-      color:transparent;
-      font-weight:800;
-      margin-bottom:12px;
-      line-height:1.15;
-    }
-    .hero p{
-      color:var(--muted);
-      font-size:clamp(14px,2.4vw,17px);
-      max-width:560px;
-      margin-bottom:20px;
-    }
-    .tags{
-      display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;
-    }
-    .tag{
-      padding:6px 12px;font-size:12px;
-      background:rgba(255,255,255,0.05);
-      border-radius:999px;
-      border:1px solid var(--border);
-      color:var(--muted);
-    }
-    .hero-side{
-      padding:20px;
-      background:var(--card2);
-      border-radius:24px;
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      font-size:14px;
-      color:var(--muted);
-    }
-    .hero-side ul{list-style:none;}
-    .hero-side li{
-      display:flex;align-items:flex-start;gap:8px;
-      margin-bottom:8px;
-    }
-    .hero-side li i{flex-shrink:0;}
-
-    /* GRID + CARD */
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:20px;
-    }
-
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-    .card h3{
-      font-size:18px;
-      color:var(--accent2);
-      margin-bottom:8px;
-      display:flex;align-items:center;gap:8px;
-    }
-    .card p{font-size:14px;color:var(--muted);}
-
-    /* BOARDS / MARKETPLACES LISTS */
-    .boards-wrap{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-      gap:20px;
-    }
-    .board-card{
-      background:var(--card2);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-    .board-header{
-      display:flex;justify-content:space-between;align-items:center;
-      gap:10px;margin-bottom:10px;
-    }
-    .board-title{
-      font-weight:600;
-      font-size:15px;
-    }
-    .chip-btn{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,0.02);
-      color:var(--muted);
-      font-size:11px;
-      cursor:pointer;
-      transition:var(--trans);
-    }
-    .chip-btn:hover{
-      border-color:var(--accent);
-      color:var(--accent2);
-      background:rgba(255,122,26,0.08);
-    }
-    .chip-btn i{width:14px;height:14px;}
-
-    .board-list{
-      margin-top:10px;
-      border-top:1px dashed rgba(255,255,255,0.12);
-      padding-top:10px;
-      display:none;
-    }
-    .board-list.open{display:block;}
-    .board-item{
-      margin-bottom:10px;
-      font-size:13px;
-    }
-    .board-item a{
-      font-weight:600;
-      color:var(--accent2);
-    }
-    .board-badges{
-      display:flex;flex-wrap:wrap;gap:6px;
-      margin-top:4px;
-    }
-    .badge-mini{
-      font-size:10px;
-      padding:2px 6px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.16);
-      color:var(--muted);
-    }
-    .badge-mini.plus{border-color:rgba(76,175,80,0.6);}
-    .badge-mini.minus{border-color:rgba(244,67,54,0.6);}
-
-    .board-add{
-      margin-top:10px;
-      padding-top:8px;
-      border-top:1px dashed rgba(255,255,255,0.12);
-    }
-    .board-add-form{
-      margin-top:8px;
-      display:none;
-      animation:fadeUp .3s ease both;
-    }
-    .board-add-form.open{display:block;}
-    .board-input{
-      width:100%;
-      margin-bottom:6px;
-      padding:7px 10px;
-      border-radius:10px;
-      border:1px solid var(--border);
-      background:var(--bg2);
-      color:var(--text);
-      font-size:12px;
-      resize:vertical;
-    }
-    .board-input::placeholder{color:var(--muted);}
-
-    /* PRODUCTS SECTION */
-    .tools-bar{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:16px;
-      align-items:center;
-    }
-    .tools-bar input{
-      background:var(--bg2);
-      border-radius:999px;
-      border:1px solid var(--border);
-      padding:9px 14px;
-      color:var(--text);
-      font-size:13px;
-      outline:none;
-      min-width:160px;
-    }
-    .tools-bar input::placeholder{color:var(--muted);}
-
-    #productsGrid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-      gap:18px;
-    }
-
-    .product-card-ad{
-      background:var(--card2);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:16px;
-      box-shadow:var(--shadow);
-      opacity:0;
-      transform:translateY(8px);
-      transition:0.3s ease;
-    }
-    .product-card-ad.show{
-      opacity:1;
-      transform:translateY(0);
-    }
-
-    .product-ad-top{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:8px;
-      font-size:11px;
-      color:var(--muted);
-    }
-    .product-ad-category{
-      padding:3px 8px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      font-size:11px;
-      max-width:60%;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .product-ad-sku{
-      opacity:0.8;
-    }
-
-    .product-ad-main{
-      display:grid;
-      grid-template-columns:100px 1fr;
-      gap:12px;
-      align-items:flex-start;
-    }
-    .product-ad-main img{
-      width:100%;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.15);
-      object-fit:cover;
-      max-height:110px;
-    }
-
-    .product-ad-title{
-      font-size:14px;
-      font-weight:600;
-      margin-bottom:6px;
-    }
-    .product-ad-price-row{
-      display:flex;align-items:center;gap:8px;
-      margin-bottom:8px;
-      font-size:13px;
-      flex-wrap:wrap;
-    }
-    .product-ad-price{
-      font-weight:700;
-      color:var(--accent2);
-    }
-
-    .copy-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-bottom:8px;
-    }
-
-    .product-ad-desc textarea{
-      width:100%;
-      min-height:70px;
-      resize:vertical;
-      background:var(--bg2);
-      border-radius:12px;
-      border:1px solid var(--border);
-      color:var(--text);
-      font-size:12px;
-      padding:8px 10px;
-      margin-bottom:6px;
-    }
-
-    .product-ad-image-row{
-      display:flex;
-      gap:6px;
-      margin-bottom:6px;
-      align-items:center;
-    }
-    .product-ad-image-row input{
-      flex:1;
-      background:var(--bg2);
-      border-radius:999px;
-      border:1px solid var(--border);
-      padding:7px 10px;
-      color:var(--text);
-      font-size:11px;
-      min-width:0;
-    }
-
-    .product-ad-footer{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      justify-content:flex-end;
-      margin-top:6px;
-    }
-
-    .badge-sale{
-      display:inline-block;
-      padding:2px 6px;
-      border-radius:999px;
-      background:rgba(255,78,109,0.18);
-      color:#ff9bb0;
-      font-size:10px;
-      margin-left:6px;
-    }
-
-    .load-more-wrap{
-      text-align:center;
-      margin-top:18px;
-    }
-
-    /* TOAST */
-    .copy-toast{
-      position:fixed;
-      left:50%;bottom:20px;
-      transform:translateX(-50%) translateY(20px);
-      background:var(--card2);
-      border-radius:999px;
-      padding:8px 16px;
-      font-size:12px;
-      border:1px solid var(--border);
-      color:var(--accent2);
-      opacity:0;
-      pointer-events:none;
-      transition:0.25s;
-      z-index:30;
-    }
-    .copy-toast.show{
-      opacity:1;
-      transform:translateX(-50%) translateY(0);
-    }
-
-    /* TIPS */
-    .tips-list{
-      list-style:none;
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:16px;
-      margin-top:10px;
-    }
-    .tips-list li{
-      background:var(--card2);
-      border-radius:var(--radius);
-      border:1px solid var(--border);
-      padding:14px 16px;
-      font-size:13px;
-      color:var(--muted);
-    }
-    .tips-list strong{
-      color:var(--accent2);
-    }
-
-    footer{
-      text-align:center;padding:22px;
-      color:var(--muted);font-size:13px;
-      border-top:1px solid var(--border);
-      margin-top:40px;
-    }
-
-    /* MOBILE */
-    @media(max-width:900px){
-      .hero{
-        grid-template-columns:1fr;
-        margin-top:20px;
-      }
-      .hero-side{
-        order:-1;
-      }
-      #productsGrid{
-        grid-template-columns:1fr;
-      }
-      .product-ad-main{
-        grid-template-columns:80px 1fr;
-      }
-    }
-
-    @media(max-width:480px){
-      header{
-        padding:14px 16px;
-      }
-      .btn{
-        padding:10px 14px;
-        font-size:13px;
-      }
-      .hero h1{
-        font-size:26px;
-      }
-      .section{
-        margin:40px auto;
-      }
-      .product-ad-main{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @keyframes fadeUp{
-      0%{opacity:0;transform:translateY(10px);}
-      100%{opacity:1;transform:translateY(0);}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Робочий кабінет для оголошень — Samostroy Shop</title>
+<meta name="description" content="Внутрішня сторінка команди Samostroy Shop: план на день, майданчики, товари з готовими текстами й чекліст перед публікацією.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="https://samostroy.shop/jobs-drop.html">
+<meta name="theme-color" content="#2b3138">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Samostroy Shop">
+<meta property="og:locale" content="uk_UA">
+<meta property="og:title" content="Партнерський кабінет Samostroy Shop">
+<meta property="og:description" content="Каталог для партнерів: ціни, наявність, ваш дохід, готові тексти й фото для оголошень.">
+<meta property="og:url" content="https://samostroy.shop/jobs-drop.html">
+<meta property="og:image" content="https://samostroy.shop/DropSamostroyShop.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kabinet.dropoffice.com.ua">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"OnlineStore","@id":"https://samostroy.shop/#store","name":"Samostroy Shop","url":"https://samostroy.shop/","logo":"https://samostroy.shop/samostroy-shop-logo.jpg","image":"https://samostroy.shop/samostroy-preview.jpg","telephone":"+380984927948","description":"Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.","areaServed":"UA","currenciesAccepted":"UAH","paymentAccepted":"Cash on delivery, Card","address":{"@type":"PostalAddress","addressCountry":"UA"},"sameAs":["https://t.me/samostroy_shop","https://www.tiktok.com/@stroyshop_ua","https://www.instagram.com/samostroy.shop"]},
+{"@type":"WebSite","@id":"https://samostroy.shop/#site","url":"https://samostroy.shop/","name":"Samostroy Shop","inLanguage":"uk","publisher":{"@id":"https://samostroy.shop/#store"},"potentialAction":{"@type":"SearchAction","target":"https://samostroy.shop/?q={search_term_string}","query-input":"required name=search_term_string"}}
+]}
+</script>
+<script type="application/ld+json" id="ld"></script>
+<link rel="stylesheet" href="shop.css?v=9572495d">
+<link rel="stylesheet" href="partners.css?v=2897fb9d">
+<link rel="stylesheet" href="team.css?v=7992e892">
 </head>
-<body>
+<body class="pk-team">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+ <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"/><circle cx="10" cy="20.5" r="1.3"/><circle cx="17" cy="20.5" r="1.3"/></symbol>
+ <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1"/></symbol>
+ <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+ <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></symbol>
+ <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+ <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/></symbol>
+ <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M9 9a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.9V15"/><circle cx="12" cy="18.5" r=".6"/><circle cx="12" cy="12" r="10"/></symbol>
+ <symbol id="i-tg" viewBox="0 0 24 24"><path d="M21.5 4.5 2.8 11.6c-.9.4-.9 1.6.1 1.9l4.6 1.4 1.8 5.5c.3.8 1.3 1 1.9.4l2.6-2.5 4.8 3.5c.7.5 1.7.1 1.9-.7L22.9 5.8c.2-1-.6-1.7-1.4-1.3z"/><path d="m7.5 14.9 10-7.4-7.4 8.5"/></symbol>
+</svg>
 
 <header>
-  <div class="logo">Samostroy Shop</div>
-  <a href="index.html" class="btn btn-outline">
-    <i data-lucide="arrow-left"></i> Назад до магазину
-  </a>
+ <div class="w hd">
+  <a class="logo" href="./"><img src="logo.jpg" alt="Samostroy Shop" width="44" height="44"><span>Samostroy Shop<small data-i="tag">Ремонт своїми руками</small></span></a>
+  <button class="hcat" data-a="mega" aria-expanded="false" aria-controls="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+  <div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q" autocomplete="off" data-ip="ph" placeholder="Пошук: 3D панель, PET плитка, артикул" aria-label="Пошук товарів"><button class="x" data-a="clr" aria-label="Очистити" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
+  <a class="hphone" href="tel:+380984927948">+380 98 492 79 48</a>
+  <div class="lg"><button data-l="uk" class="on">UA</button><button data-l="ru">RU</button></div>
+  <button class="btn hcart" data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="lbl" data-i="cart">Кошик</span><span class="cnt" data-cnt>0</span></button>
+ </div>
+ <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
+ <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div>
-    <h1>Робочий кабінет для оголошень</h1>
-    <p>
-      Внутрішня сторінка для щоденної роботи з товарами: дошки оголошень,
-      маркетплейси, копіювання заголовків, описів, цін і фото в один клік —
-      зручно і з комп’ютера, і з телефону.
-    </p>
-
-    <div class="tags">
-      <span class="tag">Копіювання в 1 клік</span>
-      <span class="tag">Готові шаблони текстів</span>
-      <span class="tag">Оголошення + маркетплейси</span>
-    </div>
+<main id="top" class="tm-page">
+<section class="w hero lhero tm-hero">
+ <div>
+  <nav class="crumbs" aria-label="Breadcrumb"><span><a href="./">Головна</a></span><span><a href="jobs.html">Команда</a></span><span>Робочий кабінет</span></nav>
+  <h1>Робочий кабінет для оголошень</h1>
+  <p class="lead">Внутрішня сторінка команди: план на день, майданчики, де ми присутні, товари з готовими текстами й чекліст перед публікацією. Працює з телефона й комп’ютера.</p>
+  <div class="acts"><a class="btn" href="#today">План на сьогодні</a><a class="btn ghost" href="#tool">Товари й тексти</a></div>
+  <div class="facts">
+   <div><b>План на день</b><span>Оновлюється щодня</span></div>
+   <div><b>Майданчики</b><span>Статус, посилання, нотатки</span></div>
+   <div><b>Тексти в 1 клік</b><span>Назва, опис, фото, CSV</span></div>
+   <div><b>Чекліст</b><span>10 пунктів перед публікацією</span></div>
   </div>
-
-  <div class="hero-side">
-    <ul>
-      <li><i data-lucide="mouse-pointer-2"></i>Усі товари в одному місці для швидкого копіювання.</li>
-      <li><i data-lucide="copy"></i>Кнопки копіювання заголовків, цін, описів, фото та повного тексту.</li>
-      <li><i data-lucide="smartphone"></i>Адаптовано під роботу з телефона, щоб можна було працювати “на ходу”.</li>
-    </ul>
-  </div>
+ </div>
+ <div class="tm-today" id="today">
+  <div class="tm-th"><b>Сьогодні</b><span id="tmDate"></span></div>
+  <div class="ac-pb"><i id="tmBar"></i></div>
+  <ul class="tm-list" id="tmDay"></ul>
+  <p class="tm-note" id="tmDone"></p>
+ </div>
 </section>
 
-<!-- 1. БЕЗКОШТОВНІ ДОШКИ ОГОЛОШЕНЬ -->
-<section class="section" id="free-boards">
-  <h2 class="title">Безкоштовні дошки оголошень</h2>
-  <p class="sub">
-    Майданчики, де можна стартувати без бюджету. Спочатку тестуємо попит саме тут,
-    дивимось, що продається краще, а потім вже масштабуючи — підключаємо платні інструменти.
-  </p>
-
-  <div class="boards-wrap">
-    <!-- Загальні дошки -->
-    <div class="board-card">
-      <div class="board-header">
-        <div class="board-title">Загальні дошки по всій Україні</div>
-        <button class="chip-btn js-toggle-board" data-target="freeBoardsList1">
-          <i data-lucide="list-collapse"></i> Показати список
-        </button>
-      </div>
-      <div class="board-list" id="freeBoardsList1">
-        <div class="board-item">
-          <a href="https://www.olx.ua" target="_blank" rel="noopener">OLX.ua</a>
-          <div>Найбільша дошка оголошень. Базове розміщення безкоштовне, є платне підняття та просування.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">максимальний трафік</span>
-            <span class="badge-mini minus">висока конкуренція</span>
-          </div>
-        </div>
-        <div class="board-item">
-          <a href="https://besplatka.ua" target="_blank" rel="noopener">Besplatka.ua</a>
-          <div>Класична дошка з можливістю розміщувати оголошення по містах та категоріях.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">легка модерація</span>
-          </div>
-        </div>
-        <div class="board-item">
-          <a href="https://obyava.ua" target="_blank" rel="noopener">Obyava.ua</a>
-          <div>Оголошення з акцентом на товари для дому, послуги та різні категорії.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">зручний інтерфейс</span>
-          </div>
-        </div>
-        <div class="board-item">
-          <a href="https://izi.ua" target="_blank" rel="noopener">IZI.ua</a>
-          <div>Платформа оголошень із сучасним інтерфейсом, підходить для декору та дрібних товарів.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">зручний для мобільних</span>
-          </div>
-        </div>
-
-        <div class="board-add">
-          <button class="chip-btn js-add-toggle" data-target="freeBoardsList1Add">
-            <i data-lucide="plus"></i> Додати свій сайт
-          </button>
-          <div class="board-add-form" id="freeBoardsList1Add">
-            <input type="text" class="board-input js-board-name" placeholder="Назва сайту">
-            <input type="url" class="board-input js-board-url" placeholder="Посилання (https://...)">
-            <textarea class="board-input js-board-notes" placeholder="Короткий опис / особливості"></textarea>
-            <button class="btn small js-board-save" data-list="freeBoardsList1">
-              <i data-lucide="save"></i> Зберегти до списку
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Локальні та тематичні -->
-    <div class="board-card">
-      <div class="board-header">
-        <div class="board-title">Локальні та тематичні дошки</div>
-        <button class="chip-btn js-toggle-board" data-target="freeBoardsList2">
-          <i data-lucide="list-collapse"></i> Показати список
-        </button>
-      </div>
-      <div class="board-list" id="freeBoardsList2">
-        <div class="board-item">
-          <a href="#" target="_blank" rel="noopener">Міські портали</a>
-          <div>Сайти окремих міст (форум, локальна дошка, групи оголошень). Добре працюють для регіональних акцій.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">локальна аудиторія</span>
-          </div>
-        </div>
-        <div class="board-item">
-          <a href="#" target="_blank" rel="noopener">Дошки “ремонт/будівництво”</a>
-          <div>Спеціалізовані ресурси, де сидять майстри та люди, які активно ремонтуються.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">цільова аудиторія</span>
-          </div>
-        </div>
-
-        <div class="board-add">
-          <button class="chip-btn js-add-toggle" data-target="freeBoardsList2Add">
-            <i data-lucide="plus"></i> Додати свій сайт
-          </button>
-          <div class="board-add-form" id="freeBoardsList2Add">
-            <input type="text" class="board-input js-board-name" placeholder="Назва сайту">
-            <input type="url" class="board-input js-board-url" placeholder="Посилання (https://...)">
-            <textarea class="board-input js-board-notes" placeholder="Короткий опис / особливості"></textarea>
-            <button class="btn small js-board-save" data-list="freeBoardsList2">
-              <i data-lucide="save"></i> Зберегти до списку
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<section class="w sec" id="places" style="padding-top:8px">
+ <h2>Майданчики</h2>
+ <p class="soft tm-sub">Відмічайте статус і зберігайте посилання на наш профіль чи магазин. Дані зберігаються в цьому браузері — для передачі колезі є експорт у CSV.</p>
+ <div class="tm-tabs" id="tmTabs" role="tablist"></div>
+ <div class="tm-pl" id="tmPlaces"></div>
+ <div class="tm-add">
+  <input id="tmNewN" placeholder="Назва майданчика" aria-label="Назва майданчика"><input id="tmNewU" placeholder="https://" inputmode="url" aria-label="Посилання">
+  <button type="button" class="btn sm" id="tmAdd">Додати майданчик</button>
+  <button type="button" class="btn sm ghost" id="tmCsv">Експорт у CSV</button>
+ </div>
 </section>
 
-<!-- 2. ПЛАТНІ ДОШКИ -->
-<section class="section" id="paid-boards">
-  <h2 class="title">Платні дошки та просування оголошень</h2>
-  <p class="sub">
-    Тут фіксуємо, де доведеться платити або за пакет оголошень, або за просування.
-    Список зручний для планування бюджету та тестів.
-  </p>
-
-  <div class="boards-wrap">
-    <div class="board-card">
-      <div class="board-header">
-        <div class="board-title">Платні опції на великих дошках</div>
-        <button class="chip-btn js-toggle-board" data-target="paidBoardsList1">
-          <i data-lucide="list-collapse"></i> Показати список
-        </button>
-      </div>
-      <div class="board-list" id="paidBoardsList1">
-        <div class="board-item">
-          <a href="https://www.olx.ua" target="_blank" rel="noopener">OLX — платне просування</a>
-          <div>Підняття в топ, VIP-оголошення, пакети розміщень. Має сенс для сильних позицій і сезонних товарів.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">максимальне охоплення</span>
-            <span class="badge-mini minus">потрібен контроль окупності</span>
-          </div>
-        </div>
-        <div class="board-item">
-          <a href="https://prom.ua" target="_blank" rel="noopener">Prom.ua — платні пакети</a>
-          <div>Можна використовувати як додаткову точку присутності з платною рекламою й тарифами.</div>
-          <div class="board-badges">
-            <span class="badge-mini plus">сильний трафік</span>
-            <span class="badge-mini minus">комісія/передплата</span>
-          </div>
-        </div>
-
-        <div class="board-add">
-          <button class="chip-btn js-add-toggle" data-target="paidBoardsList1Add">
-            <i data-lucide="plus"></i> Додати свій сайт
-          </button>
-          <div class="board-add-form" id="paidBoardsList1Add">
-            <input type="text" class="board-input js-board-name" placeholder="Назва сайту / сервісу">
-            <input type="url" class="board-input js-board-url" placeholder="Посилання (https://...)">
-            <textarea class="board-input js-board-notes" placeholder="За що платимо, яка модель (CPC, пакет, комісія)"></textarea>
-            <button class="btn small js-board-save" data-list="paidBoardsList1">
-              <i data-lucide="save"></i> Зберегти до списку
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="board-card">
-      <div class="board-header">
-        <div class="board-title">Окремі платні дошки</div>
-        <button class="chip-btn js-toggle-board" data-target="paidBoardsList2">
-          <i data-lucide="list-collapse"></i> Показати список
-        </button>
-      </div>
-      <div class="board-list" id="paidBoardsList2">
-        <div class="board-item">
-          <a href="#" target="_blank" rel="noopener">Спеціалізовані платні ресурси</a>
-          <div>Дошки, де обов’язкова оплата за доступ або за кожне оголошення. Використовуємо точково, після тестів.</div>
-        </div>
-
-        <div class="board-add">
-          <button class="chip-btn js-add-toggle" data-target="paidBoardsList2Add">
-            <i data-lucide="plus"></i> Додати свій сайт
-          </button>
-          <div class="board-add-form" id="paidBoardsList2Add">
-            <input type="text" class="board-input js-board-name" placeholder="Назва сайту">
-            <input type="url" class="board-input js-board-url" placeholder="Посилання (https://...)">
-            <textarea class="board-input js-board-notes" placeholder="Коротко про умови, тариф, обмеження"></textarea>
-            <button class="btn small js-board-save" data-list="paidBoardsList2">
-              <i data-lucide="save"></i> Зберегти до списку
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<section class="w pk-tool" id="tool" aria-label="Товари для оголошень">
+ <h2 class="tm-h2">Товари для оголошень</h2>
+ <p class="soft tm-sub">Пошук, тексти без HTML, посилання на фото й CSV. Ціни — як у магазині. «Мій список» зберігається окремо від партнерського.</p>
+ <div class="pk-bar">
+  <div class="pk-s"><svg class="i"><use href="#i-search"/></svg><input type="search" id="pkQ" placeholder="Назва, артикул SW-, колір" autocomplete="off" aria-label="Пошук товару"></div>
+  <select id="pkCat" aria-label="Категорія"><option value="">Усі категорії</option></select>
+  <select id="pkSort" aria-label="Сортування"><option value="">Рекомендовані</option><option value="new">Новинки</option><option value="lo">Дешевші</option><option value="hi">Дорожчі</option></select>
+  <label class="pk-av"><input type="checkbox" id="pkAv" checked><span>Лише в наявності</span></label>
+  <button type="button" class="pk-list" id="pkListBtn" aria-pressed="false">Мій список <b id="pkListN">0</b></button>
+ </div>
+ <div class="pk-price">
+  <div class="pk-lv" role="group" aria-label="Ваш рівень"><span>Ваш рівень</span><button type="button" data-pk="lv" data-v="10" class="on">Starter ≈10%</button><button type="button" data-pk="lv" data-v="15">Pro ≈15%</button></div>
+  <label class="pk-mk"><span>Ваша ціна: рекомендована <b id="pkMkO">+0%</b></span><input type="range" id="pkMk" min="0" max="50" step="1" value="0"></label>
+  <p class="pk-pn">Дохід розраховано орієнтовно від рекомендованої ціни. Точні оптові ціни — у прайсі від менеджера.</p>
+ </div>
+ <div class="pk-bulk" id="pkBulk" hidden>
+  <span id="pkBulkT"></span>
+  <button type="button" class="btn sm" data-pk="copyall">Скопіювати всі тексти</button>
+  <button type="button" class="btn sm ghost" data-pk="csv">Завантажити CSV</button>
+  <button type="button" class="btn sm ghost" data-pk="tglist">Надіслати менеджеру</button>
+  <button type="button" class="link" data-pk="clear">Очистити список</button>
+ </div>
+ <p class="pk-cnt" id="pkCnt" aria-live="polite"></p>
+ <div class="pk-grid" id="pkGrid">
+  <div class="sk" style="aspect-ratio:3/5"></div><div class="sk" style="aspect-ratio:3/5"></div><div class="sk" style="aspect-ratio:3/5"></div><div class="sk" style="aspect-ratio:3/5"></div>
+ </div>
+ <p class="pk-more"><button type="button" class="btn ghost" id="pkMore" hidden>Показати ще</button></p>
 </section>
 
-<!-- 3. МАРКЕТПЛЕЙСИ -->
-<section class="section" id="marketplaces">
-  <h2 class="title">Маркетплейси: де варто бути присутнім</h2>
-  <p class="sub">
-    Маркетплейси — це вже “вітрина під ключ”: там важливі рейтинг, відгуки та якість картки товару.
-    Ця секція допомагає не загубити, де ми вже є, а де ще в процесі підключення.
-  </p>
-
-  <div class="boards-wrap">
-    <div class="board-card">
-      <div class="board-header">
-        <div class="board-title">Умовно безкоштовні маркетплейси</div>
-        <button class="chip-btn js-toggle-board" data-target="freeMarketsList">
-          <i data-lucide="list-collapse"></i> Показати список
-        </button>
-      </div>
-      <div class="board-list" id="freeMarketsList">
-        <div class="board-item">
-          <a href="https://prom.ua" target="_blank" rel="noopener">Prom.ua</a>
-          <div>Маркетплейс з каталогом, де можна просуватись як за тарифами, так і частково органічно.</div>
-        </div>
-        <div class="board-item">
-          <a href="#" target="_blank" rel="noopener">Локальні маркетплейси</a>
-          <div>Невеликі платформи, де конкуренції менше, але є цільові покупці.</div>
-        </div>
-
-        <div class="board-add">
-          <button class="chip-btn js-add-toggle" data-target="freeMarketsListAdd">
-            <i data-lucide="plus"></i> Додати свій маркетплейс
-          </button>
-          <div class="board-add-form" id="freeMarketsListAdd">
-            <input type="text" class="board-input js-board-name" placeholder="Назва маркетплейсу">
-            <input type="url" class="board-input js-board-url" placeholder="Посилання (https://...)">
-            <textarea class="board-input js-board-notes" placeholder="Особливості, комісія, формат продавців"></textarea>
-            <button class="btn small js-board-save" data-list="freeMarketsList">
-              <i data-lucide="save"></i> Зберегти до списку
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="board-card">
-      <div class="board-header">
-        <div class="board-title">Платні маркетплейси</div>
-        <button class="chip-btn js-toggle-board" data-target="paidMarketsList">
-          <i data-lucide="list-collapse"></i> Показати список
-        </button>
-      </div>
-      <div class="board-list" id="paidMarketsList">
-        <div class="board-item">
-          <a href="#" target="_blank" rel="noopener">Маркетплейси з підпискою або високою комісією</a>
-          <div>Сюди виносимо майданчики, де треба рахувати економіку дуже уважно.</div>
-        </div>
-
-        <div class="board-add">
-          <button class="chip-btn js-add-toggle" data-target="paidMarketsListAdd">
-            <i data-lucide="plus"></i> Додати свій маркетплейс
-          </button>
-          <div class="board-add-form" id="paidMarketsListAdd">
-            <input type="text" class="board-input js-board-name" placeholder="Назва маркетплейсу">
-            <input type="url" class="board-input js-board-url" placeholder="Посилання (https://...)">
-            <textarea class="board-input js-board-notes" placeholder="Комісія, умови підключення, бонуси"></textarea>
-            <button class="btn small js-board-save" data-list="paidMarketsList">
-              <i data-lucide="save"></i> Зберегти до списку
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<section class="w sec" id="check" style="padding-top:8px">
+ <div class="tm-check">
+  <div><h2>Чекліст перед публікацією</h2><p class="soft">Пройдіть 10 пунктів перед кожним новим оголошенням — так воно виглядає професійно й збирає більше заявок. Позначки скидаються кнопкою для наступного оголошення.</p>
+   <div class="tm-score"><b id="tmCk">0 / 10</b><button type="button" class="link" id="tmCkReset">Нове оголошення — скинути</button></div></div>
+  <ul class="tm-list tm-cl" id="tmCheck"></ul>
+ </div>
 </section>
 
-<!-- 4. ТОВАРИ ДЛЯ КОПІЮВАННЯ -->
-<section class="section" id="products">
-  <h2 class="title">Товари для копіювання на дошки та маркетплейси</h2>
-  <p class="sub">
-    Обирай позицію, копіюй заголовок, опис, ціну, посилання на фото або готовий текст оголошення — і вставляй на майданчики.
-  </p>
-
-  <div class="tools-bar">
-    <input type="text" id="searchInput" placeholder="Пошук за назвою або артикулом...">
-    <button class="chip-btn" id="clearFiltersBtn">
-      <i data-lucide="x-circle"></i> Скинути пошук
-    </button>
-  </div>
-
-  <div id="productsGrid"></div>
-
-  <div class="load-more-wrap">
-    <button class="btn btn-outline small" id="loadMoreBtn">
-      <i data-lucide="plus"></i> Показати ще товари
-    </button>
-  </div>
+<section class="w sec" id="links" style="padding-top:8px">
+ <h2>Корисне для команди</h2>
+ <div class="pk-where">
+  <a href="partners.html"><b>Партнерський кабінет</b><span>Те, що бачать наші партнери: каталог, дохід, шаблони відповідей.</span><em>Партнери</em></a>
+  <a href="course-sales3.html"><b>Курс «Продажі 3.0»</b><span>Скрипти чату й дзвінків, ТОП-10 заперечень.</span><em>Навчання</em></a>
+  <a href="course-dropshipping.html#l=m5l1"><b>Відео, які продають</b><span>Формати й сценарії для TikTok і Reels.</span><em>Навчання</em></a>
+  <a href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><b>Менеджер у Telegram</b><span>Питання щодо наявності, замовлень і відправок.</span><em>Зв’язок</em></a>
+ </div>
 </section>
+</main>
 
-<!-- 5. ПОРАДИ -->
-<section class="section" id="tips">
-  <h2 class="title">Поради: заголовки, УТП та структура оголошення</h2>
-  <p class="sub">
-    Маленький чек-лист перед публікацією, щоб оголошення виглядало як у професіонала.
-  </p>
 
-  <ul class="tips-list">
-    <li>
-      <strong>1. Заголовок = що + де + для кого.</strong><br>
-      “Вінілова плитка під дерево | Для кухні та коридору | Вологостійка”.  
-      Ключові слова + зона використання + основна вигода.
-    </li>
-    <li>
-      <strong>2. УТП.</strong><br>
-      Чітко відповісти: чому купувати саме у нас?  
-      “Підбір під ваш ремонт”, “Відправка в день замовлення”, “Опт/дрібний опт”.
-    </li>
-    <li>
-      <strong>3. Структура опису.</strong><br>
-      1) Де використовується.<br>
-      2) Переваги (зносостійкість, водостійкість).<br>
-      3) Характеристики (розмір, товщина, матеріал).<br>
-      4) Як замовити.
-    </li>
-    <li>
-      <strong>4. Фото.</strong><br>
-      Перше фото — найкраще. Показати інтер’єр, фактуру, масштаб.
-    </li>
-    <li>
-      <strong>5. Ціна.</strong><br>
-      Писати чесну ціну. “УЦІНКА” — виносити в заголовок і перший рядок опису.
-    </li>
-    <li>
-      <strong>6. Локація + доставка.</strong><br>
-      Місто + служба доставки + орієнтовні строки — мінус купа однакових питань.
-    </li>
-    <li>
-      <strong>7. Заклик до дії.</strong><br>
-      “Напишіть у чат — підберемо під вашу кімнату”, “Скинемо додаткові фото”.
-    </li>
-    <li>
-      <strong>8. Правила майданчика.</strong><br>
-      Без капслоку на півтексту, без 100 емодзі й “100% гарантія на все”.
-    </li>
-    <li>
-      <strong>9. Один товар — одне оголошення.</strong><br>
-      Краще 3 окремих картки по кольорам, ніж одна “збірна солянка”.
-    </li>
-    <li>
-      <strong>10. Аналіз.</strong><br>
-      Фіксувати, що працює найкраще: заголовок, фото, текст, платне просування.
-    </li>
-  </ul>
-</section>
 
 <footer>
-  © <span id="year"></span> Samostroy Shop — робоча сторінка для команди
+ <div class="w">
+  <div class="fg">
+   <div>
+    <a class="logo" href="./" style="margin-bottom:12px" data-home><img src="logo.jpg" alt="" width="44" height="44"><span style="color:#fff">Samostroy Shop</span></a>
+    <p style="font-size:14px;max-width:34ch" data-i="fabout">Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.</p>
+    <p style="margin-top:12px"><a href="tel:+380984927948">+380 98 492 79 48</a></p>
+   </div>
+   <div><h3 data-i="fcat">Каталог</h3><ul>
+    <li><a href="?c=3d-paneli">3D панелі</a></li><li><a href="?g=plytka">Плитка</a></li><li><a href="?c=samokleyucha-plivka">Самоклеюча плівка</a></li><li><a href="?c=shpalery">Шпалери</a></li><li><a href="?g=pidloga">Підлога</a></li><li><a href="?c=ekoshkira">Екошкіра</a></li></ul></div>
+   <div><h3 data-i="fspec">Добірки</h3><ul>
+    <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
+   <div><h3 data-i="fbiz">Співпраця</h3><ul>
+    <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="partners.html" data-i="fp">Партнерам</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
+  </div>
+  <div class="fbot"><span>© <span id="yr">2026</span> Samostroy Shop</span><span><a href="https://t.me/samostroy_shop" target="_blank" rel="noopener">Telegram</a> &nbsp; <a href="https://www.tiktok.com/@stroyshop_ua" target="_blank" rel="noopener">TikTok</a> &nbsp; <a href="https://www.instagram.com/samostroy.shop" target="_blank" rel="noopener">Instagram</a></span></div>
+ </div>
 </footer>
 
-<div class="copy-toast" id="copyToast">
-  Скопійовано в буфер обміну
+<nav class="mbar" aria-label="Швидка навігація">
+ <button data-a="mega"><svg class="i"><use href="#i-grid"/></svg><span data-i="cat">Каталог</span></button>
+ <button data-a="msearch"><svg class="i"><use href="#i-search"/></svg><span data-i="srch">Пошук</span></button>
+ <button data-a="quiz"><svg class="i"><use href="#i-quiz"/></svg><span data-i="pick">Підбір</span></button>
+ <button data-a="cart"><svg class="i"><use href="#i-cart"/></svg><span class="cnt" data-cnt>0</span><span data-i="cart">Кошик</span></button>
+</nav>
+
+<div class="fab" id="fab">
+ <div class="menu" id="fabm" hidden>
+  <p data-i="fabp">Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.</p>
+  <a id="fabtg" href="https://t.me/manager_samostroy_shop" target="_blank" rel="noopener"><span class="dot" style="background:#229ed9"></span>Telegram</a>
+  <a id="fabvb" href="#" hidden><span class="dot" style="background:#7360f2"></span>Viber</a>
+  <a href="tel:+380984927948"><span class="dot" style="background:var(--ok)"></span><span data-i="call">Подзвонити</span></a>
+ </div>
+ <button class="main" data-a="fab" aria-expanded="false" aria-controls="fabm" aria-label="Написати менеджеру"><svg class="i"><use href="#i-chat"/></svg></button>
 </div>
 
-<script>
-  /* =======================
-     0. БАЗА
-  ======================= */
-  const XML_FEED_URL = 'products.xml';
+<div class="shade" id="shade" data-a="close"></div>
+<aside id="cart" aria-label="Кошик" aria-hidden="true">
+ <div class="dh"><b><span data-i="cart">Кошик</span> <span class="soft" id="cn" style="font-family:var(--f-b);font-weight:500;font-size:15px"></span></b><button class="xb" data-a="close" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button></div>
+ <div class="dbody">
+  <div id="items"></div>
+  <div class="clr" id="clr" hidden><button class="link" data-a="tocat" data-i="more2">Додати ще товари</button><button class="link" style="color:var(--soft)" data-a="clearcart" data-i="clearc">Очистити кошик</button></div>
+  <div class="form" id="cform">
+   <h3 data-i="who">Куди відправити</h3>
+   <input id="fn" autocomplete="name" data-ip="nm" placeholder="Ім’я">
+   <input id="fp" type="tel" autocomplete="tel" inputmode="tel" data-ip="phn" placeholder="Телефон">
+   <div class="hint" id="hint"></div>
+   <input id="fc" autocomplete="address-level2" data-ip="cy" placeholder="Місто та відділення пошти">
+   <input id="fhp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Не заповнюйте">
+   <fieldset><legend data-i="pay">Оплата</legend><label><input type="radio" name="pay" value="p1" checked><span data-i="p1">При отриманні</span></label><label><input type="radio" name="pay" value="p2"><span data-i="p2">На картку</span></label></fieldset>
+   <fieldset><legend data-i="dl">Доставка</legend><label><input type="radio" name="dl" value="d1" checked><span>Нова Пошта</span></label><label><input type="radio" name="dl" value="d2"><span>Укрпошта</span></label></fieldset>
+   <div class="guar">
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g1">Безкоштовно порахуємо кількість</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g2">Відправка в день замовлення</span></span>
+    <span><svg class="i"><use href="#i-check"/></svg><span data-i="g3">Обмін і повернення 14 днів</span></span>
+   </div>
+  </div>
+ </div>
+ <div class="dfoot" id="dfoot">
+  <div class="tot"><span data-i="tot">Разом</span><span id="total">0 ₴</span></div>
+  <button class="btn" data-a="order" data-i="send">Надіслати замовлення менеджеру</button>
+ </div>
+</aside>
 
-  const productsGrid = document.getElementById('productsGrid');
-  const loadMoreBtn = document.getElementById('loadMoreBtn');
-  const searchInput = document.getElementById('searchInput');
-  const clearFiltersBtn = document.getElementById('clearFiltersBtn');
-  const copyToast = document.getElementById('copyToast');
+<dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
 
-  let ALL_PRODUCTS = [];
-  let FILTERED_PRODUCTS = [];
-  const PAGE_SIZE = 30;
-  let visibleCount = PAGE_SIZE;
-
-  function money(n){
-    const num = Number(n);
-    if(isNaN(num)) return '';
-    return new Intl.NumberFormat('uk-UA',{
-      style:'currency',
-      currency:'UAH',
-      maximumFractionDigits:0
-    }).format(num);
-  }
-
-  function highlightSale(text){
-    if(!text) return '';
-    return text.replace(/УЦІНКА/gi,'<span class="badge-sale">УЦІНКА</span>');
-  }
-
-  function showToast(){
-    if(!copyToast) return;
-    copyToast.classList.add('show');
-    setTimeout(()=>copyToast.classList.remove('show'),1500);
-  }
-
-  async function copyText(text){
-    if(!text) return;
-    try{
-      await navigator.clipboard.writeText(text);
-      showToast();
-    }catch(e){
-      window.prompt('Скопіюйте текст вручну:', text);
-    }
-  }
-
-  /* =======================
-     1. КАТЕГОРІЇ ПО TITLE (як на головній)
-  ======================= */
-  const CATEGORY_KEYWORDS = [
-    { name: '3D панелі', keywords: ['3D панель', 'Панель стеніва', '3D']},
-    { name: 'Декоративні 3D панелі', keywords: ['Декоративна 3D панель'] },
-    { name: 'ПВХ панелі і плити', keywords: ['ПВХ панель', 'ПВХ плита', 'ПВХ'] },
-    { name: 'Стенові панелі', keywords: ['Панель стінова', 'Панель-рейка', 'Панель рейка'] },
-    { name: 'Покриття вінілове', keywords: ['Покриття вінілове самоклеюче'] },
-    { name: 'Плитка', keywords: ['Вінілова плитка', 'Вінілова плита', 'ПВХ плитка', 'Поліуретанова плитка', 'Алюмінієва плитка', 'LVT плитка', 'Плитка під ковролін'] },
-    { name: 'PET плитка', keywords: ['Стінова PET плитка', 'PET мозаіка', 'PET плитка у рулоні'] },
-    { name: 'Профілі та декор', keywords: ['Профіль', 'Рейка декоративна', 'Молдинг'] },
-    { name: 'Плінтуси', keywords: ['Плінтус РР', 'Плінтус вініловий', 'Плінтус'] },
-    { name: 'Самоклеюча плівка', keywords: ['Плівка самоклеюча', 'Плівка', 'Плівка віконна'] },
-    { name: 'Шпалери', keywords: ['Шпалери'] },
-    { name: 'Теплі шпалери', keywords: ['Теплі шпалери'] },
-    { name: 'Мозаїка з декоративного скла', keywords: ['Мозаїка з декоративного скла'] },
-    { name: 'Підлогове вінілове покриття', keywords: ['Вінілове покриття', 'Напольное виниловое покрытие'] },
-    { name: 'Покриття вінілове самоклеюче 3D рейки', keywords: ['Покриття вінілове самоклеюче 3D рейки'] },
-    { name: 'Підлога-пазл', keywords: ['Підлога пазл', 'Підлога-пазл', 'Підлога-пазл плюшевий'] },
-    { name: 'Килимки термо (дитячі)', keywords: ['Килимок дитячий', 'Термокилимок', 'Килимок', 'Дитячий'] },
-    { name: 'Килимки вологопоглинаючі', keywords: ['Вологопоглинаючий килимок'] },
-    { name: 'Дзеркала', keywords: ['Дзеркало', 'Дзеркала', 'Дзеркало акрилове', 'Дзеркальний декор'] },
-    { name: 'Екошкіра у рулоні', keywords: ['Екошкіра', 'Шкіра'] },
-    { name: 'Манікюр', keywords: ['Манікюр'] },
-    { name: 'Контейнери для зберігання', keywords: ['Контейнер для зберігання'] },
-    { name: 'Меблі для дому та саду', keywords: ['Набір мебелів складний', 'Меблі', 'Тумба', 'Стелаж', 'Садовий стіл', 'Стіл','Етажерка','Полиця-органайзер','Шафа', 'Надувне крісло', 'Надувний диван', 'Набір мебелів','Комплект надувних меблів'] },
-  ];
-
-  function getCategoryFromTitle(title){
-    const lower = (title || '').toLowerCase();
-    for(const group of CATEGORY_KEYWORDS){
-      for(const key of group.keywords){
-        if(lower.includes(key.toLowerCase())){
-          return group.name;
-        }
-      }
-    }
-    return 'Інше';
-  }
-
-  /* =======================
-     2. ДЕФОЛТНІ ТОВАРИ (якщо XML не працює)
-  ======================= */
-  const DEFAULT_PRODUCTS = [
-    {
-      id:1,
-      title:'Уцінка Ковролін SoftLux 4м — кремовий',
-      category:getCategoryFromTitle('Ковролін SoftLux 4м — кремовий'),
-      price:279,
-      sku:14417,
-      img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
-      unit:'м',
-      short:'М’який і зносостійкий ковролін для житлових кімнат.',
-      full:'Ковролін SoftLux — щільний, приємний на дотик матеріал. Оптимальний для спальні та вітальні.'
-    },
-    {
-      id:2,
-      title:'Плівка біла матова 0.45м',
-      category:getCategoryFromTitle('Плівка біла матова 0.45м'),
-      price:59,
-      sku:14418,
-      img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
-      unit:'м',
-      short:'Самоклейна плівка для меблів і декору.',
-      full:'Матовий білий відтінок, підходить для фасадів меблів, дверей, підвіконь. Легко клеїться без бульбашок.'
-    },
-    {
-      id:3,
-      title:'Шпалери Modern Stone',
-      category:getCategoryFromTitle('Шпалери Modern Stone'),
-      price:129,
-      sku:14419,
-      img:'https://i.ibb.co/PZGTwyqp/unnamed.jpg',
-      unit:'м',
-      short:'Шпалери з ефектом натурального каменю.',
-      full:'Текстурована поверхня під камінь. Підходить для акцентних стін у вітальні, коридорі, кухні.'
-    }
-  ];
-
-  /* =======================
-     3. XML → МАСИВ ТОВАРІВ
-     (аналогічно до головної, але спрощено)
-  ======================= */
-  async function loadProductsFromXML(){
-    try{
-      const res = await fetch(XML_FEED_URL, { cache:'no-store' });
-      if(!res.ok) throw new Error('Bad status: ' + res.status);
-
-      const text = await res.text();
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(text, 'application/xml');
-
-      const items = Array.from(xml.getElementsByTagName('item'));
-      if(!items.length){
-        console.warn('XML: не знайдено тегів <item>. Використовую дефолтні товари.');
-        ALL_PRODUCTS = DEFAULT_PRODUCTS.map(p => ({
-          id:p.id,
-          title:p.title,
-          price:p.price,
-          img:p.img,
-          category:p.category,
-          sku:p.sku,
-          unit:p.unit,
-          description:p.full || p.short || ''
-        }));
-        return;
-      }
-
-      const get = (node, tagName) => {
-        const el = node.getElementsByTagName(tagName)[0];
-        return el ? (el.textContent || '').trim() : '';
-      };
-
-      const placeholderImg = 'https://via.placeholder.com/600x400?text=Товар';
-
-      ALL_PRODUCTS = items.map((node, index) => {
-        const rawId =
-          get(node,'g:id') ||
-          get(node,'id') ||
-          String(index + 1);
-
-        const numericId = Number((rawId || '').replace(/\D/g,'')) || (index + 1);
-
-        const title =
-          get(node,'title') ||
-          get(node,'g:title') ||
-          `Товар ${numericId}`;
-
-        const description =
-          get(node,'description') ||
-          get(node,'g:description') ||
-          '';
-
-        const priceText = get(node,'g:price') || '0';
-        const price = parseFloat(
-          priceText
-            .replace(',', '.')
-            .replace(/[^\d.]/g, '')
-        ) || 0;
-
-        const img =
-          get(node,'g:image_link') ||
-          get(node,'g:additional_image_link') ||
-          placeholderImg;
-
-        const availability = (get(node,'g:availability') || '').toLowerCase();
-        if(availability && availability !== 'in stock'){
-          return null;
-        }
-
-        return {
-          id:numericId,
-          title,
-          price,
-          img,
-          category:getCategoryFromTitle(title),
-          sku:rawId,
-          unit:'шт',
-          description
-        };
-      }).filter(Boolean);
-
-      if(!ALL_PRODUCTS.length){
-        console.warn('XML завантажено, але товари не сформувалися. Використовую дефолтні.');
-        ALL_PRODUCTS = DEFAULT_PRODUCTS.map(p => ({
-          id:p.id,
-          title:p.title,
-          price:p.price,
-          img:p.img,
-          category:p.category,
-          sku:p.sku,
-          unit:p.unit,
-          description:p.full || p.short || ''
-        }));
-      }
-    }catch(err){
-      console.error('Помилка завантаження XML:', err);
-      ALL_PRODUCTS = DEFAULT_PRODUCTS.map(p => ({
-        id:p.id,
-        title:p.title,
-        price:p.price,
-        img:p.img,
-        category:p.category,
-        sku:p.sku,
-        unit:p.unit,
-        description:p.full || p.short || ''
-      }));
-    }
-  }
-
-  /* =======================
-     4. ГОТОВИЙ ТЕКСТ ОГОЛОШЕННЯ
-  ======================= */
-  function buildFullAd(product){
-    const title = product.title || '';
-    const priceStr = product.price ? money(product.price) : '';
-    const category = product.category ? `Категорія: ${product.category}\n` : '';
-    const sku = product.sku ? `Артикул: ${product.sku}\n` : '';
-    const unit = product.unit ? `Одиниця виміру: ${product.unit}\n` : '';
-    const desc = product.description || 'Детальний опис дивіться на сайті або уточнюйте у менеджера.';
-    const img = product.img ? `Фото: ${product.img}\n` : '';
-
-    return `${title}\n\n${category}${sku}${unit}${img}${priceStr ? 'Ціна: ' + priceStr + '\n\n' : '\n'}${desc}\n\nПишіть у чат або телефонуйте, допоможемо підібрати під ваш ремонт.`;
-  }
-
-  /* =======================
-     5. РЕНДЕР ТОВАРІВ
-  ======================= */
-  function renderProducts(list){
-    productsGrid.innerHTML = '';
-
-    list.forEach(p=>{
-      const card = document.createElement('article');
-      card.className = 'product-card-ad';
-
-      const safeTitle = p.title || '';
-      const desc = p.description || '';
-
-      card.innerHTML = `
-        <div class="product-ad-top">
-          <div class="product-ad-category">${p.category || 'Без категорії'}</div>
-          <div class="product-ad-sku">Артикул: ${p.sku || '-'}</div>
-        </div>
-        <div class="product-ad-main">
-          <div>
-            <img src="${p.img || 'placeholder.jpg'}" alt="${safeTitle}">
-          </div>
-          <div>
-            <div class="product-ad-title">
-              ${highlightSale(safeTitle)}
-            </div>
-            <div class="product-ad-price-row">
-              <span class="product-ad-price">${p.price ? money(p.price) : ''}</span>
-              <button class="chip-btn js-copy" data-type="title" data-id="${p.id}">
-                <i data-lucide="copy"></i> Заголовок
-              </button>
-              <button class="chip-btn js-copy" data-type="price" data-id="${p.id}">
-                <i data-lucide="copy"></i> Ціна
-              </button>
-            </div>
-
-            <div class="product-ad-desc">
-              <textarea readonly data-id="${p.id}">${desc}</textarea>
-              <div class="copy-row">
-                <button class="chip-btn js-copy" data-type="description" data-id="${p.id}">
-                  <i data-lucide="copy"></i> Опис
-                </button>
-              </div>
-            </div>
-
-            <div class="product-ad-image-row">
-              <input type="text" readonly value="${p.img || ''}" data-id="${p.id}">
-              <button class="chip-btn js-copy" data-type="image" data-id="${p.id}">
-                <i data-lucide="copy"></i> Фото
-              </button>
-            </div>
-
-            <div class="product-ad-footer">
-              <button class="btn btn-outline small js-copy" data-type="full" data-id="${p.id}">
-                <i data-lucide="file-text"></i> Готовий текст оголошення
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      productsGrid.appendChild(card);
-
-      requestAnimationFrame(()=>{
-        card.classList.add('show');
-      });
-    });
-
-    if(window.lucide){
-      lucide.createIcons();
-    }
-
-    productsGrid.querySelectorAll('.js-copy').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const id = btn.getAttribute('data-id');
-        const type = btn.getAttribute('data-type');
-        const product = ALL_PRODUCTS.find(p=>String(p.id) === String(id));
-        if(!product) return;
-
-        if(type === 'title'){
-          copyText(product.title || '');
-        }else if(type === 'price'){
-          copyText(product.price ? money(product.price) : '');
-        }else if(type === 'description'){
-          copyText(product.description || '');
-        }else if(type === 'image'){
-          copyText(product.img || '');
-        }else if(type === 'full'){
-          copyText(buildFullAd(product));
-        }
-      });
-    });
-  }
-
-  function updateProductsView(){
-    const slice = FILTERED_PRODUCTS.slice(0, visibleCount);
-    renderProducts(slice);
-    if(loadMoreBtn){
-      loadMoreBtn.style.display = visibleCount >= FILTERED_PRODUCTS.length ? 'none' : 'inline-flex';
-    }
-  }
-
-  function applyFilters(){
-    const q = (searchInput.value || '').toLowerCase().trim();
-
-    FILTERED_PRODUCTS = ALL_PRODUCTS.filter(p=>{
-      if(!q) return true;
-      const hay = `${p.title || ''} ${p.sku || ''}`.toLowerCase();
-      return hay.includes(q);
-    });
-
-    visibleCount = PAGE_SIZE;
-    updateProductsView();
-  }
-
-  /* =======================
-     6. СПИСКИ ДОшОК: ТОГЛ + ДОДАТИ СВІЙ САЙТ
-  ======================= */
-  document.querySelectorAll('.js-toggle-board').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const targetId = btn.getAttribute('data-target');
-      const list = document.getElementById(targetId);
-      if(!list) return;
-      const isOpen = list.classList.contains('open');
-      list.classList.toggle('open', !isOpen);
-      btn.innerHTML = isOpen
-        ? '<i data-lucide="list-collapse"></i> Показати список'
-        : '<i data-lucide="list-collapse"></i> Приховати список';
-      if(window.lucide){
-        lucide.createIcons();
-      }
-    });
-  });
-
-  document.querySelectorAll('.js-add-toggle').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const targetId = btn.getAttribute('data-target');
-      const form = document.getElementById(targetId);
-      if(!form) return;
-      const isOpen = form.classList.contains('open');
-      form.classList.toggle('open', !isOpen);
-      if(window.lucide){
-        lucide.createIcons();
-      }
-    });
-  });
-
-  document.querySelectorAll('.js-board-save').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const listId = btn.getAttribute('data-list');
-      const list = document.getElementById(listId);
-      if(!list) return;
-
-      const form = btn.closest('.board-add-form');
-      const nameInput = form.querySelector('.js-board-name');
-      const urlInput = form.querySelector('.js-board-url');
-      const notesInput = form.querySelector('.js-board-notes');
-
-      const name = (nameInput.value || '').trim();
-      const url = (urlInput.value || '').trim();
-      const notes = (notesInput.value || '').trim();
-
-      if(!name){
-        alert('Вкажіть хоча б назву сайту.');
-        return;
-      }
-
-      const item = document.createElement('div');
-      item.className = 'board-item';
-      item.innerHTML = `
-        ${url ? `<a href="${url}" target="_blank" rel="noopener">${name}</a>` : `<span>${name}</span>`}
-        ${notes ? `<div>${notes}</div>` : ''}
-      `;
-      const addBlock = list.querySelector('.board-add');
-      list.insertBefore(item, addBlock);
-
-      nameInput.value = '';
-      urlInput.value = '';
-      notesInput.value = '';
-
-      form.classList.remove('open');
-    });
-  });
-
-  /* =======================
-     7. ПОДІЇ ПОШУКУ/LOAD MORE
-  ======================= */
-  if(searchInput){
-    searchInput.addEventListener('input',applyFilters);
-  }
-  if(clearFiltersBtn){
-    clearFiltersBtn.addEventListener('click',()=>{
-      searchInput.value = '';
-      applyFilters();
-    });
-  }
-  if(loadMoreBtn){
-    loadMoreBtn.addEventListener('click',()=>{
-      visibleCount += PAGE_SIZE;
-      updateProductsView();
-    });
-  }
-
-  /* =======================
-     8. INIT
-  ======================= */
-  (async function init(){
-    document.getElementById('year').textContent = new Date().getFullYear();
-    await loadProductsFromXML();
-    FILTERED_PRODUCTS = [...ALL_PRODUCTS];
-    updateProductsView();
-    if(window.lucide) lucide.createIcons();
-  })();
-</script>
-
+<script src="config.js?v=52b18222"></script>
+<script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Робочий кабінет", "listTitle": "Робочий кабінет", "url": "https://samostroy.shop/jobs-drop.html", "title": "Робочий кабінет для оголошень — Samostroy Shop", "desc": "Внутрішня сторінка команди Samostroy Shop: план на день, майданчики, товари з готовими текстами й чекліст перед публікацією.", "guide": "", "calc": 0, "faq": [], "wall": [], "info": true}</script>
+<script src="shop.js?v=34f33025"></script>
+<script src="partners.js?v=468e4195"></script>
+<script src="team.js?v=7f07ea63"></script>
 </body>
 </html>

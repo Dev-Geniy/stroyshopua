@@ -1,8 +1,10 @@
 /* Партнерський кабінет: каталог для дропшиперів з цінами, доходом, готовими текстами й експортом.
    Працює поверх shop.js (каталог товарів, шапка, кошик, картка товару). */
 (()=>{
-const KEY='partner_v2';
-const S=Object.assign({m:10,mk:0,list:[],av:1},ls.get(KEY,{}));
+// TEAM — робочий кабінет команди (jobs-drop.html): ціни магазину без націнки й доходу партнера, свій список
+const TEAM=document.body.classList.contains('pk-team');
+const KEY=TEAM?'team_v1':'partner_v2';
+const S=Object.assign({m:10,mk:0,list:[],av:1},ls.get(KEY,{}));if(TEAM)S.mk=0;
 const save=()=>ls.set(KEY,S);
 const $i=id=>document.getElementById(id);
 const grid=$i('pkGrid'),STEP=24;
@@ -46,8 +48,8 @@ function copy(t,msg){
  try{navigator.clipboard.writeText(t).then(ok,fb)}catch(x){fb()}}
 function csv(L){
  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
- const rows=[['Назва','Артикул','Категорія','Рекомендована ціна','Моя ціна','Мій дохід (орієнтовно)','Наявність','Фото','Опис','Посилання']]
-  .concat(L.map(p=>[p.name,p.sku,cname(p.cat),Math.round(p.price),sellOf(p),Math.round(incOf(p)),p.av?'В наявності':'Немає',p.imgs.join(' '),adText(p),CFG.site+'?p='+p.id]));
+ const head=TEAM?['Назва','Артикул','Категорія','Ціна','Наявність','Фото','Опис','Посилання']:['Назва','Артикул','Категорія','Рекомендована ціна','Моя ціна','Мій дохід (орієнтовно)','Наявність','Фото','Опис','Посилання'];
+ const rows=[head].concat(L.map(p=>TEAM?[p.name,p.sku,cname(p.cat),Math.round(p.price),p.av?'В наявності':'Немає',p.imgs.join(' '),adText(p),CFG.site+'?p='+p.id]:[p.name,p.sku,cname(p.cat),Math.round(p.price),sellOf(p),Math.round(incOf(p)),p.av?'В наявності':'Немає',p.imgs.join(' '),adText(p),CFG.site+'?p='+p.id]));
  const blob=new Blob(['﻿'+rows.map(r=>r.map(q).join(';')).join('\r\n')],{type:'text/csv;charset=utf-8'});
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='samostroy-tovary-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
  toast('Файл завантажено: '+L.length+' товарів')}
@@ -76,7 +78,7 @@ function item(p){
   <div class="pk-b">
    <span class="pk-sku">${esc(p.sku||p.id)} · ${esc(cname(p.cat))}</span>
    <b class="pk-n">${esc(p.name)}</b>
-   <dl class="pk-pr"><div><dt>Рекомендована</dt><dd>${money(p.price)}</dd></div>${S.mk?`<div><dt>Ваша ціна</dt><dd>${money(sellOf(p))}</dd></div>`:''}<div class="y"><dt>Ваш дохід ≈</dt><dd>${money(incOf(p))}</dd></div></dl>
+   <dl class="pk-pr"><div><dt>${TEAM?'Ціна':'Рекомендована'}</dt><dd>${money(p.price)}</dd></div>${S.mk?`<div><dt>Ваша ціна</dt><dd>${money(sellOf(p))}</dd></div>`:''}${TEAM?'':`<div class="y"><dt>Ваш дохід ≈</dt><dd>${money(incOf(p))}</dd></div>`}</dl>
    ${p.av&&p.qty>0&&p.qty<=10?`<span class="pk-low">Залишилось ${p.qty} шт.</span>`:''}
    <div class="pk-act">
     <button type="button" class="btn sm" data-pk="copy" data-pid="${esc(p.id)}">Текст</button>
@@ -98,7 +100,7 @@ function drawList(){
  $i('pkListBtn').classList.toggle('on',onlyList);$i('pkListBtn').setAttribute('aria-pressed',onlyList);
  $i('pkBulk').hidden=!onlyList||!S.list.length;
  if(onlyList&&S.list.length){const L=S.list.map(id=>byId.get(id)).filter(Boolean),sum=L.reduce((a,p)=>a+incOf(p),0);
-  $i('pkBulkT').innerHTML=`<b>${L.length} ${plural(L.length)}</b> · дохід з одного продажу кожного ≈ ${money(sum)}`}}
+  $i('pkBulkT').innerHTML=`<b>${L.length} ${plural(L.length)}</b>`+(TEAM?'':` · дохід з одного продажу кожного ≈ ${money(sum)}`)}}
 function priceUI(){
  document.querySelectorAll('[data-pk=lv]').forEach(b=>b.classList.toggle('on',+b.dataset.v==S.m));
  $i('pkMk').value=S.mk;$i('pkMkO').textContent='+'+S.mk+'%'}
@@ -112,7 +114,7 @@ const TPL=[
  ['Клієнт сумнівається','Розумію, хочеться бути впевненим. Можу порахувати точну кількість під ваші розміри й надіслати фото, як матеріал виглядає в інтер’єрі. А при оплаті на пошті ви спершу оглядаєте товар.'],
  ['Після покупки','Дякую за замовлення! Буду вдячний за фото результату — і з радістю допоможу підібрати матеріали для наступної кімнати.'],
  ['Замовлення менеджеру','Замовлення від партнера\nОтримувач: \nТелефон: \nДоставка: Нова Пошта, місто ___, відділення № ___\nТовар: назва, артикул SW-____ × кількість\nОплата: післяплата / передоплата\nСума для клієнта: ___ ₴']];
-$i('pkTpl').innerHTML=TPL.map(([h,b],i)=>`<div class="pk-t${i==TPL.length-1?' mgr':''}"><b>${h}</b><p>${esc(b).replace(/\n/g,'<br>')}</p><button type="button" class="btn sm ghost" data-pk="tpl" data-x="${i}">Скопіювати</button></div>`).join('');
+if($i('pkTpl'))$i('pkTpl').innerHTML=TPL.map(([h,b],i)=>`<div class="pk-t${i==TPL.length-1?' mgr':''}"><b>${h}</b><p>${esc(b).replace(/\n/g,'<br>')}</p><button type="button" class="btn sm ghost" data-pk="tpl" data-x="${i}">Скопіювати</button></div>`).join('');
 
 /* ---------- події ---------- */
 document.addEventListener('click',e=>{
