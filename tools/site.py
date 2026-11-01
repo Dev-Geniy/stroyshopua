@@ -31,6 +31,16 @@ TODAY = NOW.strftime('%Y-%m-%d')
 TG = 'manager_samostroy_shop'
 PHONE = '+380984927948'
 SAME_AS = ['https://t.me/samostroy_shop', 'https://www.tiktok.com/@stroyshop_ua', 'https://www.instagram.com/samostroy.shop']
+RETURNS_URL = SITE + 'povernennya.html'
+RETURNS_UPDATED = '2026-11-01'   # дата редакції правил повернення (змінюйте разом із tools/povernennya.md)
+# Політика повернення для Google: використаний товар не приймається; нерозпакований — 14 днів поштою,
+# зворотна доставка за рахунок покупця; брак — безкоштовно.
+RETURN_POLICY = {"@type": "MerchantReturnPolicy", "applicableCountry": "UA", "returnPolicyCountry": "UA",
+                 "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14,
+                 "returnMethod": "https://schema.org/ReturnByMail", "itemCondition": "https://schema.org/NewCondition",
+                 "refundType": "https://schema.org/FullRefund", "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility",
+                 "customerRemorseReturnFees": "https://schema.org/ReturnFeesCustomerResponsibility",
+                 "itemDefectReturnFees": "https://schema.org/FreeReturn", "merchantReturnLink": RETURNS_URL}
 CHANGED = []          # адреси, що змінилися (для IndexNow)
 WRITTEN = set()       # файли, згенеровані цим запуском
 
@@ -299,8 +309,7 @@ def product_page(p, by_cat, art_by_cat):
              "shippingDetails": {"@type": "OfferShippingDetails", "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "UA"},
                                  "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 0, "maxValue": 1, "unitCode": "DAY"},
                                                   "transitTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "DAY"}}},
-             "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "UA", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                                         "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}}
+             "hasMerchantReturnPolicy": RETURN_POLICY}
     prod = {"@type": "Product", "@id": url + "#product", "name": p['name'], "sku": p['sku'] or p['id'], "mpn": p['sku'] or p['id'],
             "image": p['imgs'][:8], "description": clip(desc_txt or p['name'], 1000), "category": c[2],
             "brand": {"@type": "Brand", "name": p['brand'] or 'Samostroy Shop'}, "offers": offer}
@@ -583,6 +592,57 @@ def reviews_page():
     return page(hd, main, 'Відгуки', title, desc, url)
 
 
+RETURNS_FAQ = [
+    ('Я зняв плівку з однієї панелі, щоб перевірити клей. Решту можна повернути?',
+     'Панель зі знятою плівкою повернути не можна. Інші — так, якщо вони в цілій заводській упаковці, не розпаковувались і з дня отримання минуло не більше 14 днів. Зворотну доставку оплачує покупець.'),
+    ('Після ремонту залишилися зайві панелі. Їх можна повернути?',
+     'Якщо вони не розпаковані, упаковка ціла й з дня отримання минуло не більше 14 днів — так. Розпаковані чи нарізані залишки не повертаються.'),
+    ('Колір виявився не таким, як на фото. Що робити?',
+     'Якщо прийшла інша модель чи колір, ніж ви замовили, — замінимо за наш рахунок. Незначна різниця відтінку з фото на екрані не є браком; нерозпакований товар у такому разі можна повернути протягом 14 днів, оплативши зворотну доставку.'),
+    ('Хто оплачує доставку при поверненні?',
+     'Якщо товар бракований, не той, що ви замовили, або пошкоджений у дорозі — доставку в обидва боки оплачуємо ми. Якщо нерозпакований товар просто не підійшов — зворотну доставку оплачує покупець.'),
+    ('Коли я отримаю гроші?',
+     'Протягом 7 днів після того, як ми отримаємо й перевіримо товар. Кошти повертаємо на вашу банківську картку.'),
+]
+
+
+def returns_page():
+    url = RETURNS_URL
+    title = 'Обмін і повернення товару — Samostroy Shop'
+    desc = ('Умови обміну й повернення самоклеючих матеріалів у Samostroy Shop: використаний товар не повертається, '
+            'брак і пересорт замінюємо за свій рахунок, огляд на відділенні перед оплатою, строки й порядок повернення коштів.')
+    cr = [('Головна', SITE), ('Обмін і повернення', url)]
+    store = {"@type": "OnlineStore", "@id": SITE + "#store", "name": "Samostroy Shop", "url": SITE, "telephone": PHONE,
+             "hasMerchantReturnPolicy": RETURN_POLICY}
+    web = {"@type": "WebPage", "@id": url + "#page", "name": 'Обмін і повернення товару', "url": url, "description": desc,
+           "inLanguage": "uk", "dateModified": RETURNS_UPDATED, "about": {"@id": SITE + "#store"}}
+    faq_ld = {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": x}} for q, x in RETURNS_FAQ]}
+    hd = head(title, desc, url, SITE + 'og/povernennya.jpg', alt='Обмін і повернення — Samostroy Shop', extra=ld(crumbs_ld(cr), web, store, faq_ld))
+    ic = lambda i: f'<svg class="i"><use href="#i-{i}"/></svg>'
+    faq = ''.join(f'<details><summary>{e(q)}</summary><p>{e(x)}</p></details>' for q, x in RETURNS_FAQ)
+    main = f'''<main id="top" class="ba-page">
+<div class="w">
+{crumbs_html(cr)}
+<article class="ba pol">
+ <p class="ba-m">Правила магазину · Редакція від <time datetime="{RETURNS_UPDATED}">{udate(RETURNS_UPDATED)}</time></p>
+ <h1>Обмін і повернення товару</h1>
+ <p class="lead">Самоклеючі матеріали після зняття захисної плівки, монтажу чи нарізання поверненню не підлягають. Перевірте замовлення до початку робіт — а брак і пересорт ми замінимо за свій рахунок.</p>
+ <div class="pol-sum">
+  <div class="no">{ic('x')}<b>Використаний товар не повертається</b><span>Знята плівка, наклеєно чи нарізано — клей одноразовий, товар уже не відновити.</span></div>
+  <div>{ic('check')}<b>Брак і пересорт — за наш рахунок</b><span>Замінимо, довкладемо або повернемо кошти. Доставку оплачуємо ми.</span></div>
+  <div>{ic('check')}<b>Огляд перед оплатою</b><span>Перевірте посилку на відділенні. Пошкоджена — не забирайте, складіть акт.</span></div>
+  <div>{ic('check')}<b>Нерозпакований — 14 днів</b><span>Ціла заводська упаковка, плівка не знята. Зворотну доставку оплачує покупець.</span></div>
+ </div>
+ <div class="ba-txt">{md(read('tools/povernennya.md'))}</div>
+ <section class="faq ba-faq"><h2>Питання й відповіді</h2>{faq}</section>
+ <aside class="ba-ask"><div><b>Сумніваєтеся щодо кольору чи кількості?</b><span>Напишіть до замовлення — надішлемо живі фото й порахуємо матеріал під ваші розміри, щоб нічого не довелося повертати.</span></div>
+  <div class="acts"><a class="btn" href="https://t.me/{TG}?text={e('Вітаю! Питання щодо обміну чи повернення:')}" target="_blank" rel="noopener">Написати в Telegram</a><a class="btn ghost" href="blog/dostavka-i-oplata.html">Доставка й оплата</a></div></aside>
+</article>
+</div>
+</main>'''
+    return page(hd, main, 'Обмін і повернення', title, desc, url)
+
+
 def not_found_page():
     url = SITE + '404.html'
     title = 'Сторінку не знайдено — Samostroy Shop'
@@ -673,7 +733,7 @@ def sitemap(prods, cats, arts):
               ('kylimky.html', 'weekly', '0.8'), ('ekoshkira.html', 'weekly', '0.8'), ('dzerkala.html', 'weekly', '0.8'), ('opt.html', 'monthly', '0.7'),
               ('dropshipping.html', 'monthly', '0.8'), ('academy.html', 'monthly', '0.7'), ('course-dropshipping.html', 'monthly', '0.6'),
               ('course-sales3.html', 'monthly', '0.6'), ('partners.html', 'weekly', '0.6'), ('lk.html', 'monthly', '0.5'), ('postachalniky.html', 'monthly', '0.6'),
-              ('franchise.html', 'monthly', '0.5'), ('jobs.html', 'weekly', '0.5'), ('blog.html', 'weekly', '0.7'), ('reviews.html', 'weekly', '0.6'), ('bio.html', 'monthly', '0.3')]
+              ('franchise.html', 'monthly', '0.5'), ('jobs.html', 'weekly', '0.5'), ('blog.html', 'weekly', '0.7'), ('reviews.html', 'weekly', '0.6'), ('povernennya.html', 'monthly', '0.4'), ('bio.html', 'monthly', '0.3')]
     rows = []
     for path, fr, pr in static:
         u = SITE + path
@@ -715,7 +775,7 @@ def llms(cats, arts):
               f'- [Постачальникам]({SITE}postachalniky.html)', f'- [Франшиза / White Label]({SITE}franchise.html)', f'- [Академія партнера]({SITE}academy.html)',
               f'- [Партнерський кабінет]({SITE}partners.html)', f'- [Вакансії]({SITE}jobs.html)', '', '## Блог']
     lines += [f'- [{a["title"]}]({SITE}blog/{a["slug"]}.html): {a["desc"]}' for a in arts]
-    lines += ['', '## Контакти', f'- Телефон: {PHONE}', f'- Telegram: https://t.me/{TG}', f'- Відгуки: {SITE}reviews.html', '']
+    lines += ['', '## Контакти', f'- Телефон: {PHONE}', f'- Telegram: https://t.me/{TG}', f'- Відгуки: {SITE}reviews.html', f'- Обмін і повернення: {RETURNS_URL} — використаний (розпакований, наклеєний, нарізаний) товар не повертається; брак і пересорт замінюємо за свій рахунок; нерозпакований — 14 днів', '']
     write('llms.txt', '\n'.join(lines))
 
 
@@ -748,6 +808,7 @@ def main():
         write(f'blog/{a["slug"]}.html', article_page(a, arts, by_cat), f'{SITE}blog/{a["slug"]}.html')
     write('blog.html', blog_index(arts), SITE + 'blog.html')
     write('reviews.html', reviews_page(), SITE + 'reviews.html')
+    write('povernennya.html', returns_page(), RETURNS_URL)
     write('404.html', not_found_page())
     # прибрати сторінки товарів, категорій і статей, яких більше немає
     for d in ('p', 'c', 'blog'):

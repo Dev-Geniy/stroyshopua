@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Генерує зображення 1200×630 для прев'ю в соцмережах і месенджерах (og:image) та обкладинки статей блогу.
 
-Запуск (потрібні Python Playwright і Chromium): python3 tools/og/make_og.py [--blog-only]
+Запуск (потрібні Python Playwright і Chromium): python3 tools/og/make_og.py [--blog-only] [назва сторінки чи slug статті ...]
 Результат: og/<сторінка>.jpg і blog/img/<slug>.jpg
 """
 import asyncio
@@ -33,6 +33,7 @@ CAT_MOTIF = {'Стіни': 'brick', 'Плитка': 'tile', 'Підлога': 'w
 PAGES = [
  ('home', 'Samostroy Shop', 'Матеріали для ремонту своїми руками', ['1000+ товарів у наявності', 'Відправка в день замовлення', 'Оплата при отриманні'], 'brick'),
  ('blog', 'Блог', 'Ремонт своїми руками: інструкції й поради', ['Як обрати й поклеїти', 'Розрахунок матеріалів', 'Бізнес і співпраця'], 'grid'),
+ ('povernennya', 'Обмін і повернення', 'Правила для самоклеючих матеріалів', ['Заміна браку за наш рахунок', 'Огляд на відділенні перед оплатою'], 'box'),
  ('reviews', 'Відгуки покупців', 'Що кажуть про матеріали, доставку й сервіс', ['Реальні замовлення', 'Залиште свій відгук'], 'soft'),
  ('dropshipping', 'Дропшипінг без вкладень', 'Продавайте товари для ремонту без складу', ['Ми пакуємо й відправляємо', 'Ціну ставите ви', 'Навчання безкоштовно'], 'chart'),
  ('academy', 'Академія партнера', 'Як почати заробляти з нами за 15 хвилин', ['8 кроків із тестами', 'Особистий план старту'], 'grid'),
@@ -80,11 +81,15 @@ li:before{{content:"";position:absolute;left:4px;top:9px;width:14px;height:8px;b
 async def main():
     from playwright.async_api import async_playwright
     blog_only = '--blog-only' in sys.argv
+    only = [x for x in sys.argv[1:] if not x.startswith('--')]   # напр.: make_og.py povernennya obmin-i-povernennya
     jobs = []
     if not blog_only:
         for name, t, s, b, m in PAGES:
-            jobs.append((os.path.join(ROOT, 'og', name + '.jpg'), tpl(t, s, b, m)))
+            if not only or name in only:
+                jobs.append((os.path.join(ROOT, 'og', name + '.jpg'), tpl(t, s, b, m)))
     for a in json.load(open(os.path.join(ROOT, 'blog.json'), encoding='utf-8')):
+        if only and a['slug'] not in only:
+            continue
         jobs.append((os.path.join(ROOT, 'blog', 'img', a['slug'] + '.jpg'), tpl(a['title'], '', [], CAT_MOTIF.get(a['category'], 'grid'), a['category'])))
     os.makedirs(os.path.join(ROOT, 'og'), exist_ok=True)
     os.makedirs(os.path.join(ROOT, 'blog', 'img'), exist_ok=True)
