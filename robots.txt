@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Disallow: /jobs-drop.html
+Disallow: /tools/
+Disallow: /catalog/
 
 Sitemap: https://samostroy.shop/sitemap.xml

@@ -452,13 +452,13 @@ function parse(xml){
    else if(n=='param'){par.push([c.getAttribute('name'),c.textContent.trim()])}
    else if(!(n in f))f[n]=c.textContent.trim()}
   const raw=f.title||f.name||f.model||'';const price=num(f.price||f.sale_price);if(!raw||!price)continue;
-  const m=raw.match(/\s*(SW-\d+)\s*$/i),sku=m?m[1]:(f.vendorcode||f.mpn||''),name=m?raw.slice(0,m.index).trim():raw;
+  const m=raw.match(/\s*(SW-\d+)-?\s*$/i),sku=m?m[1]:(f.vendorcode||f.mpn||''),name=m?raw.slice(0,m.index).trim():raw;
   const id=String(f.id||e.getAttribute('id')||'p'+i);
   const img=f.image_link||imgs.shift()||'';if(f.image_link&&imgs[0]==img)imgs.shift();
   const avs=(f.availability||e.getAttribute('available')||'in stock').toLowerCase();
   const av=!/out|false|^0|нема|нет|ні$|preorder/.test(avs);
   const cat=catBy[f.cat]?f.cat:classify(name),P=Object.fromEntries(par),el=elOf(name,P,cat),area=el?el.a*el.b*el.per:0;
-  const nr=(f.title_ru||'').replace(/\s*SW-\d+\s*$/i,'').trim(),qty=f.quantity!=null&&f.quantity!==''?parseInt(f.quantity,10):null;
+  const nr=(f.title_ru||'').replace(/\s*SW-\d+-?\s*$/i,'').trim(),qty=f.quantity!=null&&f.quantity!==''?parseInt(f.quantity,10):null;
   out.push({id,nu:name,nr,get name(){return lang=='ru'&&this.nr||this.nu},qty,kw:f.keywords||'',sku,price,old:num(f.sale_price&&f.price?f.price:0),img,imgs:[img,...imgs].filter(Boolean).slice(0,8),av,cat,area,el,P,brand:f.brand||'',color:f.color||'',par,desc:f.description||'',sale:/уцінк|уценк/i.test(name),n:parseInt((sku.match(/\d+/)||['0'])[0],10)||0,i,
    key:(name+' '+nr+' '+sku+' '+id+' '+cname(cat)+' '+catBy[cat][3]+' '+(f.color||'')+' '+(f.keywords||'')).toLowerCase().replace(/[x*×]/g,'х')});
  }
@@ -497,7 +497,8 @@ function list(){
  const ci=LAND&&!view.c&&!f?p=>PAGE.cats.findIndex(c=>catsOf(c).includes(p.cat)):()=>0;
  return [...L].sort((x,y)=>(y.av-x.av)||(f?f(x,y):(ci(x)-ci(y))||x.i-y.i))}
 const ppm=p=>p.area&&p.area<40?`<span class="ppm">≈ ${money(p.price/p.area)}/м²</span>`:'';
-const href=p=>'?p='+encodeURIComponent(p.id);
+// окрема статична сторінка кожного товару (генерує tools/site.py) — її індексують пошуковики й показують месенджери
+const href=p=>'p/'+encodeURIComponent(p.id)+'.html';
 const card=p=>`<article class="card"><a class="im" href="${href(p)}" data-p="${esc(p.id)}"><img loading="lazy" decoding="async" src="${esc(p.img)}" alt="${esc(p.name)}" onerror="this.style.opacity=0">${!p.av?`<span class="badge out">${t('outst')}</span>`:p.sale?`<span class="badge">${t('sale')}</span>`:''}</a><div class="bd"><h3><a href="${href(p)}" data-p="${esc(p.id)}">${esc(p.name)}</a></h3><div class="meta"><span>${esc(cname(p.cat))}</span><span>${esc(p.sku)}</span></div><div class="price">${money(p.price)}${ppm(p)}</div><div class="ab">${p.av?`<button class="btn" data-add="${esc(p.id)}">${t('add')}</button><button class="btn ghost" data-p="${esc(p.id)}" data-f="1">${t('q1b')}</button>`:`<button class="btn ghost" data-askp="${esc(p.id)}">${t('ask')}</button>`}</div></div></article>`;
 
 function render(){
@@ -543,7 +544,7 @@ function renderLand(){
  $('#msg').innerHTML=L.length?'':`<div class="empty">${t('none')}<br><button class="btn" data-a="askq">${t('askm')}</button> <button class="btn ghost" data-a="reset">${t('reset')}</button></div>`;
  $$('[data-a=clr]').forEach(b=>b.hidden=!view.q);
  // SEO: власні title/description сторінки; підкатегорія → канонічна адреса на головній
- const url=view.c?CFG.site+'?c='+view.c:PAGE.url,minP=L.length?Math.min(...L.map(p=>p.price)):0;
+ const url=view.c?CFG.site+'c/'+view.c+'.html':PAGE.url,minP=L.length?Math.min(...L.map(p=>p.price)):0;
  if(!pdOpen()){
   document.title=view.c?`${title} — ${t('ttl',{p:money(minP)})} | Samostroy Shop`:PAGE.title;
   setMeta('meta[name=description]','content',view.c?t('mdesc',{c:title,n:L.length,p:money(minP)}):PAGE.desc);
@@ -560,7 +561,7 @@ function renderLand(){
 function renderInfo(){
  if(view.q){location.href='./?q='+encodeURIComponent(view.q);return}
  if(!pdOpen()){document.title=PAGE.title;setMeta('meta[name=description]','content',PAGE.desc);setMeta('link[rel=canonical]','href',PAGE.url);setMeta('meta[property="og:url"]','content',PAGE.url)}
- setMeta('meta[name=robots]','content','index,follow,max-image-preview:large');
+ if(!PAGE.noindex)setMeta('meta[name=robots]','content','index,follow,max-image-preview:large');
  const graph=[{'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Samostroy Shop',item:CFG.site},{'@type':'ListItem',position:2,name:PAGE.name,item:PAGE.url}]},
   {'@type':'WebPage',name:PAGE.name,url:PAGE.url,description:PAGE.desc,inLanguage:'uk',isPartOf:{'@id':'https://samostroy.shop/#site'}}];
  if((PAGE.faq||[]).length)graph.push({'@type':'FAQPage',mainEntity:PAGE.faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))});
@@ -603,9 +604,9 @@ function seo(L,title,g){
  if(view.c||view.g){
   docT=`${title} — ${t('ttl',{p:money(minP)})} | Samostroy Shop`;
   desc=t('mdesc',{c:title,n:L.length,p:money(minP)});
-  url=CFG.site+'?'+(view.c?'c='+view.c:'g='+view.g);
+  url=CFG.site+(view.c?'c/'+view.c+'.html':'?g='+view.g);
  }else if(view.q){docT=title+' | Samostroy Shop';desc=document.querySelector('meta[name=description]').content}
- else{docT='Samostroy Shop — самоклеючі 3D панелі, плитка, плівка для ремонту своїми руками';desc='Самоклеючі 3D панелі, PET і вінілова плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала. Понад 1200 товарів, відправка в день замовлення по Україні, оплата при отриманні.'}
+ else{docT='Самоклеючі 3D панелі, плитка й плівка для ремонту | Samostroy Shop';desc='Самоклеючі 3D панелі, PET і вінілова плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала. Понад 1200 товарів, відправка в день замовлення по Україні, оплата при отриманні.'}
  if(!pdOpen()){document.title=docT;setMeta('meta[name=description]','content',desc);setMeta('link[rel=canonical]','href',url);setMeta('meta[property="og:url"]','content',url);setMeta('meta[property="og:title"]','content',docT)}
  setMeta('meta[name=robots]','content',view.q?'noindex,follow':'index,follow,max-image-preview:large');
  // SEO-текст
@@ -659,6 +660,7 @@ function openP(id,push=true){
    <h2>${esc(p.name)}</h2>
    <div class="av ${p.av?'':'no'}">${t(p.av?'inst':'outst')}${p.av&&p.qty>0&&p.qty<=10?`<span class="soft" style="margin-left:10px">${t('left',{n:p.qty})}</span>`:''}${p.sku?`<span class="soft" style="margin-left:10px">${t('sku')} ${esc(p.sku)}</span>`:''}</div>
    <div class="price">${money(p.price)}${ppm(p)}</div>
+   <a class="link pshare" href="${CFG.site+href(p)}" data-share="${CFG.site+href(p)}" data-title="${esc(p.name)}">Поділитися товаром</a>
    ${p.av?`<div class="pacts"><button class="btn" data-add="${esc(p.id)}">${t('add')}</button><button class="btn ghost" data-smp="${esc(p.id)}">${t('smp')}</button></div>
    <div class="oc"><input id="mp" type="tel" inputmode="tel" placeholder="${t('phn')}" value="${esc(cust.fp||'')}" aria-label="${t('phn')}"><button class="btn ghost" data-oc="${esc(p.id)}">${t('one')}</button></div>`:`<button class="btn" data-askp="${esc(p.id)}">${t('askm')}</button>`}
    ${p.el?`<div class="pcalc" data-id="${esc(p.id)}"><b class="t">${t('pcalc')}</b><div class="el">${elInfo(p)}</div><div class="row"><label>${t(p.cat=='ekoshkira'?'cWe':'cW')}<input data-k="w" inputmode="decimal" autocomplete="off"></label><label>${t(p.cat=='ekoshkira'?'cHe':'cH')}<input data-k="h" inputmode="decimal" autocomplete="off"></label></div><div class="row"><label>${t('cA')}<input data-k="a" inputmode="decimal" autocomplete="off"></label><label${p.cat=='ekoshkira'?' hidden':''}>${t('cO')}<input data-k="o" inputmode="decimal" autocomplete="off" placeholder="0"></label><label>${t('cR')}<select data-k="r">${resOpts()}</select></label></div><div class="cres"></div></div>`:''}
@@ -853,6 +855,7 @@ document.addEventListener('click',e=>{
   if(s.get('p'))return openP(s.get('p'));
   $('#q').value=$('#q2').value='';
   nav({c:s.get('c')||'',g:s.get('g')||'',q:s.get('q')||''},!a.hasAttribute('data-home')&&!u.hash);if(a.hasAttribute('data-home'))scrollTo(0,0);if(u.hash)setTimeout(()=>{const x=/^#[\w-]+$/.test(u.hash)&&$(u.hash);x&&x.scrollIntoView({block:'start'})},30);return}
+ if(D.share&&!e.ctrlKey&&!e.metaKey){e.preventDefault();const u=D.share;if(navigator.share)navigator.share({title:D.title||document.title,url:u}).catch(()=>{});else{try{navigator.clipboard.writeText(u).then(()=>toast(lang=='ru'?'Ссылка скопирована':'Посилання скопійовано'))}catch(x){prompt('',u)}}return}
  if(D.p&&!e.ctrlKey&&!e.metaKey){e.preventDefault();openP(D.p);if(D.f)setTimeout(()=>$('#mp')&&$('#mp').focus(),60);return}
  if(D.add){add(D.add,+D.n||1);return}
  if(D.img){$('#pimg').src=D.img;$$('.thumbs button').forEach(b=>b.classList.toggle('on',b==a));return}
@@ -923,4 +926,6 @@ safe(buildMega,'menu');
 safe(()=>setLang(lang),'lang');
 safe(leadForms,'leadForms');
 safe(()=>{view=readURL();render()},'render');
+// старі посилання ?p=… ведуть на статичну сторінку товару (з прев’ю для месенджерів)
+{const u=new URLSearchParams(location.search);if(!LAND&&u.get('p')&&!u.get('c')&&!u.get('g')&&!u.get('q')&&/^[\w-]+$/.test(u.get('p')))location.replace('p/'+u.get('p')+'.html')}
 load();

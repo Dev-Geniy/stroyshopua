@@ -567,3 +567,4 @@ dialog#pd::backdrop{background:#000a}
 @media(prefers-color-scheme:dark){.pnav{background:#11151a}}
 .b2b-more{margin-top:16px;font-size:15px;color:var(--soft)}
 .b2b-more a{color:var(--orange-d);font-weight:600}
+.pshare{display:inline-block;font-size:14px;margin:-8px 0 14px}
