@@ -55,7 +55,7 @@ function noApi(){
  $i('kbSub').textContent='Кабінет запускається. Поки що замовлення приймає менеджер у Telegram — усе працює як і раніше.';
  app.innerHTML=`<div class="kb-card kb-empty"><h2>Особистий кабінет скоро запрацює</h2>
  <p>Ми підключаємо вхід для партнерів. А поки — заповніть анкету, беріть товари й тексти в каталозі та передавайте замовлення менеджеру.</p>
- <div class="kb-acts"><a class="btn" href="anketa.html">Заповнити анкету</a><a class="btn ghost" href="partners.html">Каталог для партнерів</a><a class="btn ghost" href="${tgLink()}" target="_blank" rel="noopener">Написати менеджеру</a></div></div>`}
+ <div class="kb-acts"><a class="btn" href="anketa.html">Заповнити анкету</a><a class="btn ghost" href="partners.html">Товари для продажу</a><a class="btn ghost" href="${tgLink()}" target="_blank" rel="noopener">Написати менеджеру</a></div></div>`}
 
 /* ---------- вхід і реєстрація ---------- */
 function authView(mode,msg){
@@ -141,6 +141,18 @@ function draw(){
  ({home:vHome,order:vOrder,orders:vOrders,learn:vLearn,profile:vProfile})[tab]()}
 function go(t){tab=t;history.replaceState(null,'','#'+t);draw();$i('kbApp').scrollIntoView({behavior:'smooth',block:'start'})}
 
+/* ---------- інструменти й навчання (дашборд та інструкції) ---------- */
+const grow=()=>`<section class="kb-grow" aria-labelledby="kbGrowH"><div class="kb-ch"><h3 id="kbGrowH">Інструменти й навчання</h3></div><div class="kb-gc">
+ <article class="kb-g"><span class="kb-gi">${ico('grid')}</span><h4>Товари для продажу</h4><p>Ціни й наявність зі складу, фото й готові тексти оголошень з вашою ціною. Оберіть товар, скопіюйте — і публікуйте.</p>
+  <a class="btn" href="partners.html">Обрати товари</a></article>
+ <article class="kb-g"><span class="kb-gi">${ico('book')}</span><h4>Академія партнера</h4><p>Короткий шлях від першого оголошення до стабільних замовлень: що робити, у якому порядку й де продавати.</p>
+  <a class="btn ghost" href="academy.html">До академії</a></article>
+ <article class="kb-g"><span class="kb-gi">${ico('play')}</span><h4>Курси</h4>
+  <a class="kb-gl" href="course-dropshipping.html"><b>Дропшипінг з нуля</b><small>Від першого оголошення до перших замовлень</small>${ico('arrow')}</a>
+  <a class="kb-gl" href="course-sales3.html"><b>Продажі 3.0</b><small>Скрипти відповідей і робота з запереченнями</small>${ico('arrow')}</a>
+  <a class="kb-gl" href="lk.html"><b>Де й як продавати</b><small>Порівняння майданчиків і план на тиждень</small>${ico('arrow')}</a></article>
+</div></section>`;
+
 /* ---------- огляд ---------- */
 function stats(){
  const live=orders.filter(o=>!CANC.includes(o.status)),now=new Date(),ms=new Date(now.getFullYear(),now.getMonth(),1);
@@ -179,7 +191,8 @@ function vHome(){
    <p class="kb-small">Рівень змінює менеджер, коли оборот тримається стабільно. Питання — <a href="${tgLink()}" target="_blank" rel="noopener">@${E(TGM)}</a></p></div>
  </div>
  <div class="kb-card"><div class="kb-ch"><h3>Останні замовлення</h3>${orders.length?'<a href="#orders" data-tab="orders" class="kb-link">Усі замовлення</a>':''}</div>
-  ${orders.length?`<div class="kb-list">${orders.slice(0,5).map(row).join('')}</div>`:`<div class="kb-none"><p>Тут з’являться ваші замовлення зі статусами й ТТН.</p><a class="btn ghost sm" href="partners.html">Обрати товари в каталозі</a></div>`}</div>`}
+  ${orders.length?`<div class="kb-list">${orders.slice(0,5).map(row).join('')}</div>`:`<div class="kb-none"><p>Тут з’являться ваші замовлення зі статусами й ТТН.</p><a class="btn ghost sm" href="partners.html">Обрати товари для продажу</a></div>`}</div>
+ ${grow()}`}
 function pl(n,a,b,c){const m=n%10,h=n%100;return m==1&&h!=11?a:m>=2&&m<=4&&(h<10||h>=20)?b:c}
 
 /* ---------- список замовлень ---------- */
@@ -219,6 +232,7 @@ function vOrder(){
  <div class="kb-ordm">
   <div class="kb-card"><h3><i class="kb-n">1</i>Товари</h3>
    <div class="kb-srch">${ico('search')}<input id="kbQ" type="search" autocomplete="off" placeholder="${typeof all!='undefined'&&all.length?'Назва або артикул: 3D панель, PET плитка…':'Каталог завантажується…'}" aria-label="Пошук товару"><div class="kb-res" id="kbRes" hidden></div></div>
+   <p class="kb-small" style="margin:-4px 0 12px">Фото й готові тексти для оголошень — у розділі <a href="partners.html">«Товари для продажу»</a>.</p>
    <div id="kbIt"></div>
    <button type="button" class="kb-link" data-manual>Немає в списку? Додати товар вручну</button></div>
   <div class="kb-card"><h3><i class="kb-n">2</i>Клієнт і доставка</h3>
@@ -304,10 +318,7 @@ function vLearn(){
  <div class="kb-card"><div class="kb-ch"><h3>${a?(yes.length?'Нові канали з нуля':'Канали з нуля'):'Інструкції по всіх платформах'}</h3>${a&&!yes.length?'<a class="kb-link" href="anketa.html?kab=1">Оновити анкету</a>':''}</div>
   <p class="kb-small" style="margin:-4px 0 12px">Для старту досить двох: дошки оголошень і однієї соцмережі. Перші в списку — найпростіші для новачка.</p>
   <div class="kb-pdfs">${no.map((p,k)=>card(p,k<2&&!yes.length?'рекомендуємо для старту':'покроково з нуля',k<2&&!yes.length)).join('')}</div></div>
- <div class="kb-card"><h3>Інструменти для оголошень</h3><div class="kb-tools">
-  <a href="partners.html">${ico('grid')}<span><b>Каталог для партнерів</b><small>Ціни, наявність, готові тексти й фото</small></span></a>
-  <a href="lk.html">${ico('map')}<span><b>Де й як продавати</b><small>Порівняння майданчиків і план тижня</small></span></a>
-  <a href="academy.html">${ico('book')}<span><b>Академія партнера</b><small>Курси «Дропшипінг з нуля» та «Продажі 3.0»</small></span></a></div></div>`}
+ ${grow()}`}
 
 /* ---------- профіль ---------- */
 function vProfile(){

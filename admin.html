@@ -433,7 +433,7 @@ const LBL={ord:STS,lead:['Нова','Зв’язались','В роботі','�
  rev:['На модерації','На модерації','На модерації','Опубліковано','Відхилено']};
 const LTYPES=['Дропшипінг','Анкета партнера','Опт','Постачальник','Франшиза','Вакансія'];
 const LFIRST={
- 'Дропшипінг':n=>`${n}! Це Samostroy Shop. Отримали вашу заявку на дропшипінг. Ось кабінет партнера з товарами, цінами й готовими текстами: ${SITE}partners.html\nА тут коротке навчання на 15 хвилин: ${SITE}academy.html\nКоли вам зручно коротко поговорити?`,
+ 'Дропшипінг':n=>`${n}! Це Samostroy Shop. Отримали вашу заявку на дропшипінг. Ось товари для продажу з цінами, фото й готовими текстами: ${SITE}partners.html\nОсобистий кабінет для замовлень і заробітку: ${SITE}kabinet.html\nА тут коротке навчання на 15 хвилин: ${SITE}academy.html\nКоли вам зручно коротко поговорити?`,
  'Опт':n=>`${n}! Це Samostroy Shop. Отримали ваш оптовий запит. Підкажіть, будь ласка, які товари й обсяги вас цікавлять — підготуємо ціни й умови доставки.`,
  'Постачальник':n=>`${n}! Це Samostroy Shop. Дякуємо за пропозицію співпраці. Надішліть, будь ласка, прайс або фід (XML/YML) і фото товарів — розглянемо протягом 2 робочих днів.`,
  'Франшиза':n=>`${n}! Це Samostroy Shop. Дякуємо за інтерес до франшизи. Коли вам зручно провести 15-хвилинний дзвінок? Розповімо про умови й відповімо на питання.`,
@@ -691,7 +691,7 @@ function source(u){if(!u)return'Невідомо';let p;try{p=new URL(u)}catch(e
  if(/^\/p\//.test(s)||g('p'))return'Сторінка товару';if(/^\/c\//.test(s)||g('c')||g('g'))return'Категорія';
  if(/^\/blog/.test(s))return'Блог';if(/vinil|pazl|kylimky|ekoshkira|dzerkala|mebli/.test(s))return'Лендинг категорії';
  if(s=='/'||/index\.html$/.test(s))return g('q')?'Пошук по сайту':'Головна';
- const n=s.replace(/^\/|\.html$/g,'');return{dropshipping:'Дропшипінг',academy:'Академія',opt:'Опт',postachalniky:'Постачальникам',franchise:'Франшиза',jobs:'Вакансії',reviews:'Відгуки',partners:'Кабінет партнера',anketa:'Анкета партнера',bio:'Bio-сторінка'}[n]||n||'Головна'}
+ const n=s.replace(/^\/|\.html$/g,'');return{dropshipping:'Дропшипінг',academy:'Академія',opt:'Опт',postachalniky:'Постачальникам',franchise:'Франшиза',jobs:'Вакансії',reviews:'Відгуки',partners:'Товари для продажу',anketa:'Анкета партнера',bio:'Bio-сторінка'}[n]||n||'Головна'}
 const utm=u=>{try{const p=new URL(u).searchParams;return p.get('utm_source')?[p.get('utm_source'),p.get('utm_campaign')].filter(Boolean).join(' / '):null}catch(e){return null}};
 const WD=['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
 function met(L){const live=L.filter(o=>o.status!='Скасоване'),rev=live.reduce((a,o)=>a+o.total,0);
@@ -933,6 +933,6 @@ document.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-tip]
 // автоматичний вхід, якщо пароль збережено
 if(api&&pass){call({action:'list'}).then(r=>r.ok?start(r):logout(r.error=='net'?ERR.net:''))}
 </script>
-<script src="admin-partners.js?v=2e5f92ed"></script>
+<script src="admin-partners.js?v=7fa8290e"></script>
 </body>
 </html>

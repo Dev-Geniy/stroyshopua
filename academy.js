@@ -203,7 +203,7 @@ function planHTML(){
  <ul class="ac-week">${W.map(([d,t],i)=>`<li><label><input type="checkbox" data-ac="wk" data-x="${i}" ${S.week[i]?'checked':''}><span><b>${d}</b>${t}</span></label></li>`).join('')}</ul>
  <div class="apply ac-apply" id="acApply">
   <div><h3>Надішліть заявку — і почнімо</h3><p class="ac-note">Менеджер зв’яжеться з вами, надішле прайс з оптовими цінами, фото й описи. Ваш план додамо до заявки автоматично.</p>
-   <div class="ac-more"><b>Хочете глибше?</b><a href="course-dropshipping.html">Курс «Дропшипінг з нуля» — 24 уроки</a><a href="course-sales3.html">Курс «Продажі 3.0» — діалог і заперечення</a><a href="partners.html">Партнерський кабінет — каталог і готові описи</a></div></div>
+   <div class="ac-more"><b>Хочете глибше?</b><a href="course-dropshipping.html">Курс «Дропшипінг з нуля» — 24 уроки</a><a href="course-sales3.html">Курс «Продажі 3.0» — діалог і заперечення</a><a href="partners.html">Товари для продажу — каталог і готові описи</a></div></div>
   <form class="af" id="acForm" novalidate>
    <label>Ім’я<input id="acName" autocomplete="name" value="${esc(cust.fn||'')}"></label>
    <label>Телефон<input id="acPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" value="${esc(cust.fp||'')}"></label>

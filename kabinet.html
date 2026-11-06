@@ -62,6 +62,8 @@
  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6"/></symbol>
  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></symbol>
  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></symbol>
+ <symbol id="i-play" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m10 9 5 3-5 3z"/></symbol>
+ <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
 </svg>
 
 <header>
@@ -76,7 +78,7 @@
  <div class="w msearch"><div class="hs"><svg class="i"><use href="#i-search"/></svg><input type="search" id="q2" autocomplete="off" data-ip="ph" placeholder="Пошук товарів" aria-label="Пошук товарів"></div></div>
  <div class="mega" id="mega" hidden><div class="w"><div class="dir-g" data-dir></div></div></div>
 </header>
-<nav class="pnav" aria-label="Розділ для партнерів"><div class="w"><b>Партнерам:</b><a href="dropshipping.html">Умови й заявка</a><a href="academy.html">Академія</a><a href="course-dropshipping.html">Дропшипінг з нуля</a><a href="course-sales3.html">Продажі 3.0</a><a href="partners.html">Кабінет</a><a href="lk.html">Де й як продавати</a><a href="anketa.html">Анкета</a><a href="kabinet.html" aria-current="page">Особистий кабінет</a></div></nav>
+<nav class="pnav" aria-label="Розділ для партнерів"><div class="w"><b>Партнерам:</b><a href="dropshipping.html">Умови й заявка</a><a href="academy.html">Академія</a><a href="course-dropshipping.html">Дропшипінг з нуля</a><a href="course-sales3.html">Продажі 3.0</a><a href="lk.html">Де й як продавати</a><a href="anketa.html">Анкета</a><a href="kabinet.html" aria-current="page">Особистий кабінет</a></div></nav>
 
 <style>
 /* Особистий кабінет партнера — стилі лише цієї сторінки */
@@ -263,6 +265,21 @@
 .kb-tools a:hover{border-color:var(--orange)}
 .kb-tools .i{color:var(--orange-d);margin-top:2px}
 .kb-tools b{display:block;font-weight:600}.kb-tools small{color:var(--soft);font-size:13px}
+/* інструменти й навчання */
+.kb-grow{margin-top:22px}
+.kb-gc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.kb-g{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.kb-g:first-child{border-color:var(--orange);box-shadow:inset 0 4px 0 var(--orange)}
+.kb-gi{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--orange) 14%,transparent);color:var(--orange-d)}
+.kb-g h4{font-family:var(--f-d);font-size:17px;font-weight:700}
+.kb-g p{color:var(--soft);font-size:15px;flex:1}
+.kb-g>.btn{align-self:flex-start;margin-top:4px}
+.kb-gl{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 10px;padding:10px 0;border-top:1px solid var(--line);text-decoration:none}
+.kb-gl:first-of-type{border-top:0;padding-top:2px}
+.kb-gl b{font-weight:600}.kb-gl small{grid-column:1;color:var(--soft);font-size:13px}
+.kb-gl .i{grid-row:1/3;grid-column:2;color:var(--soft);width:18px;height:18px;transition:transform .15s}
+.kb-gl:hover b{color:var(--orange-d)}.kb-gl:hover .i{transform:translateX(3px);color:var(--orange-d)}
+@media(max-width:980px){.kb-gc{grid-template-columns:1fr}}
 /* вимога анкети */
 #kbGate{margin:auto;border:0;border-radius:var(--r);padding:0;max-width:480px;width:calc(100% - 32px);background:var(--panel);color:var(--ink);box-shadow:0 24px 60px #0005}
 #kbGate::backdrop{background:#11151acc}
@@ -320,7 +337,7 @@
    <div><h3 data-i="fspec">Добірки</h3><ul>
     <li><a href="vinil.html">Вінілове покриття</a></li><li><a href="pazl-pidloga.html">Підлога-пазл</a></li><li><a href="kylimky.html">Килимки</a></li><li><a href="ekoshkira.html">Екошкіра</a></li><li><a href="dzerkala.html">Дзеркала</a></li><li><a href="mebli.html">Меблі</a></li></ul></div>
    <div><h3 data-i="fpart">Партнерам</h3><ul>
-    <li><a href="kabinet.html" data-i="fkab" style="color:var(--orange);font-weight:600">Особистий кабінет партнера</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="academy.html" data-i="facad">Академія партнера</a></li><li><a href="partners.html" data-i="fcab">Партнерський кабінет</a></li><li><a href="lk.html" data-i="fhub">Де й як продавати</a></li><li><a href="course-dropshipping.html" data-i="fc1">Курс «Дропшипінг з нуля»</a></li><li><a href="course-sales3.html" data-i="fc2">Курс «Продажі 3.0»</a></li></ul></div>
+    <li><a href="kabinet.html" data-i="fkab" style="color:var(--orange);font-weight:600">Особистий кабінет</a></li><li><a href="dropshipping.html" data-i="b2">Дропшипінг</a></li><li><a href="academy.html" data-i="facad">Академія партнера</a></li><li><a href="partners.html" data-i="fcab">Товари для продажу</a></li><li><a href="lk.html" data-i="fhub">Де й як продавати</a></li><li><a href="course-dropshipping.html" data-i="fc1">Курс «Дропшипінг з нуля»</a></li><li><a href="course-sales3.html" data-i="fc2">Курс «Продажі 3.0»</a></li></ul></div>
    <div><h3 data-i="fbiz">Співпраця</h3><ul>
     <li><a href="opt.html" data-i="b1">Оптовим покупцям</a></li><li><a href="postachalniky.html" data-i="fsup">Постачальникам</a></li><li><a href="franchise.html" data-i="ffr">Франшиза</a></li><li><a href="jobs.html" data-i="fjob">Вакансії</a></li><li><a href="blog.html" data-i="fblog">Блог</a></li></ul></div>
   </div>
@@ -379,7 +396,7 @@
 
 <script src="config.js?v=39a7de90"></script>
 <script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Особистий кабінет партнера", "listTitle": "Особистий кабінет партнера", "url": "https://samostroy.shop/kabinet.html", "title": "Особистий кабінет партнера | Samostroy Shop", "desc": "Особистий кабінет партнера Samostroy Shop: замовлення, заробіток, статуси й ТТН, інструкції під ваші платформи.", "guide": "", "calc": 0, "faq": [], "wall": [], "info": true}</script>
-<script src="shop.js?v=085feddf"></script>
-<script src="kabinet.js?v=9c1da8d3"></script>
+<script src="shop.js?v=5e7b9583"></script>
+<script src="kabinet.js?v=be0904f3"></script>
 </body>
 </html>

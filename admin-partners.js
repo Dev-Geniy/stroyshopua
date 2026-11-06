@@ -38,7 +38,7 @@ function pStats(id){const L=S.orders.filter(o=>o.partnerId==id),live=L.filter(o=
 
 /* ---------- екрани ---------- */
 function draw(){const v=$v();if(!v)return;
- const head=`<div class="sh"><div><h1>Партнери</h1><p>Замовлення з особистого кабінету партнерів, партнери й виплати. <a href="kabinet.html" target="_blank" rel="noopener">Кабінет партнера</a></p></div>
+ const head=`<div class="sh"><div><h1>Партнери</h1><p>Замовлення з особистого кабінету партнерів, партнери й виплати. <a href="kabinet.html" target="_blank" rel="noopener">Особистий кабінет партнера</a></p></div>
   <div class="sh-a">${PAPI?`<button class="btn ghost sm" data-pa="reload">Оновити</button>`:''}</div></div>`;
  if(!PAPI){v.innerHTML=head+`<div class="box"><h4>Кабінет партнерів ще не підключено</h4>
   <p class="note" style="font-size:14px;line-height:1.6">1. Створіть Google Таблицю «Samostroy — партнери» → Розширення → Apps Script.<br>2. Вставте код з файлу <b>tools/partner-api/Code.gs</b> (GitHub), задайте властивості ADMIN_PASS (як тут), TG_TOKEN і TG_CHAT.<br>3. Розгорнути → Нове розгортання → Вебзастосунок, доступ «Усі».<br>4. Вставте адресу в <b>config.js</b> → <code>papi:'…'</code>.<br>Покрокова інструкція — tools/partner-api/ЯК-ЗАПУСТИТИ.md.</p></div>`;return}

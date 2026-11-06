@@ -773,7 +773,7 @@ def llms(cats, arts):
     lines += [f'- [{CAT[s][2]}]({SITE}c/{s}.html)' for s in cats]
     lines += ['', '## Співпраця', f'- [Дропшипінг]({SITE}dropshipping.html): продаж товарів без складу й вкладень', f'- [Оптовим покупцям]({SITE}opt.html)',
               f'- [Постачальникам]({SITE}postachalniky.html)', f'- [Франшиза / White Label]({SITE}franchise.html)', f'- [Академія партнера]({SITE}academy.html)',
-              f'- [Партнерський кабінет]({SITE}partners.html)', f'- [Вакансії]({SITE}jobs.html)', '', '## Блог']
+              f'- [Товари для продажу]({SITE}partners.html)', f'- [Вакансії]({SITE}jobs.html)', '', '## Блог']
     lines += [f'- [{a["title"]}]({SITE}blog/{a["slug"]}.html): {a["desc"]}' for a in arts]
     lines += ['', '## Контакти', f'- Телефон: {PHONE}', f'- Telegram: https://t.me/{TG}', f'- Відгуки: {SITE}reviews.html', f'- Обмін і повернення: {RETURNS_URL} — використаний (розпакований, наклеєний, нарізаний) товар не повертається; брак і пересорт замінюємо за свій рахунок; нерозпакований — 14 днів', '']
     write('llms.txt', '\n'.join(lines))
