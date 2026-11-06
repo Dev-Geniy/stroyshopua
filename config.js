@@ -12,6 +12,7 @@ var CFG={
  quizBonus:'',                                         // напр. 'Знижка 5% на перше замовлення після підбору'. Порожньо = без бонусу
  videos:[],                                            // [['Монтаж 3D панелей','https://www.tiktok.com/@stroyshop_ua/video/...']]
  reviews:[],                                          // [['фото.jpg','Кухня, PET плитка, Дніпро']]
+ papi:'',                                              // адреса скрипта особистого кабінету партнерів (tools/partner-api/ЯК-ЗАПУСТИТИ.md). Порожньо = кабінет показує заглушку
  api:'https://script.google.com/macros/s/AKfycbzeYmkpMqlVwH6RsNc67d3YDuFGinnPmfy6UnWcW0FYEUpaoforC5m-GF4T1NVEMonn4w/exec'                                                // адреса скрипта Google (див. інструкцію). Порожньо = замовлення лише через Telegram
 };
 /* ===================================================================== */

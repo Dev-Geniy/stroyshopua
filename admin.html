@@ -246,6 +246,15 @@ ul.links a{color:var(--orange-d);font-weight:600}
  .g2{grid-template-columns:1fr 1fr}
  .bt[hidden]{display:block!important}
 }
+.pa-row{grid-template-columns:72px 104px minmax(140px,1fr) minmax(180px,1.7fr) 120px 150px}
+.pa-prow{grid-template-columns:72px minmax(160px,1.4fr) 210px minmax(150px,1fr) 170px}
+.pa-cl{color:var(--ink);font-weight:500}
+.pa-e{display:block;font-size:12px;font-weight:600;color:var(--ok)}
+.pa-lv{display:inline-block;background:var(--slate);color:#fff;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:600}
+.pa-pay{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.pa-ph{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}.pa-ph span{display:block}
+.pa-sum{font-family:var(--f-d);font-size:20px;color:var(--ok);white-space:nowrap}
+button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
 </style>
 </head>
 <body>
@@ -285,6 +294,7 @@ ul.links a{color:var(--orange-d);font-weight:600}
   <a href="#home" data-v="home">Огляд</a>
   <a href="#orders" data-v="orders">Замовлення<i id="b-ord"></i></a>
   <a href="#leads" data-v="leads">Заявки<i id="b-lead"></i></a>
+  <a href="#partners" data-v="partners">Партнери<i id="b-par"></i></a>
   <a href="#reviews" data-v="reviews">Відгуки<i id="b-rev"></i></a>
   <a href="#stats" data-v="stats">Аналітика</a>
   <a href="#catalog" data-v="catalog">Каталог</a>
@@ -317,6 +327,8 @@ ul.links a{color:var(--orange-d);font-weight:600}
    <div class="tabs" id="l-tabs"></div>
    <div class="list" id="l-list"></div>
   </section>
+
+  <section class="view" id="v-partners" hidden></section>
 
   <section class="view" id="v-reviews" hidden>
    <div class="sh"><div><h1>Відгуки</h1><p>Покупці залишають відгуки на <a href="reviews.html" target="_blank" rel="noopener">сторінці відгуків</a>. Перевірте й опублікуйте — відгук з’явиться на сайті.</p></div>
@@ -402,7 +414,7 @@ ul.links a{color:var(--orange-d);font-weight:600}
 <div id="tip" hidden></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js"></script>
+<script src="config.js?v=1517d458"></script>
 <script>
 /* Адреса скрипта Google береться з config.js (CFG.api). Якщо там порожньо — адмінка спитає її при вході. */
 const API=(window.CFG&&CFG.api)||'';
@@ -501,7 +513,7 @@ const saveSeen=()=>store.set('adm_seen',JSON.stringify([...seen].slice(-4000)));
 function logout(msg){store.del('adm_pass');pass='';clearInterval(timer);dr(false);$('#app').hidden=true;$('#login').hidden=false;$('#lpass').value='';$('#lerr').textContent=msg||''}
 
 /* ---------- навігація ---------- */
-const VIEWS=['home','orders','leads','reviews','stats','catalog','settings'];
+const VIEWS=['home','orders','leads','partners','reviews','stats','catalog','settings'];
 function go(v){v=VIEWS.includes(v)?v:'home';const ch=v!=view;view=v;
  $$('.view').forEach(s=>s.hidden=s.id!='v-'+v);$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v==v));
  render();if(ch)scrollTo(0,0)}
@@ -510,7 +522,8 @@ function render(){
  const nO=byK('ord').filter(o=>o.status=='Нове').length,nL=byK('lead').filter(o=>o.status=='Нове').length,nR=byK('rev').filter(o=>o.status=='Нове').length;
  $('#b-ord').textContent=nO||'';$('#b-lead').textContent=nL||'';$('#b-rev').textContent=nR||'';
  const n=nO+nL+nR;document.title=(n?`(${n}) `:'')+'Адмінка — Samostroy Shop';
- ({home:rHome,orders:()=>rList('ord'),leads:()=>rList('lead'),reviews:rRev,stats:rStats,catalog:rCat,settings:rSet})[view]()}
+ if(window.PA)PA.tick();
+ ({home:rHome,orders:()=>rList('ord'),leads:()=>rList('lead'),partners:()=>window.PA?PA.render():0,reviews:rRev,stats:rStats,catalog:rCat,settings:rSet})[view]()}
 
 /* ---------- огляд ---------- */
 function rHome(){
@@ -893,7 +906,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button,a,[data-a
  if(Dt.st&&cur&&!cur.rev){cur.status=Dt.st;$$('#seg button').forEach(x=>x.classList.toggle('on',x==b));if(cur._k=='ord'){$('#dmsg').textContent=clientMsg(cur,cur.status);if(Dt.st=='Відправлене')$('#dttn').focus()}return}
  if(Dt.copy!==undefined)return copy(Dt.copy);
  switch(Dt.a){
-  case'refresh':rep=null;site=null;return load();case'logout':return logout();case'dclose':return dr(false);case'save':return save();
+  case'refresh':rep=null;site=null;if(window.PA)PA.load(true);return load();case'logout':return logout();case'dclose':return dr(false);case'save':return save();
   case'csv':return csv(Dt.k);case'rcsv':return reportCsv();case'print':return print();
   case'tbl':{const x=b.closest('.box').querySelector('.bt');if(x){x.hidden=!x.hidden;b.textContent=x.hidden?'Таблиця':'Графік';b.closest('.box').querySelector('.cc').hidden=!x.hidden}return}
   case'copy':return copy(cur?(cur._k=='ord'?`Замовлення №${cur.id}\n${cur.items.map(i=>`${clean(i.name)} × ${i.q} = ${money(i.q*i.price)}`).join('\n')||cur.text}\nРазом: ${money(cur.total)}\n${cur.name}\n${cur.phone}\n${[cur.delivery,cur.city].filter(Boolean).join(', ')}\n${cur.pay}`:`${cur.type} №${cur.id}\n${cur.name}\n${cur.phone}\n${cur._p.join('\n')}`):'');
@@ -920,5 +933,6 @@ document.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-tip]
 // автоматичний вхід, якщо пароль збережено
 if(api&&pass){call({action:'list'}).then(r=>r.ok?start(r):logout(r.error=='net'?ERR.net:''))}
 </script>
+<script src="admin-partners.js?v=2e5f92ed"></script>
 </body>
 </html>
