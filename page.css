@@ -175,9 +175,19 @@
 @media(max-width:640px){.pol-sum{grid-template-columns:1fr}}
 
 /* «Поділитися статтею» */
-.ba-share{margin:28px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
-.ba-share>b{font-size:15px}
+.ba-top{margin:14px 0 -8px}
+.ba-tsh{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:600 14px/1 var(--f-b);text-decoration:none}
+.ba-tsh:hover{border-color:var(--orange);color:var(--orange-d)}
+.ba-tsh .i,.ba-nat .i{width:17px;height:17px}
+.ba-share{margin:28px 0 0;padding:18px 0 0;border-top:1px solid var(--line);display:grid;gap:12px;scroll-margin-top:110px}
+.ba-share>b{font-size:16px}
+.ba-share.flash{animation:baFlash 1.4s ease}
+@keyframes baFlash{0%,60%{background:color-mix(in srgb,var(--orange) 14%,transparent)}100%{background:transparent}}
 .ba-sh{display:flex;flex-wrap:wrap;gap:6px}
-.ba-sh a,.ba-sh button{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:500 14px/1 var(--f-b);text-decoration:none;cursor:pointer}
+.ba-sh a,.ba-sh button{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 15px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:500 14px/1 var(--f-b);text-decoration:none;cursor:pointer}
 .ba-sh a:hover,.ba-sh button:hover{border-color:var(--orange);color:var(--orange-d)}
-.ba-sh button{background:var(--wall)}
+.ba-sh [data-copyshare]{background:var(--wall)}
+.ba-sh .ba-nat{background:var(--orange);border-color:var(--orange);color:var(--orange-ink);font-weight:600}
+.ba-sh .ba-nat:hover{color:var(--orange-ink);filter:brightness(1.05)}
+.ba-sh [data-copyshare].ok{border-color:var(--ok);color:var(--ok)}
+@media(max-width:640px){.ba-sh a,.ba-sh button{min-height:42px}.ba-sh .ba-nat{width:100%;justify-content:center}}

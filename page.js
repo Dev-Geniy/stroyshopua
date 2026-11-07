@@ -25,9 +25,20 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-share]');i
  if(navigator.share){navigator.share({title,url}).catch(()=>{});return}
  try{navigator.clipboard.writeText(url).then(()=>toast('Посилання скопійовано'),()=>prompt('Скопіюйте посилання:',url))}catch(x){prompt('Скопіюйте посилання:',url)}});
 
-/* «Поділитися статтею»: на комп’ютері — у невеликому вікні */
-document.addEventListener('click',e=>{const a=e.target.closest('[data-sh]');if(!a||/^viber:/.test(a.href)||matchMedia('(max-width:760px)').matches)return;
- const w=window.open(a.href,'share','width=620,height=640,noopener');if(w){e.preventDefault()}});
+/* «Поділитися статтею» для всіх відвідувачів */
+const canShare=!!navigator.share&&matchMedia('(pointer:coarse)').matches;
+document.querySelectorAll('[data-native]').forEach(b=>{b.hidden=!canShare});
+const nativeShare=b=>navigator.share({title:b.dataset.title,text:b.dataset.title,url:b.dataset.url}).catch(()=>{});
+document.addEventListener('click',e=>{
+ const n=e.target.closest('[data-native]');if(n){nativeShare(n);return}
+ const t=e.target.closest('[data-topshare]');
+ if(t){e.preventDefault();if(canShare){nativeShare(t);return}const s=$i('share');if(s){s.scrollIntoView({behavior:'smooth',block:'center'});s.classList.remove('flash');void s.offsetWidth;s.classList.add('flash')}return}
+ const c=e.target.closest('[data-copyshare]');
+ if(c){const txt=c.dataset.title+'\n'+c.dataset.url,ok=()=>{toast('Скопійовано заголовок і посилання');c.classList.add('ok');c.textContent='Скопійовано ✓';setTimeout(()=>{c.classList.remove('ok');c.textContent='Копіювати посилання'},2500)};
+  try{navigator.clipboard.writeText(txt).then(ok,()=>prompt('Скопіюйте:',txt))}catch(x){prompt('Скопіюйте:',txt)}return}
+ /* соцмережі: на комп’ютері — у невеликому вікні, на телефоні — у застосунку */
+ const a=e.target.closest('[data-sh]');if(!a||/^(viber|mailto):/.test(a.href)||matchMedia('(max-width:760px)').matches)return;
+ const w=window.open(a.href,'share','width=620,height=640');if(w){try{w.opener=null}catch(x){}e.preventDefault()}});
 
 /* інструмент автора на сторінці статті: ШІ-рерайт і публікація на інших сайтах (лише після входу в адмінку на цьому пристрої) */
 (()=>{const t=$i('baTools');if(!t)return;let done=false;

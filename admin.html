@@ -775,7 +775,7 @@ function rStats(){
  <div class="wide">${box(`Виручка по ${step}`,cols(revData,money),'',true)}</div>
  <div class="g2">
   ${box('Статуси замовлень',hb(stRows),'усі за період')}
-  ${box('Звідки замовляють',hb(srcs.map(r=>({...r,n:Lr.length?pct(r.v/Lr.length):''})))+(utms.length?`<h4>Рекламні мітки (utm)</h4>${hb(utms)}`:''),'сторінка, з якої оформили')}
+  ${box('Звідки замовляють',hb(srcs.map(r=>({...r,n:Lr.length?pct(r.v/Lr.length):''})))+(utms.length?`<h4>Реклама й «Поділитися» (utm)</h4>${hb(utms)}`:''),'сторінка, з якої оформили')}
  </div>
  <div class="g2">
   ${box('Топ-10 товарів',hb(top,money),'за виручкою')}

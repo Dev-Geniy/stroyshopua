@@ -762,7 +762,17 @@ function phoneOk(v){return v.replace(/\D/g,'').length>=10}
 function bad(el,msg){el.classList.add('err');const h=$('#hint');if(el.id=='fp'){h.textContent=msg}else toast(msg);el.focus();el.addEventListener('input',()=>{el.classList.remove('err');h.textContent=''},{once:true})}
 /* відправка замовлення: спершу зберігаємо в таблиці (якщо CFG.api задано), Telegram — як запасний канал */
 const okey=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+/* звідки прийшов покупець: utm-мітки реклами й короткі ?ref=… з кнопок «Поділитися». Пам’ятаємо 30 днів,
+   щоб в аналітиці адмінки було видно замовлення з поділених статей, навіть якщо людина купила пізніше на іншій сторінці */
+const REF={tg:'telegram',vb:'viber',fb:'facebook',wa:'whatsapp',th:'threads',pin:'pinterest',li:'linkedin',x:'x',mail:'email',link:'копія посилання',app:'меню «Поділитися»'};
+const VISIT=(()=>{const K='ss_src';try{const q=new URLSearchParams(location.search);let v=null;
+ if(q.get('utm_source')){v={};['utm_source','utm_medium','utm_campaign'].forEach(k=>{if(q.get(k))v[k]=q.get(k)})}
+ else if(q.get('ref')&&REF[q.get('ref')]){v={utm_source:REF[q.get('ref')],utm_medium:'share',utm_campaign:location.pathname.indexOf('/blog/')==0?'стаття':'сторінка'}}
+ if(v){v.t=Date.now();localStorage.setItem(K,JSON.stringify(v));return v}
+ v=JSON.parse(localStorage.getItem(K)||'null');return v&&Date.now()-v.t<30*864e5?v:null}catch(e){return null}})();
+function withSrc(u){try{if(!VISIT)return u;const x=new URL(u);if(x.searchParams.get('utm_source'))return u;for(const k in VISIT)if(k!='t')x.searchParams.set(k,VISIT[k]);return x.toString()}catch(e){return u}}
 async function api(body){
+ if(body&&body.order&&body.order.page)body.order.page=withSrc(body.order.page);
  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),20000);
  try{const r=await fetch(CFG.api,{method:'POST',body:JSON.stringify(body),signal:ac.signal,redirect:'follow'});return await r.json()}finally{clearTimeout(tm)}}
 const doneBox=(id,fail,err,pd)=>`<div class="done${fail?' fail':''}"><div class="ic"><svg class="i"><use href="#${fail?'i-chat':'i-check'}"/></svg></div><h3>${fail?t('failH'):t('okH',{id:esc(id)})}</h3><p>${fail?(err=='rate'?t('rate'):t('failP')):t('okP')}</p><button class="btn" data-a="tgmsg">${fail?t('failTg'):t('okTg')}</button>${fail?`<button class="link" data-a="${err=='one'?'retry1':'order'}">${t('retry2')}</button>`:`<button class="link" data-a="${pd?'pdclose':'close'}">${t('okMore')}</button>`}</div>`;

@@ -466,22 +466,30 @@ def clean_articles(raw):
     return out
 
 
+SHARE_ICON = '<svg class="i" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>'
+
+
 def share_bar(a, url):
-    """Кнопки «Поділитися» під статтею: звичайні посилання, працюють і без JavaScript."""
+    """Кнопки «Поділитися» під статтею для всіх відвідувачів: звичайні посилання (працюють і без JavaScript),
+    на телефоні — ще й системне меню «Поділитися». До адреси додається коротка мітка ?ref=…, щоб в аналітиці
+    було видно замовлення з поділених статей (canonical сторінки лишається без мітки — для Google це та сама сторінка)."""
     q = lambda s: urllib.parse.quote(s, safe='')
     t = a['title']
     img = SITE + cover(a)
-    nets = [('Facebook', f'https://www.facebook.com/sharer/sharer.php?u={q(url)}'),
-            ('Telegram', f'https://t.me/share/url?url={q(url)}&text={q(t)}'),
-            ('Viber', f'viber://forward?text={q(t + " " + url)}'),
-            ('WhatsApp', f'https://wa.me/?text={q(t + " " + url)}'),
-            ('Threads', f'https://www.threads.net/intent/post?text={q(t + " " + url)}'),
-            ('Pinterest', f'https://pinterest.com/pin/create/button/?url={q(url)}&media={q(img)}&description={q(t)}'),
-            ('LinkedIn', f'https://www.linkedin.com/sharing/share-offsite/?url={q(url)}'),
-            ('X', f'https://x.com/intent/post?url={q(url)}&text={q(t)}')]
-    return (f'<section class="ba-share" aria-label="Поділитися статтею"><b>Поділитися статтею</b><div class="ba-sh">'
-            + ''.join(f'<a href="{e(u)}" data-sh="{n}" target="_blank" rel="noopener nofollow">{n}</a>' for n, u in nets)
-            + f'<button type="button" data-share="{e(url)}" data-title="{e(t)}">Копіювати посилання</button></div></section>'
+    r = lambda code: f'{url}?ref={code}'
+    nets = [('Telegram', 'tg', f'https://t.me/share/url?url={q(r("tg"))}&text={q(t)}'),
+            ('Viber', 'vb', f'viber://forward?text={q(t + chr(10) + r("vb"))}'),
+            ('Facebook', 'fb', f'https://www.facebook.com/sharer/sharer.php?u={q(r("fb"))}'),
+            ('WhatsApp', 'wa', f'https://wa.me/?text={q(t + chr(10) + r("wa"))}'),
+            ('Threads', 'th', f'https://www.threads.net/intent/post?text={q(t + chr(10) + r("th"))}'),
+            ('Pinterest', 'pin', f'https://pinterest.com/pin/create/button/?url={q(r("pin"))}&media={q(img)}&description={q(t)}'),
+            ('LinkedIn', 'li', f'https://www.linkedin.com/sharing/share-offsite/?url={q(r("li"))}'),
+            ('X', 'x', f'https://x.com/intent/post?url={q(r("x"))}&text={q(t)}'),
+            ('Email', 'mail', f'mailto:?subject={q(t)}&body={q(a["desc"] + chr(10) + chr(10) + r("mail"))}')]
+    return (f'<section class="ba-share" id="share" aria-label="Поділитися статтею"><b>Сподобалась стаття? Поділіться з тими, хто робить ремонт</b><div class="ba-sh">'
+            + f'<button type="button" class="ba-nat" data-native data-title="{e(t)}" data-text="{e(a["desc"])}" data-url="{e(r("app"))}" hidden>{SHARE_ICON}Поділитися…</button>'
+            + ''.join(f'<a href="{e(u)}" data-sh="{n}" target="_blank" rel="noopener nofollow">{n}</a>' for n, c, u in nets)
+            + f'<button type="button" data-copyshare data-title="{e(t)}" data-url="{e(r("link"))}">Копіювати посилання</button></div></section>'
             + f'<div id="baTools" data-slug="{e(a["slug"])}" data-src="share-tools.js?v={ver("share-tools.js") if os.path.exists(P("share-tools.js")) else "1"}" hidden></div>')
 
 
@@ -532,6 +540,7 @@ def article_page(a, arts, by_cat):
  <p class="ba-m">{e(a['category'])} · <time datetime="{a['date']}">{d.day} {months[d.month - 1]} {d.year}</time> · {a['rt']} хв читання</p>
  <h1>{e(a['title'])}</h1>
  <p class="lead">{e(a['desc'])}</p>
+ <div class="ba-top"><a class="ba-tsh" href="#share" data-topshare data-title="{e(a['title'])}" data-text="{e(a['desc'])}" data-url="{e(url)}?ref=app">{SHARE_ICON}Поділитися</a></div>
  <img class="ba-cover" src="{cover(a)}" alt="{e(a['title'])}" width="1200" height="630">
  <div class="ba-txt">{md(a['body'])}</div>
  {f'<section class="faq ba-faq"><h2>Питання й відповіді</h2>{faq}</section>' if faq else ''}
