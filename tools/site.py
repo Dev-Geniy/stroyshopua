@@ -20,6 +20,7 @@ import json
 import os
 import re
 import sys
+import urllib.parse
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
@@ -72,7 +73,8 @@ def write(path, content, url=None):
         return False
     with open(full, 'w', encoding='utf-8') as f:
         f.write(content)
-    if url:
+    # нова версія лише файлів стилів/скриптів (?v=…) — не зміна сторінки: не чіпаємо дату в карті сайту й не турбуємо пошуковики
+    if url and not (old is not None and re.sub(r'\?v=[0-9a-f]{6,}', '', old) == re.sub(r'\?v=[0-9a-f]{6,}', '', content)):
         CHANGED.append(url)
     return True
 
@@ -440,6 +442,49 @@ def md(src):
     return '\n'.join(out)
 
 
+def clean_articles(raw):
+    """Пропускає статті з помилками в blog.json, щоб одна бита стаття не зупинила оновлення всього сайту."""
+    out, seen = [], set()
+    for i, a in enumerate(raw if isinstance(raw, list) else []):
+        try:
+            assert isinstance(a, dict)
+            for k in ('slug', 'title', 'desc', 'category', 'date', 'body'):
+                assert isinstance(a.get(k), str) and a[k].strip(), k
+            assert re.fullmatch(r'[a-z0-9]+(-[a-z0-9]+)*', a['slug']), 'slug'
+            assert a['slug'] not in seen, 'дубль slug'
+            datetime.date.fromisoformat(a['date'])
+            a['cats'] = [c for c in a.get('cats') or [] if isinstance(c, str) and c in CAT]
+            a['tags'] = [t for t in a.get('tags') or [] if isinstance(t, str)]
+            a['faq'] = [[str(q), str(x)] for q, x in (a.get('faq') or []) if q and x]
+            if a.get('links'):
+                a['links'] = [(str(u), str(t)) for u, t in a['links'] if u and t]
+        except Exception as ex:
+            print(f'blog.json: статтю №{i + 1} ({a.get("slug") if isinstance(a, dict) else "?"}) пропущено — {ex}', file=sys.stderr)
+            continue
+        seen.add(a['slug'])
+        out.append(a)
+    return out
+
+
+def share_bar(a, url):
+    """Кнопки «Поділитися» під статтею: звичайні посилання, працюють і без JavaScript."""
+    q = lambda s: urllib.parse.quote(s, safe='')
+    t = a['title']
+    img = SITE + cover(a)
+    nets = [('Facebook', f'https://www.facebook.com/sharer/sharer.php?u={q(url)}'),
+            ('Telegram', f'https://t.me/share/url?url={q(url)}&text={q(t)}'),
+            ('Viber', f'viber://forward?text={q(t + " " + url)}'),
+            ('WhatsApp', f'https://wa.me/?text={q(t + " " + url)}'),
+            ('Threads', f'https://www.threads.net/intent/post?text={q(t + " " + url)}'),
+            ('Pinterest', f'https://pinterest.com/pin/create/button/?url={q(url)}&media={q(img)}&description={q(t)}'),
+            ('LinkedIn', f'https://www.linkedin.com/sharing/share-offsite/?url={q(url)}'),
+            ('X', f'https://x.com/intent/post?url={q(url)}&text={q(t)}')]
+    return (f'<section class="ba-share" aria-label="Поділитися статтею"><b>Поділитися статтею</b><div class="ba-sh">'
+            + ''.join(f'<a href="{e(u)}" data-sh="{n}" target="_blank" rel="noopener nofollow">{n}</a>' for n, u in nets)
+            + f'<button type="button" data-share="{e(url)}" data-title="{e(t)}">Копіювати посилання</button></div></section>'
+            + f'<div id="baTools" data-slug="{e(a["slug"])}" data-src="share-tools.js?v={ver("share-tools.js") if os.path.exists(P("share-tools.js")) else "1"}" hidden></div>')
+
+
 def read_time(a):
     words = len(re.findall(r'\w+', a['body'] + ' '.join(q + ' ' + x for q, x in a.get('faq', []))))
     return max(2, round(words / 180))
@@ -490,6 +535,7 @@ def article_page(a, arts, by_cat):
  <img class="ba-cover" src="{cover(a)}" alt="{e(a['title'])}" width="1200" height="630">
  <div class="ba-txt">{md(a['body'])}</div>
  {f'<section class="faq ba-faq"><h2>Питання й відповіді</h2>{faq}</section>' if faq else ''}
+ {share_bar(a, url)}
  <aside class="ba-ask"><div><b>{e(a.get('cta_title') or 'Підберемо матеріал під ваш ремонт')}</b><span>{e(a.get('cta_text') or 'Надішліть фото чи розміри — менеджер порахує кількість і підкаже, що підійде.')}</span></div>
   <div class="acts"><a class="btn" href="https://t.me/{TG}?text={e('Вітаю! Прочитав(ла) статтю «' + a['title'] + '». Питання:')}" target="_blank" rel="noopener">Написати в Telegram</a>{''.join(f'<a class="btn ghost" href="{e(u)}">{e(t)}</a>' for u, t in links)}</div></aside>
 </article>
@@ -787,7 +833,7 @@ def main():
         by_cat.setdefault(p['cat'], []).append(p)
     for L in by_cat.values():
         L.sort(key=lambda x: (not x['av'], x['sale'], len(x['imgs']) < 3, x['i']))
-    arts = json.loads(read('blog.json'))
+    arts = clean_articles(json.loads(read('blog.json')))
     for a in arts:
         a['rt'] = read_time(a)
     arts.sort(key=lambda a: a['date'], reverse=True)

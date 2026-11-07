@@ -25,6 +25,16 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-share]');i
  if(navigator.share){navigator.share({title,url}).catch(()=>{});return}
  try{navigator.clipboard.writeText(url).then(()=>toast('Посилання скопійовано'),()=>prompt('Скопіюйте посилання:',url))}catch(x){prompt('Скопіюйте посилання:',url)}});
 
+/* «Поділитися статтею»: на комп’ютері — у невеликому вікні */
+document.addEventListener('click',e=>{const a=e.target.closest('[data-sh]');if(!a||/^viber:/.test(a.href)||matchMedia('(max-width:760px)').matches)return;
+ const w=window.open(a.href,'share','width=620,height=640,noopener');if(w){e.preventDefault()}});
+
+/* інструмент автора на сторінці статті: ШІ-рерайт і публікація на інших сайтах (лише після входу в адмінку на цьому пристрої) */
+(()=>{const t=$i('baTools');if(!t)return;let done=false;
+ const load=()=>{if(done)return;let on=false;try{on=localStorage.getItem('adm_tools')=='1'}catch(x){}
+  if(!on&&location.hash!='#avtor')return;done=true;const s=document.createElement('script');s.src=t.dataset.src;s.defer=true;document.body.appendChild(s)};
+ load();addEventListener('hashchange',load)})();
+
 /* блог: рубрики й пошук */
 const grid=$i('blGrid');
 if(grid){

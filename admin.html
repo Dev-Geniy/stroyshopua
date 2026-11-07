@@ -255,6 +255,37 @@ ul.links a{color:var(--orange-d);font-weight:600}
 .pa-ph{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}.pa-ph span{display:block}
 .pa-sum{font-family:var(--f-d);font-size:20px;color:var(--ok);white-space:nowrap}
 button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
+/* блог */
+.bl-row{grid-template-columns:110px minmax(200px,1fr) 150px 330px}
+.bl-row .dt small{display:block}
+.bl-act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.bl-ed{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+.bl-l textarea{min-height:560px;font:15px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:14px}
+.bl-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--soft);margin-top:6px}
+.bl-cov{display:grid;gap:6px;margin-top:12px}.bl-cov img{max-width:320px;border-radius:6px;border:1px solid var(--line)}
+.bl-r{position:sticky;top:120px}
+.bl-r .box{max-height:calc(100vh - 190px);overflow:auto}
+.bl-st{border-radius:8px;padding:12px 14px;display:grid;gap:4px;font-size:14px}
+.bl-st.ok{background:color-mix(in srgb,var(--ok) 13%,transparent)}.bl-st.ok b{color:var(--ok)}
+.bl-st.bad{background:color-mix(in srgb,var(--bad) 12%,transparent)}.bl-st.bad b{color:var(--bad)}
+.bl-is{list-style:none;display:grid;gap:6px;margin-top:10px;padding:0}
+.bl-is li{font-size:14px;line-height:1.45;padding:8px 10px;border-radius:6px;background:var(--wall);border-left:3px solid var(--bad)}
+.bl-is li.wn{border-left-color:var(--orange)}
+.bl-is li button{border:0;background:var(--slate);color:#fff;border-radius:4px;font-size:12px;padding:1px 7px;margin-right:8px;cursor:pointer}
+.bl-g{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:3px;font-family:Arial,sans-serif}
+.bl-g span{font-size:12px;color:#4d5156}.bl-g b{color:#1a0dab;font-weight:400;font-size:18px}.bl-g p{font-size:13px;color:#4d5156}
+.bl-help{font-size:14px;line-height:1.55;display:grid;gap:10px}.bl-help h4{margin-top:6px}
+.bl-help code,.bl-is code{background:var(--wall);border-radius:4px;padding:1px 5px;font-size:13px}
+.bl-t{border-collapse:collapse;width:100%}.bl-t td{border-top:1px solid var(--line);padding:6px 6px 6px 0;vertical-align:top}.bl-t td:first-child{white-space:nowrap;width:1%}
+.bl-ins{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:2px 9px;font-size:13px;margin:2px 2px 0 0;cursor:pointer}
+.bl-ins:hover{border-color:var(--orange)}
+.bl-cats{display:flex;flex-wrap:wrap;gap:2px;max-height:260px;overflow:auto}
+.bl-pvw{font-size:15px;line-height:1.65}.bl-pvw h1{font-size:24px;line-height:1.25;margin:4px 0 8px}.bl-pvw h2{font-size:19px;margin:18px 0 6px}.bl-pvw h3{font-size:16px;margin:14px 0 4px}
+.bl-pvw p,.bl-pvw ul,.bl-pvw ol{margin:8px 0}.bl-pvw ul,.bl-pvw ol{padding-left:20px}.bl-pvw .lead{color:var(--soft)}.bl-pvw img{width:100%;border-radius:8px;margin:8px 0}
+.bl-pvw a{color:var(--orange-d,#c2650a)}
+.bl-tip{background:color-mix(in srgb,var(--orange) 12%,transparent);border-left:4px solid var(--orange);border-radius:6px;padding:10px 12px;margin:10px 0}
+.bl-done{max-width:720px}.bl-done h3{color:var(--ok);margin-bottom:6px}.bl-done p{margin:6px 0}
+@media(max-width:980px){.bl-ed{grid-template-columns:1fr}.bl-r{position:static}.bl-r .box{max-height:none}.bl-l textarea{min-height:420px}.bl-row{grid-template-columns:1fr}.bl-act{justify-content:flex-start}}
 </style>
 </head>
 <body>
@@ -296,6 +327,7 @@ button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
   <a href="#leads" data-v="leads">Заявки<i id="b-lead"></i></a>
   <a href="#partners" data-v="partners">Партнери<i id="b-par"></i></a>
   <a href="#reviews" data-v="reviews">Відгуки<i id="b-rev"></i></a>
+  <a href="#blog" data-v="blog">Блог</a>
   <a href="#stats" data-v="stats">Аналітика</a>
   <a href="#catalog" data-v="catalog">Каталог</a>
   <a href="#settings" data-v="settings">Налаштування</a>
@@ -329,6 +361,8 @@ button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
   </section>
 
   <section class="view" id="v-partners" hidden></section>
+
+  <section class="view" id="v-blog" hidden></section>
 
   <section class="view" id="v-reviews" hidden>
    <div class="sh"><div><h1>Відгуки</h1><p>Покупці залишають відгуки на <a href="reviews.html" target="_blank" rel="noopener">сторінці відгуків</a>. Перевірте й опублікуйте — відгук з’явиться на сайті.</p></div>
@@ -492,7 +526,7 @@ $('#lf').addEventListener('submit',async e=>{e.preventDefault();
  if(!r.ok){$('#lerr').textContent=ERR[r.error]||('Помилка: '+r.error);return}
  if(!API)store.set('adm_api',api);store.set('adm_pass',pass,!$('#lrem').checked);
  start(r)});
-function start(r){$('#login').hidden=true;$('#app').hidden=false;got(r);go(location.hash.slice(1));clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)load(true)},60000)}
+function start(r){store.set('adm_tools','1');$('#login').hidden=true;$('#app').hidden=false;got(r);go(location.hash.slice(1));clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)load(true)},60000)}
 async function load(quiet){
  const b=$('[data-a=refresh]');b.classList.add('busy');const r=await call({action:'list'});b.classList.remove('busy');
  if(!r.ok){if(r.error=='auth'||r.error=='locked')return logout(ERR[r.error]);if(!quiet)toast(ERR[r.error]||r.error);return}
@@ -510,10 +544,10 @@ function got(r){
    toast('Надійшло: '+m.join(', '))}}
  firstLoad=false}
 const saveSeen=()=>store.set('adm_seen',JSON.stringify([...seen].slice(-4000)));
-function logout(msg){store.del('adm_pass');pass='';clearInterval(timer);dr(false);$('#app').hidden=true;$('#login').hidden=false;$('#lpass').value='';$('#lerr').textContent=msg||''}
+function logout(msg){store.del('adm_pass');store.del('adm_tools');pass='';clearInterval(timer);dr(false);$('#app').hidden=true;$('#login').hidden=false;$('#lpass').value='';$('#lerr').textContent=msg||''}
 
 /* ---------- навігація ---------- */
-const VIEWS=['home','orders','leads','partners','reviews','stats','catalog','settings'];
+const VIEWS=['home','orders','leads','partners','reviews','blog','stats','catalog','settings'];
 function go(v){v=VIEWS.includes(v)?v:'home';const ch=v!=view;view=v;
  $$('.view').forEach(s=>s.hidden=s.id!='v-'+v);$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v==v));
  render();if(ch)scrollTo(0,0)}
@@ -523,7 +557,7 @@ function render(){
  $('#b-ord').textContent=nO||'';$('#b-lead').textContent=nL||'';$('#b-rev').textContent=nR||'';
  const n=nO+nL+nR;document.title=(n?`(${n}) `:'')+'Адмінка — Samostroy Shop';
  if(window.PA)PA.tick();
- ({home:rHome,orders:()=>rList('ord'),leads:()=>rList('lead'),partners:()=>window.PA?PA.render():0,reviews:rRev,stats:rStats,catalog:rCat,settings:rSet})[view]()}
+ ({home:rHome,orders:()=>rList('ord'),leads:()=>rList('lead'),partners:()=>window.PA?PA.render():0,reviews:rRev,blog:()=>window.BL?BL.render():0,stats:rStats,catalog:rCat,settings:rSet})[view]()}
 
 /* ---------- огляд ---------- */
 function rHome(){
@@ -933,6 +967,7 @@ document.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-tip]
 // автоматичний вхід, якщо пароль збережено
 if(api&&pass){call({action:'list'}).then(r=>r.ok?start(r):logout(r.error=='net'?ERR.net:''))}
 </script>
+<script src="admin-blog.js?v=4fd56da3"></script>
 <script src="admin-partners.js?v=7fa8290e"></script>
 </body>
 </html>

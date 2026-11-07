@@ -173,3 +173,11 @@
 .pol-sum span{font-size:14px;color:var(--soft);line-height:1.45}
 .pol .ba-txt h2{scroll-margin-top:90px}
 @media(max-width:640px){.pol-sum{grid-template-columns:1fr}}
+
+/* «Поділитися статтею» */
+.ba-share{margin:28px 0 0;padding:16px 0 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.ba-share>b{font-size:15px}
+.ba-sh{display:flex;flex-wrap:wrap;gap:6px}
+.ba-sh a,.ba-sh button{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:500 14px/1 var(--f-b);text-decoration:none;cursor:pointer}
+.ba-sh a:hover,.ba-sh button:hover{border-color:var(--orange);color:var(--orange-d)}
+.ba-sh button{background:var(--wall)}
