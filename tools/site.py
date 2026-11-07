@@ -852,6 +852,15 @@ def main():
             art_by_cat.setdefault(c, []).append(a)
             if c in CAT:
                 art_by_cat.setdefault('g:' + CAT[c][1], []).append(a)
+    # спершу статті, де ця категорія головна (перша в «Товари»), потім вужчі (менше категорій) — щоб нові
+    # загальні статті не витісняли зі сторінок товарів профільні інструкції; серед рівних — новіші (сортування стабільне)
+    for k, lst in art_by_cat.items():
+        if k.startswith('g:'):
+            lst.sort(key=lambda a, g=k[2:]: (next((i for i, c in enumerate(a['cats']) if c in CAT and CAT[c][1] == g), 9), len(a['cats'])))
+        else:
+            lst.sort(key=lambda a, c=k: (a['cats'].index(c), len(a['cats'])))
+        seen = set()
+        art_by_cat[k] = [a for a in lst if not (a['slug'] in seen or seen.add(a['slug']))]
 
     for p in prods:
         write(f'p/{p["id"]}.html', product_page(p, by_cat, art_by_cat), f'{SITE}p/{p["id"]}.html')
