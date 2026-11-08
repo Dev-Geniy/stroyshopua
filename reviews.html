@@ -33,7 +33,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "OnlineStore", "@id": "https://samostroy.shop/#store", "name": "Samostroy Shop", "url": "https://samostroy.shop/", "logo": "https://samostroy.shop/samostroy-shop-logo.jpg", "image": "https://samostroy.shop/og/home.jpg", "telephone": "+380984927948", "description": "Матеріали для ремонту своїми руками: самоклеючі 3D панелі, PET, вінілова й алюмінієва плитка, плівка, шпалери, підлога-пазл, екошкіра, дзеркала.", "areaServed": "UA", "currenciesAccepted": "UAH", "paymentAccepted": "Cash on delivery, Card", "address": {"@type": "PostalAddress", "addressCountry": "UA"}, "sameAs": ["https://t.me/samostroy_shop", "https://www.tiktok.com/@stroyshop_ua", "https://www.instagram.com/samostroy.shop"]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Головна", "item": "https://samostroy.shop/"}, {"@type": "ListItem", "position": 2, "name": "Відгуки", "item": "https://samostroy.shop/reviews.html"}]}, {"@type": "WebPage", "name": "Відгуки покупців Samostroy Shop — 5,0 з 5", "url": "https://samostroy.shop/reviews.html", "description": "1 відгук покупців про самоклеючі матеріали для ремонту, доставку й сервіс Samostroy Shop. Залиште свій відгук.", "inLanguage": "uk"}]}</script>
 <script type="application/ld+json" id="ld"></script>
 <link rel="stylesheet" href="shop.css?v=1f5699af">
-<link rel="stylesheet" href="page.css?v=fc0e4b0f">
+<link rel="stylesheet" href="page.css?v=d9c94acc">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -75,7 +75,7 @@
 <section class="w sec" id="write">
  <div class="apply">
   <div><h2>Залишити відгук</h2><p class="lead2">Розкажіть про товар, доставку чи консультацію. Відгук з’явиться на сайті після перевірки менеджером — зазвичай протягом дня.</p>
-   <ol><li>Оцініть від 1 до 5</li><li>Опишіть, що купували й як усе пройшло</li><li>Додайте фото результату — надішліть його менеджеру в Telegram</li></ol></div>
+   <ol><li>Оцініть від 1 до 5</li><li>Опишіть, що купували й як усе пройшло</li><li>Додайте фото «до» і «після» — так відгук допоможе іншим найбільше</li></ol></div>
   <form class="af" id="rvForm" novalidate>
    <fieldset class="full"><legend>Оцінка</legend><div class="rv-rate" role="radiogroup" aria-label="Оцінка"><label><input type="radio" name="rate" value="5" checked><span>★</span></label><label><input type="radio" name="rate" value="4"><span>★</span></label><label><input type="radio" name="rate" value="3"><span>★</span></label><label><input type="radio" name="rate" value="2"><span>★</span></label><label><input type="radio" name="rate" value="1"><span>★</span></label></div></fieldset>
    <label>Ім’я<input id="rvName" autocomplete="given-name" required></label>
@@ -83,10 +83,12 @@
    <label class="full">Телефон — не публікується, лише щоб підтвердити покупку<input id="rvPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required></label>
    <label class="full">Що купували (необов’язково)<input id="rvProd" placeholder="Напр.: 3D панелі під цеглу, PET плитка"></label>
    <label class="full">Ваш відгук<textarea id="rvText" required minlength="10" placeholder="Як вам товар, доставка й спілкування з менеджером?"></textarea></label>
+   <fieldset class="full rv-ph" id="rvPh"><legend>Фото «до» і «після» (необов’язково)</legend><div class="rv-up"><label class="rv-slot" data-k="before"><input type="file" accept="image/*" data-k="before" aria-label="Фото до ремонту"><b>До ремонту</b><small>Додати фото</small><button type="button" class="rv-x" aria-label="Прибрати фото">×</button></label><label class="rv-slot" data-k="after"><input type="file" accept="image/*" data-k="after" aria-label="Фото після ремонту"><b>Після ремонту</b><small>Додати фото</small><button type="button" class="rv-x" aria-label="Прибрати фото">×</button></label></div></fieldset>
+   <label class="full">Коментар до фото (необов’язково)<input id="rvPhNote" maxlength="200" placeholder="Напр.: фартух на кухні, 2,5 м², клеїли вдвох за вечір"></label>
    <input id="rvHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
    <div class="hint full" id="rvHint"></div>
    <button class="btn" id="rvBtn" type="submit">Надіслати відгук</button>
-   <p class="note2">Публікуємо ім’я, місто, оцінку й текст. Телефон бачить лише менеджер.</p>
+   <p class="note2">Публікуємо ім’я, місто, оцінку, текст і фото. Телефон бачить лише менеджер.</p>
   </form>
  </div>
 </section>
@@ -162,9 +164,9 @@
 <dialog id="pd" aria-label="Товар"><button class="xb pdx" data-a="pdclose" aria-label="Закрити"><svg class="i"><use href="#i-x"/></svg></button><div id="pdc"></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:20px;text-align:center">Увімкніть JavaScript, щоб побачити каталог, або напишіть нам у <a href="https://t.me/manager_samostroy_shop">Telegram</a>.</p></noscript>
-<script src="config.js?v=39a7de90"></script>
+<script src="config.js?v=356bf6eb"></script>
 <script>window.PAGE={"cats": [], "name": "Відгуки", "listTitle": "Відгуки", "url": "https://samostroy.shop/reviews.html", "title": "Відгуки покупців Samostroy Shop — 5,0 з 5", "desc": "1 відгук покупців про самоклеючі матеріали для ремонту, доставку й сервіс Samostroy Shop. Залиште свій відгук.", "info": true, "faq": []}</script>
 <script src="shop.js?v=44b12e26"></script>
-<script src="page.js?v=0c6d84fa"></script>
+<script src="page.js?v=38e96521"></script>
 </body>
 </html>
