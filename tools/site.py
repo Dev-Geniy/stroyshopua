@@ -599,6 +599,22 @@ def stars(n):
     return f'<span class="stars" aria-label="Оцінка {n} з 5">' + '★' * n + f'<i>{"★" * (5 - n)}</i></span>'
 
 
+def rv_photo_ok(u):
+    return isinstance(u, str) and re.match(r'^https://[\w.-]*ibb\.co/[\w./%-]+$', u.strip() or '') is not None
+
+
+def rv_photos(r):
+    """Фото «до» і «після» з відгуку (посилання на imgbb) + коментар до фото."""
+    ph = [(k, r.get(k).strip()) for k in ('before', 'after') if rv_photo_ok(r.get(k))]
+    if not ph:
+        return ''
+    nm = e(r.get('name') or 'покупця')
+    lab = {'before': 'До', 'after': 'Після'}
+    items = ''.join(f'<a href="{e(u)}" target="_blank" rel="noopener"><img src="{e(u)}" alt="{lab[k]} — фото з відгуку {nm}" loading="lazy" decoding="async"><span>{lab[k]}</span></a>' for k, u in ph)
+    note = f'<figcaption>{e(r.get("photoNote"))}</figcaption>' if r.get('photoNote') else ''
+    return f'<figure class="rv-ba{" one" if len(ph) == 1 else ""}">{items}{note}</figure>'
+
+
 def reviews_page():
     try:
         revs = [r for r in json.loads(read('reviews.json')) if r.get('text')]
@@ -613,7 +629,7 @@ def reviews_page():
     hd = head(title, desc, url, SITE + 'og/reviews.jpg', alt='Відгуки покупців Samostroy Shop',
               extra=ld(crumbs_ld([('Головна', SITE), ('Відгуки', url)]), {"@type": "WebPage", "name": title, "url": url, "description": desc, "inLanguage": "uk"}))
     lst = ''.join(f'''<article class="rv"><header><b>{e(r.get('name') or 'Покупець')}</b>{f'<span class="soft">{e(r.get("city"))}</span>' if r.get('city') else ''}{stars(r.get('rating'))}</header>
-<p>{e(r['text'])}</p>{f'<p class="rv-p">Товар: {e(r.get("product"))}</p>' if r.get('product') else ''}{f'<div class="rv-a"><b>Відповідь магазину</b><p>{e(r.get("answer"))}</p></div>' if r.get('answer') else ''}<time datetime="{e(r.get('date', ''))}">{e(udate(r.get('date', '')))}</time></article>''' for r in revs)
+<p>{e(r['text'])}</p>{rv_photos(r)}{f'<p class="rv-p">Товар: {e(r.get("product"))}</p>' if r.get('product') else ''}{f'<div class="rv-a"><b>Відповідь магазину</b><p>{e(r.get("answer"))}</p></div>' if r.get('answer') else ''}<time datetime="{e(r.get('date', ''))}">{e(udate(r.get('date', '')))}</time></article>''' for r in revs)
     main = f'''<main id="top" class="rv-page">
 <section class="w hero lhero rv-hero">
  <div>
@@ -628,7 +644,7 @@ def reviews_page():
 <section class="w sec" id="write">
  <div class="apply">
   <div><h2>Залишити відгук</h2><p class="lead2">Розкажіть про товар, доставку чи консультацію. Відгук з’явиться на сайті після перевірки менеджером — зазвичай протягом дня.</p>
-   <ol><li>Оцініть від 1 до 5</li><li>Опишіть, що купували й як усе пройшло</li><li>Додайте фото результату — надішліть його менеджеру в Telegram</li></ol></div>
+   <ol><li>Оцініть від 1 до 5</li><li>Опишіть, що купували й як усе пройшло</li><li>Додайте фото «до» і «після» — так відгук допоможе іншим найбільше</li></ol></div>
   <form class="af" id="rvForm" novalidate>
    <fieldset class="full"><legend>Оцінка</legend><div class="rv-rate" role="radiogroup" aria-label="Оцінка">{''.join(f'<label><input type="radio" name="rate" value="{i}"{" checked" if i == 5 else ""}><span>★</span></label>' for i in range(5, 0, -1))}</div></fieldset>
    <label>Ім’я<input id="rvName" autocomplete="given-name" required></label>
@@ -636,10 +652,12 @@ def reviews_page():
    <label class="full">Телефон — не публікується, лише щоб підтвердити покупку<input id="rvPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required></label>
    <label class="full">Що купували (необов’язково)<input id="rvProd" placeholder="Напр.: 3D панелі під цеглу, PET плитка"></label>
    <label class="full">Ваш відгук<textarea id="rvText" required minlength="10" placeholder="Як вам товар, доставка й спілкування з менеджером?"></textarea></label>
+   <fieldset class="full rv-ph" id="rvPh"><legend>Фото «до» і «після» (необов’язково)</legend><div class="rv-up">{''.join(f'<label class="rv-slot" data-k="{k}"><input type="file" accept="image/*" data-k="{k}" aria-label="Фото {t.lower()}"><b>{t}</b><small>Додати фото</small><button type="button" class="rv-x" aria-label="Прибрати фото">×</button></label>' for k, t in (('before', 'До ремонту'), ('after', 'Після ремонту')))}</div></fieldset>
+   <label class="full">Коментар до фото (необов’язково)<input id="rvPhNote" maxlength="200" placeholder="Напр.: фартух на кухні, 2,5 м², клеїли вдвох за вечір"></label>
    <input id="rvHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
    <div class="hint full" id="rvHint"></div>
    <button class="btn" id="rvBtn" type="submit">Надіслати відгук</button>
-   <p class="note2">Публікуємо ім’я, місто, оцінку й текст. Телефон бачить лише менеджер.</p>
+   <p class="note2">Публікуємо ім’я, місто, оцінку, текст і фото. Телефон бачить лише менеджер.</p>
   </form>
  </div>
 </section>

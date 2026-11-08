@@ -130,6 +130,12 @@ h2.sub{font-size:13px;color:var(--soft);font-weight:600;margin:22px 0 10px;text-
 .rc .rh b{font-weight:600}
 .rc .rt{font-size:14px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .rc small{font-size:12px;color:var(--soft)}
+.rc .rth{display:flex;gap:6px}
+.rc .rth img{width:64px;height:48px;object-fit:cover;border-radius:6px;background:var(--line)}
+.rvph{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rvph .rvimg{display:block;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:var(--line);margin-bottom:6px}
+.rvph .rvimg img{width:100%;height:100%;object-fit:cover;display:block}
+.rvph .rvimg i{display:grid;place-items:center;height:100%;font-style:normal;color:var(--soft);font-size:13px}
 .stars{color:var(--orange);letter-spacing:1px;font-size:15px;white-space:nowrap}
 .stars s{text-decoration:none;color:var(--line)}
 .rsum{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:12px;font-size:14px}
@@ -512,9 +518,11 @@ function parts(o){const L=[];let prev=0;
  if(!L.length&&o.text)return String(o.text).split('\n').map(s=>s.trim()).filter(Boolean);return L}
 const kvs=o=>o._p.map(s=>{const m=s.match(/^([^:\n]{1,48}):\s*([\s\S]*)$/);return m?[m[1],m[2]]:['',s]});
 function rvParse(o){const r={rating:5,city:o.city||'',product:'',text:''};
- o._p.forEach(s=>{let m;if(m=s.match(/^Оцінка:\s*(\d)/))r.rating=+m[1];else if(m=s.match(/^Місто:\s*(.*)/))r.city=m[1];else if(m=s.match(/^Товар:\s*(.*)/))r.product=m[1];else if(m=s.match(/^Відгук:\s*([\s\S]*)/))r.text=m[1];else if(r.text)r.text+=' '+s});
+ o._p.forEach(s=>{let m;if(m=s.match(/^Оцінка:\s*(\d)/))r.rating=+m[1];else if(m=s.match(/^Місто:\s*(.*)/))r.city=m[1];else if(m=s.match(/^Товар:\s*(.*)/))r.product=m[1];else if(m=s.match(/^Фото до:\s*(\S+)/))r.before=m[1];else if(m=s.match(/^Фото після:\s*(\S+)/))r.after=m[1];else if(m=s.match(/^Коментар до фото:\s*([\s\S]*)/))r.photoNote=m[1];else if(m=s.match(/^Відгук:\s*([\s\S]*)/))r.text=m[1];else if(r.text)r.text+=' '+s});
  return r}
 const itemsLine=o=>o._k=='ord'?(o.items&&o.items.length?o.items.map(i=>clean(i.name)+(i.q>1?' ×'+i.q:'')).join('; '):String(o.text||'').split('\n').map(clean).join('; ')):o._p.slice(0,3).join(' · ');
+const imgOk=u=>/^https:\/\/[\w.-]*ibb\.co\/[\w./%-]+$/.test(String(u||'').trim());
+const rvThumbs=r=>{const L=[r.before,r.after].filter(imgOk);return L.length?`<span class="rth">${L.map(u=>`<img src="${esc(u)}" alt="" loading="lazy">`).join('')}</span>`:''};
 const stars=n=>{n=Math.max(0,Math.min(5,Math.round(n)));return `<span class="stars" aria-label="${n} з 5">${'★'.repeat(n)}<s>${'★'.repeat(5-n)}</s></span>`};
 
 /* ---------- вхід ---------- */
@@ -627,9 +635,9 @@ function rRev(){
   if(!site)body='<p class="empty">Завантаження…</p>';
   else{const L=site.list,avg=L.length?L.reduce((a,r)=>a+(+r.rating||5),0)/L.length:0;
    body=`<div class="rsum">${L.length?`<span><b>${avg.toFixed(1).replace('.',',')}</b> ${stars(avg)}</span><span class="soft">${pl(L.length,'відгук','відгуки','відгуків')} на сайті</span>`:'<span class="soft">На сайті ще немає відгуків.</span>'}<a class="link" href="reviews.html" target="_blank" rel="noopener">Відкрити сторінку</a>${site.err?'<span class="soft">Не вдалося прочитати reviews.json</span>':''}</div>
-   ${L.length?`<div class="rvs">${L.map(r=>`<button class="rc" data-sr="${esc(r.id)}"><span class="rh"><b>${esc(r.name||'Покупець')}</b>${stars(r.rating)}</span><span class="rt">${esc(r.text)}</span><small>${esc([r.city,r.product,r.date].filter(Boolean).join(' · '))}${r.answer?' · є відповідь':''}</small></button>`).join('')}</div>`:''}`}}
+   ${L.length?`<div class="rvs">${L.map(r=>`<button class="rc" data-sr="${esc(r.id)}"><span class="rh"><b>${esc(r.name||'Покупець')}</b>${stars(r.rating)}</span><span class="rt">${esc(r.text)}</span>${rvThumbs(r)}<small>${esc([r.city,r.product,r.date].filter(Boolean).join(' · '))}${r.answer?' · є відповідь':''}</small></button>`).join('')}</div>`:''}`}}
  else{const L=f.tab=='mod'?mod:f.tab=='rej'?rej:R;
-  body=L.length?`<div class="rvs">${L.map(o=>{const r=rvParse(o);return `<button class="rc ${seen.has(o.id)?'':'new'}" data-o="${esc(o.id)}"><span class="rh"><b>${esc(o.name||'Покупець')}</b>${stars(r.rating)}</span><span class="rt">${esc(r.text||itemsLine(o))}</span><small>${esc([r.city,r.product,fdt(o._t)].filter(Boolean).join(' · '))}</small><span>${pill(o)}</span></button>`}).join('')}</div>`
+  body=L.length?`<div class="rvs">${L.map(o=>{const r=rvParse(o);return `<button class="rc ${seen.has(o.id)?'':'new'}" data-o="${esc(o.id)}"><span class="rh"><b>${esc(o.name||'Покупець')}</b>${stars(r.rating)}</span><span class="rt">${esc(r.text||itemsLine(o))}</span>${rvThumbs(r)}<small>${esc([r.city,r.product,fdt(o._t)].filter(Boolean).join(' · '))}</small><span>${pill(o)}</span></button>`}).join('')}</div>`
    :`<div class="empty">${f.tab=='mod'?'Нових відгуків немає. Надсилайте покупцям після доставки посилання: samostroy.shop/reviews.html':'Тут порожньо.'}</div>`}
  $('#r-body').innerHTML=body}
 
@@ -864,10 +872,12 @@ function openO(id){
   $('#dmsg').textContent=leadMsg(o)}
  $('#dfoot').innerHTML=`<button class="btn" data-a="save" id="dsave">Зберегти</button><button class="btn ghost" data-a="copy"><svg class="i"><use href="#i-copy"/></svg>Копіювати</button>`;
  dr(true);render()}
+const rvImg=u=>imgOk(u)?`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt=""></a>`:'<i>немає фото</i>';
+document.addEventListener('input',e=>{const m=/^rv-(before|after)$/.exec(e.target.id||'');if(m){const v=$('#rv-'+m[1]+'-v');if(v)v.innerHTML=rvImg(e.target.value.trim())}});
 function openRev(o,rec){
  if(o){seen.add(o.id);saveSeen()}
  const p=o?rvParse(o):{},pub=rec||(site&&o&&site.list.find(x=>x.id==o.id))||null;
- const r=pub||{id:o?o.id:'m'+Date.now().toString(36),name:o?o.name:'',city:p.city||'',product:p.product||'',rating:p.rating||5,text:p.text||'',answer:'',date:new Date(o?o._t:Date.now()).toISOString().slice(0,10)};
+ const r=pub||{id:o?o.id:'m'+Date.now().toString(36),name:o?o.name:'',city:p.city||'',product:p.product||'',rating:p.rating||5,text:p.text||'',before:p.before||'',after:p.after||'',photoNote:p.photoNote||'',answer:'',date:new Date(o?o._t:Date.now()).toISOString().slice(0,10)};
  cur={rev:1,o:o?{...o}:(rec?orders.find(x=>x.id==rec.id)||null:null),r,pub:!!pub};
  const src=cur.o;
  $('#dtitle').textContent=o||rec?'Відгук'+(src?' · № '+src.id:''):'Новий відгук';
@@ -881,12 +891,17 @@ function openRev(o,rec){
   <label>Дата<input id="rv-d" type="date" value="${esc(r.date)}"></label>
   <label class="full">Товар<input id="rv-p" value="${esc(r.product)}" placeholder="Напр.: 3D панелі під цеглу"></label>
   <label class="full">Текст відгуку<textarea id="rv-t" rows="6">${esc(r.text)}</textarea></label>
+  <div class="full rvph">${[['before','Фото «до»'],['after','Фото «після»']].map(([k,t])=>`<label>${t}<span class="rvimg" id="rv-${k}-v">${rvImg(r[k])}</span><input id="rv-${k}" value="${esc(r[k]||'')}" placeholder="https://i.ibb.co/… — порожньо = без фото"></label>`).join('')}</div>
+  <label class="full">Коментар до фото<input id="rv-pn" value="${esc(r.photoNote||'')}" placeholder="Напр.: фартух на кухні, 2,5 м²"></label>
   <label class="full">Відповідь магазину (необов’язково, теж публікується)<textarea id="rv-a" rows="3" placeholder="Дякуємо за відгук! …">${esc(r.answer||'')}</textarea></label>
  </div><p class="note" style="margin-top:8px">Можна виправити помилки, але не змінюйте суть. Публікуйте й критичні відгуки з відповіддю — це підвищує довіру.</p></div>
  <div id="rv-w"></div>${src?fromPage(src):''}`;
  $('#dfoot').innerHTML=`<button class="btn" data-a="rvpub">${pub?'Оновити на сайті':'Опублікувати'}</button>${pub?'<button class="btn bad" data-a="rvunpub">Зняти з сайту</button>':src&&src.status!='Скасоване'?'<button class="btn bad" data-a="rvrej">Відхилити</button>':''}`;
  dr(true);render()}
-const rvForm=()=>({id:cur.r.id,name:$('#rv-n').value.trim()||'Покупець',city:$('#rv-c').value.trim(),rating:+$('#rv-r').value,text:$('#rv-t').value.trim(),product:$('#rv-p').value.trim(),answer:$('#rv-a').value.trim(),date:$('#rv-d').value||new Date().toISOString().slice(0,10)});
+const rvForm=()=>({id:cur.r.id,name:$('#rv-n').value.trim()||'Покупець',city:$('#rv-c').value.trim(),rating:+$('#rv-r').value,text:$('#rv-t').value.trim(),product:$('#rv-p').value.trim(),answer:$('#rv-a').value.trim(),date:$('#rv-d').value||new Date().toISOString().slice(0,10),...rvPh()});
+// фото додаються в reviews.json лише якщо є (порожні поля не пишемо)
+function rvPh(){const o={},b=$('#rv-before').value.trim(),a=$('#rv-after').value.trim(),n=$('#rv-pn').value.trim();
+ if(imgOk(b))o.before=b;if(imgOk(a))o.after=a;if((o.before||o.after)&&n)o.photoNote=n;return o}
 async function setStatus(o,s){const r=await call({action:'update',id:o.id,status:s,ttn:o.ttn||'',comment:o.comment||''});
  if(r.ok){const i=orders.findIndex(x=>x.id==o.id),n={...r.order,items:r.order.items||[],total:+r.order.total||0,_t:+new Date(r.order.created)||0};n._k=kind(n);n._p=parts(n);if(i>=0)orders[i]=n}return r}
 async function rvPub(b){

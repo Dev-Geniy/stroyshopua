@@ -129,6 +129,25 @@
 .rv-p{color:var(--soft);font-size:14px!important}
 .rv-a{background:var(--wall);border-radius:var(--r-s);padding:10px 12px;font-size:14px}
 .rv time{font-size:12px;color:var(--soft)}
+.rv-ba{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 0}
+.rv-ba.one{grid-template-columns:minmax(0,320px)}
+.rv-ba a{position:relative;display:block;aspect-ratio:4/3;border-radius:var(--r-s);overflow:hidden;background:var(--wall)}
+.rv-ba img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s}
+.rv-ba a:hover img{transform:scale(1.03)}
+.rv-ba span{position:absolute;left:8px;top:8px;background:rgba(20,20,20,.72);color:#fff;font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px}
+.rv-ba figcaption{grid-column:1/-1;font-size:13px;color:var(--soft)}
+.rv-up{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.af .rv-slot{position:relative;aspect-ratio:4/3;border:1.5px dashed var(--grout);border-radius:var(--r-s);background:var(--wall);place-items:center;align-content:center;gap:4px;text-align:center;cursor:pointer;overflow:hidden;padding:12px;transition:border-color .15s}
+.af .rv-slot:hover,.rv-slot:focus-within{border-color:var(--orange)}
+.af .rv-slot input{position:absolute;opacity:0;width:1px;height:1px;padding:0;border:0}
+.rv-slot b{color:var(--ink);font-size:15px}
+.rv-slot small{font-size:13px;color:var(--orange)}
+.rv-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rv-slot.on b{position:absolute;left:8px;top:8px;z-index:1;background:rgba(20,20,20,.72);color:#fff;font-size:12px;padding:3px 9px;border-radius:99px}
+.rv-slot.on small{position:absolute;left:8px;bottom:8px;z-index:1;background:rgba(20,20,20,.72);color:#fff;padding:3px 9px;border-radius:99px;font-size:12px}
+.rv-slot.err small{color:#fff;background:var(--bad)}
+.rv-x{position:absolute;right:6px;top:6px;z-index:2;width:32px;height:32px;border-radius:50%;border:0;background:rgba(20,20,20,.72);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:none}
+.rv-slot.on .rv-x{display:block}
 .rv-empty{grid-column:1/-1;background:var(--panel);border:1px dashed var(--grout);border-radius:var(--r);padding:28px;text-align:center;color:var(--soft)}
 .rv-rate{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
 .rv-rate input{position:absolute;opacity:0;width:1px;height:1px}
