@@ -4,5 +4,6 @@ Disallow: /admin.html
 Disallow: /jobs-drop.html
 Disallow: /tools/
 Disallow: /catalog/
+Disallow: /app/
 
 Sitemap: https://samostroy.shop/sitemap.xml

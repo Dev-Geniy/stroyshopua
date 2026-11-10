@@ -25,6 +25,7 @@ a{color:inherit}
 .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
 .btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
 .btn.bad{background:transparent;color:var(--bad);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.dl{margin-left:auto}.tabs button.del{color:var(--soft)}.tabs button.del .i{width:15px;height:15px;margin-right:2px;vertical-align:-2px}
 .btn.sm{min-height:34px;padding:0 12px;font-size:14px}
 .btn.busy{pointer-events:none;opacity:.6}
 .link{background:none;border:0;color:var(--orange-d);font-weight:600;text-decoration:underline;text-underline-offset:3px;font-size:14px}
@@ -299,7 +300,7 @@ button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
  <symbol id="i-ref" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
  <symbol id="i-ph" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></symbol>
- <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+ <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 21h16"/></symbol>
  <symbol id="i-ok" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
  <symbol id="i-pr" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></symbol>
@@ -418,6 +419,10 @@ button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
      <div><button class="btn" data-a="mksave">Зберегти націнку</button></div>
      <p class="note" id="s-mkst"></p>
     </div>
+    <div class="box form" id="s-bot">
+     <div class="bh"><h3>Telegram-бот партнерів · Samostroy Drop</h3></div>
+     <div id="s-botb"><p class="note">Завантаження…</p></div>
+    </div>
     <div class="box">
      <div class="bh"><h3>Пошукові системи</h3></div>
      <p class="note" style="margin-bottom:10px">Додайте сайт один раз — і Google та Bing швидше знаходитимуть нові товари й статті. Карта сайту оновлюється автоматично, а нові сторінки самі надсилаються в Bing через IndexNow.</p>
@@ -500,6 +505,18 @@ const tel=p=>{let d=String(p||'').replace(/\D/g,'');if(d.length==10&&d[0]=='0')d
 let api=API||store.get('adm_api')||'',pass=store.get('adm_pass',1)||store.get('adm_pass')||'',orders=[],view='home',cur=null,timer=null,
  seen=new Set(JSON.parse(store.get('adm_seen')||'[]')),rep=null,site=null,firstLoad=true;
 const F={ord:{tab:'Нове',n:60},lead:{tab:'Нове',type:'',n:60},rev:{tab:'mod'}};
+/* Видалені записи: рядок лишається в таблиці сайту (щоб не збились номери), а список видалених зберігає скрипт кабінету партнерів (CFG.papi) */
+const PAPI=(window.CFG&&CFG.papi)||'';
+let all=[],trash=[],HID=new Map((()=>{try{return JSON.parse(store.get('adm_hid')||'[]')}catch(e){return[]}})());
+const hk=o=>o.id+'|'+(o.created||'');
+const isDel=o=>HID.has(hk(o));
+const ERRP={auth:'Пароль адмінки не збігається з ADMIN_PASS у скрипті кабінету партнерів',net:'Немає зв’язку зі скриптом кабінету партнерів',noapi:'Видалення працює через скрипт кабінету партнерів (config.js → papi)',
+ action:'Оновіть скрипт кабінету партнерів (новий Code.gs → Нова версія) — тоді запрацює видалення',locked:'Забагато невдалих спроб, зачекайте 15 хвилин'};
+async function pcall(b){if(!PAPI)return{ok:false,error:'noapi'};const ac=new AbortController(),t=setTimeout(()=>ac.abort(),30000);
+ try{const r=await fetch(PAPI,{method:'POST',body:JSON.stringify({...b,pass}),signal:ac.signal,redirect:'follow'});return await r.json()}catch(e){return{ok:false,error:'net'}}finally{clearTimeout(t)}}
+function split(){orders=all.filter(o=>!isDel(o));trash=all.filter(isDel)}
+function setHid(L){HID=new Map((L||[]).map(x=>[x.id+'|'+(x.created||''),x]));store.set('adm_hid',JSON.stringify([...HID]));split()}
+window.onHidden=L=>{const a=JSON.stringify([...HID.keys()].sort());setHid(L);if(a!=JSON.stringify([...HID.keys()].sort()))render()};
 
 async function call(body){
  const ac=new AbortController(),t=setTimeout(()=>ac.abort(),25000);
@@ -540,10 +557,10 @@ async function load(quiet){
  if(!r.ok){if(r.error=='auth'||r.error=='locked')return logout(ERR[r.error]);if(!quiet)toast(ERR[r.error]||r.error);return}
  got(r);render()}
 function got(r){
- const before=new Set(orders.map(o=>o.id));
- orders=(r.orders||[]).map(o=>({...o,items:o.items||[],total:+o.total||0,_t:+new Date(o.created)||0}));
- orders.forEach(o=>{o._k=kind(o);o._p=parts(o)});
- orders.sort((a,b)=>b._t-a._t);
+ const before=new Set(all.map(o=>o.id));
+ all=(r.orders||[]).map(o=>({...o,items:o.items||[],total:+o.total||0,_t:+new Date(o.created)||0}));
+ all.forEach(o=>{o._k=kind(o);o._p=parts(o)});
+ all.sort((a,b)=>b._t-a._t);split();
  $('#upd').textContent='Оновлено о '+new Date().toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit'});
  if(!seen.size){orders.forEach(o=>seen.add(o.id));saveSeen()}           // перший вхід: усе вважаємо переглянутим
  if(!firstLoad){const fresh=orders.filter(o=>!before.has(o.id));
@@ -618,17 +635,21 @@ function rList(k){
   $('#l-types').innerHTML=['',...types].map(t=>`<button data-ty="${esc(t)}" class="${f.type==t?'on':''}">${t?esc(t):'Усі типи'}<i>${tc(t)}</i></button>`).join('');
   if(f.type)base=base.filter(o=>o.type==f.type)}
  const labels=k=='ord'?LBL.ord:(LBL[f.type]||LBL.lead);
- $('#'+p+'-tabs').innerHTML=[...STS,'Усі'].map((s,i)=>`<button data-tab="${s}" data-k="${k}" class="${f.tab==s?'on':''}">${s=='Усі'?'Усі':`<span class="dot" style="--c:${SC[s]}"></span>${labels[i]}`}<i>${s=='Усі'?base.length:base.filter(o=>o.status==s).length}</i></button>`).join('');
- const L=base.filter(o=>f.tab=='Усі'||o.status==f.tab),shown=L.slice(0,f.n);
+ const tr=trash.filter(o=>o._k==k&&inPer(o,per)&&match(o,q)&&(k!='lead'||!f.type||o.type==f.type));
+ if(f.tab=='Видалені'&&!trash.some(o=>o._k==k))f.tab='Усі';
+ $('#'+p+'-tabs').innerHTML=[...STS,'Усі'].map((s,i)=>`<button data-tab="${s}" data-k="${k}" class="${f.tab==s?'on':''}">${s=='Усі'?'Усі':`<span class="dot" style="--c:${SC[s]}"></span>${labels[i]}`}<i>${s=='Усі'?base.length:base.filter(o=>o.status==s).length}</i></button>`).join('')
+  +(trash.some(o=>o._k==k)?`<button data-tab="Видалені" data-k="${k}" class="del ${f.tab=='Видалені'?'on':''}"><svg class="i"><use href="#i-trash"/></svg>Видалені<i>${tr.length}</i></button>`:'');
+ const L=f.tab=='Видалені'?tr:base.filter(o=>f.tab=='Усі'||o.status==f.tab),shown=L.slice(0,f.n);
  $('#'+p+'-list').innerHTML=L.length?HEAD[k]+shown.map(o=>row(o)).join('')+(L.length>shown.length?`<button class="more" data-more="${k}">Показати ще (${L.length-shown.length})</button>`:'')
-  :`<div class="empty">${byK(k).length?'За цими умовами нічого немає.':k=='ord'?'Замовлень ще немає. Коли клієнт оформить замовлення на сайті, воно з’явиться тут.':'Заявок ще немає. Тут з’являться запити на дропшипінг, опт, постачання, франшизу й вакансії.'}</div>`}
+  :`<div class="empty">${f.tab=='Видалені'?'Видалених записів за цими умовами немає.':byK(k).length?'За цими умовами нічого немає.':k=='ord'?'Замовлень ще немає. Коли клієнт оформить замовлення на сайті, воно з’явиться тут.':'Заявок ще немає. Тут з’являться запити на дропшипінг, опт, постачання, франшизу й вакансії.'}</div>`}
 
 /* ---------- відгуки ---------- */
 function rRev(){
  const R=byK('rev'),f=F.rev;
  if(!site){loadSite().then(()=>{if(view=='reviews')rRev()})}
  const mod=R.filter(o=>!['Виконане','Скасоване'].includes(o.status)),rej=R.filter(o=>o.status=='Скасоване');
- const T=[['mod','На модерації',mod.length],['site','На сайті',site?site.list.length:'…'],['rej','Відхилені',rej.length],['all','Усі надіслані',R.length]];
+ const RD=trash.filter(o=>o._k=='rev');if(f.tab=='del'&&!RD.length)f.tab='mod';
+ const T=[['mod','На модерації',mod.length],['site','На сайті',site?site.list.length:'…'],['rej','Відхилені',rej.length],['all','Усі надіслані',R.length],...(RD.length?[['del','Видалені',RD.length]]:[])];
  $('#r-tabs').innerHTML=T.map(([k,l,n])=>`<button data-rt="${k}" class="${f.tab==k?'on':''}">${l}<i>${n}</i></button>`).join('');
  let body='';
  if(f.tab=='site'){
@@ -636,7 +657,7 @@ function rRev(){
   else{const L=site.list,avg=L.length?L.reduce((a,r)=>a+(+r.rating||5),0)/L.length:0;
    body=`<div class="rsum">${L.length?`<span><b>${avg.toFixed(1).replace('.',',')}</b> ${stars(avg)}</span><span class="soft">${pl(L.length,'відгук','відгуки','відгуків')} на сайті</span>`:'<span class="soft">На сайті ще немає відгуків.</span>'}<a class="link" href="reviews.html" target="_blank" rel="noopener">Відкрити сторінку</a>${site.err?'<span class="soft">Не вдалося прочитати reviews.json</span>':''}</div>
    ${L.length?`<div class="rvs">${L.map(r=>`<button class="rc" data-sr="${esc(r.id)}"><span class="rh"><b>${esc(r.name||'Покупець')}</b>${stars(r.rating)}</span><span class="rt">${esc(r.text)}</span>${rvThumbs(r)}<small>${esc([r.city,r.product,r.date].filter(Boolean).join(' · '))}${r.answer?' · є відповідь':''}</small></button>`).join('')}</div>`:''}`}}
- else{const L=f.tab=='mod'?mod:f.tab=='rej'?rej:R;
+ else{const L=f.tab=='mod'?mod:f.tab=='rej'?rej:f.tab=='del'?RD:R;
   body=L.length?`<div class="rvs">${L.map(o=>{const r=rvParse(o);return `<button class="rc ${seen.has(o.id)?'':'new'}" data-o="${esc(o.id)}"><span class="rh"><b>${esc(o.name||'Покупець')}</b>${stars(r.rating)}</span><span class="rt">${esc(r.text||itemsLine(o))}</span>${rvThumbs(r)}<small>${esc([r.city,r.product,fdt(o._t)].filter(Boolean).join(' · '))}</small><span>${pill(o)}</span></button>`}).join('')}</div>`
    :`<div class="empty">${f.tab=='mod'?'Нових відгуків немає. Надсилайте покупцям після доставки посилання: samostroy.shop/reviews.html':'Тут порожньо.'}</div>`}
  $('#r-body').innerHTML=body}
@@ -822,6 +843,7 @@ async function rSet(){
   if(!txt)try{txt=await (await fetch('tools/feed-settings.json?t='+Date.now(),{cache:'no-store'})).text()}catch(e){}
   try{mk={data:JSON.parse(txt),sha:r&&r.sha}}catch(e){mk={data:{markup_percent:30,round_up_to:1,price_ending_9:false,category_markup_percent:{}},sha:r&&r.sha,err:1}}
   $('#s-mkst').textContent=mk.err?'Не вдалося прочитати поточні налаштування.':''}
+ if(window.PA&&PA.bot)PA.bot();
  $('#s-mk').value=mk.data.markup_percent;$('#s-rd').value=String(mk.data.round_up_to||1);$('#s-9').checked=!!mk.data.price_ending_9}
 async function mkSave(b){
  if(!ghTok()){$('#s-mkst').textContent='Спершу додайте ключ GitHub (ліворуч) — без нього змінити націнку можна лише у файлі tools/feed-settings.json на GitHub.';return}
@@ -849,7 +871,7 @@ const segH=o=>`<div class="sec"><h3>Статус</h3><div class="seg" id="seg">$
 function custHist(o){const k=ph(o.phone);if(!k)return'';const H=orders.filter(x=>x.id!=o.id&&ph(x.phone)==k);if(!H.length)return'';
  return `<div class="sec"><h3>Цей клієнт раніше</h3><div class="its">${H.slice(0,6).map(x=>`<div><span><button class="link" data-o="${esc(x.id)}">№ ${esc(x.id)}</button> <small>${fdt(x._t)} · ${esc(x._k=='ord'?x.type||'Кошик':x.type)}</small></span><span>${pill(x)}</span><span>${x._k=='ord'?money(x.total):''}</span></div>`).join('')}<div><span>Усього покупок</span><span></span><span>${money(H.filter(x=>x._k=='ord'&&x.status!='Скасоване').reduce((a,x)=>a+x.total,0)+(o._k=='ord'&&o.status!='Скасоване'?o.total:0))}</span></div></div></div>`}
 function openO(id){
- const o=orders.find(x=>x.id==id);if(!o)return;if(o._k=='rev')return openRev(o);
+ const o=orders.find(x=>x.id==id)||trash.find(x=>x.id==id);if(!o)return;if(o._k=='rev')return openRev(o);
  cur={...o};seen.add(o.id);saveSeen();
  $('#dtitle').textContent=(o._k=='ord'?'Замовлення № ':o.type+' · № ')+o.id;$('#dsub').textContent=fdt(o._t)+(o.type&&o._k=='ord'?' · '+o.type:'');
  if(o._k=='ord'){
@@ -870,7 +892,8 @@ function openO(id){
   <div class="sec"><h3>Перше повідомлення</h3><div class="msgbox" id="dmsg"></div><div class="acts" style="margin-top:8px"><button class="btn ghost sm" data-a="copymsg"><svg class="i"><use href="#i-copy"/></svg>Копіювати текст</button></div></div>
   ${custHist(o)}${fromPage(o)}`;
   $('#dmsg').textContent=leadMsg(o)}
- $('#dfoot').innerHTML=`<button class="btn" data-a="save" id="dsave">Зберегти</button><button class="btn ghost" data-a="copy"><svg class="i"><use href="#i-copy"/></svg>Копіювати</button>`;
+ $('#dfoot').innerHTML=isDel(o)?`<button class="btn" data-a="undel">Відновити</button><button class="btn ghost" data-a="copy"><svg class="i"><use href="#i-copy"/></svg>Копіювати</button><span class="soft" style="align-self:center">Запис видалено ${esc(fdt((HID.get(hk(o))||{}).at))}</span>`
+  :`<button class="btn" data-a="save" id="dsave">Зберегти</button><button class="btn ghost" data-a="copy"><svg class="i"><use href="#i-copy"/></svg>Копіювати</button><button class="btn bad dl" data-a="del"><svg class="i"><use href="#i-trash"/></svg>Видалити</button>`;
  dr(true);render()}
 const rvImg=u=>imgOk(u)?`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt=""></a>`:'<i>немає фото</i>';
 document.addEventListener('input',e=>{const m=/^rv-(before|after)$/.exec(e.target.id||'');if(m){const v=$('#rv-'+m[1]+'-v');if(v)v.innerHTML=rvImg(e.target.value.trim())}});
@@ -896,14 +919,16 @@ function openRev(o,rec){
   <label class="full">Відповідь магазину (необов’язково, теж публікується)<textarea id="rv-a" rows="3" placeholder="Дякуємо за відгук! …">${esc(r.answer||'')}</textarea></label>
  </div><p class="note" style="margin-top:8px">Можна виправити помилки, але не змінюйте суть. Публікуйте й критичні відгуки з відповіддю — це підвищує довіру.</p></div>
  <div id="rv-w"></div>${src?fromPage(src):''}`;
- $('#dfoot').innerHTML=`<button class="btn" data-a="rvpub">${pub?'Оновити на сайті':'Опублікувати'}</button>${pub?'<button class="btn bad" data-a="rvunpub">Зняти з сайту</button>':src&&src.status!='Скасоване'?'<button class="btn bad" data-a="rvrej">Відхилити</button>':''}`;
+ $('#dfoot').innerHTML=src&&isDel(src)?`<button class="btn" data-a="undel">Відновити</button><span class="soft" style="align-self:center">Відгук видалено ${esc(fdt((HID.get(hk(src))||{}).at))}</span>`
+  :`<button class="btn" data-a="rvpub">${pub?'Оновити на сайті':'Опублікувати'}</button>${pub?'<button class="btn bad" data-a="rvunpub">Зняти з сайту</button>':src&&src.status!='Скасоване'?'<button class="btn bad" data-a="rvrej">Відхилити</button>':''}${src?'<button class="btn bad dl" data-a="del"><svg class="i"><use href="#i-trash"/></svg>Видалити</button>':''}`;
  dr(true);render()}
 const rvForm=()=>({id:cur.r.id,name:$('#rv-n').value.trim()||'Покупець',city:$('#rv-c').value.trim(),rating:+$('#rv-r').value,text:$('#rv-t').value.trim(),product:$('#rv-p').value.trim(),answer:$('#rv-a').value.trim(),date:$('#rv-d').value||new Date().toISOString().slice(0,10),...rvPh()});
 // фото додаються в reviews.json лише якщо є (порожні поля не пишемо)
 function rvPh(){const o={},b=$('#rv-before').value.trim(),a=$('#rv-after').value.trim(),n=$('#rv-pn').value.trim();
  if(imgOk(b))o.before=b;if(imgOk(a))o.after=a;if((o.before||o.after)&&n)o.photoNote=n;return o}
 async function setStatus(o,s){const r=await call({action:'update',id:o.id,status:s,ttn:o.ttn||'',comment:o.comment||''});
- if(r.ok){const i=orders.findIndex(x=>x.id==o.id),n={...r.order,items:r.order.items||[],total:+r.order.total||0,_t:+new Date(r.order.created)||0};n._k=kind(n);n._p=parts(n);if(i>=0)orders[i]=n}return r}
+ if(r.ok){const n={...r.order,items:r.order.items||[],total:+r.order.total||0,_t:+new Date(r.order.created)||0};n._k=kind(n);n._p=parts(n);putRec(n)}return r}
+function putRec(n){const i=all.findIndex(x=>x.id==n.id);if(i>=0)all[i]=n;else all.unshift(n);split()}
 async function rvPub(b){
  const r=rvForm();if(r.text.length<5){$('#rv-t').focus();return toast('Додайте текст відгуку')}
  if(!ghTok()){
@@ -926,14 +951,30 @@ async function rvUnpub(b){
  b.classList.remove('busy');dr(false);render();toast('Відгук знято з сайту')}
 async function rvRej(b){b.classList.add('busy');const r=await setStatus(cur.o,'Скасоване');b.classList.remove('busy');
  if(!r.ok)return toast(ERR[r.error]||('Не збережено: '+r.error));dr(false);render();toast('Відгук відхилено')}
+/* ---------- видалення й відновлення ---------- */
+function recInfo(o){return (o._k=='ord'?itemsLine(o)+' · '+money(o.total):o._k=='rev'?(rvParse(o).text||itemsLine(o)):o._p.join(' · ')).slice(0,1900)}
+async function delRec(o,b){
+ if(!o)return;
+ const what=o._k=='ord'?'замовлення № '+o.id:o._k=='rev'?'відгук від «'+(o.name||'покупця')+'»':'заявку «'+(o.type||'')+'» № '+o.id;
+ const pub=o._k=='rev'&&site&&site.list.some(x=>x.id==o.id);
+ if(pub&&!ghTok())return toast('Відгук є на сайті. Щоб видалити його звідти, додайте ключ GitHub у Налаштуваннях');
+ if(!confirm(`Видалити ${what}?\n\nЗапис зникне з адмінки, списків і аналітики${pub?' і зі сторінки відгуків на сайті':''}. Його можна відновити у вкладці «Видалені».`))return;
+ b&&b.classList.add('busy');
+ const r=await pcall({action:'a_hide',items:[{id:o.id,created:o.created||'',kind:o._k=='ord'?'Замовлення':o._k=='rev'?'Відгук':'Заявка: '+(o.type||''),name:o.name||'',phone:o.phone||'',info:recInfo(o)}]});
+ if(!r.ok){b&&b.classList.remove('busy');return toast(ERRP[r.error]||('Не видалено: '+r.error))}
+ if(pub){const s=await loadSite(true),w=await saveSite(s.list.filter(x=>x.id!=o.id),'Видалено відгук: '+(o.name||''));if(!w.ok)toast(w.msg)}
+ b&&b.classList.remove('busy');setHid(r.hidden);dr(false);render();toast('Видалено. Відновити можна у вкладці «Видалені»')}
+async function undelRec(o,b){
+ if(!o)return;b&&b.classList.add('busy');const r=await pcall({action:'a_unhide',ids:[o.id]});b&&b.classList.remove('busy');
+ if(!r.ok)return toast(ERRP[r.error]||('Не відновлено: '+r.error));setHid(r.hidden);dr(false);render();toast('Запис відновлено')}
 function dr(on){$('#dr').classList.toggle('on',on);$('#shade').classList.toggle('on',on);$('#dr').setAttribute('aria-hidden',!on);if(!on)$('#tip').hidden=true}
 async function save(){
  if(!cur||cur.rev)return;const b=$('#dsave');b.classList.add('busy');
  const r=await call({action:'update',id:cur.id,status:cur.status,ttn:cur._k=='ord'?$('#dttn').value.trim():(cur.ttn||''),comment:$('#dcom').value});
  b.classList.remove('busy');
  if(!r.ok)return toast(ERR[r.error]||('Не збережено: '+r.error));
- const i=orders.findIndex(o=>o.id==cur.id),n={...r.order,items:r.order.items||[],total:+r.order.total||0,_t:+new Date(r.order.created)||0};n._k=kind(n);n._p=parts(n);
- orders[i]=n;cur={...n};render();
+ const n={...r.order,items:r.order.items||[],total:+r.order.total||0,_t:+new Date(r.order.created)||0};n._k=kind(n);n._p=parts(n);
+ putRec(n);cur={...n};render();
  toast(n._k=='ord'&&n.status=='Відправлене'&&!n.ttn?'Збережено. Не забудьте вписати ТТН':'Збережено')}
 function copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Скопійовано'),()=>{const a=document.createElement('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove();toast('Скопійовано')})}
 function csv(k){
@@ -960,6 +1001,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('button,a,[data-a
   case'tbl':{const x=b.closest('.box').querySelector('.bt');if(x){x.hidden=!x.hidden;b.textContent=x.hidden?'Таблиця':'Графік';b.closest('.box').querySelector('.cc').hidden=!x.hidden}return}
   case'copy':return copy(cur?(cur._k=='ord'?`Замовлення №${cur.id}\n${cur.items.map(i=>`${clean(i.name)} × ${i.q} = ${money(i.q*i.price)}`).join('\n')||cur.text}\nРазом: ${money(cur.total)}\n${cur.name}\n${cur.phone}\n${[cur.delivery,cur.city].filter(Boolean).join(', ')}\n${cur.pay}`:`${cur.type} №${cur.id}\n${cur.name}\n${cur.phone}\n${cur._p.join('\n')}`):'');
   case'copymsg':return copy($('#dmsg').textContent);
+  case'del':return delRec(cur&&(cur.rev?cur.o:orders.find(x=>x.id==cur.id)),b);case'undel':return undelRec(cur&&(cur.rev?cur.o:trash.find(x=>x.id==cur.id)),b);
   case'rvadd':return openRev(null,null);case'rvpub':return rvPub(b);case'rvfile':return rvFile();case'rvunpub':return rvUnpub(b);case'rvrej':return rvRej(b);
   case'ghsave':{const v=$('#s-gh').value.trim();if(!v)return toast('Вставте ключ');store.set('adm_gh',v);site=null;mk=null;rSet();return ghCheck()}
   case'ghcheck':return ghCheck();case'ghdel':store.del('adm_gh');site=null;return rSet();
@@ -983,6 +1025,6 @@ document.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-tip]
 if(api&&pass){call({action:'list'}).then(r=>r.ok?start(r):logout(r.error=='net'?ERR.net:''))}
 </script>
 <script src="admin-blog.js?v=4fd56da3"></script>
-<script src="admin-partners.js?v=7fa8290e"></script>
+<script src="admin-partners.js?v=41d1a175"></script>
 </body>
 </html>

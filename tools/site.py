@@ -793,6 +793,18 @@ def catalog_report(prods):
 
 
 # ---------------------------------------------------------------- sitemap, robots, llms.txt
+def app_catalog(prods, by_cat):
+    """Легкий каталог для Mini App у Telegram (app/): лише те, що потрібно для замовлення."""
+    cat_ix = {s: k for k, s in enumerate(s for g in GROUPS for s in ORDER.get(g[0], []))}
+    # спершу товари в наявності, у порядку категорій як на сайті (3D панелі, плитка…), потім решта
+    order = {p['id']: k for k, p in enumerate(sorted(prods, key=lambda x: (not x['av'], cat_ix.get(x['cat'], 999), x['sale'], len(x['imgs']) < 2, x['i'])))}
+    items = [[p['id'], p['name'], p['sku'] or '', round(p['price'], 2), 1 if p['av'] else 0, p['imgs'][0] if p['imgs'] else '', p['cat'],
+              p['qty'] if p['qty'] is not None else -1] for p in sorted(prods, key=lambda x: order[x['id']])]
+    cats = [[s, CAT[s][2], len(by_cat[s])] for g in GROUPS for s in ORDER.get(g[0], []) if s in CAT and by_cat.get(s)]
+    write('app/catalog.json', json.dumps({'updated': NOW.strftime('%Y-%m-%d %H:%M'), 'cats': cats,
+          'f': ['id', 'name', 'sku', 'price', 'av', 'img', 'cat', 'qty'], 'items': items}, ensure_ascii=False, separators=(',', ':')))
+
+
 def sitemap(prods, cats, arts):
     old = {}
     try:
@@ -835,6 +847,7 @@ Disallow: /admin.html
 Disallow: /jobs-drop.html
 Disallow: /tools/
 Disallow: /catalog/
+Disallow: /app/
 
 Sitemap: {SITE}sitemap.xml
 ''')
@@ -900,6 +913,7 @@ def main():
                     os.remove(P(d, fn))
                     CHANGED.append(f'{SITE}{d}/{fn}')
     catalog_report(prods)
+    app_catalog(prods, by_cat)
     sitemap(prods, cats, arts)
     llms(cats, arts)
     if '--changed' in sys.argv:

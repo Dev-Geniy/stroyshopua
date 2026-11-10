@@ -333,6 +333,8 @@ function vProfile(){
  <div class="kb-side">
   <div class="kb-card"><h3>Акаунт</h3><dl class="kb-dl"><dt>ID партнера</dt><dd>${E(me.id)}</dd><dt>Логін</dt><dd>+${E(me.phone)}</dd><dt>Рівень</dt><dd>${E(me.level||'Starter')} · маржа ≈ ${margin()}%</dd>${since?`<dt>Партнер з</dt><dd>${E(since)}</dd>`:''}<dt>Анкета</dt><dd>${me.anketaAt?'заповнена · <a href="anketa.html?kab=1">оновити</a>':'<a href="anketa.html?kab=1">заповнити</a>'}</dd></dl>
    <button type="button" class="btn ghost sm" data-out style="margin-top:12px">Вийти з кабінету</button></div>
+  <div class="kb-card"><h3>Telegram-бот Samostroy Drop</h3>${me.tg?`<p class="kb-small">✓ Підключено${me.tgName?' ('+E(me.tgName)+')':''}. Статуси замовлень, ТТН і виплати приходять у бот, а замовлення можна оформлювати прямо в Telegram.</p>${me.bot?`<a class="btn ghost sm" href="https://t.me/${E(me.bot)}" target="_blank" rel="noopener" style="margin-top:10px">Відкрити бота</a>`:''}`
+   :`<p class="kb-small">Отримуйте статуси замовлень, ТТН і виплати в Telegram і оформлюйте замовлення з телефона за хвилину.</p><button type="button" class="btn sm" data-tglink style="margin-top:10px">Підключити Telegram</button>`}</div>
   <form class="kb-card" id="kbPw" novalidate><h3>Змінити пароль</h3>
    <label class="kb-f">Поточний пароль<input name="old" type="password" autocomplete="current-password"></label>
    <label class="kb-f">Новий пароль <small>щонайменше 6 символів</small><input name="nw" type="password" autocomplete="new-password"></label>
@@ -361,6 +363,10 @@ document.addEventListener('click',e=>{
  if(d.manual!==undefined)return manual();
  if(d.again!==undefined){sent=null;return draw()}
  if(d.eye!==undefined)return eye(t)});
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-tglink]');if(!b)return;
+ const w=window.open('about:blank','_blank');busy(b,1);const r=await api({action:'p_tgcode',token});busy(b,0);
+ if(!r.ok){if(w)w.close();return note(r.error=='nobot'?'Бот партнерів ще налаштовується — спробуйте пізніше.':errMsg(r.error))}
+ if(w)w.location.href=r.url;else location.href=r.url;note('Натисніть «Почати» в боті — і Telegram підключиться')});
 document.addEventListener('click',e=>{const r=$i('kbRes');if(r&&!r.hidden&&!e.target.closest('.kb-srch'))r.hidden=true});
 addEventListener('hashchange',()=>{if(!me)return;const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h)&&h!=tab){tab=h;draw()}});
 addEventListener('catalog',()=>{if(tab=='order'&&!sent){const q=$i('kbQ');if(q){q.placeholder='Назва або артикул: 3D панель, PET плитка…';q.value&&search(q.value)}}

@@ -70,7 +70,7 @@ jobs:
         run: |
           git config user.name "feed-bot"
           git config user.email "feed-bot@users.noreply.github.com"
-          git add -A products.xml catalog p c blog blog.html reviews.html povernennya.html 404.html sitemap.xml robots.txt llms.txt catalog-report.json tools/catalog-state.json
+          git add -A products.xml catalog p c blog blog.html reviews.html povernennya.html 404.html sitemap.xml robots.txt llms.txt catalog-report.json tools/catalog-state.json app/catalog.json
           if git diff --cached --quiet; then echo "Без змін"; echo "pushed=0" >> "$GITHUB_OUTPUT"; exit 0; fi
           git commit -qm "Оновлення товарів, цін і сторінок сайту"
           git pull -q --rebase origin main

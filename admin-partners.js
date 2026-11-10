@@ -26,7 +26,8 @@ async function load(quiet){
  if(!PAPI||S.loading)return;S.loading=true;
  const r=await call({action:'a_list'});S.loading=false;S.at=Date.now();
  if(!r.ok){S.err=errT(r.error);if(!quiet)toast(S.err);if(view=='partners')draw();return}
- S.err='';S.loaded=true;S.partners=r.partners||[];S.orders=(r.orders||[]).sort((a,b)=>t(b.created)-t(a.created));
+ S.err='';S.loaded=true;S.partners=r.partners||[];S.orders=(r.orders||[]).sort((a,b)=>t(b.created)-t(a.created));S.bot=r.bot||'';
+ if(r.hidden&&window.onHidden)onHidden(r.hidden);
  badge();if(view=='partners')draw()}
 function badge(){const b=document.getElementById('b-par');if(b)b.textContent=S.orders.filter(o=>o.status=='Нове').length||''}
 function tick(){if(PAPI&&pass&&!S.loading&&(!S.loaded||Date.now()-S.at>60000))load(true)}
@@ -104,7 +105,7 @@ function openO(id){const o=S.orders.find(x=>x.id==id);if(!o)return;co={...o};cp=
   <p class="note" style="margin-top:6px">Порожньо — партнер бачить орієнтовну суму. Впишіть точну після розрахунку (з урахуванням доставки чи знижок).</p></div>
  <div class="sec"><h3>ТТН</h3><div class="ttn"><input id="pa-ttn" value="${esc(o.ttn)}" inputmode="numeric" placeholder="Номер накладної"><a class="btn ghost" id="pa-trk" target="_blank" rel="noopener" href="${esc(track(o))}" ${o.ttn?'':'hidden'}>Відстежити</a></div><p class="note" style="margin-top:6px">ТТН одразу з’явиться в кабінеті партнера.</p></div>
  <div class="sec"><h3>Коментар менеджера <small class="note">— бачить партнер</small></h3><textarea id="pa-com" placeholder="Напр.: відправимо завтра зранку, колір замінили на білий">${esc(o.comment)}</textarea></div>`;
- $('#dfoot').innerHTML=`<button class="btn" id="pa-save" data-pa="osave">Зберегти</button><button class="btn ghost" data-pa="otext">Текст для складу</button>`;
+ $('#dfoot').innerHTML=`<button class="btn" id="pa-save" data-pa="osave">Зберегти</button><button class="btn ghost" data-pa="otext">Текст для складу</button><button class="btn bad dl" data-pa="odel"><svg class="i"><use href="#i-trash"/></svg>Видалити</button>`;
  $('#pa-ttn').addEventListener('input',e=>{co.ttn=e.target.value.trim();const l=$('#pa-trk');l.hidden=!co.ttn;l.href=track(co)});
  dr(true)}
 async function saveO(b){if(!co)return;b.classList.add('busy');
@@ -124,7 +125,8 @@ function openP(id){const p=pById(id);if(!p)return;cp={...p};co=null;const s=pSta
  <div class="sec"><h3>Анкета</h3>${a?`<dl class="kv">${yes.length?yes.map(([k,x])=>`<dt>${esc(k)}</dt><dd>${/^https?:/.test(x.link)?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.link)}</a>`:esc(x.link)}<br><span class="note">досвід: ${esc(x.exp||'—')} · аудиторія: ${esc(x.aud||'—')}</span></dd>`).join(''):'<dt>Платформи</dt><dd>поки немає — стартує з нуля</dd>'}
   <dt>ФОП</dt><dd>${esc(a.fop||'—')}</dd><dt>Час на день</dt><dd>${esc(a.time||'—')}</dd>${a.other?`<dt>Інше</dt><dd>${esc(a.other)}</dd>`:''}${a.note?`<dt>Коментар</dt><dd>${esc(a.note)}</dd>`:''}</dl><p class="note" style="margin-top:6px">Заповнена ${fdt(t(p.anketaAt))}</p>`:'<p class="note">Партнер ще не заповнював анкету.</p>'}</div>
  <div class="sec"><h3>Нотатка менеджера <small class="note">— партнер не бачить</small></h3><textarea id="pa-note">${esc(p.note||'')}</textarea></div>
- <div class="sec"><h3>Доступ</h3><div class="acts"><button class="btn ghost sm" data-pa="reset">Скинути пароль</button><button class="btn ${p.status=='Заблокований'?'ghost':'bad'} sm" data-pa="block">${p.status=='Заблокований'?'Розблокувати':'Заблокувати'}</button></div><p class="note" id="pa-pw" style="margin-top:8px"></p></div>`;
+ <div class="sec"><h3>Telegram</h3><p class="note">${p.tg?`Підключено${p.tgName?': <b>'+esc(p.tgName)+'</b>':''} — партнер отримує статуси, ТТН і виплати в боті${S.bot?' @'+esc(S.bot):''}.`:'Не підключено. Партнер може відкрити бота партнерів і увійти, або натиснути «Підключити Telegram» у профілі на сайті.'}</p></div>
+ <div class="sec"><h3>Доступ</h3><div class="acts"><button class="btn ghost sm" data-pa="reset">Скинути пароль</button><button class="btn ${p.status=='Заблокований'?'ghost':'bad'} sm" data-pa="block">${p.status=='Заблокований'?'Розблокувати':'Заблокувати'}</button><button class="btn bad sm" data-pa="pdel"><svg class="i"><use href="#i-trash"/></svg>Видалити партнера</button></div><p class="note" id="pa-pw" style="margin-top:8px"></p></div>`;
  $('#dfoot').innerHTML=`<button class="btn" data-pa="psave">Зберегти</button>`;
  dr(true)}
 async function saveP(b,extra){if(!cp)return;b&&b.classList.add('busy');
@@ -147,6 +149,13 @@ document.addEventListener('click',async e=>{
   case'allp':S.pid='';return draw();
   case'osave':return saveO(b);
   case'otext':return co&&copy(oText(co));
+  case'odel':{if(!co||!confirm(`Видалити замовлення партнера № ${co.id} (${co.partner}, ${money(co.sale)})?\n\nЙого не буде в адмінці й у кабінеті партнера. Копія збережеться в таблиці кабінету, аркуш «Архів видаленого».`))return;
+   b.classList.add('busy');const r=await call({action:'a_del_order',id:co.id});b.classList.remove('busy');if(!r.ok)return toast(r.error=='action'?'Оновіть скрипт кабінету партнерів (новий Code.gs → Нова версія)':errT(r.error));
+   S.orders=S.orders.filter(x=>x.id!=co.id);co=null;badge();dr(false);draw();return toast('Замовлення видалено')}
+  case'pdel':{if(!cp)return;const n=S.orders.filter(o=>o.partnerId==cp.id).length;
+   if(!confirm(`Видалити партнера ${cp.name} (${cp.id})?\n\nВін не зможе увійти в кабінет і бот. ${n?`Його замовлення (${n}) залишаться в списку.`:''} Копія даних збережеться в аркуші «Архів видаленого».`))return;
+   b.classList.add('busy');const r=await call({action:'a_del_partner',id:cp.id});b.classList.remove('busy');if(!r.ok)return toast(r.error=='action'?'Оновіть скрипт кабінету партнерів (новий Code.gs → Нова версія)':errT(r.error));
+   S.partners=S.partners.filter(x=>x.id!=cp.id);cp=null;dr(false);draw();return toast('Партнера видалено')}
   case'psave':if(await saveP(b)){dr(false);draw();toast('Збережено')}return;
   case'porders':S.pid=d.pp;S.sub='orders';S.tab='all';S.q='';dr(false);return draw();
   case'block':{if(!cp)return;const to=cp.status=='Заблокований'?'Активний':'Заблокований';
@@ -167,4 +176,43 @@ document.addEventListener('click',async e=>{
    const rows=S.orders.filter(o=>!S.pid||o.partnerId==S.pid).map(o=>[o.id,new Date(o.created).toLocaleString('uk-UA'),o.status,o.partner,o.partnerId,o.client,o.phone,o.city,o.branch,o.delivery,o.pay,(o.items||[]).map(x=>`${x.name} × ${x.q}`).join('\n'),o.sale,o.whole,earn(o),o.earnFinal==null?'ні':'так',o.ttn,o.source,o.paidAt?new Date(o.paidAt).toLocaleDateString('uk-UA'):''].map(q).join(';'));
    return download('partnery-zamovlennya-'+new Date().toISOString().slice(0,10)+'.csv','﻿'+[head.map(q).join(';'),...rows].join('\r\n'),'text/csv;charset=utf-8')}}});
 
-return{render:draw,tick,load}})();
+/* ---------- Налаштування → Telegram-бот партнерів ---------- */
+let B=null;
+async function bot(op,btn){
+ const el=document.getElementById('s-botb');if(!el)return;
+ if(!PAPI){el.innerHTML='<p class="note">Спершу підключіть кабінет партнерів (config.js → papi).</p>';return}
+ if(!op&&!B)el.innerHTML='<p class="note">Перевіряю бота…</p>';
+ btn&&btn.classList.add('busy');
+ const r=await call({action:'a_bot',op:op||'status',url:PAPI});btn&&btn.classList.remove('busy');
+ if(op=='admcode'&&r.ok&&r.url){B=B||{};B.adm=r;return botDraw()}
+ if(!r.ok){if(r.error=='noadmin')return toast('Спершу підключіть чат менеджера');
+  if(op&&B){toast(r.error=='tg'?'Telegram: '+(r.msg||'помилка'):errT(r.error));return}
+  el.innerHTML=r.error=='action'?`<p class="note">Скрипт кабінету партнерів ще старої версії. Оновіть його за інструкцією <b>tools/partner-api/ЯК-ЗАПУСТИТИ-БОТА.md</b> (вставити новий Code.gs → Розгорнути → Керувати розгортаннями → Нова версія).</p><div class="acts" style="margin-top:10px"><button class="btn ghost sm" data-bot="status">Перевірити ще раз</button></div>`
+   :`<p class="note">${esc(r.error=='tg'?'Telegram: '+(r.msg||''):errT(r.error))}</p><div class="acts" style="margin-top:10px"><button class="btn ghost sm" data-bot="status">Перевірити ще раз</button></div>`;return}
+ const adm=B&&B.adm;B=r;if(adm&&op!='admclear')B.adm=adm;
+ if(op=='setup')toast('Бота підключено');if(op=='poll')toast('Увімкнено резервний режим: бот перевіряє повідомлення щохвилини');if(op=='test')toast('Тестове повідомлення надіслано');
+ botDraw()}
+function botDraw(){
+ const el=document.getElementById('s-botb'),r=B;if(!el||!r)return;
+ if(!r.token){el.innerHTML=`<p class="note">Бот ще не створено. Це 5 хвилин:</p><ol class="steps">
+  <li>У Telegram відкрийте <a href="https://t.me/BotFather" target="_blank" rel="noopener">@BotFather</a> → <code>/newbot</code> → назва <b>Samostroy Drop</b> → ім’я, напр. <b>SamostroyDropBot</b>. Скопіюйте токен.</li>
+  <li>У скрипті кабінету партнерів: ⚙️ Налаштування проєкту → Властивості скрипта → додайте <b>DROP_BOT_TOKEN</b> = токен.</li>
+  <li>Поверніться сюди й натисніть «Перевірити».</li></ol><div class="acts" style="margin-top:10px"><button class="btn sm" data-bot="status">Перевірити</button></div>`;return}
+ if(!r.valid){el.innerHTML=`<p class="note">Telegram не приймає токен з DROP_BOT_TOKEN. Перевірте, що скопіювали його повністю з @BotFather.</p><div class="acts" style="margin-top:10px"><button class="btn sm" data-bot="status">Перевірити ще раз</button></div>`;return}
+ const mode=r.mode=='hook'&&r.hook?'<span class="tag" style="color:var(--ok)">працює</span>':r.mode=='poll'?'<span class="tag">резервний режим · щохвилини</span>':'<span class="tag hot">не підключено</span>';
+ const bad=r.mode=='hook'&&r.error;
+ el.innerHTML=`<dl class="kv"><dt>Бот</dt><dd><a href="https://t.me/${esc(r.user)}" target="_blank" rel="noopener">@${esc(r.user)}</a> · ${esc(r.name)}</dd><dt>Стан</dt><dd>${mode}${r.pending?` · у черзі ${r.pending}`:''}</dd>
+  <dt>Менеджер</dt><dd>${r.admins?`підключено чатів: ${r.admins}`:'чат менеджера не підключено — сповіщення йдуть основним ботом'}</dd><dt>Mini App</dt><dd><a href="${esc(r.app)}" target="_blank" rel="noopener">${esc(r.app.replace('https://',''))}</a></dd></dl>
+  ${bad?`<div class="warn" style="margin-top:10px"><b>Telegram не може достукатися до скрипта</b><span>${esc(r.error)}${r.errorAt?' · '+esc(fdt(t(r.errorAt))):''}. Натисніть «Підключити бота» ще раз; якщо помилка повторюється — увімкніть резервний режим.</span></div>`:''}
+  <div class="acts" style="margin-top:12px">${r.mode!='hook'||!r.hook||bad?`<button class="btn sm" data-bot="setup">Підключити бота</button>`:''}<button class="btn ${r.admins?'ghost':''} sm" data-bot="admcode">${r.admins?'Додати ще чат менеджера':'Підключити мій Telegram для сповіщень'}</button>
+   ${r.admins?'<button class="btn ghost sm" data-bot="test">Тестове повідомлення</button>':''}<button class="btn ghost sm" data-bot="status">Оновити</button></div>
+  ${B.adm?`<div class="warn" style="margin-top:12px"><b>Підключення чату менеджера (посилання діє 1 годину)</b><span>Відкрийте з того Telegram, куди мають приходити замовлення, і натисніть «Почати».</span><div class="acts"><a class="btn sm" href="${esc(B.adm.url)}" target="_blank" rel="noopener">Мій особистий чат</a><a class="btn ghost sm" href="${esc(B.adm.group)}" target="_blank" rel="noopener">Додати в групу менеджерів</a></div></div>`:''}
+  <details style="margin-top:12px"><summary class="note" style="cursor:pointer">Ще</summary><div class="acts" style="margin-top:8px">
+   <button class="btn ghost sm" data-bot="setup">Перепідключити вебхук</button><button class="btn ghost sm" data-bot="poll">Резервний режим</button>${r.admins?'<button class="btn bad sm" data-bot="admclear">Відключити чати менеджера</button>':''}</div>
+   <p class="note" style="margin-top:8px">Резервний режим — якщо бот не відповідає: скрипт сам забирає повідомлення щохвилини (відповідь до 1 хв). «Підключити бота» повертає миттєвий режим.</p></details>
+  <p class="note" style="margin-top:10px">Посилання для партнерів: <a href="https://t.me/${esc(r.user)}" target="_blank" rel="noopener">t.me/${esc(r.user)}</a> — у боті вони реєструються, оформлюють замовлення й отримують статуси та ТТН.</p>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-bot]');if(!b)return;const op=b.dataset.bot;
+ if(op=='admclear'&&!confirm('Відключити всі чати менеджера від бота партнерів? Сповіщення знову йтимуть основним ботом.'))return;
+ bot(op=='status'?'':op,b)});
+
+return{render:draw,tick,load,bot}})();
