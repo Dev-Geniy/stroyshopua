@@ -95,10 +95,17 @@ function loadCat(){
   let ch=0;D.items.forEach(x=>{const p=x.id&&byId.get(x.id);if(p&&+p.price!=x.price){x.price=+p.price;ch=1}if(p&&!x.img&&p.img){x.img=p.img;ch=1}});if(ch)saveD();
   return CAT}).catch(()=>{catP=null;return null});
  return catP}
+/* «Мої товари» — спільні з веб-кабінетом (зберігаються в акаунті) */
+let favT=null;
+const favL=()=>me&&Array.isArray(me.favs)?me.favs.map(String):LS.get('da_favs',[]);
+const isFav=id=>favL().includes(String(id));
+function favToggle(id){id=String(id);const L=favL(),i=L.indexOf(id);if(i>=0)L.splice(i,1);else L.unshift(id);
+ if(me){me.favs=L;LS.set('da_me',me)}LS.set('da_favs',L);
+ clearTimeout(favT);favT=setTimeout(async()=>{const r=await api({action:'p_favs',token,favs:L});if(r.ok&&me){me.favs=r.favs;LS.set('da_me',me)}},700);return i<0}
 const catName=s=>{const c=CAT&&CAT.cats.find(x=>x[0]==s);return c?c[1]:''};
 function findP(q,cat,lim){
  const w=q.trim().toLowerCase().replace(/[x*×]/g,'х').split(/\s+/).filter(Boolean);
- let L=CAT.items;if(cat)L=L.filter(p=>p.cat==cat);if(w.length)L=L.filter(p=>w.every(x=>p.key.includes(x)));
+ let L=CAT.items;if(cat=='__fav'){const F=favL();L=F.map(id=>byId.get(id)).filter(Boolean)}else if(cat)L=L.filter(p=>p.cat==cat);if(w.length)L=L.filter(p=>w.every(x=>p.key.includes(x)));
  return lim?L.slice(0,lim):L}
 const adText=p=>`${p.name}\n\n💰 Ціна: ${Math.ceil(p.price)} грн\n${p.av?'✅ В наявності':'⏳ Під замовлення'}\n🚚 Відправка Новою поштою по всій Україні в день замовлення\n💳 Оплата при отриманні або на картку\n\n📩 Пишіть — підкажу, скільки потрібно на вашу площу.`;
 
@@ -381,10 +388,11 @@ async function pickSheet(){
  <div class="chips" id="pcs"></div><div id="pl"><div class="skel"></div><div class="skel"></div></div>`);
  const c=await loadCat();if(!$('#pl'))return;
  if(!c){$('#pl').innerHTML=`<div class="empty">Не вдалося завантажити каталог.<br><button class="btn sm" data-pick>Спробувати ще раз</button></div>`;return}
- const chips=()=>{$('#pcs').innerHTML=`<button data-pc="" class="${PQ.c?'':'on'}">Усі</button>`+c.cats.map(x=>`<button data-pc="${E(x[0])}" class="${PQ.c==x[0]?'on':''}">${E(x[1])}</button>`).join('')};
+ if(PQ.c===''&&!PQ.t&&favL().length){PQ.c='__fav';PQ.t=1}
+ const chips=()=>{$('#pcs').innerHTML=(favL().length?`<button data-pc="__fav" class="${PQ.c=='__fav'?'on':''}">★ Мої<i>${favL().length}</i></button>`:'')+`<button data-pc="" class="${PQ.c?'':'on'}">Усі</button>`+c.cats.map(x=>`<button data-pc="${E(x[0])}" class="${PQ.c==x[0]?'on':''}">${E(x[1])}</button>`).join('')};
  const list=()=>{const L=findP(PQ.q,PQ.c,60);$('#pl').innerHTML=L.length?L.map(p=>{const inC=D.items.some(i=>i.id==p.id);return `<button class="pick" data-add="${E(p.id)}"${p.av?'':' disabled'}>${p.img?`<img src="${E(p.img)}" alt="" loading="lazy">`:'<span class="ph"></span>'}<span class="t"><b>${E(p.name)}</b><small>${E(p.sku)}${p.av?'':' · немає в наявності'}</small></span><span class="p">${M(p.price)}<small>+${M(p.price-wholeU(p))}</small></span><span class="add ${inC?'in':''}">${ico(inC?'check':'plus')}</span></button>`}).join('')+(L.length==60?'<p class="small" style="text-align:center;padding:10px">Показано 60 — уточніть пошук</p>':''):'<div class="empty">Нічого не знайдено. Спробуйте інше слово або артикул.</div>'};
  chips();list();
- const i=$('#pq');i.addEventListener('input',()=>{PQ.q=i.value;list()});
+ const i=$('#pq');i.addEventListener('input',()=>{PQ.q=i.value;if(PQ.c=='__fav'&&PQ.q.trim()){PQ.c='';chips()}list()});
  $('#pcs').onclick=e=>{const b=e.target.closest('[data-pc]');if(!b)return;PQ.c=b.dataset.pc;hap('sel');chips();list()};
  $('#pl').onclick=e=>{const b=e.target.closest('[data-add]');if(!b)return;const p=byId.get(b.dataset.add);if(!p)return;addItem(p);hap('light');
   const a=b.querySelector('.add');a.classList.add('in');a.innerHTML=ico('check');toast('Додано: '+p.name.slice(0,40));underSheet()}}
@@ -406,13 +414,14 @@ async function vCat(){
  <div class="chips" id="ccs"></div><div id="cg"><div class="grid"><div class="skel" style="height:220px"></div><div class="skel" style="height:220px"></div></div></div>`;
  const c=await loadCat();if(route!='cat')return;
  if(!c){$('#cg').innerHTML=`<div class="card empty">Не вдалося завантажити каталог.<br><button class="btn sm" data-go2="cat">Спробувати ще раз</button></div>`;return}
- const chips=()=>{$('#ccs').innerHTML=`<button data-cc="" class="${C.c?'':'on'}">Усі<i>${c.items.length}</i></button>`+c.cats.map(x=>`<button data-cc="${E(x[0])}" class="${C.c==x[0]?'on':''}">${E(x[1])}<i>${x[2]}</i></button>`).join('')};
+ if(!C.t&&favL().length){C.c='__fav';C.t=1}
+ const chips=()=>{const nf=favL().length;if(C.c=='__fav'&&!nf)C.c='';$('#ccs').innerHTML=(nf?`<button data-cc="__fav" class="${C.c=='__fav'?'on':''}">★ Мої<i>${nf}</i></button>`:'')+`<button data-cc="" class="${C.c?'':'on'}">Усі<i>${c.items.length}</i></button>`+c.cats.map(x=>`<button data-cc="${E(x[0])}" class="${C.c==x[0]?'on':''}">${E(x[1])}<i>${x[2]}</i></button>`).join('')};
  const grid=()=>{const L=findP(C.q,C.c),S=L.slice(0,C.n);
   $('#cg').innerHTML=L.length?`<div class="grid">${S.map(p=>`<button class="pc ${p.av?'':'off'}" data-p="${E(p.id)}"><span class="im">${p.img?`<img src="${E(p.img)}" alt="" loading="lazy">`:''}${p.av?'':'<span class="out">немає</span>'}</span><span class="bd"><b>${E(p.name)}</b><span class="p">${M(p.price)}</span><small>заробіток від ${M(p.price-wholeU(p))}</small></span></button>`).join('')}</div>
    ${L.length>S.length?`<button class="more" id="cmore">Показати ще (${L.length-S.length})</button>`:''}<p class="small" style="text-align:center;margin:10px 0">Каталог оновлено ${E(c.updated)}</p>`:'<div class="card empty">Нічого не знайдено</div>';
   const m=$('#cmore');if(m){m.onclick=()=>{C.n+=30;grid()};if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();C.n+=30;grid()}},{rootMargin:'400px'});io.observe(m)}}};
  chips();grid();
- const i=$('#cq');i.addEventListener('input',()=>{C.q=i.value;C.n=30;grid()});
+ const i=$('#cq');i.addEventListener('input',()=>{C.q=i.value;C.n=30;if(C.c=='__fav'&&C.q.trim()){C.c='';chips()}grid()});
  $('#ccs').onclick=e=>{const b=e.target.closest('[data-cc]');if(!b)return;C.c=b.dataset.cc;C.n=30;hap('sel');chips();grid();scrollTo(0,0)}}
 function prodSheet(id){
  const p=byId.get(id);if(!p)return;const w=wholeU(p),inC=D.items.find(i=>i.id==p.id);
@@ -421,7 +430,7 @@ function prodSheet(id){
  <b class="h2">${E(p.name)}</b><p class="small" style="margin-top:4px">${E(p.sku)} · ${p.av?(p.qty>0?`в наявності: ${p.qty} шт`:'в наявності'):'немає в наявності'}</p>
  <div class="price3"><div><span>Рекомендована</span><b>${M(p.price)}</b></div><div><span>Ваша оптова ≈</span><b>${M(w)}</b></div><div class="g"><span>Заробіток</span><b>+${M(p.price-w)}</b></div></div>
  <p class="small" style="margin:-4px 2px 12px">Можете продавати дорожче — різниця теж ваша. Оптова ціна залежить від рівня (${E(me.level||'Starter')}, −${margin()}%).</p>
- <div class="acts col">${p.av?`<button class="btn" data-padd="${E(p.id)}">${ico(inC?'check':'plus')}${inC?'Вже в замовленні · ще 1':'Додати в замовлення'}</button>`:''}<button class="btn ghost" data-copy="${E(adText(p))}" data-cm="Текст оголошення скопійовано">${ico('copy')}Текст оголошення</button></div>
+ <div class="acts col"><button class="btn line" data-fv="${E(p.id)}">${isFav(p.id)?'★ У моїх товарах — прибрати':'☆ Додати в мої товари'}</button>${p.av?`<button class="btn" data-padd="${E(p.id)}">${ico(inC?'check':'plus')}${inC?'Вже в замовленні · ще 1':'Додати в замовлення'}</button>`:''}<button class="btn ghost" data-copy="${E(adText(p))}" data-cm="Текст оголошення скопійовано">${ico('copy')}Текст оголошення</button></div>
  <div class="list mt"><button class="li" data-url="${SITE}p/${encodeURIComponent(p.id)}.html"><span class="ic">${ico('link')}</span><span class="t"><b>Сторінка товару</b><small>Опис, характеристики, усі фото</small></span>${ico('chev')}</button>
  ${p.img?`<button class="li" data-url="${E(p.img)}"><span class="ic">${ico('grid')}</span><span class="t"><b>Відкрити фото</b><small>Збережіть для оголошення</small></span>${ico('chev')}</button>`:''}
  <button class="li" data-copy="${SITE}p/${encodeURIComponent(p.id)}.html" data-cm="Посилання скопійовано"><span class="ic">${ico('copy')}</span><span class="t"><b>Копіювати посилання</b><small>Щоб показати клієнту</small></span></button></div>`)}
@@ -481,6 +490,7 @@ document.addEventListener('click',e=>{
  if(d.clear!==undefined)return ask('Прибрати всі товари з чернетки?',()=>{D.items=[];saveD();draw()});
  if(d.step){step=+d.step;draw();return scrollTo(0,0)}
  if(d.p)return prodSheet(d.p);
+ if(d.fv){const on=favToggle(d.fv);hap(on?'ok':'light');b.textContent=on?'★ У моїх товарах — прибрати':'☆ Додати в мої товари';toast(on?'Додано в «Мої товари»':'Прибрано з «Моїх товарів»');if(route=='cat'&&C.c=='__fav'){const y=scrollY;vCat().then(()=>scrollTo(0,y))}return}
  if(d.padd){const p=byId.get(d.padd);if(p){addItem(p);hap('ok');closeSheet(true);backOff();step=1;sent=null;go('new');toast('Додано в замовлення')}return}
  if(d.unlink!==undefined)return ask('Відв’язати Telegram від кабінету? Сповіщення в бот більше не приходитимуть.',async()=>{const r=await api({action:'tg_unlink',token});if(!r.ok)return toast(errMsg(r.error));forget();$('#nav').hidden=true;welcome({})});
 });

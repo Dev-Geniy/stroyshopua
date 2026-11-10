@@ -30,7 +30,7 @@ var PC = [['id', 'ID'], ['created', 'Зареєстровано'], ['name', 'І�
   ['msg', 'Telegram / Viber'], ['level', 'Рівень'], ['status', 'Статус'], ['payout', 'Реквізити для виплат'],
   ['note', 'Нотатка менеджера'], ['anketaAt', 'Анкета заповнена'], ['anketa', 'Анкета (дані)'],
   ['lastLogin', 'Останній вхід'], ['pass', 'Пароль (хеш)'], ['salt', 'Сіль'], ['tokens', 'Сесії'],
-  ['tgId', 'Telegram ID'], ['tgName', 'Telegram']];
+  ['tgId', 'Telegram ID'], ['tgName', 'Telegram'], ['favs', 'Мої товари']];
 var OC = [['id', '№'], ['created', 'Створено'], ['updated', 'Оновлено'], ['partnerId', 'ID партнера'], ['partner', 'Партнер'],
   ['status', 'Статус'], ['client', 'Клієнт'], ['phone', 'Телефон клієнта'], ['city', 'Місто'], ['delivery', 'Доставка'],
   ['branch', 'Відділення'], ['pay', 'Оплата'], ['sale', 'Сума для клієнта'], ['whole', 'Оптова (орієнтовно)'],
@@ -149,7 +149,7 @@ function track(o) {
 function pubPartner(p) {
   return { id: p.id, created: p.created, name: p.name, phone: p.phone, city: p.city, msg: p.msg, level: p.level || 'Starter',
     margin: marginOf(p), status: p.status, payout: p.payout, anketa: json(p.anketa, null), anketaAt: p.anketaAt,
-    tg: !!p.tgId, tgName: p.tgName, bot: prop('BOT_USER') };
+    tg: !!p.tgId, tgName: p.tgName, bot: prop('BOT_USER'), favs: json(p.favs, []) };
 }
 function pubOrder(o) {
   return { id: o.id, created: o.created, updated: o.updated, partnerId: o.partnerId, partner: o.partner, status: o.status,
@@ -340,6 +340,18 @@ ACTIONS.p_cancel = function (b) {
       return { ok: true, order: pubOrder(list[i]) };
     }
     fail('notfound');
+  });
+};
+
+// «Мої товари» — обрані партнером товари для продажу (id з каталогу)
+ACTIONS.p_favs = function (b) {
+  var L = (Array.isArray(b.favs) ? b.favs : []).map(function (x) { return str(x, 40); }).filter(String);
+  var seen = {}; L = L.filter(function (x) { return seen[x] ? false : (seen[x] = 1); }).slice(0, 600);
+  return withLock(function () {
+    var p = auth(b);
+    p.favs = JSON.stringify(L);
+    write(SH_P, PC, p);
+    return { ok: true, favs: L };
   });
 };
 

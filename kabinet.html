@@ -56,7 +56,7 @@
  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 19.5V21.5M8 7h8M8 11h6"/></symbol>
  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
- <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+ <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.5 1.1 4.8 2.8 1.3-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></symbol>
  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1 1 2-2M3.5 12l1 1 2-2M3.5 18l1 1 2-2"/></symbol>
  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6"/></symbol>
@@ -300,6 +300,77 @@
  .kb-o2 span{margin-left:0;display:block}
  .kb-bars{height:150px;gap:6px}.kb-bar small{font-size:10px}
 }
+/* мої товари */
+.kb-tabs a i.soft{background:var(--wall);color:var(--soft);border:1px solid var(--line)}
+.kb-tabs a[aria-current=page] i.soft{background:rgba(255,255,255,.16);color:#fff;border-color:transparent}
+.kb-mine0{text-align:center;padding:42px 22px}
+.kb-mine0>.i{width:46px;height:46px;color:var(--orange);margin:0 auto 14px;display:block}
+.kb-mine0 h2{font:700 22px/1.25 var(--f-d);margin-bottom:10px}
+.kb-mine0 p{color:var(--soft);max-width:520px;margin:0 auto 18px}
+.kb-mine0 .btn{min-height:52px;padding:0 26px;font-size:16px}
+.kb-banner.warn{margin:12px 0 0}
+.kb-mtools{margin-top:14px}.kb-mtools .kb-srch{max-width:420px}
+.kb-mine{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+.kb-mi{position:relative;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--panel);display:flex;flex-direction:column}
+.kb-mi.off{opacity:.72}
+.kb-mimg{position:relative;display:block;aspect-ratio:4/3;background:var(--wall);border:0;padding:0;cursor:pointer;width:100%}
+.kb-mimg img{width:100%;height:100%;object-fit:cover;display:block}
+.kb-av{position:absolute;left:8px;bottom:8px;font-size:12px;font-weight:600;padding:3px 8px;border-radius:999px;background:rgba(20,24,28,.75);color:#fff}
+.kb-av.on{background:rgba(47,138,76,.9)}
+.kb-unfav{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;border:0;background:rgba(20,24,28,.6);color:#fff;display:grid;place-items:center;cursor:pointer;opacity:.85}
+.kb-unfav:hover{opacity:1;background:var(--bad)}
+.kb-unfav .i{width:16px;height:16px;position:static}
+.kb-mb{padding:12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.kb-mb>b{font-size:14.5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.kb-mb>small{color:var(--soft);font-size:12.5px}
+.kb-mb dl{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:13.5px;margin:4px 0}
+.kb-mb dt{color:var(--soft)}.kb-mb dd{text-align:right;font-weight:600}.kb-mb dd.g{color:var(--ok)}
+.kb-mact{display:flex;gap:6px;margin-top:auto}.kb-mact .btn:first-child{flex:1}
+/* повноекранний вибір */
+html.kb-lock{overflow:hidden}
+.kb-pick{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;padding:0;background:var(--wall);color:var(--ink);overflow:auto;overscroll-behavior:contain}
+.kb-pick::backdrop{background:rgba(0,0,0,.5)}
+.kb-pick[open]{animation:kbIn .22s ease-out}
+@keyframes kbIn{from{opacity:0;transform:translateY(14px)}}
+.kb-pt{position:sticky;top:0;z-index:3;background:color-mix(in srgb,var(--wall) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:16px max(16px,calc((100vw - 1240px)/2)) 10px}
+.kb-pth{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.kb-pth h2{font:700 clamp(19px,3vw,26px)/1.2 var(--f-d)}
+.kb-pth p{color:var(--soft);font-size:14px;margin-top:4px}
+.kb-pth .btn{flex:none;min-height:46px;padding:0 22px}
+.kb-pth .btn i{font-style:normal;opacity:.8}
+.kb-ptools{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.kb-ptools .kb-srch{flex:1 1 320px;margin:0}
+.kb-chk{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.kb-chk input{width:18px;height:18px;accent-color:var(--orange)}
+.kb-pt .kb-chips{margin:10px 0 0}
+.kb-pg{padding:16px max(16px,calc((100vw - 1240px)/2)) 40px}
+.kb-pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.kb-pk{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.kb-pk.on{border-color:var(--orange);box-shadow:0 0 0 2px color-mix(in srgb,var(--orange) 35%,transparent)}
+.kb-pk.off .kb-pim img{filter:grayscale(.6);opacity:.7}
+.kb-pim{position:relative;display:block;width:100%;aspect-ratio:1;border:0;padding:0;background:var(--wall);cursor:pointer;overflow:hidden}
+.kb-pim img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.kb-pim:hover img{transform:scale(1.04)}
+.kb-pim em{position:absolute;left:8px;top:8px;font-style:normal;font-size:12px;font-weight:600;background:rgba(20,24,28,.75);color:#fff;padding:2px 8px;border-radius:999px}
+.kb-plus{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;display:grid;place-items:center;
+ background:rgba(255,255,255,.28);border:2.5px solid rgba(255,255,255,.85);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+ box-shadow:0 6px 22px -6px rgba(0,0,0,.45);color:#fff;transition:background .15s,border-color .15s}
+.kb-plus .i{position:static;width:40px;height:40px;stroke-width:3.4;color:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
+.kb-pim:hover .kb-plus,.kb-pim:focus-visible .kb-plus{animation:kbPulse 1s ease-in-out infinite;background:rgba(240,138,28,.55);border-color:#fff}
+.kb-pk.on .kb-plus{background:var(--orange);border-color:#fff}
+.kb-pk.on .kb-plus .i{color:var(--orange-ink);filter:none}
+.kb-pk.pop .kb-plus{animation:kbPop .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes kbPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.16)}}
+@keyframes kbPop{0%{transform:scale(.7)}100%{transform:scale(1)}}
+.kb-pb{padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px}
+.kb-pb b{font-size:13.5px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.kb-pb span{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.kb-pb strong{font:700 15px var(--f-d)}.kb-pb small{color:var(--ok);font-weight:600;font-size:12.5px}
+.kb-pmore{display:flex;margin:18px auto 0}
+@media(max-width:560px){.kb-pgrid{grid-template-columns:repeat(2,1fr);gap:8px}.kb-plus{width:60px;height:60px;margin:-30px 0 0 -30px}.kb-plus .i{width:34px;height:34px}
+ .kb-pt{padding-top:10px}.kb-pth{align-items:center;gap:10px;margin-bottom:10px}.kb-pth h2{font-size:17px}.kb-pth p{display:none}.kb-pth .btn{min-height:40px;padding:0 14px}.kb-ptools{gap:8px}.kb-srch input{height:44px}.kb-mine{grid-template-columns:1fr 1fr;gap:8px}.kb-mb{padding:10px}.kb-mact{flex-direction:column}}
+@media(hover:none){.kb-pim:hover .kb-plus{animation:none}}
+@media(prefers-reduced-motion:reduce){.kb-pim:hover .kb-plus,.kb-pk.pop .kb-plus{animation:none}}
 </style>
 
 <main id="top">
@@ -397,6 +468,6 @@
 <script src="config.js?v=39a7de90"></script>
 <script>window.PAGE={"cats": ["manikyur", "konteynery", "naduvni-mebli", "stelazhi", "skladni-mebli", "termokylymky", "vologopoglynayuchi-kylymky", "pidloga-pazl-plyushevyy", "pidloga-pazl", "ekoshkira", "mozayika-sklo", "alyuminiyeva-plytka", "dzerkalnyi-dekor", "akrylovi-dzerkala", "pet-mozayika", "pet-plytka-rulon", "pet-plytka", "3d-reyky", "pidlogove-vinilove-pokryttya", "plintusy", "profili-dekor", "shtukaturka", "tepli-shpalery", "shpalery", "samokleyucha-plivka", "poliuretanova-plytka", "lvt-plytka", "plytka-pid-kovrolin", "kompozytna-plytka", "pvh-plytka", "plytka-vinilova", "pvh-paneli-plyty", "3d-paneli", "stinovi-paneli"], "name": "Особистий кабінет партнера", "listTitle": "Особистий кабінет партнера", "url": "https://samostroy.shop/kabinet.html", "title": "Особистий кабінет партнера | Samostroy Shop", "desc": "Особистий кабінет партнера Samostroy Shop: замовлення, заробіток, статуси й ТТН, інструкції під ваші платформи.", "guide": "", "calc": 0, "faq": [], "wall": [], "info": true}</script>
 <script src="shop.js?v=44b12e26"></script>
-<script src="kabinet.js?v=af8e808a"></script>
+<script src="kabinet.js?v=b967e521"></script>
 </body>
 </html>

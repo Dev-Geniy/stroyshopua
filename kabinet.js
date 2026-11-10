@@ -42,8 +42,8 @@ async function api(b){
  const ac=new AbortController(),t=setTimeout(()=>ac.abort(),30000);
  try{const r=await fetch(API,{method:'POST',body:JSON.stringify(b),signal:ac.signal,redirect:'follow'});return await r.json()}
  catch(e){return{ok:false,error:'net'}}finally{clearTimeout(t)}}
-function keep(r){if(r.me){me=r.me;LS.set('pk_me',me)}if(r.orders){orders=r.orders;LS.set('pk_orders',orders)}}
-function out(msg){token='';me=null;orders=[];LS.del('pk_token');LS.del('pk_me');LS.del('pk_orders');SS.del('pk_skip');SS.del('pk_seen');clearInterval(timer);authView('login',msg)}
+function keep(r){if(r.me){if(!favT)FAV=null;me=r.me;LS.set('pk_me',me)}if(r.orders){orders=r.orders;LS.set('pk_orders',orders)}}
+function out(msg){FAV=null;LS.del('pk_favs');LS.del('pk_favs_m');token='';me=null;orders=[];LS.del('pk_token');LS.del('pk_me');LS.del('pk_orders');SS.del('pk_skip');SS.del('pk_seen');clearInterval(timer);authView('login',msg)}
 async function refresh(quiet){
  if(!token)return;const r=await api({action:'p_me',token});
  if(!r.ok){if(r.error=='auth'||r.error=='blocked')return out(errMsg(r.error));if(!quiet)note(errMsg(r.error));return}
@@ -128,7 +128,7 @@ const lockBox=()=>`<div class="kb-card kb-lock">${ico('lock')}<div><h3>Запо�
  <p class="kb-small">Якщо пропустите, нагадування з’явиться при наступному вході.</p></div></div>`;
 
 /* ---------- каркас кабінету ---------- */
-const TABS=[['home','Огляд','chart'],['order','Нове замовлення','plus'],['orders','Мої замовлення','list'],['learn','Інструкції','book'],['profile','Профіль','user']];
+const TABS=[['home','Огляд','chart'],['order','Нове замовлення','plus'],['orders','Мої замовлення','list'],['mine','Мої товари','heart'],['learn','Інструкції','book'],['profile','Профіль','user']];
 function start(){
  const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h))tab=h;
  draw();clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)refresh(true)},120000)}
@@ -137,8 +137,9 @@ function draw(){
  $i('kbSub').textContent=`${me.name} · ${me.id} · рівень ${me.level||'Starter'}`;
  $i('kbUser').innerHTML=`<button type="button" class="btn ghost sm" data-out>Вийти</button>`;
  const nWork=orders.filter(o=>WORK.includes(o.status)).length;
- app.innerHTML=`<nav class="kb-tabs" aria-label="Розділи кабінету">${TABS.map(([k,l,i])=>`<a href="#${k}" data-tab="${k}"${tab==k?' aria-current="page"':''}>${ico(i)}<span>${l}</span>${k=='orders'&&nWork?`<i>${nWork}</i>`:''}</a>`).join('')}</nav><div id="kbP"></div>`;
- ({home:vHome,order:vOrder,orders:vOrders,learn:vLearn,profile:vProfile})[tab]()}
+ const nFav=favs().length;
+ app.innerHTML=`<nav class="kb-tabs" aria-label="Розділи кабінету">${TABS.map(([k,l,i])=>`<a href="#${k}" data-tab="${k}"${tab==k?' aria-current="page"':''}>${ico(i)}<span>${l}</span>${k=='orders'&&nWork?`<i>${nWork}</i>`:k=='mine'&&nFav?`<i class="soft">${nFav}</i>`:''}</a>`).join('')}</nav><div id="kbP"></div>`;
+ ({home:vHome,order:vOrder,orders:vOrders,mine:vMine,learn:vLearn,profile:vProfile})[tab]()}
 function go(t){tab=t;history.replaceState(null,'','#'+t);draw();$i('kbApp').scrollIntoView({behavior:'smooth',block:'start'})}
 
 /* ---------- інструменти й навчання (дашборд та інструкції) ---------- */
@@ -347,6 +348,107 @@ function vProfile(){
   const b=$i('kbWS');busy(b,1);const r=await api({action:'p_profile',token,oldPassword:el.old.value,newPassword:el.nw.value});busy(b,0);
   if(!r.ok){$i('kbWE').textContent=r.error=='wrong'?'Поточний пароль невірний.':errMsg(r.error);return}e.target.reset();$i('kbWE').textContent='';note('Пароль змінено')})}
 
+/* ---------- мої товари: обране для продажу ---------- */
+// зберігається в акаунті партнера (бачить і сайт, і Telegram Mini App) + копія в браузері й у списку «Товари для продажу»
+const FK='pk_favs';
+let FAV=null,favT=null,MF={q:'',c:''},PK={q:'',c:'',av:1,n:48},pickIO=null;
+function favs(){
+ if(FAV)return FAV;
+ const has=!!me&&Array.isArray(me.favs),srv=has?me.favs.map(String):[],loc=LS.get(FK,[]),pl=(LS.get('partner_v2',{}).list)||[];
+ // один раз переносимо обране з цього браузера (і зі списку «Товари для продажу») в акаунт; далі джерело — акаунт
+ if(has&&LS.get('pk_favs_m','')==me.id)FAV=srv;
+ else{FAV=[...new Set([...srv,...loc,...pl].map(String))];if(has){LS.set('pk_favs_m',me.id);if(FAV.length!=srv.length)favSave(true)}}
+ return FAV}
+const isFav=id=>favs().includes(String(id));
+function favSave(soon){
+ LS.set(FK,FAV);const pv=LS.get('partner_v2',{});pv.list=FAV.slice();LS.set('partner_v2',pv);
+ clearTimeout(favT);favT=setTimeout(async()=>{if(!token){favT=null;return}const r=await api({action:'p_favs',token,favs:FAV});favT=null;if(r.ok&&me){me.favs=r.favs;LS.set('pk_me',me)}},soon?1500:700)}
+function favToggle(id){id=String(id);const L=favs(),i=L.indexOf(id);if(i>=0)L.splice(i,1);else L.unshift(id);favSave();return i<0}
+const shortT=p=>{let t=p.name.replace(/\s+/g,' ').trim();return t.length>70?t.slice(0,69).replace(/\s+\S*$/,'')+'…':t};
+const adT=p=>`${shortT(p)}\n\nЦіна: ${M(Math.ceil(p.price))}\n${p.av?'✓ В наявності':'⏳ Під замовлення'}\n\n🚚 Відправка в день замовлення Новою Поштою або Укрпоштою\n💳 Оплата при отриманні з оглядом на відділенні\n📏 Напишіть розміри — допоможу порахувати потрібну кількість`;
+function kcopy(t,msg){const ok=()=>note(msg||'Скопійовано');const fb=()=>{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.append(a);a.select();try{document.execCommand('copy');ok()}catch(x){note('Не вдалося скопіювати')}a.remove()};try{navigator.clipboard.writeText(t).then(ok,fb)}catch(x){fb()}}
+const catN=c=>typeof cname=='function'?cname(c):c;
+const ready=()=>typeof all!='undefined'&&all.length>0;
+function vMine(){
+ const P=$i('kbP');
+ if(!ready()){P.innerHTML=`<div class="kb-card kb-none"><p>Завантажуємо каталог…</p></div>`;return}
+ const L=favs().map(id=>prod(id)).filter(Boolean),gone=favs().length-L.length;
+ if(!L.length){P.innerHTML=`<div class="kb-card kb-mine0">${ico('heart')}<h2>Тут будуть товари, які ви продаєте</h2>
+  <p>Каталог великий — оберіть ті позиції, з якими працюєте, і вони завжди будуть під рукою: ціни й наявність зі складу, ваш заробіток, тексти оголошень і швидке замовлення.</p>
+  <button type="button" class="btn" data-pick>${ico('plus')}Обрати зараз</button>${gone?`<p class="kb-small">${gone} обраних товарів більше немає в каталозі.</p>`:''}</div>`;return}
+ const cats=[...new Set(L.map(p=>p.cat))],q=MF.q.trim().toLowerCase();
+ if(MF.c&&!cats.includes(MF.c))MF.c='';
+ const S2=L.filter(p=>(!MF.c||p.cat==MF.c)&&(!q||(p.name+' '+(p.sku||'')).toLowerCase().includes(q)));
+ const out=L.filter(p=>!p.av),m=margin();
+ P.innerHTML=`<div class="kb-card"><div class="kb-ch"><div><h3>Мої товари <span class="kb-small">· ${L.length}</span></h3><p class="kb-small" style="margin:2px 0 0">Ціни й наявність оновлюються зі складу автоматично.</p></div>
+  <div class="kb-acts"><button type="button" class="btn ghost sm" data-copyall>${ico('list')}Тексти всіх</button><button type="button" class="btn sm" data-pick>${ico('plus')}Додати товари</button></div></div>
+  ${out.length?`<div class="kb-banner warn">${ico('info')}<span><b>${out.length} ${pl(out.length,'товар закінчився','товари закінчились','товарів закінчились')}</b> — призупиніть оголошення: ${E(out.slice(0,3).map(shortT).join('; '))}${out.length>3?'…':''}</span></div>`:''}
+  ${L.length>6?`<div class="kb-mtools"><div class="kb-srch sm">${ico('search')}<input id="kbMq" type="search" placeholder="Пошук серед моїх товарів" value="${E(MF.q)}" autocomplete="off"></div>
+  ${cats.length>1?`<div class="kb-chips">${[['','Усі',L.length],...cats.map(c=>[c,catN(c),L.filter(p=>p.cat==c).length])].map(([k,l,n])=>`<button type="button" data-mc="${E(k)}" aria-pressed="${MF.c==k}">${E(l)}<i>${n}</i></button>`).join('')}</div>`:''}</div>`:''}
+  <div class="kb-mine">${S2.map(p=>{const w=p.price*(1-m/100);return `<article class="kb-mi${p.av?'':' off'}">
+   <button type="button" class="kb-mimg" data-p="${E(p.id)}" aria-label="Відкрити: ${E(p.name)}">${p.imgs&&p.imgs[0]?`<img src="${E(p.imgs[0])}" alt="" loading="lazy">`:''}<span class="kb-av ${p.av?'on':''}">${p.av?(p.qty>0&&p.qty<=10?'лишилось '+p.qty:'в наявності'):'немає'}</span></button>
+   <button type="button" class="kb-unfav" data-unfav="${E(p.id)}" aria-label="Прибрати з моїх товарів" title="Прибрати">${ico('x')}</button>
+   <div class="kb-mb"><b>${E(p.name)}</b><small>${E(p.sku||'')} · ${E(catN(p.cat))}</small>
+    <dl><dt>Рекомендована</dt><dd>${M(p.price)}</dd><dt>Ваша оптова ≈</dt><dd>${M(w)}</dd><dt>Заробіток</dt><dd class="g">+${M(p.price-w)}</dd></dl>
+    <div class="kb-mact"><button type="button" class="btn sm" data-ford="${E(p.id)}"${p.av?'':' disabled'}>${ico('plus')}В замовлення</button><button type="button" class="btn ghost sm" data-ftxt="${E(p.id)}">Текст</button></div></div></article>`}).join('')||'<p class="kb-none">Нічого не знайдено</p>'}</div>
+  <p class="kb-small" style="margin-top:12px">Фото, повні описи й експорт у таблицю — на сторінці <a href="partners.html">«Товари для продажу»</a> (там ваш список теж збережено).</p></div>`;
+ const i=$i('kbMq');if(i)i.addEventListener('input',()=>{MF.q=i.value;const pos=i.selectionStart;vMine();const j=$i('kbMq');j.focus();j.setSelectionRange(pos,pos)})}
+
+/* повноекранний вибір товарів */
+function pickOpen(){
+ let d=$i('kbPick');
+ if(!d){d=document.createElement('dialog');d.id='kbPick';d.className='kb-pick';d.setAttribute('aria-label','Обрати товари для продажу');document.body.append(d);
+  d.addEventListener('close',()=>{clearTimeout(favT);if(token&&FAV)favSave(false);document.documentElement.classList.remove('kb-lock');if(tab=='mine'||tab=='home')draw()});
+  d.addEventListener('click',pickClick);d.addEventListener('input',e=>{if(e.target.id=='kbPq'){PK.q=e.target.value;PK.n=48;pickGrid()}})}
+ PK.n=48;
+ d.innerHTML=`<div class="kb-pt"><div class="kb-pth"><div><h2>Оберіть товари для продажу</h2><p>Натисніть <b>+</b> на товарі — він з’явиться в «Мої товари». Ще раз — прибрати.</p></div>
+  <button type="button" class="btn" data-pdone>Готово<i id="kbPn"></i></button></div>
+  <div class="kb-ptools"><div class="kb-srch">${ico('search')}<input id="kbPq" type="search" placeholder="Назва або артикул: 3D панель, PET плитка, SW-…" value="${E(PK.q)}" autocomplete="off"></div>
+  <label class="kb-chk"><input type="checkbox" id="kbPav"${PK.av?' checked':''}> Лише в наявності</label></div>
+  <div class="kb-chips" id="kbPc"></div></div>
+  <div class="kb-pg" id="kbPg"></div>`;
+ document.documentElement.classList.add('kb-lock');
+ try{d.showModal()}catch(e){d.setAttribute('open','')}
+ $i('kbPav').addEventListener('change',e=>{PK.av=e.target.checked?1:0;PK.n=48;pickChips();pickGrid()});
+ pickChips();pickGrid();setTimeout(()=>{const q=$i('kbPq');q&&q.focus({preventScroll:true})},60)}
+let RANK=null;
+// спершу найбільші категорії (3D панелі, плівка, плитка…), усередині — як у каталозі
+function pickList(){const w=PK.q.trim().toLowerCase().replace(/[x*×]/g,'х').split(/\s+/).filter(Boolean);
+ if(!RANK){const c={};all.forEach(p=>c[p.cat]=(c[p.cat]||0)+1);RANK=c}
+ return all.filter(p=>(!PK.av||p.av)&&(!w.length||w.every(x=>(p.name+' '+(p.sku||'')).toLowerCase().replace(/[x*×]/g,'х').includes(x))))
+  .map((p,i)=>[p,i]).sort((a,b)=>(RANK[b[0].cat]-RANK[a[0].cat])||(a[0].cat<b[0].cat?-1:a[0].cat>b[0].cat?1:0)||a[1]-b[1]).map(x=>x[0])}
+function pickChips(){const L=pickList(),cnt={};L.forEach(p=>cnt[p.cat]=(cnt[p.cat]||0)+1);
+ const cs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]);if(PK.c&&!cnt[PK.c])PK.c='';
+ $i('kbPc').innerHTML=[['','Усі',L.length],['__fav','Обрані',favs().length],...cs.map(c=>[c,catN(c),cnt[c]])].map(([k,l,n])=>`<button type="button" data-pc="${E(k)}" aria-pressed="${PK.c==k}">${E(l)}<i>${n}</i></button>`).join('');
+ const n=$i('kbPn');if(n)n.textContent=favs().length?' · '+favs().length:''}
+function pickGrid(){
+ const g=$i('kbPg');if(!g)return;
+ let L=PK.c=='__fav'?favs().map(prod).filter(Boolean):pickList();if(PK.c&&PK.c!='__fav')L=L.filter(p=>p.cat==PK.c);
+ const S2=L.slice(0,PK.n),m=margin();
+ g.innerHTML=S2.length?`<div class="kb-pgrid">${S2.map(p=>{const on=isFav(p.id);return `<div class="kb-pk${on?' on':''}${p.av?'':' off'}"><button type="button" class="kb-pim" data-fav="${E(p.id)}" aria-pressed="${on}" aria-label="${on?'Прибрати':'Додати'}: ${E(p.name)}">${p.imgs&&p.imgs[0]?`<img src="${E(p.imgs[0])}" alt="" loading="lazy">`:''}<span class="kb-plus" aria-hidden="true">${ico(on?'check':'plus')}</span>${p.av?'':'<em>немає</em>'}</button>
+  <div class="kb-pb"><b title="${E(p.name)}">${E(p.name)}</b><span><strong>${M(p.price)}</strong><small>+${M(p.price*m/100)}</small></span></div></div>`}).join('')}</div>
+  ${L.length>S2.length?`<button type="button" class="btn ghost kb-pmore" data-pmore>Показати ще · ${L.length-S2.length}</button>`:''}`:`<div class="kb-none"><p>${PK.c=='__fav'?'Ви ще нічого не обрали.':'Нічого не знайдено. Спробуйте інше слово або приберіть «Лише в наявності».'}</p></div>`;
+ if(pickIO)pickIO.disconnect();const mb=g.querySelector('[data-pmore]');
+ if(mb&&'IntersectionObserver' in window){pickIO=new IntersectionObserver(es=>{if(es[0].isIntersecting){PK.n+=48;pickGrid()}},{root:$i('kbPick'),rootMargin:'600px'});pickIO.observe(mb)}}
+function pickClick(e){
+ const b=e.target.closest('[data-fav],[data-pc],[data-pdone],[data-pmore]');if(!b)return;const d=b.dataset;
+ if(d.pdone!==undefined)return $i('kbPick').close();
+ if(d.pmore!==undefined){PK.n+=48;return pickGrid()}
+ if(d.pc!==undefined){PK.c=d.pc;PK.n=48;pickChips();pickGrid();$i('kbPg').scrollIntoView({block:'start'});return}
+ if(d.fav){const on=favToggle(d.fav),card=b.closest('.kb-pk');card.classList.toggle('on',on);b.setAttribute('aria-pressed',on);
+  b.querySelector('.kb-plus').innerHTML=ico(on?'check':'plus');card.classList.remove('pop');void card.offsetWidth;card.classList.add('pop');
+  const n=$i('kbPn');if(n)n.textContent=favs().length?' · '+favs().length:'';const c=$i('kbPc').querySelector('[data-pc="__fav"] i');if(c)c.textContent=favs().length}}
+function toOrder(id){const p=prod(id);if(!p)return;const x=D.items.find(i=>i.id==id);
+ if(x)x.q++;else D.items.push({id:p.id,name:p.name,sku:p.sku||'',price:+p.price,sale:Math.ceil(+p.price),q:1,img:p.imgs&&p.imgs[0]||''});
+ saveD();sent=null;go('order');note('Додано в замовлення: '+shortT(p))}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-pick],[data-unfav],[data-ford],[data-ftxt],[data-copyall],[data-mc]');if(!t||!app.contains(t))return;const d=t.dataset;
+ if(d.pick!==undefined)return ready()?pickOpen():note('Каталог ще завантажується — спробуйте за секунду');
+ if(d.unfav){favToggle(d.unfav);return draw()}
+ if(d.ford)return toOrder(d.ford);
+ if(d.ftxt){const p=prod(d.ftxt);return p&&kcopy(adT(p),'Текст оголошення скопійовано')}
+ if(d.copyall){const L=favs().map(prod).filter(p=>p&&p.av);return kcopy(L.map(adT).join('\n\n———————\n\n'),'Скопійовано тексти: '+L.length)}
+ if(d.mc!==undefined){MF.c=d.mc;return vMine()}});
+
 /* ---------- події ---------- */
 document.addEventListener('click',e=>{
  const t=e.target.closest('[data-tab],[data-out],[data-skip],[data-flt],[data-refresh],[data-cancel],[data-kadd],[data-rm],[data-qm],[data-qp],[data-manual],[data-again],[data-eye],[data-gate-fill]');
@@ -369,7 +471,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-tgli
  if(w)w.location.href=r.url;else location.href=r.url;note('Натисніть «Почати» в боті — і Telegram підключиться')});
 document.addEventListener('click',e=>{const r=$i('kbRes');if(r&&!r.hidden&&!e.target.closest('.kb-srch'))r.hidden=true});
 addEventListener('hashchange',()=>{if(!me)return;const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h)&&h!=tab){tab=h;draw()}});
-addEventListener('catalog',()=>{if(tab=='order'&&!sent){const q=$i('kbQ');if(q){q.placeholder='Назва або артикул: 3D панель, PET плитка…';q.value&&search(q.value)}}
+addEventListener('catalog',()=>{if(tab=='mine')draw();if(tab=='order'&&!sent){const q=$i('kbQ');if(q){q.placeholder='Назва або артикул: 3D панель, PET плитка…';q.value&&search(q.value)}}
  // оновлюємо фото й ціни в чернетці з актуального каталогу
  let ch=0;D.items.forEach(x=>{const p=x.id&&prod(x.id);if(p){if(!x.img&&p.imgs&&p.imgs[0]){x.img=p.imgs[0];ch=1}if(+p.price!=x.price){x.price=+p.price;ch=1}}});if(ch){saveD();if(tab=='order')drawItems(),sumBox()}});
 $i('kbGateSkip')&&$i('kbGateSkip').addEventListener('click',skip);
