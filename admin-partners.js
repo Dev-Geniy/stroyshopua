@@ -7,14 +7,14 @@ const COL={'Нове':'var(--s-new)','Підтверджене':'var(--s-conf)',
 const HINT={'Нове':'Зателефонуйте партнеру або клієнту й підтвердіть','Підтверджене':'Зберіть і відправте, впишіть ТТН','Відправлене':'Чекаємо, поки клієнт забере','Отримане':'Клієнт забрав — заробіток до виплати','Виплачено':'Партнеру виплачено','Скасоване':'Не відправлялось','Повернення':'Клієнт не забрав або повернув'};
 const LV={Starter:10,Pro:15,Team:20};
 const WORK=['Нове','Підтверджене','Відправлене'],CANC=['Скасоване','Повернення'];
-const S={partners:[],orders:[],loaded:false,loading:false,at:0,err:'',sub:'orders',tab:'Нове',q:'',pid:'',n:60};
+const S={refs:[],partners:[],orders:[],loaded:false,loading:false,at:0,err:'',sub:'orders',tab:'Нове',q:'',pid:'',n:60};
 let co=null,cp=null;
 const $v=()=>document.getElementById('v-partners');
 const earn=o=>o.earnNow!=null?+o.earnNow:(o.earnFinal!=null?+o.earnFinal:+o.earn||0);
 const pill=s=>`<span class="st" style="--c:${COL[s]||'var(--soft)'}">${esc(s)}</span>`;
 const t=s=>+new Date(s)||0;
 const pById=id=>S.partners.find(p=>p.id==id);
-const ERRS={auth:'Пароль адмінки не збігається з ADMIN_PASS у скрипті кабінету',locked:'Забагато невдалих спроб, зачекайте 15 хвилин',net:'Немає зв’язку зі скриптом кабінету',server:'Помилка скрипта кабінету',notfound:'Запис не знайдено'};
+const ERRS={auth:'Пароль адмінки не збігається з ADMIN_PASS у скрипті кабінету',locked:'Забагато невдалих спроб, зачекайте 15 хвилин',net:'Немає зв’язку зі скриптом кабінету',server:'Помилка скрипта кабінету',notfound:'Запис не знайдено',ref:'Такого ID запрошувача немає (або це сам партнер)'};
 const errT=e=>ERRS[e]||('Помилка: '+e);
 
 async function call(b){
@@ -26,7 +26,7 @@ async function load(quiet){
  if(!PAPI||S.loading)return;S.loading=true;
  const r=await call({action:'a_list'});S.loading=false;S.at=Date.now();
  if(!r.ok){S.err=errT(r.error);if(!quiet)toast(S.err);if(view=='partners')draw();return}
- S.err='';S.loaded=true;S.partners=r.partners||[];S.orders=(r.orders||[]).sort((a,b)=>t(b.created)-t(a.created));S.bot=r.bot||'';
+ S.err='';S.loaded=true;S.partners=r.partners||[];S.refs=r.refs||[];S.cfg=r.ref||null;S.orders=(r.orders||[]).sort((a,b)=>t(b.created)-t(a.created));S.bot=r.bot||'';
  if(r.hidden&&window.onHidden)onHidden(r.hidden);
  badge();if(view=='partners')draw()}
 function badge(){const b=document.getElementById('b-par');if(b)b.textContent=S.orders.filter(o=>o.status=='Нове').length||''}
@@ -37,6 +37,8 @@ function pStats(id){const L=S.orders.filter(o=>o.partnerId==id),live=L.filter(o=
  return{n:L.length,live:live.length,turn:live.reduce((a,o)=>a+(+o.sale||0),0),earn:live.filter(o=>o.status=='Отримане'||o.status=='Виплачено').reduce((a,o)=>a+earn(o),0),
   due:live.filter(o=>o.status=='Отримане').reduce((a,o)=>a+earn(o),0),dueN:live.filter(o=>o.status=='Отримане').length,work:live.filter(o=>WORK.includes(o.status)).length,last:L[0]&&L[0].created}}
 
+const refDue=id=>S.refs.filter(x=>x.status=='До виплати'&&(!id||x.refId==id));
+const rsum=L=>L.reduce((a,x)=>a+(+x.bonus||0),0);
 /* ---------- екрани ---------- */
 function draw(){const v=$v();if(!v)return;
  const head=`<div class="sh"><div><h1>Партнери</h1><p>Замовлення з особистого кабінету партнерів, партнери й виплати. <a href="kabinet.html" target="_blank" rel="noopener">Особистий кабінет партнера</a></p></div>
@@ -50,9 +52,9 @@ function draw(){const v=$v();if(!v)return;
  v.innerHTML=head+`<div class="stats">
   <button class="stat${nNew?' hot':''}" data-psub="orders" data-pft="Нове"><span>Нові замовлення</span><b>${nNew}</b><small>${nNew?'потрібно підтвердити':'усе опрацьовано'}</small></button>
   <button class="stat" data-psub="orders" data-pft="work"><span>У роботі</span><b>${work.length}</b><small>підтверджені й у дорозі</small></button>
-  <button class="stat${due.length?' hot':''}" data-psub="pay"><span>До виплати партнерам</span><b>${money(due.reduce((a,o)=>a+earn(o),0))}</b><small>${pl(due.length,'замовлення','замовлення','замовлень')}</small></button>
+  <button class="stat${due.length||refDue().length?' hot':''}" data-psub="pay"><span>До виплати партнерам</span><b>${money(due.reduce((a,o)=>a+earn(o),0)+rsum(refDue()))}</b><small>${pl(due.length,'замовлення','замовлення','замовлень')}${refDue().length?' + бонуси за рекомендації':''}</small></button>
   <div class="stat"><span>Оборот партнерів за місяць</span><b>${money(mo.reduce((a,o)=>a+(+o.sale||0),0))}</b><small>${pl(mo.length,'замовлення','замовлення','замовлень')} · ${pl(act.length,'партнер','партнери','партнерів')}</small></div></div>
- <div class="chips">${[['orders','Замовлення',O.length],['people','Партнери',S.partners.length],['pay','Виплати',new Set(due.map(o=>o.partnerId)).size]].map(([k,l,n])=>`<button data-psub="${k}" class="${S.sub==k?'on':''}">${l}<i>${n}</i></button>`).join('')}</div>
+ <div class="chips">${[['orders','Замовлення',O.length],['people','Партнери',S.partners.length],['pay','Виплати',new Set(due.map(o=>o.partnerId).concat(refDue().map(x=>x.refId))).size]].map(([k,l,n])=>`<button data-psub="${k}" class="${S.sub==k?'on':''}">${l}<i>${n}</i></button>`).join('')}</div>
  <div id="pa-body"></div>`;
  ({orders:dOrders,people:dPeople,pay:dPay})[S.sub]()}
 
@@ -84,10 +86,12 @@ function dPeople(){
  const i=document.getElementById('pa-q');i.addEventListener('input',()=>{S.q=i.value;const pos=i.selectionStart;dPeople();const j=document.getElementById('pa-q');j.focus();j.setSelectionRange(pos,pos)})}
 function dPay(){
  const by={};S.orders.filter(o=>o.status=='Отримане').forEach(o=>{(by[o.partnerId]=by[o.partnerId]||[]).push(o)});
- const L=Object.entries(by).map(([id,os])=>({p:pById(id)||{id,name:os[0].partner},os,sum:os.reduce((a,o)=>a+earn(o),0)})).sort((a,b)=>b.sum-a.sum);
+ refDue().forEach(x=>{by[x.refId]=by[x.refId]||[]});
+ const L=Object.entries(by).map(([id,os])=>{const rb=refDue(id);return{p:pById(id)||{id,name:os[0]?os[0].partner:(rb[0]&&rb[0].refName)||id},os,rb,sum:os.reduce((a,o)=>a+earn(o),0)+rsum(rb)}}).sort((a,b)=>b.sum-a.sum);
  document.getElementById('pa-body').innerHTML=`<p class="note" style="margin-bottom:10px">Тут замовлення зі статусом «Отримане» — клієнт забрав посилку, заробіток партнера ще не виплачено. Після переказу натисніть «Позначити виплаченим» — статуси зміняться на «Виплачено», партнер побачить це в кабінеті.</p>
  ${L.length?`<div class="pa-pay">${L.map(x=>`<div class="box"><div class="pa-ph"><div><b>${esc(x.p.name)}</b><span class="note">${esc(x.p.id)}${x.p.phone?' · +'+esc(x.p.phone):''}</span></div><b class="pa-sum">${money(x.sum)}</b></div>
-  <dl class="kv"><dt>Замовлення</dt><dd>${x.os.map(o=>`<button class="link" data-poid="${esc(o.id)}">${esc(o.id)}</button> ${money(earn(o))}${o.earnFinal==null?' ≈':''}`).join(', ')}</dd>
+  <dl class="kv">${x.os.length?`<dt>Замовлення</dt><dd>${x.os.map(o=>`<button class="link" data-poid="${esc(o.id)}">${esc(o.id)}</button> ${money(earn(o))}${o.earnFinal==null?' ≈':''}`).join(', ')}</dd>`:''}
+  ${x.rb.length?`<dt>Бонуси за рекомендації</dt><dd>${x.rb.map(r=>`<button class="link" data-poid="${esc(r.order)}">${esc(r.order)}</button> ${esc(r.partner)} · ${r.pct}% — ${money(r.bonus)}`).join(', ')}</dd>`:''}
   <dt>Реквізити</dt><dd>${x.p.payout?esc(x.p.payout):'<span class="note">не вказані в профілі — уточніть у партнера</span>'}</dd></dl>
   ${x.os.some(o=>o.earnFinal==null)?'<p class="note" style="margin-top:8px">≈ — орієнтовний заробіток. Відкрийте замовлення, щоб вписати точну суму.</p>':''}
   <div class="acts" style="margin-top:12px"><button class="btn sm" data-pa="pay" data-pp="${esc(x.p.id)}">Позначити виплаченим · ${money(x.sum)}</button>${x.p.payout?`<button class="btn ghost sm" data-pa="cpay" data-pp="${esc(x.p.id)}">Копіювати реквізити</button>`:''}</div></div>`).join('')}</div>`:'<div class="box empty">Немає замовлень до виплати</div>'}`}
@@ -124,13 +128,20 @@ function openP(id){const p=pById(id);if(!p)return;cp={...p};co=null;const s=pSta
   <div class="acts" style="margin-top:10px"><button class="btn ghost sm" data-pa="porders" data-pp="${esc(p.id)}">Замовлення партнера</button></div></div>
  <div class="sec"><h3>Анкета</h3>${a?`<dl class="kv">${yes.length?yes.map(([k,x])=>`<dt>${esc(k)}</dt><dd>${/^https?:/.test(x.link)?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.link)}</a>`:esc(x.link)}<br><span class="note">досвід: ${esc(x.exp||'—')} · аудиторія: ${esc(x.aud||'—')}</span></dd>`).join(''):'<dt>Платформи</dt><dd>поки немає — стартує з нуля</dd>'}
   <dt>ФОП</dt><dd>${esc(a.fop||'—')}</dd><dt>Час на день</dt><dd>${esc(a.time||'—')}</dd>${a.other?`<dt>Інше</dt><dd>${esc(a.other)}</dd>`:''}${a.note?`<dt>Коментар</dt><dd>${esc(a.note)}</dd>`:''}</dl><p class="note" style="margin-top:6px">Заповнена ${fdt(t(p.anketaAt))}</p>`:'<p class="note">Партнер ще не заповнював анкету.</p>'}</div>
+ ${refSec(p)}
  <div class="sec"><h3>Нотатка менеджера <small class="note">— партнер не бачить</small></h3><textarea id="pa-note">${esc(p.note||'')}</textarea></div>
  <div class="sec"><h3>Telegram</h3><p class="note">${p.tg?`Підключено${p.tgName?': <b>'+esc(p.tgName)+'</b>':''} — партнер отримує статуси, ТТН і виплати в боті${S.bot?' @'+esc(S.bot):''}.`:'Не підключено. Партнер може відкрити бота партнерів і увійти, або натиснути «Підключити Telegram» у профілі на сайті.'}</p></div>
  <div class="sec"><h3>Доступ</h3><div class="acts"><button class="btn ghost sm" data-pa="reset">Скинути пароль</button><button class="btn ${p.status=='Заблокований'?'ghost':'bad'} sm" data-pa="block">${p.status=='Заблокований'?'Розблокувати':'Заблокувати'}</button><button class="btn bad sm" data-pa="pdel"><svg class="i"><use href="#i-trash"/></svg>Видалити партнера</button></div><p class="note" id="pa-pw" style="margin-top:8px"></p><p class="note"><a href="#help-m-temp">Як працює тимчасовий пароль</a> · <a href="#help">Довідка</a></p></div>`;
  $('#dfoot').innerHTML=`<button class="btn" data-pa="psave">Зберегти</button>`;
  dr(true)}
+function refSec(p){const inv=S.partners.filter(x=>x.ref==p.id),R=S.refs.filter(x=>x.refId==p.id&&x.status!='Скасовано'),by=p.ref&&pById(p.ref);
+ return `<div class="sec"><h3>Рекомендації</h3><dl class="kv"><dt>Запросив</dt><dd><input id="pa-ref" value="${esc(p.ref||'')}" placeholder="ID, напр. P1001" style="max-width:150px"> ${by?`<button class="link" data-pid="${esc(by.id)}">${esc(by.name)}</button>`:p.ref?'<span class="note">партнера не знайдено</span>':'<span class="note">ніхто</span>'}</dd>
+  <dt>Запросив сам</dt><dd>${inv.length?inv.map(x=>`<button class="link" data-pid="${esc(x.id)}">${esc(x.name)}</button>`).join(', '):'—'}</dd>
+  ${R.length?`<dt>Бонуси</dt><dd>нараховано ${money(rsum(R))} · до виплати ${money(rsum(R.filter(x=>x.status=='До виплати')))}</dd>`:''}</dl>
+  <p class="note" style="margin-top:6px">Бонус запрошувачу — ${S.cfg?S.cfg.first:20}% від заробітку запрошеного перші ${S.cfg?S.cfg.months:6} міс., далі ${S.cfg?S.cfg.then:10}%. Нараховується сам, коли замовлення «Отримане»; виплачується разом із заробітком. Змінити запрошувача — впишіть ID і «Зберегти».</p></div>`}
 async function saveP(b,extra){if(!cp)return;b&&b.classList.add('busy');
- const r=await call({action:'a_partner',id:cp.id,level:cp.level||'Starter',note:$('#pa-note')?$('#pa-note').value:cp.note,...(extra||{})});
+ const rf=$('#pa-ref')?$('#pa-ref').value.trim().toUpperCase():undefined;
+ const r=await call({action:'a_partner',id:cp.id,level:cp.level||'Starter',note:$('#pa-note')?$('#pa-note').value:cp.note,...(rf!==undefined&&rf!==(cp.ref||'')?{ref:rf}:{}),...(extra||{})});
  b&&b.classList.remove('busy');if(!r.ok){toast(errT(r.error));return false}
  const i=S.partners.findIndex(x=>x.id==cp.id);if(i>=0)S.partners[i]=r.partner;cp={...r.partner};return true}
 
@@ -166,10 +177,10 @@ document.addEventListener('click',async e=>{
    const msg=`Вітаємо! Ваш тимчасовий пароль до особистого кабінету Samostroy Shop: ${r.password}\nВхід: ${SITE}kabinet.html (логін — ваш номер телефону). Після входу змініть пароль у розділі «Профіль».`;
    $('#pa-pw').innerHTML=`Тимчасовий пароль: <b>${esc(r.password)}</b> <button class="link" data-pa="cpw">Копіювати повідомлення</button>`;$('#pa-pw').dataset.msg=msg;return}
   case'cpw':return copy($('#pa-pw').dataset.msg||'');
-  case'pay':{const p=pById(d.pp)||{name:d.pp},L=S.orders.filter(o=>o.partnerId==d.pp&&o.status=='Отримане'),sum=L.reduce((a,o)=>a+earn(o),0);
-   if(!confirm(`Позначити виплаченим ${money(sum)} партнеру ${p.name}? (${L.length} замовл.)`))return;
+  case'pay':{const p=pById(d.pp)||{name:d.pp},L=S.orders.filter(o=>o.partnerId==d.pp&&o.status=='Отримане'),rb=refDue(d.pp),sum=L.reduce((a,o)=>a+earn(o),0)+rsum(rb);
+   if(!confirm(`Позначити виплаченим ${money(sum)} партнеру ${p.name}? (${L.length} замовл.${rb.length?`, бонуси за рекомендації ${money(rsum(rb))}`:''})`))return;
    b.classList.add('busy');const r=await call({action:'a_pay',partnerId:d.pp});b.classList.remove('busy');if(!r.ok)return toast(errT(r.error));
-   toast(`Виплачено: ${money(r.sum)} · ${r.count} замовл.`);return load()}
+   toast(`Виплачено: ${money(r.sum)} · ${r.count} замовл.${r.bonusCount?' + бонуси':''}`);return load()}
   case'cpay':{const p=pById(d.pp);return p&&copy(`${p.name}\n${p.payout}`)}
   case'csv':{const q=c=>'"'+String(c??'').replace(/"/g,'""')+'"';
    const head=['№','Дата','Статус','Партнер','ID партнера','Клієнт','Телефон','Місто','Відділення','Доставка','Оплата','Товари','Сума для клієнта','Оптова ≈','Заробіток','Підтверджено','ТТН','Звідки','Виплачено'];

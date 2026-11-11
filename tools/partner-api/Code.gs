@@ -14,11 +14,15 @@
  * Решту (адреса Mini App, секрет вебхука, чати менеджерів) скрипт зберігає сам після кнопки
  * «Підключити бота» в адмінці → Налаштування.
  *
+ * Реферальна програма — налаштування REF нижче, опис у РЕФЕРАЛЬНА-ПРОГРАМА.md.
  * Інструкції з запуску — ЯК-ЗАПУСТИТИ.md і ЯК-ЗАПУСТИТИ-БОТА.md поруч.
  */
 
 // Маржа партнера за рівнем, % від рекомендованої ціни (як у калькуляторі кабінету на сайті)
 var LEVELS = { Starter: 10, Pro: 15, Team: 20 };
+// Реферальна програма (тиха): бонус платить магазин, запрошений нічого не втрачає. Лише 1 рівень, лише отримані замовлення.
+// first — % від заробітку запрошеного перші `months` місяців; then — далі, поки він активний (без перерви в замовленнях понад activeDays днів).
+var REF = { first: 20, then: 10, months: 6, activeDays: 90 };
 var STATUSES = ['Нове', 'Підтверджене', 'Відправлене', 'Отримане', 'Виплачено', 'Скасоване', 'Повернення'];
 var TOKEN_DAYS = 60;
 var SITE = 'https://samostroy.shop/';
@@ -30,7 +34,7 @@ var PC = [['id', 'ID'], ['created', 'Зареєстровано'], ['name', 'І�
   ['msg', 'Telegram / Viber'], ['level', 'Рівень'], ['status', 'Статус'], ['payout', 'Реквізити для виплат'],
   ['note', 'Нотатка менеджера'], ['anketaAt', 'Анкета заповнена'], ['anketa', 'Анкета (дані)'],
   ['lastLogin', 'Останній вхід'], ['pass', 'Пароль (хеш)'], ['salt', 'Сіль'], ['tokens', 'Сесії'],
-  ['tgId', 'Telegram ID'], ['tgName', 'Telegram'], ['favs', 'Мої товари'], ['onb', 'Поради в боті']];
+  ['tgId', 'Telegram ID'], ['tgName', 'Telegram'], ['favs', 'Мої товари'], ['onb', 'Поради в боті'], ['ref', 'Запросив (ID)']];
 var OC = [['id', '№'], ['created', 'Створено'], ['updated', 'Оновлено'], ['partnerId', 'ID партнера'], ['partner', 'Партнер'],
   ['status', 'Статус'], ['client', 'Клієнт'], ['phone', 'Телефон клієнта'], ['city', 'Місто'], ['delivery', 'Доставка'],
   ['branch', 'Відділення'], ['pay', 'Оплата'], ['sale', 'Сума для клієнта'], ['whole', 'Оптова (орієнтовно)'],
@@ -41,7 +45,10 @@ var OC = [['id', '№'], ['created', 'Створено'], ['updated', 'Онов�
 var HC = [['id', '№ запису'], ['created', 'Дата запису'], ['kind', 'Тип'], ['at', 'Видалено'], ['name', 'Ім’я'], ['phone', 'Телефон'], ['info', 'Що було в записі']];
 // копії видалених замовлень партнерів і партнерів — про всяк випадок
 var AC = [['at', 'Видалено'], ['type', 'Що'], ['id', 'ID'], ['data', 'Дані']];
-var SH_P = 'Партнери', SH_O = 'Замовлення партнерів', SH_H = 'Видалені записи сайту', SH_A = 'Архів видаленого';
+// бонуси за рекомендації: один рядок на замовлення запрошеного партнера
+var RC = [['order', '№ замовлення'], ['created', 'Нараховано'], ['refId', 'Отримує (ID)'], ['refName', 'Отримує'], ['partnerId', 'Запрошений (ID)'],
+  ['partner', 'Запрошений'], ['earn', 'Заробіток запрошеного'], ['pct', '%'], ['bonus', 'Бонус'], ['status', 'Статус'], ['paidAt', 'Виплачено']];
+var SH_P = 'Партнери', SH_O = 'Замовлення партнерів', SH_H = 'Видалені записи сайту', SH_A = 'Архів видаленого', SH_R = 'Бонуси за рекомендації';
 
 /* ---------------- вхід ---------------- */
 function doGet(e) {
@@ -218,7 +225,7 @@ function newPartner(list, f) {
   var salt = Utilities.getUuid();
   return { id: nextId(list, 'P', 1001), created: now(), name: f.name, phone: f.phone, city: f.city || '', msg: f.msg || '',
     level: 'Starter', status: 'Активний', payout: '', note: '', anketa: f.anketa ? JSON.stringify(f.anketa) : '', anketaAt: f.anketa ? now() : '',
-    lastLogin: now(), pass: hash(f.password, salt), salt: salt, tokens: '[]', tgId: f.tgId || '', tgName: f.tgName || '' };
+    lastLogin: now(), pass: hash(f.password, salt), salt: salt, tokens: '[]', tgId: f.tgId || '', tgName: f.tgName || '', ref: f.ref || '' };
 }
 
 /* ---------------- дії партнера ---------------- */
@@ -235,10 +242,11 @@ ACTIONS.p_register = function (b) {
     var list = readAll(SH_P, PC);
     if (findPhone(list, ph)) fail('exists');
     var an = anketaIn(b);
-    var p = newPartner(list, { name: name, phone: ph, city: str(b.city, 80), msg: str(b.msg, 80), password: pass, anketa: an });
+    var p = newPartner(list, { name: name, phone: ph, city: str(b.city, 80), msg: str(b.msg, 80), password: pass, anketa: an, ref: refCheck(list, b.ref, ph, '') });
     var token = newToken(p);
     write(SH_P, PC, p);
     notifyNewPartner(p, 'сайт');
+    refJoined(list, p);
     return { ok: true, token: token, me: pubPartner(p), orders: [] };
   });
 };
@@ -478,11 +486,13 @@ ACTIONS.tg_register = function (b) {
   return withLock(function () {
     var list = readAll(SH_P, PC);
     if (findPhone(list, ph)) fail('exists');
-    var p = newPartner(list, { name: name, phone: ph, city: str(b.city, 80), msg: u.username ? '@' + u.username : '', password: pass || code(16), anketa: anketaIn(b) });
+    var p = newPartner(list, { name: name, phone: ph, city: str(b.city, 80), msg: u.username ? '@' + u.username : '', password: pass || code(16), anketa: anketaIn(b),
+      ref: refCheck(list, b.ref || refPending(u.id), ph, u.id) });
     linkTg(list, p, u);
     var token = newToken(p, true);
     write(SH_P, PC, p);
     notifyNewPartner(p, 'Telegram');
+    refJoined(list, p);
     toPartner(p, '🎉 <b>Вітаємо в партнерській програмі Samostroy Shop!</b>\nВаш кабінет: ' + h(p.id) + '.\n\nЯк почати:\n1. Оберіть товари й тексти в розділі «Товари для продажу».\n2. Розмістіть оголошення.\n3. Коли клієнт замовить — оформіть замовлення тут, у кабінеті. Ми все відправимо самі.',
       { inline_keyboard: [[{ text: '📱 Відкрити кабінет', web_app: { url: APP_URL } }], [{ text: '🛍 Товари для продажу', url: SITE + 'partners.html' }]] });
     return { ok: true, linked: true, token: token, me: pubPartner(p), orders: [] };
@@ -506,7 +516,7 @@ function admin(b) {
   if (!pass || String(b.pass || '') !== pass) { c.put('afail', String(Number(c.get('afail') || 0) + 1), 900); fail('auth'); }
 }
 function adminPartner(p) {
-  var x = pubPartner(p); x.note = p.note; x.lastLogin = p.lastLogin; return x;
+  var x = pubPartner(p); x.note = p.note; x.lastLogin = p.lastLogin; x.ref = p.ref || ''; return x;
 }
 function hiddenList() {
   return readAll(SH_H, HC).map(function (x) { return { id: x.id, created: x.created, kind: x.kind, at: x.at, name: x.name, phone: x.phone, info: x.info }; });
@@ -515,12 +525,12 @@ function hiddenList() {
 ACTIONS.a_list = function (b) {
   admin(b);
   return { ok: true, partners: readAll(SH_P, PC).map(adminPartner), orders: readAll(SH_O, OC).map(pubOrder), statuses: STATUSES, levels: LEVELS,
-    hidden: hiddenList(), bot: prop('BOT_USER') };
+    hidden: hiddenList(), bot: prop('BOT_USER'), refs: readAll(SH_R, RC).map(pubRef), ref: REF };
 };
 
 // зміна замовлення партнера (з адмінки або кнопками в Telegram) + повідомлення партнеру
 function setOrder(o, ch) {
-  var old = { status: o.status, ttn: o.ttn, comment: o.comment };
+  var old = { status: o.status, ttn: o.ttn, comment: o.comment, earnFinal: o.earnFinal };
   if (ch.status !== undefined) { if (STATUSES.indexOf(ch.status) < 0) fail('status'); o.status = ch.status; }
   if (ch.ttn !== undefined) o.ttn = str(ch.ttn, 40).replace(/\s/g, '');
   if (ch.comment !== undefined) o.comment = str(ch.comment, 1000);
@@ -531,6 +541,7 @@ function setOrder(o, ch) {
   write(SH_O, OC, o);
   tellPartner(o, old);
   if (o.status !== old.status) award(o.partnerId);
+  if (o.status !== old.status || o.earnFinal !== old.earnFinal) refSync(o);
   return o;
 }
 
@@ -553,6 +564,11 @@ ACTIONS.a_partner = function (b) {
       if (b.level !== undefined) { if (!LEVELS[b.level]) fail('level'); p.level = b.level; }
       if (b.status !== undefined) { if (['Активний', 'Заблокований'].indexOf(b.status) < 0) fail('status'); p.status = b.status; if (b.status === 'Заблокований') p.tokens = '[]'; }
       if (b.note !== undefined) p.note = str(b.note, 1000);
+      if (b.ref !== undefined && str(b.ref, 20).toUpperCase() !== (p.ref || '')) {       // змінити запрошувача може лише адміністратор
+        var nr = str(b.ref, 20).toUpperCase();
+        if (nr && (nr === p.id || !findById(list, nr))) fail('ref');
+        p.ref = nr;
+      }
       write(SH_P, PC, p);
       if ((p.level || 'Starter') !== oldLv && LEVELS[p.level] > LEVELS[oldLv])
         toPartner(p, '🚀 <b>Вітаємо з новим рівнем: ' + h(p.level) + '!</b>\nТепер ваша маржа — <b>' + LEVELS[p.level] + '%</b> від рекомендованої ціни: з кожного замовлення ви заробляєте більше.\n\n🏅 Новий значок «' + (p.level === 'Team' ? '🏢 Рівень Team' : '🚀 Рівень Pro') + '» уже в кабінеті. Дякуємо за роботу!',
@@ -566,12 +582,19 @@ ACTIONS.a_partner = function (b) {
 ACTIONS.a_pay = function (b) {
   admin(b);
   return withLock(function () {
-    var id = str(b.partnerId, 20), n = 0, sum = 0, ids = [], list = readAll(SH_O, OC);
+    var id = str(b.partnerId, 20), n = 0, sum = 0, ids = [], list = readAll(SH_O, OC), rb = 0, rn = 0;
     list.forEach(function (o) {
       if (o.partnerId === id && o.status === 'Отримане') { o.status = 'Виплачено'; o.paidAt = now(); o.updated = now(); n++; sum += earnOf(o); ids.push(o.id); write(SH_O, OC, o); }
     });
-    if (n) { var p = findById(readAll(SH_P, PC), id); if (p) toPartner(p, '💸 <b>Виплачено ' + money(sum) + '</b>\nЗамовлення: ' + h(ids.join(', ')) + '.\nДякуємо за продажі!'); }
-    return { ok: true, count: n, sum: sum };
+    readAll(SH_R, RC).forEach(function (r) {               // бонуси за рекомендації — разом зі звичайною виплатою
+      if (r.refId === id && r.status === 'До виплати') { r.status = 'Виплачено'; r.paidAt = now(); rb += num(r.bonus); rn++; write(SH_R, RC, r); }
+    });
+    if (n || rn) {
+      var p = findById(readAll(SH_P, PC), id);
+      if (p) toPartner(p, '💸 <b>Виплачено ' + money(sum + rb) + '</b>' + (n ? '\nЗамовлення: ' + h(ids.join(', ')) + (rb ? ' — ' + money(sum) : '') + '.' : '') +
+        (rb ? '\n🤝 Бонуси за рекомендації: ' + money(rb) + '.' : '') + '\nДякуємо за продажі!');
+    }
+    return { ok: true, count: n, sum: sum + rb, bonus: rb, bonusCount: rn };
   });
 };
 function findById(list, id) { for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i]; return null; }
@@ -601,6 +624,7 @@ ACTIONS.a_del_order = function (b) {
     if (!o) fail('notfound');
     archive('Замовлення партнера', o);
     delRow(SH_O, OC, o._r);
+    readAll(SH_R, RC).forEach(function (r) { if (r.order === o.id && r.status === 'До виплати') { r.status = 'Скасовано'; write(SH_R, RC, r); } });
     return { ok: true, id: o.id };
   });
 };
@@ -750,7 +774,7 @@ function notifyManager(text, kb) {
 function managerReachable() { return adminChats().length > 0 || !!(prop('TG_TOKEN') && prop('TG_CHAT')); }
 function notifyNewPartner(p, where) {
   notifyManager('🤝 <b>Новий партнер</b> (' + where + ')\n' + h(p.id + ' · ' + p.name) + '\nТелефон: +' + h(p.phone) + (p.city ? '\nМісто: ' + h(p.city) : '') +
-    (p.msg ? '\nЗв’язок: ' + h(p.msg) : '') + '\nАнкета: ' + (p.anketaAt ? 'заповнена' : 'ще ні'));
+    (p.msg ? '\nЗв’язок: ' + h(p.msg) : '') + '\nАнкета: ' + (p.anketaAt ? 'заповнена' : 'ще ні') + (p.ref ? '\n🤝 За рекомендацією партнера ' + h(p.ref) : ''));
 }
 function orderCard(r, p) {
   var items = json(r.items, []);
@@ -870,6 +894,7 @@ function onMessage(m) {
       return welcome(chat, x);
     });
   }
+  if (cmd[1] === 'start' && cmd[2] && /^r_P\d{3,7}$/i.test(cmd[2]) && !p) refKeep(from.id, cmd[2].slice(2).toUpperCase());
   if (cmd[1] === 'start') return welcome(chat, p);
   if (cmd[1] === 'new') return send(chat, p ? 'Оформіть замовлення клієнта:' : 'Спершу відкрийте кабінет і зареєструйтесь:', appKb(p ? 'Нове замовлення' : 'Відкрити кабінет', p ? 'new' : ''));
   if (cmd[1] === 'orders') return p ? send(chat, ordersText(p), appKb('Усі замовлення', 'orders')) : welcome(chat, null);
@@ -1292,6 +1317,89 @@ function pStats(pid, all) {
   return { orders: L.length, deliv: D.length, earned: D.reduce(function (a, o) { return a + earnOf(o); }, 0), bestMonth: best, streak: streak, turn: turn, month: mon };
 }
 function bar10(n) { n = Math.max(0, Math.min(10, n)); return new Array(n + 1).join('▰') + new Array(11 - n).join('▱'); }
+/* ---------------- реферальна програма (тиха) ---------------- */
+function pubRef(r) {
+  return { order: r.order, created: r.created, refId: r.refId, refName: r.refName, partnerId: r.partnerId, partner: r.partner,
+    earn: num(r.earn), pct: num(r.pct), bonus: num(r.bonus), status: r.status, paidAt: r.paidAt };
+}
+function firstName(n) { var w = String(n || '').trim().split(/\s+/); return w[0] + (w[1] ? ' ' + w[1].charAt(0) + '.' : ''); }
+// запрошувач дійсний: існує, не заблокований, не той самий телефон чи Telegram
+function refCheck(list, ref, phone, tgId) {
+  ref = str(ref, 20).toUpperCase();
+  if (!/^P\d{3,7}$/.test(ref)) return '';
+  var r = findById(list, ref);
+  if (!r || r.status === 'Заблокований' || r.phone === phone || (tgId && r.tgId && r.tgId === String(tgId))) return '';
+  return ref;
+}
+// перехід у бот за посиланням t.me/<бот>?start=r_P1001 — пам’ятаємо 60 днів, доки людина не зареєструється в Mini App
+function refKeep(tgId, ref) {
+  var m = json(prop('REF_WAIT'), {}), t = Date.now(), k;
+  for (k in m) if (t - m[k][1] > 60 * 864e5) delete m[k];
+  m[String(tgId)] = [ref, t];
+  var keys = Object.keys(m); if (keys.length > 400) keys.slice(0, keys.length - 400).forEach(function (x) { delete m[x]; });
+  setProp('REF_WAIT', JSON.stringify(m));
+}
+function refPending(tgId) {
+  var m = json(prop('REF_WAIT'), {}), x = m[String(tgId)];
+  if (!x) return '';
+  delete m[String(tgId)]; setProp('REF_WAIT', JSON.stringify(m));
+  return Date.now() - x[1] <= 60 * 864e5 ? x[0] : '';
+}
+function refJoined(list, p) {
+  if (!p.ref) return;
+  var r = findById(list, p.ref);
+  if (r) toPartner(r, '🤝 <b>За вашою рекомендацією зареєструвався новий партнер — ' + h(firstName(p.name)) + '.</b>\nКоли він почне продавати, ви отримуватимете бонус від Samostroy: ' +
+    REF.first + '% від його заробітку перші ' + REF.months + ' місяців, далі ' + REF.then + '%. Його заробіток від цього не зменшується.\n\nПідкажіть йому, з чого почати, — перше замовлення найважливіше.');
+}
+// який % належить за замовлення o (0 — зв’язок завершився): перші REF.months місяців — first; далі then, поки немає перерви понад activeDays днів
+function refPct(p, o, orders) {
+  var start = new Date(p.created).getTime(), at = new Date(o.created).getTime(), six = new Date(p.created);
+  six.setMonth(six.getMonth() + REF.months);
+  if (!start || at < six.getTime()) return REF.first;
+  var gap = REF.activeDays * 864e5, prev = start;
+  var ds = orders.filter(function (x) { return x.partnerId === p.id && CANC_ST.indexOf(x.status) < 0; })
+    .map(function (x) { return new Date(x.created).getTime(); }).filter(function (t) { return t && t <= at; }).sort(function (a, b) { return a - b; });
+  for (var i = 0; i < ds.length; i++) { if (ds[i] - prev > gap && prev + gap > six.getTime()) return 0; prev = ds[i]; }
+  return REF.then;
+}
+var CANC_ST = ['Скасоване', 'Повернення'];
+// синхронізація бонусу із замовленням запрошеного: нараховуємо на «Отримане/Виплачено», скасовуємо при поверненні, оновлюємо суму
+function refSync(o) {
+  try {
+    var P = readAll(SH_P, PC), p = findById(P, o.partnerId);
+    if (!p || !p.ref) return;
+    var R = readAll(SH_R, RC), row = null;
+    for (var i = 0; i < R.length; i++) if (R[i].order === o.id) { row = R[i]; break; }
+    var ok = o.status === 'Отримане' || o.status === 'Виплачено', r = findById(P, row ? row.refId : p.ref);
+    if (row) {
+      if (row.status === 'Виплачено') return;                                  // уже виплачено — не чіпаємо
+      var pct = num(row.pct), bonus = Math.round(earnOf(o) * pct / 100);
+      if (ok && bonus > 0) { if (row.status !== 'До виплати' || num(row.bonus) !== bonus) { row.status = 'До виплати'; row.earn = String(Math.round(earnOf(o))); row.bonus = String(bonus); write(SH_R, RC, row); } }
+      else if (row.status !== 'Скасовано') { row.status = 'Скасовано'; write(SH_R, RC, row); }
+      return;
+    }
+    if (!ok || !r || r.status === 'Заблокований') return;
+    var pc = refPct(p, o, readAll(SH_O, OC)), b = Math.round(earnOf(o) * pc / 100);
+    if (!pc || b <= 0) return;
+    write(SH_R, RC, { order: o.id, created: now(), refId: r.id, refName: r.name, partnerId: p.id, partner: p.name, earn: String(Math.round(earnOf(o))),
+      pct: String(pc), bonus: String(b), status: 'До виплати', paidAt: '' });
+    toPartner(r, '🤝 <b>Бонус за рекомендацію: +' + money(b) + '</b>\n' + h(firstName(p.name)) + ' отримав(-ла) замовлення — вам ' + pc + '% від його заробітку. Бонус виплачується разом із вашим заробітком.',
+      { inline_keyboard: [[{ text: '📱 Кабінет', web_app: { url: APP_URL + '#profile' } }]] });
+  } catch (x) { console.error('refSync', x); }
+}
+ACTIONS.p_ref = function (b) {
+  var p = auth(b), P = readAll(SH_P, PC), O = readAll(SH_O, OC), R = readAll(SH_R, RC).filter(function (r) { return r.refId === p.id; });
+  var inv = P.filter(function (x) { return x.ref === p.id; }).map(function (x) {
+    var mine = R.filter(function (r) { return r.partnerId === x.id && r.status !== 'Скасовано'; }), six = new Date(x.created); six.setMonth(six.getMonth() + REF.months);
+    var sold = O.some(function (o) { return o.partnerId === x.id && CANC_ST.indexOf(o.status) < 0; });
+    return { name: firstName(x.name), created: x.created, sold: sold, until: six.toISOString(), bonus: mine.reduce(function (a, r) { return a + num(r.bonus); }, 0) };
+  }).reverse();
+  var live = R.filter(function (r) { return r.status !== 'Скасовано'; });
+  return { ok: true, ref: REF, bot: prop('BOT_USER'), invited: inv,
+    bonuses: live.slice(-20).reverse().map(function (r) { return { order: r.order, created: r.created, partner: firstName(r.partner), pct: num(r.pct), bonus: num(r.bonus), status: r.status }; }),
+    total: live.reduce(function (a, r) { return a + num(r.bonus); }, 0), due: live.filter(function (r) { return r.status === 'До виплати'; }).reduce(function (a, r) { return a + num(r.bonus); }, 0) };
+};
+
 function award(pid) {
   try {
     if (!prop('DROP_BOT_TOKEN')) return;

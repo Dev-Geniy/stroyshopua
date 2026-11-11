@@ -11,6 +11,7 @@ const SS={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set
 const note=m=>{if(typeof toast=='function')toast(m)};
 const tgLink=t=>`https://t.me/${TGM}${t?'?text='+encodeURIComponent(t):''}`;
 
+window.REFER&&REFER.capture();
 let token=LS.get('pk_token',''),me=LS.get('pk_me',null),orders=LS.get('pk_orders',[]),tab='home',flt='all',timer=null;
 
 /* ---------- довідники ---------- */
@@ -112,7 +113,7 @@ async function register(f){
  if(el.password.value.length<6)return ferr(f,el.password,ERR.password);
  if(!el.agree.checked)return ferr(f,null,'Підтвердьте згоду з умовами партнерства.');
  const b=$i('kbGo');busy(b,1);
- const r=await api({action:'p_register',name:el.name.value,phone:el.phone.value,password:el.password.value,city:el.city.value,msg:el.msg.value,hp:el.hp.value,anketa:an||undefined});
+ const r=await api({action:'p_register',name:el.name.value,phone:el.phone.value,password:el.password.value,city:el.city.value,msg:el.msg.value,hp:el.hp.value,anketa:an||undefined,ref:window.REFER?REFER.get():''});
  busy(b,0);if(!r.ok)return ferr(f,null,errMsg(r.error));
  if(an)LS.del('anketa_done');enter(r,1)}
 function enter(r,isNew){token=r.token;LS.set('pk_token',token);SS.del('pk_skip');SS.set('pk_seen','1');keep(r);
@@ -364,7 +365,9 @@ function vProfile(){
    <label class="kb-f">Поточний пароль<input name="old" type="password" autocomplete="current-password"></label>
    <label class="kb-f">Новий пароль <small>щонайменше 6 символів</small><input name="nw" type="password" autocomplete="new-password"></label>
    <p class="kb-err" id="kbWE" role="alert"></p><button class="btn ghost" id="kbWS">Змінити пароль</button></form>
+  ${window.REFER?`<div class="kb-card" id="kbRf"><h3>🤝 Порекомендувати Samostroy</h3><div id="kbRfB">${REFER.html(null,me)}</div></div>`:''}
  </div></div>`;
+ refLoad();
  $i('kbPr').addEventListener('submit',async e=>{e.preventDefault();const el=e.target.elements;if(el.name.value.trim().length<2){$i('kbPE').textContent=ERR.name;return}
   const b=$i('kbPS');busy(b,1);const r=await api({action:'p_profile',token,name:el.name.value,city:el.city.value,msg:el.msg.value,payout:el.payout.value});busy(b,0);
   if(!r.ok){$i('kbPE').textContent=errMsg(r.error);return}keep(r);note('Збережено');draw()});
@@ -372,6 +375,7 @@ function vProfile(){
   const b=$i('kbWS');busy(b,1);const r=await api({action:'p_profile',token,oldPassword:el.old.value,newPassword:el.nw.value});busy(b,0);
   if(!r.ok){$i('kbWE').textContent=r.error=='wrong'?'Поточний пароль невірний.':errMsg(r.error);return}e.target.reset();$i('kbWE').textContent='';note('Пароль змінено')})}
 
+async function refLoad(){if(!window.REFER||!$i('kbRfB'))return;const r=await api({action:'p_ref',token});const el=$i('kbRfB');if(el)el.innerHTML=REFER.html(r.ok?r:false,me,{note})}
 /* ---------- мої товари: обране для продажу ---------- */
 // зберігається в акаунті партнера (бачить і сайт, і Telegram Mini App) + копія в браузері й у списку «Товари для продажу»
 const FK='pk_favs';
