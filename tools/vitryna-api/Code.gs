@@ -18,7 +18,10 @@ var SC = [['slug', 'Адреса'], ['partnerId', 'ID партнера'], ['part
   ['created', 'Створено'], ['updated', 'Оновлено'], ['approvedAt', 'Схвалено'], ['views', 'Перегляди'], ['orders', 'Замовлення'],
   ['note', 'Нотатка'], ['config', 'Налаштування (дані)']];
 var RC = [['at', 'Дата'], ['slug', 'Вітрина'], ['text', 'Скарга'], ['contact', 'Контакт']];
-var SH_S = 'Вітрини', SH_R = 'Скарги';
+var TC = [['slug', 'Вітрина'], ['updated', 'Оновлено'], ['data', 'Статистика (дані)']];
+var SH_S = 'Вітрини', SH_R = 'Скарги', SH_T = 'Статистика';
+var SRC = ['ig', 'tt', 'tg', 'viber', 'fb', 'google', 'yt', 'qr', 'widget', 'site', 'direct'];
+var SRCN = { ig: 'Instagram', tt: 'TikTok', tg: 'Telegram', viber: 'Viber', fb: 'Facebook', google: 'Google', yt: 'YouTube', qr: 'QR-код', widget: 'віджет на сайті', site: 'інший сайт', direct: 'пряме посилання' };
 var THEMES = ['classic', 'minimal', 'dark', 'bright'], FONTS = ['golos', 'manrope', 'montserrat', 'unbounded'];
 var RESERVED = ['edit', 'admin', 'index', 'config', 'embed', 'store', 'boot', 'api', 'app', 'samostroy', 'shop', 'admin-panel', 'test', 'v', 'help'];
 
@@ -181,12 +184,76 @@ function getStore(slug, preview) {
   return { ok: true, store: o };
 }
 function countView(slug) {
-  var k = 'vw:' + slug, n = Number(cache().get(k) || 0) + 1;
-  if (n < 20) { cache().put(k, String(n), 21600); return; }
-  cache().put(k, '0', 21600);
-  try { withLock(function () { var s = findSlug(readAll(SH_S, SC), slug); if (s) { s.views = String(Number(s.views || 0) + n); write(SH_S, SC, s); } }); } catch (x) { }
+  var d = day(), k = 'vw:' + slug + ':' + d, c = cache(), n = Number(c.get(k) || 0) + 1;
+  if (n === 1) flushViews(slug, day(-1));       // перший перегляд за день — дописуємо вчорашній залишок
+  if (n < 10) { c.put(k, String(n), 172800); return; }
+  c.put(k, '0', 172800);
+  try { addViews(slug, d, n); } catch (x) { }
 }
+function flushViews(slug, d) {
+  var k = 'vw:' + slug + ':' + d, n = Number(cache().get(k) || 0);
+  if (!n) return;
+  cache().put(k, '0', 172800);
+  try { addViews(slug, d, n); } catch (x) { }
+}
+function addViews(slug, d, n) {
+  withLock(function () {
+    var s = findSlug(readAll(SH_S, SC), slug); if (s) { s.views = String(Number(s.views || 0) + n); write(SH_S, SC, s); }
+    statBump(slug, d, function (x) { x.v = (x.v || 0) + n; });
+  });
+}
+
+/* ---------------- статистика вітрини: аркуш «Статистика», один рядок на вітрину ----------------
+   data = { d: { 'YYYY-MM-DD': { v перегляди, u відвідувачі, o відкрили товар, a додали в кошик, c почали оформлення,
+                                 n замовлення, s сума, src: {джерело: відвідувачі}, so: {джерело: замовлення},
+                                 p: { id: [відкриття, додавання, продано шт, сума] } } } }
+   Зберігаються 120 днів; деталі по товарах — 45 днів. Виклик лише всередині withLock. */
+function day(shift) { return Utilities.formatDate(new Date(Date.now() + (shift || 0) * 864e5), 'Europe/Kiev', 'yyyy-MM-dd'); }
+function statRow(slug) {
+  var sh = sheet(SH_T, TC), f = sh.getRange('A:A').createTextFinder(slug).matchEntireCell(true).findNext();
+  if (!f) return { sh: sh, r: 0, data: { d: {} } };
+  return { sh: sh, r: f.getRow(), data: json(String(sh.getRange(f.getRow(), 3).getValue()), { d: {} }) };
+}
+function statBump(slug, d, fn) {
+  var t = statRow(slug), D = t.data.d || (t.data.d = {});
+  fn(D[d] || (D[d] = {}));
+  var keys = Object.keys(D).sort(), cut = day(-120), cutP = day(-45);
+  keys.forEach(function (k) { if (k < cut) delete D[k]; else if (k < cutP && D[k].p) delete D[k].p; });
+  var row = [[slug, now(), JSON.stringify(t.data)]];
+  if (t.r) t.sh.getRange(t.r, 1, 1, 3).setNumberFormat('@').setValues(row);
+  else t.sh.getRange(t.sh.getLastRow() + 1, 1, 1, 3).setNumberFormat('@').setValues(row);
+}
+function cleanSrc(v) { v = str(v, 20).toLowerCase(); return SRC.indexOf(v) >= 0 ? v : (v ? 'site' : 'direct'); }
+function inc(o, k, n) { o[k] = (o[k] || 0) + n; }
+
 var ACTIONS = {};
+
+// події з вітрини (раз на візит, sendBeacon): нові відвідувачі за день, етапи воронки, відкриття й додавання товарів
+ACTIONS.v_ev = function (b) {
+  var slug = str(b.slug, 40).toLowerCase();
+  if (!slug || slugErr(slug)) return { ok: true };
+  if (tooMany('ev:' + slug, 400, 3600) || tooMany('ev_all', 3000, 3600)) return { ok: true };
+  if (!cache().get('st:' + slug) && !findSlug(readAll(SH_S, SC), slug)) return { ok: true };
+  var cap = function (v, m) { return Math.max(0, Math.min(m, Math.round(num(v)))); };
+  var u = cap(b.u, 1), o = cap(b.o, 1), a = cap(b.a, 1), c = cap(b.c, 1), src = cleanSrc(b.src), p = {};
+  [['p', 0], ['ad', 1]].forEach(function (z) {
+    var m = b[z[0]] || {}; Object.keys(m).slice(0, 30).forEach(function (id) {
+      var k = str(id, 40), n = cap(m[id], 20); if (!k || !n) return;
+      (p[k] || (p[k] = [0, 0, 0, 0]))[z[1]] += n;
+    });
+  });
+  if (!u && !o && !a && !c && !Object.keys(p).length) return { ok: true };
+  withLock(function () {
+    statBump(slug, day(), function (x) {
+      if (u) { inc(x, 'u', 1); inc(x.src || (x.src = {}), src, 1); }
+      if (o) inc(x, 'o', 1); if (a) inc(x, 'a', 1); if (c) inc(x, 'c', 1);
+      var P = x.p || (x.p = {});
+      Object.keys(p).forEach(function (id) { var q = P[id] || (P[id] = [0, 0, 0, 0]); q[0] += p[id][0]; q[1] += p[id][1]; });
+    });
+  });
+  return { ok: true };
+};
+
 
 ACTIONS.v_order = function (b) {
   if (str(b.hp)) return { ok: true, id: '—' };
@@ -211,10 +278,19 @@ ACTIONS.v_order = function (b) {
   var total = items.reduce(function (a, x) { return a + x.q * x.sale; }, 0);
   var r = papi({ action: 'ext_order', pass: prop('ADMIN_PASS'), partnerId: s.partnerId, key: key ? 'v-' + key : '',
     order: { items: items, client: str(o.client, 120), phone: o.phone, city: str(o.city, 120), branch: str(o.branch, 80),
-      delivery: str(o.delivery, 40) || 'Нова Пошта', pay: 'Накладений платіж', source: 'Вітрина ' + slug, note: str(o.note, 600) } });
+      delivery: str(o.delivery, 40) || 'Нова Пошта', pay: 'Накладений платіж', source: 'Вітрина ' + slug + ' · ' + SRCN[cleanSrc(b.src)], note: str(o.note, 600) } });
   if (!r) fail('net');
   if (!r.ok) fail(r.error === 'action' ? 'update' : r.error || 'server');
-  if (!r.dup) withLock(function () { var x = findSlug(readAll(SH_S, SC), slug); if (x) { x.orders = String(Number(x.orders || 0) + 1); write(SH_S, SC, x); } });
+  if (!r.dup) withLock(function () {
+    var x = findSlug(readAll(SH_S, SC), slug); if (x) { x.orders = String(Number(x.orders || 0) + 1); write(SH_S, SC, x); }
+    try {
+      statBump(slug, day(), function (d) {
+        inc(d, 'n', 1); inc(d, 's', total); inc(d.so || (d.so = {}), cleanSrc(b.src), 1);
+        var P = d.p || (d.p = {});
+        items.forEach(function (it) { var q = P[it.id] || (P[it.id] = [0, 0, 0, 0]); q[2] += it.q; q[3] += it.q * it.sale; });
+      });
+    } catch (e) { console.error('stat', e); }
+  });
   return { ok: true, id: r.id, total: total };
 };
 
@@ -225,6 +301,24 @@ ACTIONS.v_report = function (b) {
   write(SH_R, RC, { at: now(), slug: slug, text: text, contact: str(b.contact, 80) });
   tgAdmin('⚠️ <b>Скарга на вітрину</b> ' + h(slug) + '\n' + h(text) + (b.contact ? '\nКонтакт: ' + h(str(b.contact, 80)) : ''), SITE + 'v/admin.html#' + encodeURIComponent(slug));
   return { ok: true };
+};
+
+/* ---------------- партнер: статистика вітрини ---------------- */
+ACTIONS.v_stats = function (b) {
+  var t = str(b.token, 80); if (!t) fail('auth');
+  var r = papi({ action: 'p_me', token: t });
+  if (!r) fail('net'); if (!r.ok) fail(r.error || 'auth');
+  var s = findPartner(readAll(SH_S, SC), r.me.id);
+  if (!s) return { ok: true, store: null };
+  flushViews(s.slug, day()); flushViews(s.slug, day(-1));
+  var data = statRow(s.slug).data, D = data.d || {}, names = {}, cat = {};
+  try { cat = catalog(); } catch (x) { }
+  Object.keys(D).forEach(function (k) { Object.keys(D[k].p || {}).forEach(function (id) { if (!names[id]) names[id] = cat[id] ? cat[id][2] : ''; }); });
+  var orders = (r.orders || []).filter(function (o) { return o.via === 'Вітрина'; }).map(function (o) {
+    return { id: o.id, created: o.created, status: o.status, sale: o.sale, earn: o.earnNow != null ? o.earnNow : (o.earnFinal != null ? o.earnFinal : o.earn), n: (o.items || []).length };
+  });
+  return { ok: true, today: day(), store: { slug: s.slug, name: json(s.config, {}).name || '', status: s.status, approved: !!s.approvedAt, created: s.created, views: Number(s.views || 0), orders: Number(s.orders || 0) },
+    days: D, names: names, list: orders };
 };
 
 /* ---------------- партнер: редактор вітрини ---------------- */
@@ -298,7 +392,7 @@ ACTIONS.a_set = function (b) {
 
 /** Запустіть один раз у редакторі після вставки коду: створить аркуші й попросить дозволи. */
 function setup() {
-  sheet(SH_S, SC); sheet(SH_R, RC);
+  sheet(SH_S, SC); sheet(SH_R, RC); sheet(SH_T, TC);
   var n = Object.keys(catalog()).length;
   var p = papi({ action: 'a_list', pass: prop('ADMIN_PASS') });
   console.log('Аркуші готові ✓\nКаталог сайту: ' + n + ' товарів ✓\nЗв’язок з кабінетом партнерів: ' + (p && p.ok ? 'є ✓' : 'НЕМАЄ — перевірте ADMIN_PASS (має збігатися зі скриптом партнерів)') +

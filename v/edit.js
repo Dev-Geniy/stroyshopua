@@ -76,6 +76,7 @@ function draw() {
   const op = $('#open'); op.hidden = !store; if (store) op.href = link(pub);
   $('#main').innerHTML = `<div class="wrap" id="wrap"><div class="ed">
   ${!store ? `<div class="card" style="border-color:var(--acc)"><h2>🏪 Ваш власний магазин за 5 хвилин</h2><p class="sub" style="margin:0">Назва, логотип і кольори — ваші. Покупці замовляють прямо на вітрині, замовлення приходять у кабінет, ми пакуємо й відправляємо, заробіток нараховується автоматично. Заповніть кроки нижче й натисніть «Опублікувати».</p><p class="sub" style="margin:10px 0 0"><a class="tip" href="${SITE}course-vitryna.html#l=v1" target="_blank" rel="noopener">💡 Безкоштовний курс «Своя вітрина»: назва, логотип з ChatGPT чи Gemini, продаючі тексти й перші замовлення</a></p></div>` : ''}
+  ${store && window.VSTATS ? `<details class="card vsd" id="vsd"${location.hash === '#stats' ? ' open' : ''}><summary><h2 style="margin:0">📊 Статистика вітрини</h2><span class="sub" style="margin:0">Відвідувачі, джерела, воронка й найпопулярніші товари</span></summary><div id="vsBox" style="margin-top:14px"></div></details>` : ''}
   ${st === 'Вимкнена' ? '<div class="warn">Вітрину вимкнув адміністратор — покупці її не бачать. Напишіть менеджеру, щоб дізнатися причину.</div>' : ''}
   <section class="card"><h2><span class="n">1</span>Назва й адреса</h2><p class="sub">Так вітрину бачитимуть покупці. <a class="tip" href="${SITE}course-vitryna.html#l=v3" target="_blank" rel="noopener">💡 Як придумати назву</a> <a class="tip" href="${SITE}course-vitryna.html#l=v5" target="_blank" rel="noopener">💡 Логотип з ШІ за 10 хвилин</a></p>
    <div class="g2"><label class="f"><span>Назва магазину</span><input data-k="name" maxlength="60" value="${E(cfg.name)}" placeholder="Напр. Декор для дому Олени"></label>
@@ -129,7 +130,7 @@ function share() {
   return `<section class="card links"><h2><span class="n">6</span>Посилання й поширення</h2>
    <p class="sub">${pub ? 'Вітрину схвалено — використовуйте коротке посилання.' : 'Вітрина вже працює за технічним посиланням. Після перевірки адміністратором з’явиться коротке посилання <b>samostroy.shop/v/' + E(store.slug) + '</b>.'} <a class="tip" href="${SITE}course-vitryna.html#l=v13" target="_blank" rel="noopener">💡 Куди поставити посилання</a> <a class="tip" href="${SITE}course-vitryna.html#l=v10" target="_blank" rel="noopener">💡 Готові пости</a></p>
    <div class="ln"><code><small>${pub ? 'Посилання на вітрину' : 'Технічне посилання (працює вже зараз)'}</small>${E(url.replace(/^https?:\/\//, ''))}</code><button class="btn ghost sm" data-copy="${E(url)}">${ico('copy')}Копіювати</button><a class="btn ghost sm" href="${E(url)}" target="_blank" rel="noopener">${ico('link')}</a></div>
-   <div class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=0&data=${encodeURIComponent(url)}" alt="QR-код вітрини" loading="lazy"><div><b>QR-код</b><p class="note">Для візиток, наліпок на посилки, сторіс.</p><a class="btn ghost sm" href="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&format=png&data=${encodeURIComponent(url)}" target="_blank" rel="noopener" download>Завантажити PNG</a></div></div>
+   <div class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=0&data=${encodeURIComponent(url + (url.includes('?') ? '&' : '?') + 'src=qr')}" alt="QR-код вітрини" loading="lazy"><div><b>QR-код</b><p class="note">Для візиток, наліпок на посилки, сторіс.</p><a class="btn ghost sm" href="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&format=png&data=${encodeURIComponent(url)}" target="_blank" rel="noopener" download>Завантажити PNG</a></div></div>
    <div class="lbl">Для шапки Instagram / TikTok і Telegram-каналу</div><div class="txt">${E(t1)}</div><button class="btn ghost sm" data-copy="${E(t1)}" style="margin-bottom:12px">${ico('copy')}Копіювати</button>
    <div class="lbl">Пост або повідомлення клієнту</div><div class="txt">${E(t2)}</div><button class="btn ghost sm" data-copy="${E(t2)}" style="margin-bottom:12px">${ico('copy')}Копіювати</button>
    <div class="lbl">Віджет для вашого сайту (Tilda, WordPress, Wix, будь-який HTML)</div><div class="txt" style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px">${E(emb)}</div><button class="btn ghost sm" data-copy="${E(emb)}">${ico('copy')}Копіювати код</button>
@@ -264,4 +265,13 @@ document.addEventListener('click', e => {
 addEventListener('keydown', e => { if (e.key === 'Escape' && $('#pk')) pickClose(); });
 addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 boot();
+/* статистика вітрини (v/kstats.js): підвантажується, коли розгортають блок */
+document.addEventListener('toggle', e => {
+  if (e.target.id !== 'vsd' || !e.target.open || !window.VSTATS) return;
+  const b = document.getElementById('vsBox'); if (!b || b.dataset.m) return;
+  b.dataset.m = '1';
+  VSTATS.mount(b, { api: (window.VCFG || {}).api, token, edit: '#wrap', acc: getComputedStyle(document.documentElement).getPropertyValue('--acc').trim() || '#e8590c' });
+}, true);
+// якщо блок статистики вже відкритий (посилання …#stats) — підвантажити одразу
+new MutationObserver(() => { const d = document.getElementById('vsd'); if (d && d.open) d.dispatchEvent(new Event('toggle')); }).observe(document.getElementById('main'), { childList: true });
 })();

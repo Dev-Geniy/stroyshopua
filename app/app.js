@@ -461,6 +461,7 @@ function vProfile(){
   <button class="li" data-url="${SITE}partners.html"><span class="ic">${ico('grid')}</span><span class="t"><b>Товари для продажу на сайті</b><small>Повні тексти й усі фото</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}academy.html"><span class="ic">${ico('book')}</span><span class="t"><b>Академія партнера</b></span>${ico('chev')}</button>
   <button class="li" data-nav="../v/edit.html?from=app"><span class="ic">${ico('store')}</span><span class="t"><b>Моя вітрина</b><small>Власний магазин за посиланням</small></span>${ico('chev')}</button>
+  <button class="li" data-nav="../v/edit.html?from=app#stats"><span class="ic">${ico('spark')}</span><span class="t"><b>Статистика вітрини</b><small>Відвідувачі, джерела, воронка, товари</small></span>${ico('chev')}</button>
   <button class="li" data-go2="help"><span class="ic">${ico('info')}</span><span class="t"><b>Питання й відповіді</b><small>Пароль, ТТН, виплати, Telegram</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}course-vitryna.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Своя вітрина»</b><small>Назва, логотип з ШІ, продаючі тексти</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}course-sales3.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Продажі 3.0»</b><small>Скрипти відповідей клієнтам</small></span>${ico('chev')}</button></div>

@@ -47,7 +47,7 @@ function out(msg){FAV=null;LS.del('pk_favs');LS.del('pk_favs_m');token='';me=nul
 async function refresh(quiet){
  if(!token)return;const r=await api({action:'p_me',token});
  if(!r.ok){if(r.error=='auth'||r.error=='blocked')return out(errMsg(r.error));if(!quiet)note(errMsg(r.error));return}
- keep(r);draw()}
+ keep(r);if(quiet&&tab=='vit'&&$i('kbVs'))return;draw()}
 function busy(b,on){if(b){b.classList.toggle('busy',on);b.disabled=on}}
 
 /* ---------- заглушка, якщо сервер ще не підключено ---------- */
@@ -130,7 +130,7 @@ const lockBox=()=>`<div class="kb-card kb-lock">${ico('lock')}<div><h3>Запо�
 /* ---------- каркас кабінету ---------- */
 const TABS=[['home','Огляд','chart'],['order','Нове замовлення','plus'],['orders','Мої замовлення','list'],['mine','Мої товари','heart'],['learn','Інструкції','book'],['help','Допомога','info'],['profile','Профіль','user']];
 function start(){
- const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h))tab=h;else if(/^help-/.test(h))tab='help';
+ const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h)||h=='vit')tab=h;else if(/^help-/.test(h))tab='help';
  draw();clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)refresh(true)},120000)}
 function draw(){
  if(!me)return authView('login');
@@ -138,8 +138,17 @@ function draw(){
  $i('kbUser').innerHTML=`<button type="button" class="btn ghost sm" data-out>Вийти</button>`;
  const nWork=orders.filter(o=>WORK.includes(o.status)).length;
  const nFav=favs().length;
- app.innerHTML=`<nav class="kb-tabs" aria-label="Розділи кабінету">${TABS.map(([k,l,i])=>`<a href="#${k}" data-tab="${k}"${tab==k?' aria-current="page"':''}>${ico(i)}<span>${l}</span>${k=='orders'&&nWork?`<i>${nWork}</i>`:k=='mine'&&nFav?`<i class="soft">${nFav}</i>`:''}</a>${k=='mine'?`<a href="v/edit.html" class="kb-tv" title="Своя вітрина — ваш магазин за посиланням">${ico('store')}<span>Вітрина</span><b>NEW</b></a>`:''}`).join('')}</nav><div id="kbP"></div>`;
- ({home:vHome,order:vOrder,orders:vOrders,mine:vMine,learn:vLearn,help:vHelp,profile:vProfile})[tab]()}
+ app.innerHTML=`<nav class="kb-tabs" aria-label="Розділи кабінету">${TABS.map(([k,l,i])=>`<a href="#${k}" data-tab="${k}"${tab==k?' aria-current="page"':''}>${ico(i)}<span>${l}</span>${k=='orders'&&nWork?`<i>${nWork}</i>`:k=='mine'&&nFav?`<i class="soft">${nFav}</i>`:''}</a>${k=='mine'?`<a href="#vit" data-tab="vit" class="kb-tv" title="Своя вітрина: статистика й налаштування"${tab=='vit'?' aria-current="page"':''}>${ico('store')}<span>Вітрина</span><b>NEW</b></a>`:''}`).join('')}</nav><div id="kbP"></div>`;
+ ({home:vHome,order:vOrder,orders:vOrders,mine:vMine,learn:vLearn,help:vHelp,profile:vProfile,vit:vVit})[tab]()}
+/* ---------- вітрина партнера (модуль v/): статистика — v/kstats.js, підвантажується лише тут ---------- */
+const lazy=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+async function vVit(){const P=$i('kbP');P.innerHTML=`<div id="kbVs"><div class="kb-card" style="text-align:center;color:var(--soft)">Завантажуємо статистику вітрини…</div></div>`;
+ try{if(!window.VCFG)await lazy('v/config.js?v='+VV);if(!window.VSTATS)await lazy('v/kstats.js?v='+VV)}catch(e){P.innerHTML=`<div class="kb-card">Не вдалося завантажити статистику. Оновіть сторінку.</div>`;return}
+ const el=$i('kbVs');if(!el)return;
+ if(!VCFG.api||VCFG.on===false){el.innerHTML=`<div class="kb-card">Вітрини тимчасово недоступні.</div>`;return}
+ VSTATS.mount(el,{api:VCFG.api,token,edit:'v/edit.html',orders:'#orders',acc:getComputedStyle(document.documentElement).getPropertyValue('--orange').trim()||'#e8590c',
+  empty:`${vitPromo()}`})}
+const VV='9f2175ec';
 /* ---------- допомога (база знань kb.js) — доступна й без входу ---------- */
 function vHelp(open){const P=$i('kbP')||app;P.innerHTML=`<div class="kb-card"><h3 style="margin-bottom:4px">Питання й відповіді</h3><p class="kb-small" style="margin:0 0 14px">Вхід і пароль, замовлення, ТТН, заробіток і виплати, Telegram-бот.</p><div id="kbHelp"></div></div>`;
  if(window.KB)KB.mount($i('kbHelp'),{aud:'p',open:open||helpId(),toast:note});else $i('kbHelp').textContent='Завантаження…'}
@@ -484,7 +493,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-tgli
  if(!r.ok){if(w)w.close();return note(r.error=='nobot'?'Бот партнерів ще налаштовується — спробуйте пізніше.':errMsg(r.error))}
  if(w)w.location.href=r.url;else location.href=r.url;note('Натисніть «Почати» в боті — і Telegram підключиться')});
 document.addEventListener('click',e=>{const r=$i('kbRes');if(r&&!r.hidden&&!e.target.closest('.kb-srch'))r.hidden=true});
-addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(/^help(-|$)/.test(h)){if(!me)return helpPublic();if(tab!='help'){tab='help';draw()}else vHelp();return}if(!me)return;if(TABS.some(t=>t[0]==h)&&h!=tab){tab=h;draw()}});
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(/^help(-|$)/.test(h)){if(!me)return helpPublic();if(tab!='help'){tab='help';draw()}else vHelp();return}if(!me)return;if((TABS.some(t=>t[0]==h)||h=='vit')&&h!=tab){tab=h;draw()}});
 addEventListener('catalog',()=>{if(tab=='mine')draw();if(tab=='order'&&!sent){const q=$i('kbQ');if(q){q.placeholder='Назва або артикул: 3D панель, PET плитка…';q.value&&search(q.value)}}
  // оновлюємо фото й ціни в чернетці з актуального каталогу
  let ch=0;D.items.forEach(x=>{const p=x.id&&prod(x.id);if(p){if(!x.img&&p.imgs&&p.imgs[0]){x.img=p.imgs[0];ch=1}if(+p.price!=x.price){x.price=+p.price;ch=1}}});if(ch){saveD();if(tab=='order')drawItems(),sumBox()}});

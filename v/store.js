@@ -24,6 +24,47 @@ const ico = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}
 const FONTS = { golos: ['Golos+Text:wght@400;500;600;700;800', '"Golos Text"', '"Golos Text"'], manrope: ['Manrope:wght@400;500;600;700;800', 'Manrope', 'Manrope'],
   montserrat: ['Montserrat:wght@400;500;600;700;800', 'Montserrat', 'Montserrat'], unbounded: ['Unbounded:wght@600;700;800&family=Golos+Text:wght@400;500;600;700', 'Unbounded', '"Golos Text"'] };
 
+/* ---------- статистика для партнера: без персональних даних, одна подія на візит (sendBeacon) ----------
+   u — новий відвідувач за день (з цього пристрою), o/a/c — відкрив товар / додав у кошик / почав оформлення (раз на день),
+   p/ad — які товари відкривали й додавали, src — звідки прийшов (?src=ig|tt|tg|viber|fb|qr, utm_source або referrer). */
+const TODAY = (() => { try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Kiev' }).format(new Date()); } catch (e) { return new Date().toISOString().slice(0, 10); } })();
+const SRC = (() => {
+  const A = { instagram: 'ig', ig: 'ig', tiktok: 'tt', tt: 'tt', telegram: 'tg', tg: 'tg', viber: 'viber', facebook: 'fb', fb: 'fb', google: 'google', youtube: 'yt', yt: 'yt', qr: 'qr' };
+  const k = 'vsrc_' + SLUG;
+  let s = (qs.get('src') || qs.get('utm_source') || '').toLowerCase();
+  if (s) s = A[s] || 'site';
+  else if (EMBED) s = 'widget';
+  else {
+    let h = ''; try { h = new URL(document.referrer).hostname.replace(/^www\./, ''); } catch (e) { }
+    if (!h || h === location.hostname) { try { s = sessionStorage.getItem(k) || ''; } catch (e) { } }
+    else s = /instagram/.test(h) ? 'ig' : /tiktok/.test(h) ? 'tt' : /t\.me$|telegram/.test(h) ? 'tg' : /facebook|fb\.(com|me)$/.test(h) ? 'fb' : /viber/.test(h) ? 'viber' : /(^|\.)google\./.test(h) ? 'google' : /youtube|youtu\.be/.test(h) ? 'yt' : 'site';
+  }
+  s = s || 'direct'; try { sessionStorage.setItem(k, s); } catch (e) { }
+  return s;
+})();
+const TR = { u: 0, o: 0, a: 0, c: 0, p: {}, ad: {} };
+let DONE = null;
+function trackInit() {
+  if (DONE || PREVIEW || !API || !S || !S.slug) return;
+  DONE = LS.get('vst_' + S.slug, {}); if (!DONE || DONE.d !== TODAY) DONE = { d: TODAY };
+  if (!DONE.u) { DONE.u = 1; TR.u = 1; LS.set('vst_' + S.slug, DONE); }
+  addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushTr(); });
+  addEventListener('pagehide', flushTr);
+  setTimeout(flushTr, 4000);
+}
+function tr(stage, id, kind) {
+  if (!DONE) return;
+  if (!DONE[stage]) { DONE[stage] = 1; TR[stage] = 1; LS.set('vst_' + S.slug, DONE); }
+  if (id && kind) { const m = TR[kind]; m[id] = (m[id] || 0) + 1; }
+}
+function flushTr() {
+  if (!DONE) return;
+  if (!(TR.u || TR.o || TR.a || TR.c || Object.keys(TR.p).length || Object.keys(TR.ad).length)) return;
+  const body = JSON.stringify({ action: 'v_ev', slug: S.slug, src: SRC, u: TR.u, o: TR.o, a: TR.a, c: TR.c, p: TR.p, ad: TR.ad });
+  TR.u = TR.o = TR.a = TR.c = 0; TR.p = {}; TR.ad = {};
+  try { if (!(navigator.sendBeacon && navigator.sendBeacon(API, body))) fetch(API, { method: 'POST', body, keepalive: true }).catch(() => { }); } catch (e) { }
+}
+
 let S = null, cfg = null, CAT = null, byId = new Map(), list = [], cart = {}, V = { q: '', c: '', n: 24 }, pd = {}, key = '';
 const root = $('#v') || Object.assign(document.body.appendChild(document.createElement('div')), { id: 'v' });
 if (EMBED) document.documentElement.classList.add('embed');
@@ -37,7 +78,7 @@ async function boot() {
   if (!r) return off('Немає зв’язку', 'Перевірте інтернет і оновіть сторінку.', 1);
   if (!r.ok) return off('Вітрину не знайдено', 'Можливо, адресу змінено. Перевірте посилання.');
   if (r.off) return off('Вітрина тимчасово недоступна', 'Продавець призупинив роботу вітрини.');
-  S = r.store; apply();
+  S = r.store; apply(); trackInit();
 }
 async function loadCat() {
   if (CAT) return CAT;
@@ -219,6 +260,7 @@ function clean(node) {
 async function openP(id) {
   const p = byId.get(String(id)); if (!p) return;
   if (EMBED) { window.open(fullUrl() + '#p=' + encodeURIComponent(id), '_blank', 'noopener'); return; }
+  tr('o', String(id), 'p');
   history.replaceState(null, '', '#p=' + encodeURIComponent(id));
   const pr = price(p);
   modal(`<div class="v-pd"><div class="v-gal"><div class="main"><img id="vmain" src="${E(p.img)}" alt=""></div><div class="th" id="vth"></div></div>
@@ -235,7 +277,7 @@ async function openP(id) {
 }
 function add(id, q) {
   const p = byId.get(String(id)); if (!p || !p.av) return;
-  cart[id] = Math.min(999, (cart[id] || 0) + (q || 1)); saveCart(); toast('Додано в кошик');
+  cart[id] = Math.min(999, (cart[id] || 0) + (q || 1)); saveCart(); toast('Додано в кошик'); tr('a', String(id), 'ad');
   $$(`[data-add="${CSS.escape(String(id))}"]`).forEach(b => b.innerHTML = ico('check'));
 }
 function cartView() {
@@ -253,6 +295,7 @@ let F = LS.get('vform', { delivery: 'Нова Пошта' });
 function checkout() {
   const ids = Object.keys(cart).filter(id => byId.get(id)), tot = ids.reduce((a, id) => a + price(byId.get(id)) * cart[id], 0);
   if (!ids.length) return cartView();
+  tr('c');
   modal(`<div class="v-mh">Оформлення</div><form class="v-mb" id="vf" novalidate>
    <input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
    <div class="v-2"><label class="v-f"><span>Прізвище та ім’я</span><input name="client" autocomplete="name" value="${E(F.client || '')}"></label>
@@ -284,7 +327,7 @@ async function send() {
   key = key || Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   const items = Object.keys(cart).filter(id => byId.get(id)).map(id => ({ id, q: cart[id] }));
   let r;
-  try { r = await fetch(API, { method: 'POST', body: JSON.stringify({ action: 'v_order', slug: S.slug, key, hp: el.hp.value, order: { items, client: el.client.value, phone: el.phone.value, city: el.city.value, branch: el.branch.value, delivery: F.delivery, note: el.note.value } }) }).then(x => x.json()); }
+  try { r = await fetch(API, { method: 'POST', body: JSON.stringify({ action: 'v_order', slug: S.slug, key, src: SRC, hp: el.hp.value, order: { items, client: el.client.value, phone: el.phone.value, city: el.city.value, branch: el.branch.value, delivery: F.delivery, note: el.note.value } }) }).then(x => x.json()); }
   catch (e) { r = { ok: false, error: 'net' }; }
   b.classList.remove('busy');
   if (!r.ok) return err(r.error === 'stock' ? 'Деяких товарів уже немає в наявності: ' + (r.msg || '') + '. Приберіть їх із кошика.' : ERR[r.error] || 'Не вдалося оформити замовлення. Напишіть продавцю.');
