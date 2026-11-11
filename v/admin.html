@@ -51,9 +51,9 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const st={get:k=>{try{return sessionStorage.getItem(k)||localStorage.getItem(k)}catch(e){return null}}};
 let pass=st.get('adm_pass')||'',D=null,tab='mod';
-const gtok=()=>st.get('adm_gh')||'';
+const gtok=()=>String(st.get('adm_gh')||'').replace(/^\s*(bearer|token)\s+/i,'').replace(/[\s"'`«»\u200b-\u200d\u2060\ufeff]/g,'');
 const fdt=s=>{const d=new Date(s);return isNaN(d)?'—':d.toLocaleString('uk-UA',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})};
-function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),Math.max(2600,String(m).length*55))}
 async function api(b){try{return await (await fetch(API,{method:'POST',body:JSON.stringify({...b,pass})})).json()}catch(e){return{ok:false,error:'net'}}}
 /* GitHub: сторінка v/<адреса>/index.html з назвою й логотипом для гарного прев’ю посилання */
 const b64e=s=>{const b=new TextEncoder().encode(s);let r='';for(let i=0;i<b.length;i+=8192)r+=String.fromCharCode(...b.subarray(i,i+8192));return btoa(r)};
@@ -64,7 +64,7 @@ function stub(s){const c=s.cfg||{},img=c.cover||c.logo||'',d=c.slogan||('Віт�
 async function putStub(s){if(!gtok())return{ok:false,msg:'Немає ключа GitHub. Додайте його в адмінці → Налаштування → «Ключ GitHub» (на цьому пристрої).'};
  const f='v/'+s.slug+'/index.html',sh=await sha(f);
  const r=await gh('/contents/'+f,{method:'PUT',body:JSON.stringify({message:'Вітрина '+s.slug+': '+(s.cfg.name||''),content:b64e(stub(s)),branch:'main',...(sh?{sha:sh}:{})})});
- return r.ok?{ok:true}:{ok:false,msg:r.status==401?'Ключ GitHub недійсний':r.status==403||r.status==404?'Ключ GitHub без права запису':'Не вдалося записати сторінку на GitHub'}}
+ return r.ok?{ok:true}:{ok:false,msg:r.status==401?'GitHub не прийняв ключ. Відкрийте адмінку → Налаштування → «Ключ GitHub» → «Перевірити» — там буде причина.':r.status==403||r.status==404?'Ключ GitHub без доступу до запису в stroyshopua. Адмінка → Налаштування → «Перевірити».':'Не вдалося записати сторінку на GitHub'}}
 async function delStub(slug){if(!gtok())return;const f='v/'+slug+'/index.html',sh=await sha(f);if(sh)await gh('/contents/'+f,{method:'DELETE',body:JSON.stringify({message:'Вітрину '+slug+' видалено',sha:sh,branch:'main'})})}
 
 function login(msg){$('#app').innerHTML=`<form class="login" id="lf"><b>Вхід</b><p class="note">Пароль адмінки (ADMIN_PASS).</p><input type="password" id="lp" autocomplete="current-password" required><p class="note" style="color:var(--bad)">${E(msg||'')}</p><button class="btn">Увійти</button></form>`;
