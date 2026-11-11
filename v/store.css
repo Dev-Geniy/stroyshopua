@@ -171,3 +171,33 @@ img{display:block;max-width:100%}
 :root.embed .v-sec:first-of-type{margin-top:0}
 .v-embfoot{display:flex;justify-content:center;margin:18px 0 6px}
 @media(max-width:560px){.v-grid{grid-template-columns:1fr 1fr;gap:10px}.v-card .bd{padding:10px}.v-card .pr{font-size:16px}.v-add{width:38px;height:38px}.v-hero{margin:12px 12px 0;min-height:210px}.v-hero .in{padding:20px}.v-top .v-wrap{height:58px}.v-cartb span{display:none}}
+
+/* правила вітрини: обмін і повернення, конфіденційність */
+.v-back{display:inline-flex;align-items:center;gap:6px;margin-top:20px;color:var(--soft);text-decoration:none;font-weight:600;font-size:14px}
+.v-back .i{width:18px;height:18px}.v-back:hover{color:var(--ink)}
+.v-doc{max-width:820px;margin:14px auto 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:clamp(20px,4vw,40px)}
+.v-doc-m{color:var(--soft);font-size:13px;margin-bottom:8px}
+.v-doc h1{font:800 clamp(26px,4.4vw,38px)/1.1 var(--fh);letter-spacing:-.02em;margin-bottom:12px}
+.v-doc-lead{font-size:clamp(15.5px,2vw,17.5px);color:var(--soft);margin-bottom:22px}
+.v-doc-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-bottom:26px}
+.v-doc-sum div{background:var(--field);border-radius:var(--rs);padding:14px;display:flex;flex-direction:column;gap:4px}
+.v-doc-sum .i{width:22px;height:22px;color:var(--ok);margin-bottom:4px}
+.v-doc-sum .no .i{color:var(--bad)}
+.v-doc-sum b{font:700 15px/1.3 var(--fh)}.v-doc-sum span{font-size:13.5px;color:var(--soft)}
+.v-doc-txt h2,.v-doc-faq h2{font:800 clamp(19px,2.6vw,23px)/1.25 var(--fh);margin:28px 0 10px}
+.v-doc-txt h3{font:700 17px/1.3 var(--fh);margin:20px 0 8px}
+.v-doc-txt p{margin:0 0 12px}
+.v-doc-txt ul,.v-doc-txt ol{margin:0 0 14px;padding-left:22px;display:grid;gap:6px}
+.v-doc-txt a,.v-agree a{color:inherit;text-decoration-color:var(--acc);text-decoration-thickness:2px;text-underline-offset:3px}
+.v-doc-txt b{font-weight:700}
+.v-tip{border-left:4px solid var(--acc);background:color-mix(in srgb,var(--acc) 9%,var(--card));border-radius:0 var(--rs) var(--rs) 0;padding:12px 16px;margin:0 0 14px;font-size:15px}
+.v-doc-faq details{border-top:1px solid var(--line);padding:12px 0}
+.v-doc-faq summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.v-doc-faq summary::after{content:"+";color:var(--acc);font-size:20px;line-height:1}
+.v-doc-faq details[open] summary::after{content:"−"}
+.v-doc-faq details p{color:var(--soft);margin-top:8px}
+.v-doc-ask{max-width:820px;margin:14px auto 0;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.v-doc-ask b{display:block;font:700 16px var(--fh)}.v-doc-ask span{color:var(--soft);font-size:14px}
+.v-doc-ask .v-btn{min-height:40px;font-size:14px}
+.v-doc-ask .v-btn .i{width:17px;height:17px}
+.v-agree{margin-top:6px;font-size:12.5px}

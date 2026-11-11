@@ -17,7 +17,7 @@ if (from === 'app') { $('#back').href = '../app/#profile'; $('#back').textConten
 
 let token = '', me = null, store = null, cfg = null, CAT = [], byId = new Map(), cats = {}, dirty = false, slugOk = true, frame = null, frameReady = false;
 const blank = () => ({ name: '', slogan: '', logo: '', cover: '', theme: 'classic', accent: '#f08a1c', font: 'golos', radius: 'round', hideOut: true, markup: 0, round: '9', items: [], over: {}, feat: [],
-  about: '', delivery: '', payment: '', contacts: { phone: '', tg: '', viber: '', ig: '', tt: '', fb: '', hours: '' } });
+  about: '', delivery: '', payment: '', fop: '', contacts: { phone: '', tg: '', viber: '', ig: '', tt: '', fb: '', hours: '' } });
 let slug = '';
 
 function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2400); }
@@ -107,6 +107,7 @@ function draw() {
    <div class="g3"><label class="f"><span>Telegram (@нік)</span><input data-c="tg" value="${E(cfg.contacts.tg)}" placeholder="olena_decor"></label><label class="f"><span>Viber (номер)</span><input data-c="viber" value="${E(cfg.contacts.viber)}" placeholder="+380…"></label><label class="f"><span>Телефон</span><input data-c="phone" value="${E(cfg.contacts.phone)}" placeholder="+380…"></label>
    <label class="f"><span>Instagram</span><input data-c="ig" value="${E(cfg.contacts.ig)}" placeholder="olena.decor"></label><label class="f"><span>TikTok</span><input data-c="tt" value="${E(cfg.contacts.tt)}" placeholder="olena.decor"></label><label class="f"><span>Facebook (посилання)</span><input data-c="fb" value="${E(cfg.contacts.fb)}" placeholder="https://facebook.com/…"></label></div>
    <label class="f"><span>Графік роботи</span><input data-c="hours" value="${E(cfg.contacts.hours)}" placeholder="Пн–Сб 9:00–19:00"></label>
+   <label class="f"><span>Продавець — ваш ФОП (необов’язково)</span><input data-k="fop" maxlength="150" value="${E(cfg.fop)}" placeholder="ФОП Коваль Олена Іванівна"><small>Якщо порожньо — продавцем на вітрині й у правилах буде вказано інтернет-магазин Samostroy Shop. Вписуйте лише чинний ФОП.</small></label>
    <label class="f"><span>Про вас (необов’язково)</span><textarea data-k="about" maxlength="800" placeholder="Допомагаю підібрати панелі й порахувати кількість під ваші розміри. Відповідаю швидко.">${E(cfg.about)}</textarea></label>
    <div class="g2"><label class="f"><span>Доставка (якщо порожньо — стандартний текст)</span><textarea data-k="delivery" maxlength="500" placeholder="Відправляємо Новою Поштою або Укрпоштою по всій Україні, зазвичай у день замовлення.">${E(cfg.delivery)}</textarea></label>
    <label class="f"><span>Оплата (якщо порожньо — стандартний текст)</span><textarea data-k="payment" maxlength="500" placeholder="Оплата при отриманні: спершу оглядаєте посилку, потім платите.">${E(cfg.payment)}</textarea></label></div></section>

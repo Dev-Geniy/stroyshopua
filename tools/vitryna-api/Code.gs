@@ -155,7 +155,7 @@ function cleanCfg(c, me) {
     radius: c.radius === 'square' ? 'square' : 'round', hideOut: !!c.hideOut,
     markup: Math.max(0, Math.min(200, Math.round(num(c.markup)))), round: ['', '10', '9'].indexOf(c.round) >= 0 ? c.round : '',
     items: items, over: over, feat: feat,
-    about: str(c.about, 800), delivery: str(c.delivery, 500), payment: str(c.payment, 500),
+    about: str(c.about, 800), delivery: str(c.delivery, 500), payment: str(c.payment, 500), fop: str(c.fop, 150),
     contacts: { phone: str(cont.phone, 30), tg: str(cont.tg, 40).replace(/^@/, '').replace(/^https?:\/\/t\.me\//, ''), viber: str(cont.viber, 30),
       ig: str(cont.ig, 60).replace(/^@/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//, '').replace(/\/$/, ''),
       tt: str(cont.tt, 60).replace(/^@/, '').replace(/^https?:\/\/(www\.)?tiktok\.com\/@?/, '').replace(/\/$/, ''), fb: url(cont.fb), hours: str(cont.hours, 80) }

@@ -18,7 +18,7 @@ const IC = {
   ig: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6"/>', tt: '<path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5M14 3c.5 2.6 2.4 4.3 5 4.5"/>',
   fb: '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/>', clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
   truck: '<path d="M2 6h12v10H2zM14 9h4l4 4v3h-8"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>', card: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/>',
-  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/>', star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>'
+  back: '<path d="m15 5-7 7 7 7"/>', info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/>', star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>'
 };
 const ico = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
 const FONTS = { golos: ['Golos+Text:wght@400;500;600;700;800', '"Golos Text"', '"Golos Text"'], manrope: ['Manrope:wght@400;500;600;700;800', 'Manrope', 'Manrope'],
@@ -67,7 +67,8 @@ function apply() {
   if (cfg.logo) { let ic = $('link[rel=icon]'); if (!ic) { ic = document.createElement('link'); ic.rel = 'icon'; document.head.appendChild(ic); } ic.href = cfg.logo; }
   cart = LS.get('vcart:' + S.slug, {});
   list = (cfg.items || []).map(id => byId.get(String(id))).filter(p => p && (p.av || !cfg.hideOut));
-  render();
+  const k = docKey(); if (k) return docView(k);
+  VIEW = 'home'; render();
   const m = location.hash.match(/^#p=([\w-]+)/); if (m && byId.get(m[1])) openP(m[1]);
 }
 // ціна вітрини — так само рахує сервер: не нижче ціни сайту, націнка або своя ціна, округлення
@@ -97,12 +98,51 @@ function card(p) {
   return `<article class="v-card${p.av ? '' : ' off'}"><button type="button" class="im" data-p="${E(p.id)}" aria-label="${E(p.name)}">${p.img ? `<img src="${E(p.img)}" alt="" loading="lazy">` : ''}${!p.av ? '<span class="badge out">Немає в наявності</span>' : (cfg.feat || []).includes(p.id) ? '<span class="badge">Хіт</span>' : ''}</button>
   <div class="bd"><b data-p="${E(p.id)}">${E(p.name)}</b><div class="ft"><span class="pr">${M(pr)}</span><button type="button" class="v-add" data-add="${E(p.id)}"${p.av ? '' : ' disabled'} aria-label="Додати в кошик">${ico(inC ? 'check' : 'plus')}</button></div></div></article>`;
 }
+function hdr() {
+  const nm = cfg.name || 'Вітрина', ini = nm.trim().slice(0, 1).toUpperCase();
+  return `<header class="v-top"><div class="v-wrap"><a class="v-logo" href="#" data-home>${cfg.logo ? `<img src="${E(cfg.logo)}" alt="">` : `<span class="ini">${E(ini)}</span>`}<b>${E(nm)}</b></a><span class="v-sp"></span>
+   <button type="button" class="v-cartb" data-cart>${ico('cart')}<span>Кошик</span><em id="vcn">${nCart() || ''}</em></button></div></header>`;
+}
+// продавець: ФОП партнера, якщо вказав, інакше — Samostroy Shop
+const fop = () => String(cfg.fop || C.seller || '').trim().replace(/\.\s*$/, '');
+const docHref = k => EMBED ? E(fullUrl()) + '#' + k : '#' + k;
+function ftr() {
+  const nm = cfg.name || 'Вітрина', t = EMBED ? ' target="_blank" rel="noopener"' : '';
+  return `<footer class="v-foot"><div class="v-wrap"><div><b>${E(nm)}</b>${cfg.contacts && cfg.contacts.hours ? '<br>' + E(cfg.contacts.hours) : ''}<div class="cts" style="margin-top:10px">${contacts('')}</div></div>
+   <div style="max-width:460px">${fop() ? `Продавець: ${E(fop())}. Відправник: інтернет-магазин Samostroy Shop.` : 'Продавець і відправник: інтернет-магазин Samostroy Shop.'}<br>
+   <a href="${docHref('povernennya')}"${t}>Обмін і повернення</a> · <a href="${docHref('pryvatnist')}"${t}>Політика конфіденційності</a><br>
+   <button type="button" data-report>Поскаржитися на вітрину</button> · Працює на платформі <a href="${E(C.platform || '/dropshipping.html')}?utm_source=vitryna&utm_campaign=${E(S.slug)}" target="_blank" rel="noopener">Samostroy</a></div></div></footer>`;
+}
+/* ---------- правила вітрини: #povernennya, #pryvatnist — у шаблоні й кольорах вітрини ---------- */
+let VIEW = 'home';
+const docKey = () => { const k = location.hash.slice(1); return window.VPOLICY && VPOLICY.has(k) ? k : ''; };
+function docView(k) {
+  VIEW = k; close();
+  const c = cfg.contacts || {}, L = [];
+  if (c.tg) L.push(`<a href="https://t.me/${E(c.tg)}" target="_blank" rel="noopener">Telegram @${E(c.tg)}</a>`);
+  if (c.viber) L.push(`<a href="viber://chat?number=${E(encodeURIComponent('+' + c.viber.replace(/\D/g, '')))}">Viber</a>`);
+  if (c.phone) L.push(`<a href="tel:+${E(c.phone.replace(/\D/g, ''))}">${E(c.phone)}</a>`);
+  if (c.ig) L.push(`<a href="https://instagram.com/${E(c.ig)}" target="_blank" rel="noopener">Instagram</a>`);
+  root.innerHTML = `${PREVIEW ? '<div class="v-prev">Перегляд вітрини — так її побачать покупці</div>' : ''}${hdr()}
+  <main class="v-wrap"><a class="v-back" href="#" data-home>${ico('back')}До магазину</a>
+   ${VPOLICY.html(k, { name: cfg.name || 'Вітрина', fop: fop(), contacts: L.join(', ') }, ico)}
+   <div class="v-doc-ask"><div><b>Залишилися питання?</b><span>Напишіть нам — відповімо й допоможемо.</span></div><div class="v-cts">${contacts('v-btn line')}</div></div>
+  </main>${ftr()}<div class="v-toast" id="vtoast"></div>`;
+  document.title = VPOLICY.title(k) + ' — ' + (cfg.name || 'Вітрина');
+  scrollTo(0, 0); height();
+}
+function home() { VIEW = 'home'; document.title = cfg.name || 'Вітрина'; render(); }
+function view() {
+  const k = docKey(); if (k) return docView(k);
+  if (VIEW !== 'home') home();
+  const m = location.hash.match(/^#p=([\w-]+)/); if (m && byId.get(m[1])) openP(m[1]);
+}
+addEventListener('hashchange', () => { if (S && cfg) view(); });
 function render() {
   const cats = [...new Set(list.map(p => p.cat))], feat = (cfg.feat || []).map(id => byId.get(String(id))).filter(p => p && p.av);
   const nm = cfg.name || 'Вітрина', ini = nm.trim().slice(0, 1).toUpperCase();
   root.innerHTML = `${PREVIEW ? '<div class="v-prev">Перегляд вітрини — так її побачать покупці</div>' : ''}
-  <header class="v-top"><div class="v-wrap"><a class="v-logo" href="#" data-home>${cfg.logo ? `<img src="${E(cfg.logo)}" alt="">` : `<span class="ini">${E(ini)}</span>`}<b>${E(nm)}</b></a><span class="v-sp"></span>
-   <button type="button" class="v-cartb" data-cart>${ico('cart')}<span>Кошик</span><em id="vcn">${nCart() || ''}</em></button></div></header>
+  ${hdr()}
   <section class="v-hero">${cfg.cover ? `<img class="bg" src="${E(cfg.cover)}" alt="">` : ''}<div class="in"><h1>${E(nm)}</h1>${cfg.slogan ? `<p>${E(cfg.slogan)}</p>` : ''}<div class="v-cts">${contacts('v-ct')}</div></div></section>
   <main class="v-wrap">
    ${feat.length && !EMBED ? `<section class="v-sec"><h2 class="v-h2">${ico('star')}Популярне</h2><div class="v-grid">${feat.map(card).join('')}</div></section>` : ''}
@@ -116,9 +156,7 @@ function render() {
     ${cfg.contacts && cfg.contacts.hours ? `<div><h3>${ico('clock')}Графік</h3><p>${E(cfg.contacts.hours)}</p></div>` : ''}</div></section>` : ''}
    ${EMBED ? `<div class="v-embfoot"><a class="v-btn" href="${E(fullUrl())}" target="_blank" rel="noopener">${ico('cart')}Відкрити вітрину й замовити</a></div>` : ''}
   </main>
-  <footer class="v-foot"><div class="v-wrap"><div><b>${E(nm)}</b>${cfg.contacts && cfg.contacts.hours ? '<br>' + E(cfg.contacts.hours) : ''}<div class="cts" style="margin-top:10px">${contacts('')}</div></div>
-   <div style="max-width:440px">Продавець і відправник: ${E(String(C.seller || 'інтернет-магазин Samostroy Shop').replace(/\.\s*$/, ''))}. Обмін і повернення — за <a href="/povernennya.html" target="_blank" rel="noopener">правилами повернення</a>.<br>
-   <button type="button" data-report>Поскаржитися на вітрину</button> · Працює на платформі <a href="${E(C.platform || '/dropshipping.html')}?utm_source=vitryna&utm_campaign=${E(S.slug)}" target="_blank" rel="noopener">Samostroy</a></div></div></footer>
+  ${ftr()}
   <div class="v-toast" id="vtoast"></div>`;
   chips(); grid();
   const q = $('#vq'); if (q) q.addEventListener('input', () => { V.q = q.value; V.n = 24; grid(); });
@@ -225,6 +263,7 @@ function checkout() {
    <label class="v-f"><span>${F.delivery === 'Укрпошта' ? 'Індекс відділення' : 'Відділення або поштомат'}</span><input name="branch" value="${E(F.branch || '')}" placeholder="№"></label></div>
    <label class="v-f"><span>Коментар (необов’язково)</span><textarea name="note" placeholder="Колір, кількість, зручний час для дзвінка"></textarea></label>
    <p class="v-note">Оплата при отриманні (накладений платіж). Разом: <b>${M(tot)}</b> + доставка за тарифами перевізника.</p>
+   <p class="v-note v-agree">Підтверджуючи замовлення, ви погоджуєтеся з <a href="${docHref('povernennya')}" target="_blank" rel="noopener">умовами обміну й повернення</a> та <a href="${docHref('pryvatnist')}" target="_blank" rel="noopener">політикою конфіденційності</a>.</p>
    <p class="v-err" id="verr"></p>
    <button class="v-btn wide" id="vsend">${PREVIEW ? 'Це перегляд — замовлення вимкнено' : 'Підтвердити замовлення · ' + M(tot)}</button></form>`, 'sm');
   const f = $('#vf');
@@ -271,7 +310,7 @@ function report() {
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-p],[data-add],[data-addq],[data-cart],[data-close],[data-cat],[data-more],[data-checkout],[data-cq],[data-crm],[data-qd],[data-qu],[data-big],[data-report],[data-home]');
   if (!b) return; const d = b.dataset;
-  if (d.home !== undefined) { e.preventDefault(); return scrollTo({ top: 0, behavior: 'smooth' }); }
+  if (d.home !== undefined) { e.preventDefault(); if (VIEW !== 'home') { history.pushState(null, '', location.pathname + location.search); home(); return scrollTo(0, 0); } return scrollTo({ top: 0, behavior: 'smooth' }); }
   if (d.add) { e.stopPropagation(); return EMBED ? openP(d.add) : add(d.add); }
   if (d.p) return openP(d.p);
   if (d.addq) { add(d.addq, Math.max(1, parseInt($('#vpq').value) || 1)); return close(); }
