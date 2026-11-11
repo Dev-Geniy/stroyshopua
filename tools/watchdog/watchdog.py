@@ -106,6 +106,24 @@ def check_catalog():
         return False, f'не вдалося прочитати ({type(e).__name__})'
 
 
+def check_pages():
+    """Остання публікація сайту на GitHub Pages: якщо не вдалася — нові зміни не з’являються на сайті."""
+    v = os.environ.get('PAGES_LAST', '').strip()
+    if not v:
+        return None
+    p = v.split('\t')
+    concl, url = p[0], (p[2] if len(p) > 2 else '')
+    if concl in ('success', 'skipped', 'cancelled', ''):
+        return True, 'остання публікація успішна'
+    try:   # щойно впала — даємо GitHub 10 хвилин: часто наступна публікація вже йде
+        at = datetime.strptime(p[1], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=timezone.utc)
+        if (datetime.now(timezone.utc) - at).total_seconds() < 600:
+            return True, 'остання публікація щойно не вдалася — чекаємо повтору'
+    except Exception:
+        pass
+    return False, f'остання публікація не вдалася ({concl}) — нові зміни не з’явились на сайті. GitHub → Actions → «pages build and deployment» → Re-run all jobs' + (f' ({url})' if url else '')
+
+
 def tg(token, method, data=None):
     url = f'https://api.telegram.org/bot{token}/{method}'
     req = urllib.request.Request(url, data=json.dumps(data).encode() if data else None, headers={'Content-Type': 'application/json', **UA})
@@ -137,12 +155,12 @@ HINT = {
     'partner': 'Скрипт кабінету партнерів → Apps Script → «Виконання».',
     'vitryna': 'Скрипт вітрин (таблиця «Samostroy — вітрини») → Apps Script → «Виконання».',
 }
-TITLE = {'site': 'Сайт samostroy.shop', 'catalog': 'Каталог і ціни', 'main': 'Скрипт замовлень сайту',
+TITLE = {'site': 'Сайт samostroy.shop', 'pages': 'Публікація змін на сайт', 'catalog': 'Каталог і ціни', 'main': 'Скрипт замовлень сайту',
          'partner': 'Скрипт кабінету партнерів', 'vitryna': 'Скрипт вітрин', 'bot_admin': 'Адмін-бот',
          'bot_client': 'Бот для клієнтів', 'bot_drop': 'Бот партнерів (Drop)'}
 WHAT = {'main': 'Клієнти не можуть оформити замовлення на сайті.', 'partner': 'Партнери не можуть увійти в кабінет і оформити замовлення.',
         'vitryna': 'Вітрини партнерів не відкриваються й не приймають замовлень.', 'site': 'Сайт недоступний для покупців.',
-        'catalog': 'На сайті можуть бути застарілі ціни й наявність.', 'bot_admin': 'Сповіщення про замовлення можуть не приходити.',
+        'catalog': 'На сайті можуть бути застарілі ціни й наявність.', 'pages': 'Сайт працює, але показує стару версію: останні зміни не опубліковано.', 'bot_admin': 'Сповіщення про замовлення можуть не приходити.',
         'bot_client': 'Клієнти не отримують статуси в Telegram.', 'bot_drop': 'Партнери не отримують сповіщення в Telegram.'}
 
 
@@ -163,6 +181,9 @@ def main():
            'main': check_script('main', u['main'], 'samostroy-orders'),
            'partner': check_script('partner', u['partner'], 'samostroy-partners'),
            'vitryna': check_script('vitryna', u['vitryna'], 'samostroy-vitryny')}
+    pg = check_pages()
+    if pg:
+        res['pages'] = pg
     for k, env in (('bot_admin', 'ADMIN_BOT_TOKEN'), ('bot_client', 'CLIENT_BOT_TOKEN'), ('bot_drop', 'DROP_BOT_TOKEN')):
         r = check_bot(os.environ.get(env, '').strip())
         if r:
