@@ -318,6 +318,11 @@ ACTIONS.p_order = function (b) {
   if (!str(o.city)) fail('city');
   return withLock(function () {
     var p = auth(b);
+    return makeOrder(p, o, items, ph, key, b.via === 'tg' ? 'Telegram' : 'Сайт');
+  });
+};
+// створення замовлення партнера (з кабінету, Telegram або вітрини) — однаково для всіх каналів
+function makeOrder(p, o, items, ph, key, via) {
     if (key) { var d2 = cache().get('key:' + key); if (d2) return { ok: true, id: d2, dup: true }; }
     var m = marginOf(p), sale = 0, whole = 0;
     items.forEach(function (x) { sale += x.q * x.sale; whole += x.q * x.price * (1 - m / 100); });
@@ -326,13 +331,34 @@ ACTIONS.p_order = function (b) {
       client: str(o.client, 120), phone: ph, city: str(o.city, 120), delivery: str(o.delivery, 40), branch: str(o.branch, 80),
       pay: str(o.pay, 60), sale: Math.round(sale), whole: Math.round(whole), earn: Math.round(sale - whole), earnFinal: '',
       ttn: '', source: str(o.source, 60), note: str(o.note, 1000), comment: '', paidAt: '', items: JSON.stringify(items), key: key,
-      via: b.via === 'tg' ? 'Telegram' : 'Сайт' };
+      via: via };
     write(SH_O, OC, r);
     if (key) cache().put('key:' + key, r.id, 21600);
     notifyManager(orderCard(r, p), adminKb(r));
     if (p.tgId) toPartner(p, '✅ <b>Замовлення ' + h(r.id) + ' прийнято</b>\n' + h(r.client) + ', ' + h(r.city) + '\nСума для клієнта: ' + money(r.sale) +
-      '\nВаш заробіток ≈ ' + money(r.earn) + '\n\nМенеджер перевірить наявність і підтвердить. Статус і ТТН прийдуть сюди.', appKb('Відкрити замовлення', 'o=' + r.id));
+      '\nВаш заробіток ≈ ' + money(r.earn) + (via === 'Вітрина' ? '\nДжерело: ваша вітрина' : '') + '\n\nМенеджер перевірить наявність і підтвердить. Статус і ТТН прийдуть сюди.', appKb('Відкрити замовлення', 'o=' + r.id));
     return { ok: true, id: r.id, order: pubOrder(r) };
+}
+
+/* ---------------- вітрини партнерів (окремий модуль v/ і tools/vitryna-api) ----------------
+   Скрипт вітрин сам перевіряє ціни й товари й передає сюди готове замовлення. Якщо модуль вітрин прибрати — ця дія просто не викликається. */
+ACTIONS.ext_order = function (b) {
+  admin(b);
+  var o = b.order || {}, key = str(b.key, 40), pid = str(b.partnerId, 20);
+  var items = (o.items || []).slice(0, 50).map(function (x) {
+    return { id: str(x.id, 40), name: str(x.name, 200), sku: str(x.sku, 60), q: Math.max(1, Math.min(9999, Math.round(num(x.q)))),
+      price: Math.max(0, num(x.price)), sale: Math.max(0, num(x.sale)) };
+  }).filter(function (x) { return x.name; });
+  if (!items.length) fail('items');
+  var ph = phoneNorm(o.phone);
+  if (!ph) fail('phone');
+  if (str(o.client).length < 2) fail('client');
+  if (!str(o.city)) fail('city');
+  return withLock(function () {
+    var p = findById(readAll(SH_P, PC), pid);
+    if (!p) fail('notfound');
+    if (p.status === 'Заблокований') fail('blocked');
+    return makeOrder(p, o, items, ph, key, 'Вітрина');
   });
 };
 
@@ -719,7 +745,7 @@ function notifyNewPartner(p, where) {
 }
 function orderCard(r, p) {
   var items = json(r.items, []);
-  return '📦 <b>Замовлення партнера ' + h(r.id) + '</b>' + (r.via === 'Telegram' ? ' · з Telegram' : '') + '\nПартнер: ' + h(p.name) + ' (' + h(p.id) + ', ' + h(p.level || 'Starter') + ')' + (p.tgName ? ' ' + h(p.tgName) : '') + '\n\n' +
+  return '📦 <b>Замовлення партнера ' + h(r.id) + '</b>' + (r.via === 'Telegram' ? ' · з Telegram' : r.via === 'Вітрина' ? ' · 🏪 з вітрини' + (r.source ? ' (' + h(r.source.replace(/^Вітрина\s*/, '')) + ')' : '') : '') + '\nПартнер: ' + h(p.name) + ' (' + h(p.id) + ', ' + h(p.level || 'Starter') + ')' + (p.tgName ? ' ' + h(p.tgName) : '') + '\n\n' +
     items.map(function (x, i) { return (i + 1) + '. ' + h(x.name) + (x.sku ? ' (' + h(x.sku) + ')' : '') + ' × ' + x.q + ' — ' + money(x.sale * x.q); }).join('\n') +
     '\n\nСума для клієнта: <b>' + money(num(r.sale)) + '</b>\nКлієнт: ' + h(r.client) + ', +' + h(r.phone) + '\nДоставка: ' + h([r.delivery, r.city, r.branch].filter(String).join(', ')) +
     '\nОплата: ' + h(r.pay || '—') + (r.note ? '\nКоментар: ' + h(r.note) : '');

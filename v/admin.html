@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Вітрини партнерів — модерація</title>
+<link rel="icon" href="../favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eceeee;--card:#fff;--ink:#262c32;--soft:#5d6770;--line:#dde1e3;--field:#f3f4f5;--acc:#f08a1c;--ok:#2f8a4c;--bad:#c2410c;--r:10px}
+@media(prefers-color-scheme:dark){:root{--bg:#1b1f24;--card:#242a31;--ink:#eef0f1;--soft:#a3acb4;--line:#343c45;--field:#2b3238;--ok:#5cc47e;--bad:#ff8a50}}
+*{box-sizing:border-box;margin:0;padding:0}html,body{background:var(--bg);color:var(--ink);font:14.5px/1.5 "Golos Text",system-ui,sans-serif}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}a{color:inherit}[hidden]{display:none!important}
+.top{background:#2b3138;color:#fff}.top .in{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;gap:12px;align-items:center}
+.top h1{font-size:17px;font-weight:700;flex:1}.top a{color:#fff;opacity:.8;text-decoration:none;font-weight:600;font-size:14px}
+.wrap{max-width:1200px;margin:0 auto;padding:18px 16px 60px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:0 13px;border-radius:8px;background:var(--acc);color:#1f2328;font-weight:700;font-size:13.5px;text-decoration:none;white-space:nowrap}
+.btn.ghost{background:var(--field);color:var(--ink)}.btn.bad{background:transparent;color:var(--bad);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.busy{pointer-events:none;opacity:.6}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.tabs button{height:36px;padding:0 13px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-weight:600}
+.tabs button[aria-pressed=true]{background:var(--ink);color:var(--card)}.tabs i{font-style:normal;opacity:.6;margin-left:4px}
+.note{color:var(--soft);font-size:13px}
+.warn{background:color-mix(in srgb,#e07b0e 12%,var(--card));border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.cd{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px}
+.cd.hl{box-shadow:0 0 0 2.5px var(--acc)}
+.cd .h{display:flex;gap:10px;align-items:center}.cd .h img,.cd .h .ini{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none;background:var(--field);display:grid;place-items:center;font-weight:800}
+.cd .h b{display:block;font-size:15.5px}.cd .h small{color:var(--soft)}
+.st{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;margin-left:auto;white-space:nowrap}
+.st.mod{background:color-mix(in srgb,#e07b0e 18%,var(--card));color:#b45f08}.st.pub{background:color-mix(in srgb,var(--ok) 16%,var(--card));color:var(--ok)}.st.off{background:color-mix(in srgb,var(--bad) 14%,var(--card));color:var(--bad)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13.5px}.kv dt{color:var(--soft)}.kv dd{word-break:break-word}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+textarea{width:100%;min-height:54px;border:1.5px solid var(--line);border-radius:8px;background:var(--field);padding:8px 10px;font-size:13.5px}
+.rep{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.login{max-width:380px;margin:60px auto;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px;display:grid;gap:12px}
+.login input{height:44px;border:1.5px solid var(--line);border-radius:8px;background:var(--field);padding:0 12px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,160%);background:rgba(25,28,32,.95);color:#fff;padding:11px 16px;border-radius:10px;font-weight:600;transition:transform .25s;z-index:9}.toast.on{transform:translate(-50%,0)}
+.empty{padding:40px;text-align:center;color:var(--soft)}
+</style>
+</head>
+<body>
+<header class="top"><div class="in"><h1>🏪 Вітрини партнерів</h1><a href="../admin.html#partners">‹ Адмінка</a></div></header>
+<main class="wrap" id="app"><p class="note">Завантаження…</p></main>
+<div class="toast" id="toast"></div>
+<script src="config.js"></script>
+<script>
+(()=>{'use strict';
+const V=window.VCFG||{},API=V.api||'',REPO='Dev-Geniy/stroyshopua',SITE=location.origin+'/';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const st={get:k=>{try{return sessionStorage.getItem(k)||localStorage.getItem(k)}catch(e){return null}}};
+let pass=st.get('adm_pass')||'',D=null,tab='mod';
+const gtok=()=>st.get('adm_gh')||'';
+const fdt=s=>{const d=new Date(s);return isNaN(d)?'—':d.toLocaleString('uk-UA',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+async function api(b){try{return await (await fetch(API,{method:'POST',body:JSON.stringify({...b,pass})})).json()}catch(e){return{ok:false,error:'net'}}}
+/* GitHub: сторінка v/<адреса>/index.html з назвою й логотипом для гарного прев’ю посилання */
+const b64e=s=>{const b=new TextEncoder().encode(s);let r='';for(let i=0;i<b.length;i+=8192)r+=String.fromCharCode(...b.subarray(i,i+8192));return btoa(r)};
+async function gh(path,opt={}){const t=gtok();try{const r=await fetch('https://api.github.com/repos/'+REPO+path,{...opt,cache:'no-store',headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+t,...(opt.body?{'Content-Type':'application/json'}:{})}});let j=null;try{j=await r.json()}catch(e){}return{ok:r.ok,status:r.status,j}}catch(e){return{ok:false,status:0}}}
+async function sha(file){const r=await gh('/contents/'+file+'?ref=main');return r.ok?r.j.sha:null}
+function stub(s){const c=s.cfg||{},img=c.cover||c.logo||'',d=c.slogan||('Вітрина товарів для ремонту своїми руками: '+(c.items||[]).length+' товарів, оплата при отриманні.');
+ return `<!doctype html>\n<html lang="uk">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n<meta name="robots" content="noindex,nofollow">\n<title>${E(c.name)}</title>\n<meta name="description" content="${E(d)}">\n<meta property="og:type" content="website">\n<meta property="og:title" content="${E(c.name)}">\n<meta property="og:description" content="${E(d)}">\n${img?`<meta property="og:image" content="${E(img)}">\n`:''}${c.logo?`<link rel="icon" href="${E(c.logo)}">\n`:''}<script>window.VSLUG=${JSON.stringify(s.slug)}<\/script>\n<script src="../boot.js"><\/script>\n</head>\n<body><div id="v"></div></body>\n</html>\n`}
+async function putStub(s){if(!gtok())return{ok:false,msg:'Немає ключа GitHub. Додайте його в адмінці → Налаштування → «Ключ GitHub» (на цьому пристрої).'};
+ const f='v/'+s.slug+'/index.html',sh=await sha(f);
+ const r=await gh('/contents/'+f,{method:'PUT',body:JSON.stringify({message:'Вітрина '+s.slug+': '+(s.cfg.name||''),content:b64e(stub(s)),branch:'main',...(sh?{sha:sh}:{})})});
+ return r.ok?{ok:true}:{ok:false,msg:r.status==401?'Ключ GitHub недійсний':r.status==403||r.status==404?'Ключ GitHub без права запису':'Не вдалося записати сторінку на GitHub'}}
+async function delStub(slug){if(!gtok())return;const f='v/'+slug+'/index.html',sh=await sha(f);if(sh)await gh('/contents/'+f,{method:'DELETE',body:JSON.stringify({message:'Вітрину '+slug+' видалено',sha:sh,branch:'main'})})}
+
+function login(msg){$('#app').innerHTML=`<form class="login" id="lf"><b>Вхід</b><p class="note">Пароль адмінки (ADMIN_PASS).</p><input type="password" id="lp" autocomplete="current-password" required><p class="note" style="color:var(--bad)">${E(msg||'')}</p><button class="btn">Увійти</button></form>`;
+ $('#lf').onsubmit=e=>{e.preventDefault();pass=$('#lp').value;try{sessionStorage.setItem('adm_pass',pass)}catch(x){}load()}}
+async function load(){
+ if(!API)return $('#app').innerHTML='<div class="warn"><b>Модуль вітрин ще не підключено.</b> Розгорніть скрипт tools/vitryna-api/Code.gs і впишіть його адресу у v/config.js → api. Інструкція — tools/vitryna-api/ЯК-ЗАПУСТИТИ.md.</div>';
+ if(!pass)return login();
+ const r=await api({action:'a_list'});
+ if(!r.ok)return r.error=='auth'||r.error=='locked'?login(r.error=='locked'?'Забагато спроб, зачекайте 15 хв':'Невірний пароль'):$('#app').innerHTML=`<div class="warn">Помилка: ${E(r.error)}</div>`;
+ D=r;const h=decodeURIComponent(location.hash.slice(1));if(h){const s=D.stores.find(x=>x.slug==h);if(s)tab=s.status=='Вимкнена'?'off':s.status=='Опублікована'?'pub':'mod'}
+ draw()}
+const SC=s=>s.status=='Опублікована'?'pub':s.status=='Вимкнена'?'off':'mod';
+function draw(){
+ const L=D.stores.slice().sort((a,b)=>String(b.updated).localeCompare(String(a.updated))),T=[['mod','На модерації'],['pub','Опубліковані'],['off','Вимкнені'],['all','Усі'],['rep','Скарги']];
+ const n=k=>k=='all'?L.length:k=='rep'?D.reports.length:L.filter(s=>SC(s)==k).length;
+ const S=tab=='all'?L:L.filter(s=>SC(s)==tab),hl=decodeURIComponent(location.hash.slice(1));
+ $('#app').innerHTML=`${V.on===false?'<div class="warn"><b>Вітрини вимкнено</b> (v/config.js → on: false): покупці бачать «тимчасово недоступна».</div>':''}
+ ${gtok()?'':'<div class="warn">На цьому пристрої немає ключа GitHub — «Схвалити» не зможе створити коротке посилання <b>samostroy.shop/v/адреса</b>. Додайте ключ в адмінці → Налаштування.</div>'}
+ <p class="note" style="margin-bottom:12px">Нова вітрина працює одразу за технічним посиланням <b>samostroy.shop/v/?адреса</b>. «Схвалити» — створює коротке посилання з назвою й логотипом у прев’ю. «Вимкнути» — покупці бачать «тимчасово недоступна».</p>
+ <div class="tabs">${T.map(([k,l])=>`<button data-tab="${k}" aria-pressed="${tab==k}">${l}<i>${n(k)}</i></button>`).join('')}</div>
+ ${tab=='rep'?(D.reports.length?D.reports.map(x=>`<div class="rep"><b>${E(x.slug)}</b> · <span class="note">${fdt(x.at)}</span><p>${E(x.text)}</p>${x.contact?`<p class="note">Контакт: ${E(x.contact)}</p>`:''}<a class="btn ghost" style="margin-top:6px" href="?#${encodeURIComponent(x.slug)}" data-goto="${E(x.slug)}">До вітрини</a></div>`).join(''):'<div class="empty">Скарг немає</div>')
+ :S.length?`<div class="grid">${S.map(s=>{const c=s.cfg||{},chg=s.approvedAt&&s.updated>s.approvedAt;return `<div class="cd${hl==s.slug?' hl':''}" id="s-${E(s.slug)}"><div class="h">${c.logo?`<img src="${E(c.logo)}" alt="">`:`<span class="ini">${E((c.name||'?').slice(0,1))}</span>`}<div><b>${E(c.name)}</b><small>${E(s.partner.name)} · ${E(s.partner.id)}${s.phone?' · +'+E(s.phone):''}</small></div><span class="st ${SC(s)}">${E(s.status)}</span></div>
+  <dl class="kv"><dt>Адреса</dt><dd><a href="${SITE}v/${s.approved?E(s.slug)+'/':'?'+E(s.slug)}" target="_blank" rel="noopener">samostroy.shop/v/${s.approved?E(s.slug)+'/':'?'+E(s.slug)}</a></dd>
+  <dt>Слоган</dt><dd>${E(c.slogan||'—')}</dd><dt>Товарів</dt><dd>${(c.items||[]).length} · націнка ${c.markup||0}%${Object.keys(c.over||{}).length?' · свої ціни: '+Object.keys(c.over).length:''}</dd>
+  <dt>Перегляди</dt><dd>≈ ${s.views} · замовлень ${s.orders}</dd><dt>Оновлено</dt><dd>${fdt(s.updated)}${chg?' · <b style="color:#b45f08">змінено після схвалення</b>':''}</dd></dl>
+  <textarea data-note="${E(s.slug)}" placeholder="Нотатка (бачите лише ви)">${E(s.note||'')}</textarea>
+  <div class="acts">${SC(s)=='mod'?`<button class="btn" data-op="approve" data-s="${E(s.slug)}">Схвалити</button>`:''}${SC(s)=='pub'&&chg?`<button class="btn ghost" data-op="restub" data-s="${E(s.slug)}">Оновити прев’ю посилання</button>`:''}
+  ${SC(s)=='off'?`<button class="btn ghost" data-op="enable" data-s="${E(s.slug)}">Увімкнути</button>`:`<button class="btn bad" data-op="disable" data-s="${E(s.slug)}">Вимкнути</button>`}
+  <button class="btn bad" data-op="delete" data-s="${E(s.slug)}">Видалити</button></div></div>`}).join('')}</div>`:'<div class="empty">Тут порожньо</div>'}`;
+ if(hl){const el=document.getElementById('s-'+hl);if(el)el.scrollIntoView({block:'center'})}}
+async function op(b){const slug=b.dataset.s,o=b.dataset.op,s=D.stores.find(x=>x.slug==slug);
+ if(o=='delete'&&!confirm('Видалити вітрину «'+(s.cfg.name||slug)+'»? Партнер зможе створити нову.'))return;
+ if(o=='disable'&&!confirm('Вимкнути вітрину? Покупці побачать «тимчасово недоступна».'))return;
+ b.classList.add('busy');
+ if(o=='approve'||o=='restub'){const g=await putStub(s);if(!g.ok&&o=='restub'){b.classList.remove('busy');return toast(g.msg)}
+  if(!g.ok){b.classList.remove('busy');return toast(g.msg)}
+  const r=await api({action:'a_set',slug,op:o=='approve'?'approve':'stubbed'});b.classList.remove('busy');if(!r.ok)return toast('Помилка: '+r.error);
+  Object.assign(s,r.store);toast(g.ok?'Готово. Коротке посилання запрацює за 1–2 хвилини':'Збережено');return draw()}
+ if(o=='delete'){await delStub(slug);const r=await api({action:'a_set',slug,op:'delete'});b.classList.remove('busy');if(!r.ok)return toast('Помилка: '+r.error);D.stores=D.stores.filter(x=>x.slug!=slug);toast('Вітрину видалено');return draw()}
+ const r=await api({action:'a_set',slug,op:o});b.classList.remove('busy');if(!r.ok)return toast('Помилка: '+r.error);Object.assign(s,r.store);toast(o=='disable'?'Вітрину вимкнено':'Вітрину увімкнено');draw()}
+document.addEventListener('click',e=>{const b=e.target.closest('button,[data-goto]');if(!b)return;
+ if(b.dataset.tab){tab=b.dataset.tab;return draw()}
+ if(b.dataset.goto){e.preventDefault();location.hash=b.dataset.goto;const s=D.stores.find(x=>x.slug==b.dataset.goto);tab=s?SC(s):'all';return draw()}
+ if(b.dataset.op)return op(b)});
+document.addEventListener('change',async e=>{const t=e.target;if(t.dataset.note){const r=await api({action:'a_set',slug:t.dataset.note,op:'note',note:t.value});toast(r.ok?'Нотатку збережено':'Не збережено')}});
+load()})();
+</script>
+</body>
+</html>

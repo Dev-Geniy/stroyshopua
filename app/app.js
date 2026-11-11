@@ -458,6 +458,7 @@ function vProfile(){
  <div class="list"><button class="li" data-anketa><span class="ic">${ico('info')}</span><span class="t"><b>Анкета партнера</b><small>${me.anketaAt?'Заповнена — можна оновити':'Ще не заповнена'}</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}partners.html"><span class="ic">${ico('grid')}</span><span class="t"><b>Товари для продажу на сайті</b><small>Повні тексти й усі фото</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}academy.html"><span class="ic">${ico('book')}</span><span class="t"><b>Академія партнера</b></span>${ico('chev')}</button>
+  <button class="li" data-nav="../v/edit.html?from=app"><span class="ic">${ico('grid')}</span><span class="t"><b>Моя вітрина</b><small>Власний магазин за посиланням</small></span>${ico('chev')}</button>
   <button class="li" data-go2="help"><span class="ic">${ico('info')}</span><span class="t"><b>Питання й відповіді</b><small>Пароль, ТТН, виплати, Telegram</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}course-sales3.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Продажі 3.0»</b><small>Скрипти відповідей клієнтам</small></span>${ico('chev')}</button></div>
  <div class="h3">Вхід на сайті</div>
@@ -488,6 +489,7 @@ document.addEventListener('click',e=>{
  if(d.refresh!==undefined){b.classList.add('busy');return refresh(false,1).then(()=>{b.classList.remove('busy');toast('Оновлено')})}
  if(d.copy!==undefined)return copy(d.copy,d.cm);
  if(d.url)return openUrl(d.url);
+ if(d.nav){LS.set('pk_token',token);LS.set('pk_me',me);location.href=d.nav;return}
  if(d.mgr!==undefined)return openTg(mgrUrl(d.mgr?`Добрий день! Питання щодо замовлення № ${d.mgr} (партнер ${me&&me.id}).`:''));
  if(d.anketa!==undefined){LS.set('pk_token',token);LS.set('pk_me',me);location.href='../anketa.html?kab=1&app=1';return}
  if(d.cancel!==undefined)return cancelO();
