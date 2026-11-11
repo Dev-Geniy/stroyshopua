@@ -22,7 +22,10 @@ const IC = {
 };
 const ico = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
 const FONTS = { golos: ['Golos+Text:wght@400;500;600;700;800', '"Golos Text"', '"Golos Text"'], manrope: ['Manrope:wght@400;500;600;700;800', 'Manrope', 'Manrope'],
-  montserrat: ['Montserrat:wght@400;500;600;700;800', 'Montserrat', 'Montserrat'], unbounded: ['Unbounded:wght@600;700;800&family=Golos+Text:wght@400;500;600;700', 'Unbounded', '"Golos Text"'] };
+  montserrat: ['Montserrat:wght@400;500;600;700;800', 'Montserrat', 'Montserrat'], unbounded: ['Unbounded:wght@600;700;800&family=Golos+Text:wght@400;500;600;700', 'Unbounded', '"Golos Text"'] ,
+  playfair: ['Playfair+Display:wght@600;700;800&family=Golos+Text:wght@400;500;600;700', '"Playfair Display"', '"Golos Text"'],
+  comfortaa: ['Comfortaa:wght@500;600;700&family=Nunito:wght@400;600;700;800', 'Comfortaa', 'Nunito'],
+  rubik: ['Rubik:wght@400;500;600;700;800', 'Rubik', 'Rubik'] };
 
 /* ---------- статистика для партнера: без персональних даних, одна подія на візит (sendBeacon) ----------
    u — новий відвідувач за день (з цього пристрою), o/a/c — відкрив товар / додав у кошик / почав оформлення (раз на день),
@@ -98,7 +101,7 @@ const ink = hex => { const n = parseInt(hex.slice(1), 16), r = n >> 16 & 255, g 
 function apply() {
   cfg = S.cfg || {};
   const d = document.documentElement;
-  d.dataset.theme = cfg.theme || 'classic'; d.dataset.radius = cfg.radius || 'round';
+  d.dataset.theme = cfg.theme || 'classic'; d.dataset.radius = cfg.radius || 'round'; d.dataset.hero = cfg.hero || 'cover'; d.dataset.grid = cfg.grid || 'normal';
   d.style.setProperty('--acc', cfg.accent || '#f08a1c'); d.style.setProperty('--acc-ink', ink(cfg.accent || '#f08a1c'));
   const f = FONTS[cfg.font] || FONTS.golos;
   let l = $('#vfont'); if (!l) { l = document.createElement('link'); l.id = 'vfont'; l.rel = 'stylesheet'; document.head.appendChild(l); }
@@ -141,7 +144,7 @@ function card(p) {
 }
 function hdr() {
   const nm = cfg.name || 'Вітрина', ini = nm.trim().slice(0, 1).toUpperCase();
-  return `<header class="v-top"><div class="v-wrap"><a class="v-logo" href="#" data-home>${cfg.logo ? `<img src="${E(cfg.logo)}" alt="">` : `<span class="ini">${E(ini)}</span>`}<b>${E(nm)}</b></a><span class="v-sp"></span>
+  return `${cfg.bar && !EMBED ? `<div class="v-bar">${E(cfg.bar)}</div>` : ''}<header class="v-top"><div class="v-wrap"><a class="v-logo" href="#" data-home>${cfg.logo ? `<img src="${E(cfg.logo)}" alt="">` : `<span class="ini">${E(ini)}</span>`}<b>${E(nm)}</b></a><span class="v-sp"></span>
    <button type="button" class="v-cartb" data-cart>${ico('cart')}<span>Кошик</span><em id="vcn">${nCart() || ''}</em></button></div></header>`;
 }
 // продавець: ФОП партнера, якщо вказав, інакше — Samostroy Shop
@@ -179,14 +182,28 @@ function view() {
   const m = location.hash.match(/^#p=([\w-]+)/); if (m && byId.get(m[1])) openP(m[1]);
 }
 addEventListener('hashchange', () => { if (S && cfg) view(); });
+// обкладинка: cover — фото/градієнт на всю ширину, split — текст + колаж популярних товарів, compact — стрічка
+function hero(nm, feat) {
+  const L = cfg.hero || 'cover', txt = `<h1>${E(nm)}</h1>${cfg.slogan ? `<p>${E(cfg.slogan)}</p>` : ''}<div class="v-cts">${contacts('v-ct')}</div>`;
+  if (L === 'split') {
+    const ph = (feat.length ? feat : list).filter(p => p.img).slice(0, 4);
+    return `<section class="v-hero split"><div class="in">${txt}</div><div class="col${ph.length < 3 ? ' few' : ''}">${cfg.cover ? `<img src="${E(cfg.cover)}" alt="" class="big">` : ph.map(p => `<button type="button" data-p="${E(p.id)}" aria-label="${E(p.name)}"><img src="${E(p.img)}" alt="" loading="lazy"></button>`).join('')}</div></section>`;
+  }
+  return `<section class="v-hero${L === 'compact' ? ' compact' : ''}">${cfg.cover && L !== 'compact' ? `<img class="bg" src="${E(cfg.cover)}" alt="">` : ''}<div class="in">${txt}</div></section>`;
+}
+function perks() {
+  const P = (cfg.perks || []).filter(Boolean).slice(0, 4);
+  return P.length && !EMBED ? `<div class="v-wrap"><ul class="v-perks">${P.map(x => `<li>${E(x)}</li>`).join('')}</ul></div>` : '';
+}
 function render() {
   const cats = [...new Set(list.map(p => p.cat))], feat = (cfg.feat || []).map(id => byId.get(String(id))).filter(p => p && p.av);
   const nm = cfg.name || 'Вітрина', ini = nm.trim().slice(0, 1).toUpperCase();
   root.innerHTML = `${PREVIEW ? '<div class="v-prev">Перегляд вітрини — так її побачать покупці</div>' : ''}
   ${hdr()}
-  <section class="v-hero">${cfg.cover ? `<img class="bg" src="${E(cfg.cover)}" alt="">` : ''}<div class="in"><h1>${E(nm)}</h1>${cfg.slogan ? `<p>${E(cfg.slogan)}</p>` : ''}<div class="v-cts">${contacts('v-ct')}</div></div></section>
+  ${hero(nm, feat)}
+  ${perks()}
   <main class="v-wrap">
-   ${feat.length && !EMBED ? `<section class="v-sec"><h2 class="v-h2">${ico('star')}Популярне</h2><div class="v-grid">${feat.map(card).join('')}</div></section>` : ''}
+   ${feat.length && !EMBED ? `<section class="v-sec"><h2 class="v-h2">${ico('star')}${E(cfg.featTitle || 'Популярне')}</h2><div class="v-grid">${feat.map(card).join('')}</div></section>` : ''}
    <section class="v-sec" id="vall"><h2 class="v-h2">${EMBED ? E(nm) : 'Усі товари'}</h2>
     ${list.length > 8 ? `<div class="v-tools"><label class="v-srch">${ico('search')}<input id="vq" type="search" placeholder="Пошук товару" value="${E(V.q)}" autocomplete="off"></label></div>` : ''}
     ${cats.length > 1 ? `<div class="v-chips" id="vcats"></div>` : ''}<div id="vgrid" style="margin-top:12px"></div></section>

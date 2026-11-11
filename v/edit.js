@@ -8,15 +8,17 @@ const M = n => Math.round(+n || 0).toLocaleString('uk-UA').replace(/\s/g, ' ') +
 const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }, del(k) { try { localStorage.removeItem(k); } catch (e) { } } };
 const IC = { star: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>', x: '<path d="M6 6l12 12M18 6 6 18"/>', plus: '<path d="M12 5v14M5 12h14"/>', check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>', copy: '<path d="M9 9h11v11H9zM5 15H4V4h11v1"/>', link: '<path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>' };
 const ico = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
-const THEMES = [['classic', 'Класика', 'світла, з обкладинкою', ['#f6f6f4', '#fff', null]], ['minimal', 'Мінімал', 'чисто й просто', ['#fff', '#f2f2f2', '#111']], ['dark', 'Темна', 'преміальний вигляд', ['#121417', '#1c2025', null]], ['bright', 'Яскрава', 'кольорова', [null, '#fff', null]]];
-const COLORS = ['#f08a1c', '#e4572e', '#d6336c', '#7c3aed', '#2563eb', '#0e9f9a', '#2f8a4c', '#1d2125'];
-const FONTS = [['golos', 'Golos', '"Golos Text"'], ['manrope', 'Manrope', 'Manrope'], ['montserrat', 'Montserrat', 'Montserrat'], ['unbounded', 'Unbounded', 'Unbounded']];
+const THEMES = [['classic', 'Класика', 'світла, з обкладинкою', ['#f6f6f4', '#fff', null]], ['minimal', 'Мінімал', 'чисто й просто', ['#fff', '#f2f2f2', '#111']], ['dark', 'Темна', 'преміальний вигляд', ['#121417', '#1c2025', null]], ['bright', 'Яскрава', 'кольорова', [null, '#fff', null]],
+  ['warm', 'Тепла', 'бежева, затишна', ['#f6efe4', '#fffaf2', null]], ['nature', 'Природна', 'свіжа, спокійна', ['#eef3ee', '#fff', null]],
+  ['luxe', 'Люкс', 'чорне із золотом', ['#0d0d0f', '#17171a', null]], ['pastel', 'Пастель', 'ніжна, для дітей', [null, '#fff', null]]];
+const COLORS = ['#f08a1c', '#d9480f', '#e4572e', '#d6336c', '#e64980', '#7c3aed', '#2563eb', '#0b7285', '#0e9f9a', '#2f8a4c', '#c9a227', '#c8963e', '#1d2125'];
+const FONTS = [['golos', 'Golos', '"Golos Text"'], ['manrope', 'Manrope', 'Manrope'], ['montserrat', 'Montserrat', 'Montserrat'], ['unbounded', 'Unbounded', 'Unbounded'], ['playfair', 'Playfair', '"Playfair Display"'], ['comfortaa', 'Comfortaa', 'Comfortaa'], ['rubik', 'Rubik', 'Rubik']];
 const from = new URLSearchParams(location.search).get('from') || sessionStorage.getItem('v_from') || '';
 if (from) sessionStorage.setItem('v_from', from);
 if (from === 'app') { $('#back').href = '../app/#profile'; $('#back').textContent = '‹ Telegram-кабінет'; }
 
 let token = '', me = null, store = null, cfg = null, CAT = [], byId = new Map(), cats = {}, dirty = false, slugOk = true, frame = null, frameReady = false;
-const blank = () => ({ name: '', slogan: '', logo: '', cover: '', theme: 'classic', accent: '#f08a1c', font: 'golos', radius: 'round', hideOut: true, markup: 0, round: '9', items: [], over: {}, feat: [],
+const blank = () => ({ name: '', slogan: '', logo: '', cover: '', theme: 'classic', accent: '#f08a1c', font: 'golos', radius: 'round', hero: 'cover', grid: 'normal', bar: '', perks: [], featTitle: '', preset: '', hideOut: true, markup: 0, round: '9', items: [], over: {}, feat: [],
   about: '', delivery: '', payment: '', fop: '', contacts: { phone: '', tg: '', viber: '', ig: '', tt: '', fb: '', hours: '' } });
 let slug = '';
 
@@ -68,6 +70,49 @@ function price(p) {
 }
 const whole = p => +p.price * (1 - (+me.margin || 10) / 100);
 
+/* ---------- готові вітрини (v/presets.js) ---------- */
+const PRK = {};
+const pres = id => (window.VPRESETS ? VPRESETS.list : []).find(p => p.id === id);
+const picked = p => PRK[p.id] || (PRK[p.id] = VPRESETS.pick(p, CAT));
+function presetsCard() {
+  if (!window.VPRESETS || !CAT.length) return '';
+  const fresh = !store, TB = Object.fromEntries(THEMES.map(t => [t[0], t[3]]));
+  const tile = p => {
+    const it = picked(p), ph = it.filter(x => x.img).slice(0, 3), c = TB[p.theme] || [], bg = c[0] || `color-mix(in srgb,${p.accent} 10%,#fff)`, dark = ['dark', 'luxe'].includes(p.theme);
+    return `<button class="pst${cfg.preset === p.id ? ' on' : ''}" data-preset="${p.id}" aria-pressed="${cfg.preset === p.id}">
+     <span class="pst-v" style="background:${bg};color:${dark ? '#fff' : '#1d2125'}"><span class="pst-b" style="background:${p.accent}"></span><span class="pst-p">${ph.map(x => `<img src="${E(x.img)}" alt="" loading="lazy">`).join('')}</span><span class="pst-e">${p.emoji}</span></span>
+     <span class="pst-t"><b>${E(p.title)}</b>${p.tag ? `<em style="background:${p.accent}">${E(p.tag)}</em>` : ''}</span><small>${E(p.desc)}</small><small class="pst-n">${it.length} товарів · ${E((THEMES.find(t => t[0] === p.theme) || [])[1] || '')}</small></button>`;
+  };
+  const body = `<p class="sub">Оформлення, тексти й підібрані товари вже готові — залишиться вписати назву й контакти. Усе можна змінити.</p>
+   <div class="pst-g">${VPRESETS.list.map(tile).join('')}</div><div id="pconf"></div>`;
+  return fresh ? `<section class="card prc" style="border-color:var(--acc)"><h2>✨ Почніть з готової вітрини</h2>${body}</section>`
+    : `<details class="card prc"><summary><h2 style="margin:0">✨ Готові вітрини в один клік</h2><span class="sub" style="margin:0">Змініть стиль, тексти й товари за секунду</span></summary><div style="margin-top:12px">${body}</div></details>`;
+}
+function presetPick(id) {
+  const p = pres(id); if (!p) return;
+  if (!store && !(cfg.items || []).length) return presetApply(id, 'all');
+  const el = $('#pconf');
+  el.innerHTML = `<div class="pconf"><b>${p.emoji} «${E(p.title)}»</b><p class="note">Ваші назва (якщо ви її змінювали), логотип, адреса, контакти й ціни залишаться.</p>
+   <div class="row"><button class="btn sm" data-papply="${id}" data-mode="all">Застосувати повністю — з товарами (${picked(p).length})</button>
+   <button class="btn ghost sm" data-papply="${id}" data-mode="look">Лише оформлення й тексти</button></div></div>`;
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function presetApply(id, mode) {
+  const p = pres(id); if (!p) return;
+  ['theme', 'accent', 'font', 'radius', 'hero', 'grid', 'bar', 'featTitle', 'slogan', 'about'].forEach(k => cfg[k] = p[k]);
+  cfg.perks = p.perks.slice(); cfg.preset = p.id;
+  if (!cfg.name || cfg.name === me.name || VPRESETS.list.some(x => x.title === cfg.name)) cfg.name = p.title;
+  if (mode === 'all') {
+    const it = picked(p);
+    cfg.items = it.map(x => x.id); cfg.feat = VPRESETS.featured(p, it).map(x => x.id);
+    Object.keys(cfg.over || {}).forEach(k => { if (!cfg.items.includes(k)) delete cfg.over[k]; });
+    cfg.hideOut = true; if (!cfg.round) cfg.round = '9';
+  }
+  dirtyOn(); draw();
+  toast('Шаблон «' + p.title + '» застосовано — перевірте назву й контакти');
+  const s1 = $('#sec1'); if (s1) { s1.scrollIntoView({ behavior: 'smooth', block: 'start' }); const n = s1.querySelector('[data-k=name]'); if (n) setTimeout(() => { n.focus(); n.select(); }, 450); }
+}
+
 /* ---------- сторінка ---------- */
 function draw() {
   const pub = store && store.approved, st = store ? store.status : '';
@@ -78,7 +123,8 @@ function draw() {
   ${!store ? `<div class="card" style="border-color:var(--acc)"><h2>🏪 Ваш власний магазин за 5 хвилин</h2><p class="sub" style="margin:0">Назва, логотип і кольори — ваші. Покупці замовляють прямо на вітрині, замовлення приходять у кабінет, ми пакуємо й відправляємо, заробіток нараховується автоматично. Заповніть кроки нижче й натисніть «Опублікувати».</p><p class="sub" style="margin:10px 0 0"><a class="tip" href="${SITE}course-vitryna.html#l=v1" target="_blank" rel="noopener">💡 Безкоштовний курс «Своя вітрина»: назва, логотип з ChatGPT чи Gemini, продаючі тексти й перші замовлення</a></p></div>` : ''}
   ${store && window.VSTATS ? `<details class="card vsd" id="vsd"${location.hash === '#stats' ? ' open' : ''}><summary><h2 style="margin:0">📊 Статистика вітрини</h2><span class="sub" style="margin:0">Відвідувачі, джерела, воронка й найпопулярніші товари</span></summary><div id="vsBox" style="margin-top:14px"></div></details>` : ''}
   ${st === 'Вимкнена' ? '<div class="warn">Вітрину вимкнув адміністратор — покупці її не бачать. Напишіть менеджеру, щоб дізнатися причину.</div>' : ''}
-  <section class="card"><h2><span class="n">1</span>Назва й адреса</h2><p class="sub">Так вітрину бачитимуть покупці. <a class="tip" href="${SITE}course-vitryna.html#l=v3" target="_blank" rel="noopener">💡 Як придумати назву</a> <a class="tip" href="${SITE}course-vitryna.html#l=v5" target="_blank" rel="noopener">💡 Логотип з ШІ за 10 хвилин</a></p>
+  ${presetsCard()}
+  <section class="card" id="sec1"><h2><span class="n">1</span>Назва й адреса</h2><p class="sub">Так вітрину бачитимуть покупці. <a class="tip" href="${SITE}course-vitryna.html#l=v3" target="_blank" rel="noopener">💡 Як придумати назву</a> <a class="tip" href="${SITE}course-vitryna.html#l=v5" target="_blank" rel="noopener">💡 Логотип з ШІ за 10 хвилин</a></p>
    <div class="g2"><label class="f"><span>Назва магазину</span><input data-k="name" maxlength="60" value="${E(cfg.name)}" placeholder="Напр. Декор для дому Олени"></label>
    <label class="f"><span>Слоган — коротко, чим ви корисні</span><input data-k="slogan" maxlength="140" value="${E(cfg.slogan)}" placeholder="Ремонт без майстрів за вихідні"></label></div>
    <label class="f"><span>Адреса вітрини</span><span class="slug"><b>samostroy.shop/v/</b><input id="slug" value="${E(slug)}" maxlength="30" autocomplete="off" spellcheck="false"${pub ? ' disabled' : ''}></span>
@@ -92,7 +138,13 @@ function draw() {
    <div class="lbl">Акцентний колір (кнопки, ціни, обкладинка)</div>
    <div class="sw">${COLORS.map(c => `<button data-color="${c}" style="background:${c}" aria-pressed="${cfg.accent === c}" aria-label="${c}"></button>`).join('')}<input type="color" id="color" value="${E(cfg.accent)}" title="Свій колір"></div>
    <div class="lbl">Шрифт</div><div class="seg">${FONTS.map(([k, l, f]) => `<button data-font="${k}" aria-pressed="${cfg.font === k}" style="font-family:${f}">${l}</button>`).join('')}</div>
-   <div class="lbl">Кути</div><div class="seg"><button data-radius="round" aria-pressed="${cfg.radius !== 'square'}">Округлі</button><button data-radius="square" aria-pressed="${cfg.radius === 'square'}">Прямі</button></div></section>
+   <div class="lbl">Кути</div><div class="seg">${[['round', 'Округлі'], ['xl', 'М’які'], ['square', 'Прямі']].map(([k, l]) => `<button data-radius="${k}" aria-pressed="${(cfg.radius || 'round') === k}">${l}</button>`).join('')}</div>
+   <div class="lbl">Верх вітрини</div><div class="seg">${[['cover', 'Фото на всю ширину'], ['split', 'Колаж із товарів'], ['compact', 'Компактний']].map(([k, l]) => `<button data-hero="${k}" aria-pressed="${(cfg.hero || 'cover') === k}">${l}</button>`).join('')}</div>
+   <div class="lbl">Картки товарів</div><div class="seg">${[['normal', 'Звичайні'], ['large', 'Великі'], ['compact', 'Компактні']].map(([k, l]) => `<button data-grid="${k}" aria-pressed="${(cfg.grid || 'normal') === k}">${l}</button>`).join('')}</div>
+   <div class="lbl">Блоки</div>
+   <label class="f"><span>Стрічка вгорі (необов’язково)</span><input data-k="bar" maxlength="120" value="${E(cfg.bar)}" placeholder="🚚 Відправка в день замовлення · Оплата при отриманні"></label>
+   <div class="f"><span>Переваги під обкладинкою — до 4 коротких пунктів (необов’язково)</span><div class="g2">${[0, 1, 2, 3].map(i => `<input data-perk="${i}" maxlength="60" value="${E((cfg.perks || [])[i] || '')}" placeholder="${['⏱ Монтаж за один вечір', '💳 Оплата після огляду', '📐 Порахуємо кількість', '↩️ Обмін 14 днів'][i]}">`).join('')}</div></div>
+   <label class="f"><span>Назва блоку «Популярне»</span><input data-k="featTitle" maxlength="40" value="${E(cfg.featTitle)}" placeholder="Популярне"></label></section>
 
   <section class="card"><h2><span class="n">3</span>Товари <span class="note" id="cnt"></span></h2><p class="sub">Оберіть, що продаєте. ★ — «Популярне» вгорі вітрини (до 12). <a class="tip" href="${SITE}course-vitryna.html#l=v2" target="_blank" rel="noopener">💡 Що поставити на вітрину</a></p>
    <div class="acts"><button class="btn sm" data-pick>${ico('plus')}Обрати з каталогу</button>${me.favs && me.favs.length ? `<button class="btn ghost sm" data-favs>Додати «Мої товари» (${me.favs.length})</button>` : ''}${cfg.items.length ? '<button class="btn ghost sm" data-clear>Прибрати всі</button>' : ''}</div>
@@ -231,6 +283,7 @@ document.addEventListener('input', e => {
   const t = e.target, d = t.dataset;
   if (d.k) { cfg[d.k] = t.value; dirtyOn(); if (d.k === 'name') prices(); }
   else if (d.c) { cfg.contacts[d.c] = t.value; dirtyOn(); }
+  else if (d.perk) { cfg.perks = (cfg.perks || []).slice(0, 4); while (cfg.perks.length < 4) cfg.perks.push(''); cfg.perks[+d.perk] = t.value; dirtyOn(); }
   else if (t.id === 'mk' || t.id === 'mkn') { cfg.markup = Math.max(0, Math.min(200, Math.round(+t.value || 0))); (t.id === 'mk' ? $('#mkn') : $('#mk')).value = cfg.markup; dirtyOn(); prices(); clearTimeout(items.t); items.t = setTimeout(items, 250); }
   else if (t.id === 'color') { cfg.accent = t.value; $$('[data-color]').forEach(b => b.setAttribute('aria-pressed', b.dataset.color === cfg.accent)); dirtyOn(); }
 });
@@ -246,6 +299,10 @@ document.addEventListener('click', e => {
   if (d.color) { cfg.accent = d.color; $('#color').value = d.color; $$('[data-color]').forEach(x => x.setAttribute('aria-pressed', x === b)); return dirtyOn(); }
   if (d.font) { cfg.font = d.font; $$('[data-font]').forEach(x => x.setAttribute('aria-pressed', x === b)); return dirtyOn(); }
   if (d.radius) { cfg.radius = d.radius; $$('[data-radius]').forEach(x => x.setAttribute('aria-pressed', x === b)); return dirtyOn(); }
+  if (d.hero) { cfg.hero = d.hero; $$('[data-hero]').forEach(x => x.setAttribute('aria-pressed', x === b)); return dirtyOn(); }
+  if (d.grid) { cfg.grid = d.grid; $$('[data-grid]').forEach(x => x.setAttribute('aria-pressed', x === b)); return dirtyOn(); }
+  if (d.preset) return presetPick(d.preset);
+  if (d.papply) return presetApply(d.papply, b.dataset.mode);
   if (d.round !== undefined) { cfg.round = d.round; $$('[data-round]').forEach(x => x.setAttribute('aria-pressed', x === b)); dirtyOn(); prices(); return items(); }
   if (d.clr) { cfg[d.clr] = ''; dirtyOn(); const y = scrollY; draw(); return scrollTo(0, y); }
   if (d.pick !== undefined) return picker();

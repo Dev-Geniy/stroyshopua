@@ -175,7 +175,7 @@ const grow=()=>`<section class="kb-grow" aria-labelledby="kbGrowH"><div class="k
 const vitPromo=()=>`<section class="kb-vit" aria-labelledby="kbVitH"><div><em>Головна фішка партнерства</em><h3 id="kbVitH">🏪 Своя вітрина — ваш магазин за 10 хвилин</h3>
  <p>Ваша назва, логотип і ціни за одним посиланням. Покупці замовляють самі, замовлення падають у кабінет, а ми пакуємо й відправляємо.</p>
  <div class="kb-va"><a class="btn" href="v/edit.html">Відкрити редактор вітрини</a><a class="btn ghost" href="course-vitryna.html">Курс: як зробити, щоб продавала</a></div></div>
- <ul><li>${ico('check')}<span>Безкоштовно, без сайту й програміста</span></li><li>${ico('check')}<span>Логотип і тексти — з ШІ за готовими промптами</span></li><li>${ico('check')}<span>Замовлення 24/7, оплата при отриманні</span></li><li>${ico('check')}<span>QR-код, віджет на сайт і готові пости</span></li></ul></section>`;
+ <ul><li>${ico('check')}<span>9 готових вітрин в один клік — з товарами й текстами</span></li><li>${ico('check')}<span>Безкоштовно, без сайту й програміста</span></li><li>${ico('check')}<span>Логотип і тексти — з ШІ за готовими промптами</span></li><li>${ico('check')}<span>Замовлення 24/7, оплата при отриманні</span></li><li>${ico('check')}<span>QR-код, віджет на сайт і готові пости</span></li></ul></section>`;
 /* ---------- огляд ---------- */
 function stats(){
  const live=orders.filter(o=>!CANC.includes(o.status)),now=new Date(),ms=new Date(now.getFullYear(),now.getMonth(),1);

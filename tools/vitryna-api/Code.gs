@@ -22,7 +22,7 @@ var TC = [['slug', 'Вітрина'], ['updated', 'Оновлено'], ['data', 
 var SH_S = 'Вітрини', SH_R = 'Скарги', SH_T = 'Статистика';
 var SRC = ['ig', 'tt', 'tg', 'viber', 'fb', 'google', 'yt', 'qr', 'widget', 'site', 'direct'];
 var SRCN = { ig: 'Instagram', tt: 'TikTok', tg: 'Telegram', viber: 'Viber', fb: 'Facebook', google: 'Google', yt: 'YouTube', qr: 'QR-код', widget: 'віджет на сайті', site: 'інший сайт', direct: 'пряме посилання' };
-var THEMES = ['classic', 'minimal', 'dark', 'bright'], FONTS = ['golos', 'manrope', 'montserrat', 'unbounded'];
+var THEMES = ['classic', 'minimal', 'dark', 'bright', 'warm', 'nature', 'luxe', 'pastel'], FONTS = ['golos', 'manrope', 'montserrat', 'unbounded', 'playfair', 'comfortaa', 'rubik'];
 var RESERVED = ['edit', 'admin', 'index', 'config', 'embed', 'store', 'boot', 'api', 'app', 'samostroy', 'shop', 'admin-panel', 'test', 'v', 'help'];
 
 /* ---------------- вхід ---------------- */
@@ -156,7 +156,10 @@ function cleanCfg(c, me) {
   return {
     name: str(c.name, 60) || me.name, slogan: str(c.slogan, 140), logo: url(c.logo), cover: url(c.cover),
     theme: THEMES.indexOf(c.theme) >= 0 ? c.theme : 'classic', accent: hex(c.accent, '#f08a1c'), font: FONTS.indexOf(c.font) >= 0 ? c.font : 'golos',
-    radius: c.radius === 'square' ? 'square' : 'round', hideOut: !!c.hideOut,
+    radius: ['square', 'xl'].indexOf(c.radius) >= 0 ? c.radius : 'round', hideOut: !!c.hideOut,
+    hero: ['split', 'compact'].indexOf(c.hero) >= 0 ? c.hero : 'cover', grid: ['large', 'compact'].indexOf(c.grid) >= 0 ? c.grid : 'normal',
+    bar: str(c.bar, 120), featTitle: str(c.featTitle, 40), preset: str(c.preset, 20),
+    perks: (Array.isArray(c.perks) ? c.perks : []).slice(0, 4).map(function (x) { return str(x, 60); }),
     markup: Math.max(0, Math.min(200, Math.round(num(c.markup)))), round: ['', '10', '9'].indexOf(c.round) >= 0 ? c.round : '',
     items: items, over: over, feat: feat,
     about: str(c.about, 800), delivery: str(c.delivery, 500), payment: str(c.payment, 500), fop: str(c.fop, 150),
