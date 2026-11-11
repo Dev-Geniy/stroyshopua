@@ -405,8 +405,8 @@ button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
      <p class="note">Потрібен, щоб публікувати відгуки й змінювати націнку в 1 клік. Ключ зберігається лише в цьому браузері й нікуди не надсилається, крім GitHub.</p>
      <ol class="steps">
       <li>Відкрийте <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">створення ключа на GitHub</a> (в акаунті, де лежить сайт).</li>
-      <li>Назва — будь-яка, термін дії — 1 рік. <b>Repository access</b> → Only select repositories → <b>stroyshopua</b>.</li>
-      <li><b>Permissions</b> → Repository permissions → <b>Contents: Read and write</b>. Натисніть Generate token, скопіюйте й вставте нижче.</li>
+      <li>Назва — будь-яка, термін дії — 1 рік. <b>Resource owner</b> — Dev-Geniy. <b>Repository access</b> → <b>Only select repositories</b> → оберіть <b>stroyshopua</b> (не «Public repositories» — так ключ лише читає).</li>
+      <li>Нижче в <b>Permissions</b> з’явиться блок <b>Repositories</b> → <b>Add permissions</b> → <b>Contents</b> → поставте <b>Read and write</b>. Блок «Account» не чіпайте. Натисніть Generate token, скопіюйте кнопкою 📋 і вставте нижче.</li>
      </ol>
      <div class="inl"><input id="s-gh" type="password" placeholder="github_pat_…" autocomplete="off" aria-label="Ключ GitHub"><button class="btn" data-a="ghsave">Зберегти</button></div>
      <p class="note" id="s-ghst"></p>
