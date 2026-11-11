@@ -849,7 +849,7 @@ function onMessage(m) {
     return send(chat, '✅ Цей чат підключено для менеджера.\nСюди приходитимуть нові партнери, замовлення партнерів з кнопками «Підтвердити / Відправлено / Скасувати» і повідомлення від партнерів.\n\nЩоб відповісти партнеру — відповідайте (Reply) на його повідомлення.');
   }
   if (cmd[1] === 'id') return send(chat, 'ID цього чату: <code>' + h(chat) + '</code>');
-  if (cmd[1] === 'tips' && priv) { var on = !(cmd[2] && /^(off|ні|вимк)/i.test(cmd[2])); return send(chat, onbToggle(from.id, on)); }
+  if ((cmd[1] === 'tips' || cmd[1] === 'summary') && priv) { var on = !(cmd[2] && /^(off|ні|вимк)/i.test(cmd[2])); return send(chat, onbToggle(from.id, on, cmd[1] === 'summary' ? 'sum' : 'tips')); }
   if (isAdm && !priv || isAdm && m.reply_to_message) return onAdmin(m, chat, text);
   if (!priv) return;
   var p = partnerByTg(from.id);
@@ -908,7 +908,7 @@ function onAdmin(m, chat, text) {
 }
 function onCallback(q) {
   var d = String(q.data || '').split('|'), chat = String(q.message && q.message.chat.id || q.from.id), ans = '';
-  if (d[0] === 'onb') ans = onbToggle(q.from.id, d[1] === 'on');
+  if (d[0] === 'onb' || d[0] === 'sum') ans = onbToggle(q.from.id, d[1] === 'on', d[0] === 'sum' ? 'sum' : 'tips');
   else if (d[0] === 'my') {
     var p = partnerByTg(q.from.id);
     if (p) send(chat, ordersText(p), appKb('Усі замовлення', 'orders')); else welcome(chat, null);
@@ -970,7 +970,8 @@ function setupBackup() {
 /* ================= Навчання в Drop-боті: 7 днів по кроку, далі урок тижня (≈ 6 місяців) =================
    Один раз запустіть setupOnboarding (▶ Виконати). Щодня об 11:00 (Київ) бот надсилає партнерам, які підключили Telegram:
    • новим — 7 днів по одному короткому кроку з посиланням на урок, кабінет і менеджера;
-   • далі (і всім, хто зареєструвався раніше) — раз на тиждень «урок тижня»: 52 уроки (рік), потім по колу «Корисно повторити».
+   • далі (і всім, хто зареєструвався раніше) — щопонеділка одне повідомлення: сводка тижня (продажі, заробіток, хіти, сезон, новинки)
+     + «урок тижня» (52 уроки, потім по колу «Корисно повторити»). summaryPreview — подивитися сводку.
    Партнер вимикає кнопкою «🔕 Не надсилати поради» або командою /tips off (увімкнути — /tips).
    onbPreview — 7 кроків і 2 перші уроки тижня вам у бот партнерів; onbPreviewAll — усі 52 уроки тижня. */
 var COURSE = SITE + 'course-dropshipping.html#l=', SALES = SITE + 'course-sales3.html#l=', VIT = SITE + 'course-vitryna.html#l=', BLOG = SITE + 'blog/';
@@ -1067,47 +1068,132 @@ function onbMsg(it, st, plain) {
   return { text: '<b>' + h(t) + '</b>\n\n' + x, kb: { inline_keyboard: kb } };
 }
 function plural(n, one, few, many) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many; }
-// що надіслати сьогодні цьому партнерові (або null)
-function onbNext(p, st, today, start) {
-  if (st.off || !p.tgId || p.status === 'Заблокований' || st.d === today) return null;
+// що надіслати сьогодні цьому партнерові (або null). force — для перегляду: урок тижня без перевірки дня тижня
+function onbNext(p, st, today, start, force) {
+  if (st.blk || st.off === 2 || !p.tgId || p.status === 'Заблокований' || (!force && st.d === today)) return null;
   var reg = onbDay(p.created || today), legacy = start && reg < start, s = +st.s || 0, w = +st.w || 0;
-  if (!legacy && s < ONB_D.length) return onbDiff(reg, today) >= s + 1 ? { kind: 's', it: ONB_D[s], i: s } : null;
-  if (st.d && onbDiff(st.d, today) < 7) return null;
+  if (!legacy && s < ONB_D.length && !st.off) return onbDiff(reg, today) >= s + 1 ? { kind: 's', it: ONB_D[s], i: s } : null;
+  // щотижневе повідомлення — у понеділок (сводка + урок тижня), не раніше ніж через 3 дні після попереднього
+  if (!force && (new Date(today + 'T12:00:00Z').getUTCDay() !== 1 || (st.d && onbDiff(st.d, today) < 3))) return null;
+  if (st.off) return { kind: 'w', it: null, i: w };
   // після останнього уроку — по колу, з позначкою «Корисно повторити»: поради приходять щотижня, доки партнер їх не вимкне
   var it = ONB_W[w % ONB_W.length], round = Math.floor(w / ONB_W.length);
   var intro = legacy && !w ? '🎓 <b>Нова рубрика: урок тижня</b>\nРаз на тиждень — одна корисна порада для продажів. Не потрібно — натисніть «Не надсилати поради».\n\n' : '';
   return { kind: 'w', it: { t: (round ? '🔁 Корисно повторити · ' : '🎓 Урок тижня · ') + it.t, x: intro + it.x + '\n\n<i>Урок ' + (w + 1) + '</i>', b: it.b, app: it.app }, i: w };
 }
+
+/* ---------------- Сводка тижня (понеділок): продажі партнера, хіти, сезон, новинки + урок тижня ---------------- */
+var OK_ST = ['Отримане', 'Виплачено'], WORK_ST = ['Нове', 'Підтверджене', 'Відправлене'];
+var SEASON = [   // місяць (1–12) → підказка й категорії сайту (c/<slug>.html)
+  [[12, 1, 2], '❄️ Зима: тепло й затишок удома', ['termokylymky', 'pidloga-pazl-plyushevyy', 'vologopoglynayuchi-kylymky', 'plytka-pid-kovrolin']],
+  [[3, 4, 5], '🌱 Весна: ремонт ванної й кухні, балкон і дача', ['pet-plytka', 'pvh-paneli-plyty', 'plytka-vinilova', 'skladni-mebli']],
+  [[6, 7, 8], '☀️ Літо: дача, тераса й декор', ['skladni-mebli', 'naduvni-mebli', 'stolyky', 'dzerkalnyi-dekor']],
+  [[9, 10, 11], '🍂 Осінь: сезон ремонтів — стіни, підлога, затишок', ['3d-paneli', 'samokleyucha-plivka', 'plytka-vinilova', 'termokylymky']]];
+function weekCtx(today) {
+  var t = new Date(today + 'T12:00:00Z'), dow = (t.getUTCDay() + 6) % 7;          // 0 = понеділок
+  var mon = new Date(t - dow * 864e5), from = new Date(mon - 7 * 864e5), prev = new Date(mon - 14 * 864e5);
+  var d = function (x) { return x.toISOString().slice(0, 10); }, all = readAll(SH_O, OC), hits = {}, m30 = d(new Date(t - 30 * 864e5));
+  all.forEach(function (o) {
+    if (CANCELLED.indexOf(o.status) >= 0 || onbDay(o.created) < m30) return;
+    json(o.items, []).forEach(function (x) { var k = String(x.id || x.name); (hits[k] = hits[k] || { id: x.id, name: x.name, q: 0, n: {} }).q += +x.q || 1; hits[k].n[o.partnerId] = 1; });
+  });
+  var top = Object.keys(hits).map(function (k) { return hits[k]; }).filter(function (x) { return Object.keys(x.n).length >= 2 || x.q >= 3; })
+    .sort(function (a, b) { return b.q - a.q; }).slice(0, 3);
+  var rep = {}, news = [];
+  try { rep = JSON.parse(UrlFetchApp.fetch(SITE + 'catalog-report.json?t=' + Date.now(), { muteHttpExceptions: true }).getContentText()); } catch (x) { }
+  (rep.log || []).forEach(function (e) { if (String(e.date).slice(0, 10) >= d(from)) (e['new'] || []).forEach(function (n) { if (news.length < 3 && !news.some(function (y) { return y[0] === n[0]; })) news.push(n); }); });
+  var month = t.getUTCMonth() + 1, season = SEASON.filter(function (z) { return z[0].indexOf(month) >= 0; })[0], cn = {};
+  (rep.cats || []).forEach(function (c) { cn[c.cat] = c.name; });
+  return { orders: all, from: d(from), to: d(new Date(mon - 864e5)), prev: d(prev), top: top, news: news, season: season, cn: cn };
+}
+function weekSummary(p, W) {
+  var my = W.orders.filter(function (o) { return o.partnerId === p.id; }), inW = function (o, a, b) { var x = onbDay(o.created); return x >= a && x < b; };
+  var wk = my.filter(function (o) { return inW(o, W.from, onbDay(new Date(Date.parse(W.to + 'T12:00:00Z') + 864e5))) && CANCELLED.indexOf(o.status) < 0; });
+  var pw = my.filter(function (o) { return inW(o, W.prev, W.from) && CANCELLED.indexOf(o.status) < 0; });
+  var got = my.filter(function (o) { return OK_ST.indexOf(o.status) >= 0 && onbDay(o.updated) >= W.from && onbDay(o.updated) <= W.to; });
+  var work = my.filter(function (o) { return WORK_ST.indexOf(o.status) >= 0; }), due = my.filter(function (o) { return o.status === 'Отримане'; });
+  var sum = function (L, f) { return L.reduce(function (a, o) { return a + f(o); }, 0); };
+  var d = function (a, b) { return a > b ? ' ▲' : a < b ? ' ▼' : ''; };
+  var dm = function (x) { return x.slice(8, 10) + '.' + x.slice(5, 7); };
+  var active = wk.length || got.length || work.length || due.length || my.some(function (o) { return onbDay(o.created) >= W.prev; });
+  var L = ['📊 <b>Ваш тиждень · ' + dm(W.from) + '–' + dm(W.to) + '</b>'];
+  if (wk.length || got.length) {
+    L.push('Нових замовлень: <b>' + wk.length + '</b>' + d(wk.length, pw.length) + (wk.length ? ' · на ' + money(sum(wk, function (o) { return num(o.sale); })) + ' · заробіток ≈ ' + money(sum(wk, earnOf)) : ''));
+    if (got.length) L.push('Отримано клієнтами: <b>' + got.length + '</b> · +' + money(sum(got, earnOf)));
+  } else L.push(my.length ? 'Цього тижня нових замовлень не було. Одна дія на цей тиждень — 3 нові оголошення або 2 відео: це повертає продажі.' : 'Перше замовлення — найважче. Почніть з 3 оголошень і посилання на вітрину в профілі — урок нижче допоможе.');
+  if (work.length) L.push('У роботі зараз: ' + work.length);
+  if (due.length) L.push('До виплати: <b>' + money(sum(due, earnOf)) + '</b>');
+  var X = [];
+  if (W.top.length) X.push('🔥 <b>Хіти в партнерів</b> (30 днів)\n' + W.top.map(function (x, i) { return (i + 1) + '. ' + (x.id ? '<a href="' + SITE + 'p/' + h(x.id) + '.html">' + h(x.name) + '</a>' : h(x.name)); }).join('\n'));
+  if (W.season) X.push(W.season[1] + '\n' + W.season[2].map(function (c) { return '<a href="' + SITE + 'c/' + c + '.html">' + h(W.cn[c] || c) + '</a>'; }).join(' · '));
+  if (W.news.length) X.push('🆕 <b>Новинки каталогу</b>\n' + W.news.map(function (n) { return '• <a href="' + SITE + 'p/' + h(n[0]) + '.html">' + h(n[1]) + '</a> — ' + money(n[2]); }).join('\n'));
+  return { text: L.join('\n') + (X.length ? '\n\n' + X.join('\n\n') : ''), active: !!active };
+}
+function weeklyMsg(p, st, nx, W) {
+  var sm = st.soff ? null : weekSummary(p, W), les = nx.it;
+  if (!les && !(sm && sm.active)) return null;
+  var kb = (les && les.b || []).map(function (b) { return [b[2] ? { text: b[0], web_app: { url: onbApp(b[1]) } } : { text: b[0], url: b[1] }]; });
+  kb.push([{ text: '📱 Кабінет', web_app: { url: APP_URL } }, { text: '📊 Вітрина', web_app: { url: onbApp(SITE + 'v/edit.html#stats') } }, { text: '💬 Менеджер', url: 'https://t.me/' + MANAGER }]);
+  var off = [];
+  if (les) off.push({ text: '🔕 Без порад', callback_data: 'onb|off' });
+  if (sm) off.push({ text: '🔕 Без сводки', callback_data: 'sum|off' });
+  kb.push(off);
+  var text = (sm ? sm.text : '') + (les ? (sm ? '\n\n━━━━━━━━━━\n' : '') + '<b>' + h(les.t) + '</b>\n' + les.x : '');
+  return { text: text, kb: { inline_keyboard: kb } };
+}
 function onbDaily() {
   if (!prop('DROP_BOT_TOKEN')) return;
-  var today = onbDay(), start = prop('ONB_START'), sh = sheet(SH_P, PC), col = PC.map(function (c) { return c[0]; }).indexOf('onb') + 1, idCol = 1, sent = 0;
+  var today = onbDay(), start = prop('ONB_START'), sh = sheet(SH_P, PC), col = PC.map(function (c) { return c[0]; }).indexOf('onb') + 1, idCol = 1, sent = 0, W = null;
   var cnt = {};
   readAll(SH_O, OC).forEach(function (o) { if (CANCELLED.indexOf(o.status) < 0) cnt[o.partnerId] = (cnt[o.partnerId] || 0) + 1; });
   readAll(SH_P, PC).forEach(function (p) { try { onbOne(p); } catch (x) { console.error('onb ' + p.id, x); } });
-  console.log('Навчання в боті: надіслано ' + sent);
+  console.log('Навчання й сводка в боті: надіслано ' + sent);
   function onbOne(p) {
     var st = onbState(p); st.n = cnt[p.id] || 0;
-    var nx = onbNext(p, st, today, start);
+    var nx = onbNext(p, st, today, start), m;
     if (!nx) return;
-    var m = onbMsg(nx.it, st), r = send(p.tgId, m.text, m.kb);
-    var o = onbState(p);
-    if (r && r.ok) { if (nx.kind === 's') o.s = nx.i + 1; else o.w = nx.i + 1; o.d = today; sent++; }
-    else if (r && r.error_code === 403) o.off = 2;      // партнер зупинив бота
+    if (nx.kind === 's') m = onbMsg(nx.it, st);
+    else { W = W || weekCtx(today); m = weeklyMsg(p, st, nx, W); }
+    if (!m) return;
+    var r = send(p.tgId, m.text, m.kb), o = onbState(p);
+    if (r && r.ok) { if (nx.kind === 's') o.s = nx.i + 1; else if (nx.it) o.w = nx.i + 1; o.d = today; sent++; }
+    else if (r && r.error_code === 403) o.blk = 1;      // партнер зупинив бота — більше не пишемо
     else return;
     try { withLock(function () { if (String(sh.getRange(p._r, idCol).getValue()) === p.id) sh.getRange(p._r, col).setNumberFormat('@').setValue(JSON.stringify(o)); }); } catch (x) { console.error(x); }
     Utilities.sleep(60);
   }
 }
 var CANCELLED = ['Скасоване', 'Повернення'];
-function onbToggle(tgId, on) {
+// what: 'tips' — поради/уроки, 'sum' — сводка тижня
+function onbToggle(tgId, on, what) {
   return withLock(function () {
     var list = readAll(SH_P, PC), p = findTg(list, tgId);
     if (!p) return 'Спершу підключіть кабінет партнера.';
-    var st = onbState(p);
-    if (on) delete st.off; else st.off = 1;
+    var st = onbState(p), k = what === 'sum' ? 'soff' : 'off';
+    if (on) delete st[k]; else st[k] = 1;
+    delete st.blk;
     p.onb = JSON.stringify(st); write(SH_P, PC, p);
+    if (what === 'sum') return on ? '🔔 Сводку тижня ввімкнено: щопонеділка — ваші продажі, хіти й новинки.' : '🔕 Сводку вимкнено. Увімкнути знову — команда /summary';
     return on ? '🔔 Поради ввімкнено: раз на тиждень — один корисний урок.' : '🔕 Поради вимкнено. Увімкнути знову — команда /tips';
   });
+}
+/** Перегляд сводки: надсилає вам (бот партнерів) понеділкове повідомлення так, як його отримає найактивніший партнер. */
+function summaryPreview() {
+  var chats = adminChats().length ? adminChats() : prop('TG_CHAT').split(',').map(function (c) { return c.trim(); }).filter(String);
+  var today = onbDay(), W = weekCtx(today), cnt = {};
+  W.orders.forEach(function (o) { cnt[o.partnerId] = (cnt[o.partnerId] || 0) + 1; });
+  var P = readAll(SH_P, PC).sort(function (a, b) { return (cnt[b.id] || 0) - (cnt[a.id] || 0); })[0];
+  if (!P) return console.log('Партнерів ще немає.');
+  var st = onbState(P), w = +st.w || 0, it = ONB_W[w % ONB_W.length];
+  var m = weeklyMsg(P, {}, { kind: 'w', it: { t: '🎓 Урок тижня · ' + it.t, x: it.x, b: it.b }, i: w }, W);
+  m.kb.inline_keyboard = m.kb.inline_keyboard.map(function (row) { return row.map(function (b) { return b.web_app ? { text: b.text, url: b.web_app.url } : b; }); });
+  if (!chats.length) return console.log(m.text);
+  chats.forEach(function (c) {
+    var r = send(c, '👀 <b>Так виглядатиме сводка партнера ' + h(P.id + ' · ' + P.name) + '</b> (щопонеділка об 11:00):');
+    if (!r || !r.ok) return console.log('⚠️ Не вдалося надіслати в ' + c + ' — натисніть Start у боті партнерів і запустіть ще раз.');
+    send(c, m.text, m.kb);
+  });
+  console.log('Перегляд сводки надіслано. Партнер: ' + P.id);
 }
 function setupOnboarding() {
   if (!prop('ONB_START')) setProp('ONB_START', onbDay());
@@ -1121,7 +1207,7 @@ function onbPreview() {
   // кому: чат менеджера в боті партнерів, а якщо його немає — ваш Telegram з TG_CHAT (спершу натисніть Start у боті партнерів)
   var chats = adminChats().length ? adminChats() : prop('TG_CHAT').split(',').map(function (c) { return c.trim(); }).filter(String), st = { n: 0 };
   var nW = onbPreview.all ? ONB_W.length : 2, W = [];
-  for (var k = 0; k < nW; k++) W.push(onbNext({ tgId: 1, created: '2000-01-01' }, k ? { w: k } : {}, onbDay(), onbDay()));
+  for (var k = 0; k < nW; k++) W.push(onbNext({ tgId: 1, created: '2000-01-01' }, k ? { w: k } : {}, onbDay(), onbDay(), true));
   var L = ONB_D.map(function (it) { return onbMsg(it, st, 1); }).concat(W.map(function (n) { return onbMsg(n.it, st, 1); }));
   if (!chats.length || !prop('DROP_BOT_TOKEN')) { L.forEach(function (m) { console.log(m.text + '\n---'); }); return console.log('Немає чату для перегляду (DROP_ADMIN_CHATS / TG_CHAT) — тексти вище в журналі.'); }
   var bad = [];
