@@ -252,7 +252,8 @@ function vHome(){
  <div class="card"><div class="row"><b class="h2 sp">Заробіток за 6 місяців</b></div>
   <div class="bars">${R.map(r=>`<div class="bar"><div class="col"><b style="height:${(r.ok/mx*100).toFixed(1)}%"></b><b class="w" style="height:${(r.w/mx*100).toFixed(1)}%"></b></div><span>${E(r.l)}</span></div>`).join('')}</div>
   <div class="leg"><span><i></i>отримано</span><span><i class="w"></i>в роботі</span></div>
-  ${nx?`<div class="prog"><div class="row"><span>До рівня <b style="color:var(--tx)">${nx[0]}</b> (${nx[2]}%)</span><span>${M(s.mTurn)} з ${M(nx[1])}</span></div><i><b style="width:${pct}%"></b></i></div>`:'<p class="small mt">У вас найвищий рівень — дякуємо за роботу!</p>'}</div>
+  ${nx?`<div class="prog"><div class="row"><span>До рівня <b style="color:var(--tx)">${nx[0]}</b> (${nx[2]}%)</span><span>${M(s.mTurn)} з ${M(nx[1])}</span></div><i><b style="width:${pct}%"></b></i><p class="small mt">${s.mTurn>=nx[1]?`✅ Умову рівня ${nx[0]} виконано — менеджер підвищить рівень.`:`Ще ${M(nx[1]-s.mTurn)} обороту цього місяця — і маржа від ${nx[2]}%.`}</p></div>`:'<p class="small mt">У вас найвищий рівень — дякуємо за роботу!</p>'}</div>
+ ${window.BADGES?`<div class="h3" id="ach">Досягнення</div><div class="card">${BADGES.html(orders,me,null,1)}</div>`:''}
  <div class="vit">${ico('store')}<em>Головна фішка партнерства</em><b>🏪 Своя вітрина</b><p>Ваш магазин за одним посиланням: назва, логотип і ціни — ваші. Покупці замовляють самі, ми відправляємо.</p>
   <div class="row"><button class="btn sm" data-nav="../v/edit.html?from=app">Моя вітрина</button><button class="btn sm ghost" data-url="${SITE}course-vitryna.html">Курс</button></div></div>
  <div class="h3">Останні замовлення</div>

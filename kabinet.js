@@ -210,9 +210,10 @@ function vHome(){
    <dl class="kb-dl"><dt>Рівень</dt><dd><span class="kb-lv">${E(L[0])}</span> маржа ≈ ${margin()}% від рекомендованої ціни</dd>
    <dt>Оборот за ${E(mn)}</dt><dd>${M(s.mTurn)} · ${s.mL.length} ${pl(s.mL.length,'замовлення','замовлення','замовлень')}</dd>
    <dt>Виплати</dt><dd>За запитом або раз на тиждень чи місяць — за домовленістю з менеджером</dd></dl>
-   ${nx?`<div class="kb-prog"><div><span>До рівня <b>${nx[0]}</b> (маржа від ${nx[2]}%)</span><span>${M(s.mTurn)} з ${M(nx[1])}</span></div><i><b style="width:${pct}%"></b></i></div>`:'<p class="kb-small">У вас найвищий рівень — дякуємо!</p>'}
+   ${nx?`<div class="kb-prog"><div><span>До рівня <b>${nx[0]}</b> (маржа від ${nx[2]}%)</span><span>${M(s.mTurn)} з ${M(nx[1])}</span></div><i><b style="width:${pct}%"></b></i><p class="kb-small">${s.mTurn>=nx[1]?`✅ Умову рівня ${nx[0]} цього місяця виконано — менеджер підвищить рівень.`:`Ще <b>${M(nx[1]-s.mTurn)}</b> обороту цього місяця — і маржа від ${nx[2]}%.`}</p></div>`:'<p class="kb-small">У вас найвищий рівень — дякуємо!</p>'}
    <p class="kb-small">Рівень змінює менеджер, коли оборот тримається стабільно. Питання — <a href="${tgLink()}" target="_blank" rel="noopener">@${E(TGM)}</a></p></div>
  </div>
+ ${window.BADGES?`<div class="kb-card" id="ach"><div class="kb-ch"><h3>Досягнення</h3></div>${BADGES.html(orders,me,(u,t,c)=>`<a class="${c}" href="${u}">${t}</a>`)}</div>`:''}
  <div class="kb-card"><div class="kb-ch"><h3>Останні замовлення</h3>${orders.length?'<a href="#orders" data-tab="orders" class="kb-link">Усі замовлення</a>':''}</div>
   ${orders.length?`<div class="kb-list">${orders.slice(0,5).map(row).join('')}</div>`:`<div class="kb-none"><p>Тут з’являться ваші замовлення зі статусами й ТТН.</p><a class="btn ghost sm" href="partners.html">Обрати товари для продажу</a></div>`}</div>
  ${vitPromo()}

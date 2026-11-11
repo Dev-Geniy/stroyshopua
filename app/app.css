@@ -314,3 +314,24 @@ body.fbon #app{padding-bottom:calc(96px + var(--safe-b))}
 .vit .btn{min-height:40px;font-size:14px}
 .vit .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
 .vit>.i{position:absolute;right:-8px;top:-6px;width:84px;height:84px;color:rgba(255,255,255,.08)}
+
+/* досягнення (badges.js) */
+.ach-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.ach-k{display:block;font-size:13px;color:var(--hint)}
+.ach-t{font-family:var(--fd);font-size:18px}
+.ach-n{font-size:14px;color:var(--hint);white-space:nowrap}.ach-n b{font-family:var(--fd);font-size:24px;color:var(--tx)}
+.ach-seg{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:12px 0 8px}
+.ach-seg i{height:10px;border-radius:3px;background:color-mix(in srgb,var(--tx) 9%,var(--card))}
+.ach-seg i.on{background:var(--acc)}
+.ach-bar{height:10px;border-radius:5px;background:color-mix(in srgb,var(--tx) 9%,var(--card));margin:12px 0 8px;overflow:hidden}.ach-bar b{display:block;height:100%;background:var(--acc);border-radius:5px}
+.ach-s,.ach-x{font-size:14px;color:var(--hint)}.ach-x{margin-top:4px}.ach-x b{color:var(--tx)}
+.ach-h{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--hint);margin:18px 0 8px}
+.ach-g{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ach-b{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:12px 8px;border:1px solid var(--sep);border-radius:var(--r-s);background:var(--card);color:var(--tx);text-decoration:none}
+.ach-b .ach-e{font-size:28px;line-height:1.1;filter:grayscale(1);opacity:.45}
+.ach-b b{font-size:13px;line-height:1.25}.ach-b small{font-size:12px;color:var(--hint);line-height:1.25}
+.ach-b:not(.got) b{color:var(--hint)}
+.ach-b.got{border-color:color-mix(in srgb,var(--acc) 45%,var(--sep));background:color-mix(in srgb,var(--acc) 8%,var(--card))}
+.ach-b.got .ach-e{filter:none;opacity:1}
+.ach-b.nx{border-style:dashed;border-color:var(--acc)}
+.ach-g small{display:none}.ach-g .ach-b{padding:10px 4px}.ach-g b{font-size:12px;font-weight:500}.ach-g .ach-e{font-size:24px}

@@ -343,6 +343,7 @@ function makeOrder(p, o, items, ph, key, via) {
     notifyManager(orderCard(r, p), adminKb(r));
     if (p.tgId) toPartner(p, '✅ <b>Замовлення ' + h(r.id) + ' прийнято</b>\n' + h(r.client) + ', ' + h(r.city) + '\nСума для клієнта: ' + money(r.sale) +
       '\nВаш заробіток ≈ ' + money(r.earn) + (via === 'Вітрина' ? '\nДжерело: ваша вітрина' : '') + '\n\nМенеджер перевірить наявність і підтвердить. Статус і ТТН прийдуть сюди.', appKb('Відкрити замовлення', 'o=' + r.id));
+    award(p.id);                                       // після «прийнято» — привітання зі значком
     return { ok: true, id: r.id, order: pubOrder(r) };
 }
 
@@ -529,6 +530,7 @@ function setOrder(o, ch) {
   o.updated = now();
   write(SH_O, OC, o);
   tellPartner(o, old);
+  if (o.status !== old.status) award(o.partnerId);
   return o;
 }
 
@@ -553,7 +555,8 @@ ACTIONS.a_partner = function (b) {
       if (b.note !== undefined) p.note = str(b.note, 1000);
       write(SH_P, PC, p);
       if ((p.level || 'Starter') !== oldLv && LEVELS[p.level] > LEVELS[oldLv])
-        toPartner(p, '🚀 <b>Новий рівень: ' + h(p.level) + '</b>\nТепер ваша маржа — ' + LEVELS[p.level] + '% від рекомендованої ціни. Дякуємо за роботу!');
+        toPartner(p, '🚀 <b>Вітаємо з новим рівнем: ' + h(p.level) + '!</b>\nТепер ваша маржа — <b>' + LEVELS[p.level] + '%</b> від рекомендованої ціни: з кожного замовлення ви заробляєте більше.\n\n🏅 Новий значок «' + (p.level === 'Team' ? '🏢 Рівень Team' : '🚀 Рівень Pro') + '» уже в кабінеті. Дякуємо за роботу!',
+          { inline_keyboard: [[{ text: '📱 Кабінет', web_app: { url: APP_URL } }, { text: '⚙️ Налаштування', callback_data: 'set|show' }]] });
       return { ok: true, partner: adminPartner(p) };
     }
     fail('notfound');
@@ -849,6 +852,7 @@ function onMessage(m) {
     return send(chat, '✅ Цей чат підключено для менеджера.\nСюди приходитимуть нові партнери, замовлення партнерів з кнопками «Підтвердити / Відправлено / Скасувати» і повідомлення від партнерів.\n\nЩоб відповісти партнеру — відповідайте (Reply) на його повідомлення.');
   }
   if (cmd[1] === 'id') return send(chat, 'ID цього чату: <code>' + h(chat) + '</code>');
+  if (cmd[1] === 'settings' && priv) return settingsShow(chat, from.id);
   if ((cmd[1] === 'tips' || cmd[1] === 'summary') && priv) { var on = !(cmd[2] && /^(off|ні|вимк)/i.test(cmd[2])); return send(chat, onbToggle(from.id, on, cmd[1] === 'summary' ? 'sum' : 'tips')); }
   if (isAdm && !priv || isAdm && m.reply_to_message) return onAdmin(m, chat, text);
   if (!priv) return;
@@ -908,7 +912,8 @@ function onAdmin(m, chat, text) {
 }
 function onCallback(q) {
   var d = String(q.data || '').split('|'), chat = String(q.message && q.message.chat.id || q.from.id), ans = '';
-  if (d[0] === 'onb' || d[0] === 'sum') ans = onbToggle(q.from.id, d[1] === 'on', d[0] === 'sum' ? 'sum' : 'tips');
+  if (d[0] === 'set') ans = settingsCb(q, chat, d);
+  else if (d[0] === 'onb' || d[0] === 'sum') ans = onbToggle(q.from.id, d[1] === 'on', d[0] === 'sum' ? 'sum' : 'tips');
   else if (d[0] === 'my') {
     var p = partnerByTg(q.from.id);
     if (p) send(chat, ordersText(p), appKb('Усі замовлення', 'orders')); else welcome(chat, null);
@@ -992,7 +997,7 @@ var ONB_D = [
     b: [['📖 Заперечення «дорого»', BLOG + 'zaperechennya-dorogo-yak-vidpovisty.html'], ['🎓 Урок: ТОП-10 заперечень', SALES + 'l10']] },
   { t: '🏁 Крок 7 з 7. Тиждень позаду — що далі', x: 'Ви вже знаєте головне: товари, оголошення, відповіді клієнтам, замовлення й вітрина. Далі раз на тиждень надсилатимемо один корисний урок.\n\nЗастрягли або немає першого продажу? Напишіть менеджеру — розберемо ваші оголошення й підкажемо, що змінити.',
     alt: { t: '🏁 Тиждень позаду — у вас уже {n}!', x: 'Так тримати! Щоб продажів ставало більше: більше оголошень, вітрина в профілі й регулярні відео. Раз на тиждень надсилатимемо один корисний урок.\n\nПитання — пишіть менеджеру, допоможемо.' },
-    b: [['🎓 Академія партнера', SITE + 'academy.html']] }
+    b: [['🎓 Академія партнера', SITE + 'academy.html'], ['💬 Написати менеджеру', 'https://t.me/' + MANAGER]] }
 ];
 var ONB_W1 = [
   { t: 'Перевірте попит, перш ніж вкладати час', x: 'Як за 15 хвилин зрозуміти, чи шукають ваш товар: пошук OLX, Google, кількість переглядів.', b: [['🎓 Урок: перевірка попиту', COURSE + 'm1l3']] },
@@ -1063,8 +1068,8 @@ function onbMsg(it, st, plain) {
   var alt = it.alt && st.n > 0 ? it.alt : null, t = (alt || it).t.replace('{n}', st.n + ' ' + plural(st.n, 'замовлення', 'замовлення', 'замовлень')), x = (alt || it).x;
   var btn = function (text, url, app) { return app && !plain ? { text: text, web_app: { url: url } } : { text: text, url: url }; };   // web_app — лише в особистому чаті
   var kb = (it.b || []).map(function (b) { return [b[2] ? btn(b[0], onbApp(b[1]), 1) : btn(b[0], b[1])]; });
-  kb.push([btn('📱 Кабінет', APP_URL + (it.app ? '#' + it.app : ''), 1), { text: '💬 Менеджер', url: 'https://t.me/' + MANAGER }]);
-  kb.push([{ text: '🔕 Не надсилати поради', callback_data: 'onb|off' }]);
+  kb.push([btn('📱 Кабінет', APP_URL + (it.app ? '#' + it.app : ''), 1), { text: '⚙️ Налаштування', callback_data: 'set|show' }]);
+  kb.push([btn('🏪 Моя вітрина', onbApp(SITE + 'v/edit.html'), 1)]);
   return { text: '<b>' + h(t) + '</b>\n\n' + x, kb: { inline_keyboard: kb } };
 }
 function plural(n, one, few, many) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many; }
@@ -1133,11 +1138,8 @@ function weeklyMsg(p, st, nx, W) {
   var sm = st.soff ? null : weekSummary(p, W), les = nx.it;
   if (!les && !(sm && sm.active)) return null;
   var kb = (les && les.b || []).map(function (b) { return [b[2] ? { text: b[0], web_app: { url: onbApp(b[1]) } } : { text: b[0], url: b[1] }]; });
-  kb.push([{ text: '📱 Кабінет', web_app: { url: APP_URL } }, { text: '📊 Вітрина', web_app: { url: onbApp(SITE + 'v/edit.html#stats') } }, { text: '💬 Менеджер', url: 'https://t.me/' + MANAGER }]);
-  var off = [];
-  if (les) off.push({ text: '🔕 Без порад', callback_data: 'onb|off' });
-  if (sm) off.push({ text: '🔕 Без сводки', callback_data: 'sum|off' });
-  kb.push(off);
+  kb.push([{ text: '📱 Кабінет', web_app: { url: APP_URL } }, { text: '⚙️ Налаштування', callback_data: 'set|show' }]);
+  kb.push([{ text: '🏪 Моя вітрина', web_app: { url: onbApp(SITE + 'v/edit.html#stats') } }]);
   var text = (sm ? sm.text : '') + (les ? (sm ? '\n\n━━━━━━━━━━\n' : '') + '<b>' + h(les.t) + '</b>\n' + les.x : '');
   return { text: text, kb: { inline_keyboard: kb } };
 }
@@ -1221,3 +1223,102 @@ function onbPreview() {
 }
 /** Надіслати собі ВСІ уроки тижня (59 повідомлень) — щоб прочитати весь курс у боті. */
 function onbPreviewAll() { onbPreview.all = true; try { onbPreview(); } finally { onbPreview.all = false; } }
+
+/* ================= Налаштування повідомлень у боті (кнопка «⚙️ Налаштування», команда /settings) ================= */
+var SET_ITEMS = [
+  ['tips', 'off', '🎓 Уроки тижня', 'Одна коротка порада на тиждень: де знайти клієнтів, що відповісти на «дорого», як оформити вітрину. Перевірені прийоми партнерів, які продають щотижня, — 3 хвилини читання.',
+    'Ви більше не отримуватимете уроки тижня — нові прийоми продажу, майданчики й PDF-інструкції доведеться шукати самостійно.'],
+  ['sum', 'soff', '📊 Сводка тижня', 'Щопонеділка: скільки замовлень і заробітку за тиждень, що вже до виплати, хіти в інших партнерів і новинки каталогу. Ваш тиждень — за 10 секунд, без входу в кабінет.',
+    'Ви не бачитимете щопонеділка свої результати, хіти в партнерів і новинки каталогу.'],
+  ['ach', 'aoff', '🏆 Досягнення й рівні', 'Привітання з першим замовленням, новими значками й челенджем «Перші 10», а також підказка, коли ви виконали умову нового рівня маржі — щоб не пропустити підвищення заробітку.',
+    'Ви не дізнаєтеся вчасно, що виконали умову нового рівня маржі, і не отримуватимете привітань із досягненнями.']];
+function settingsView(p) {
+  var st = onbState(p), L = ['⚙️ <b>Налаштування повідомлень</b>', 'Бот пише не частіше ніж раз на тиждень — і лише те, що допомагає продавати більше.', ''];
+  SET_ITEMS.forEach(function (x) { L.push(x[2] + ' — ' + (st[x[1]] ? '⬜ <i>вимкнено</i>' : '✅ <b>увімкнено</b>')); L.push(x[3]); L.push(''); });
+  L.push('📦 Сповіщення про замовлення, ТТН і виплати приходять завжди.');
+  var kb = SET_ITEMS.map(function (x) { return [{ text: (st[x[1]] ? '⬜ Увімкнути: ' : '✅ ') + x[2].replace(/^\S+\s/, ''), callback_data: 'set|' + (st[x[1]] ? 'on' : 'ask') + '|' + x[0] }]; });
+  kb.push([{ text: '💬 Написати менеджеру', url: 'https://t.me/' + MANAGER }, { text: '📱 Кабінет', web_app: { url: APP_URL } }]);
+  return { text: L.join('\n'), kb: { inline_keyboard: kb } };
+}
+function settingsShow(chat, tgId) {
+  var p = partnerByTg(tgId);
+  if (!p) return send(chat, 'Спершу підключіть кабінет партнера.', appKb('Відкрити кабінет'));
+  var v = settingsView(p); return send(chat, v.text, v.kb);
+}
+function settingsCb(q, chat, d) {
+  var mid = q.message && q.message.message_id, edit = function (v) { bot('editMessageText', { chat_id: chat, message_id: mid, text: v.text, parse_mode: 'HTML', reply_markup: v.kb, disable_web_page_preview: true }); };
+  if (d[1] === 'show') { settingsShow(chat, q.from.id); return ''; }
+  var it = SET_ITEMS.filter(function (x) { return x[0] === d[2]; })[0];
+  if (!it) return '';
+  if (d[1] === 'ask') {        // перед вимкненням — коротко, що саме зміниться
+    edit({ text: '⚙️ <b>Вимкнути «' + it[2].replace(/^\S+\s/, '') + '»?</b>\n\n' + it[4] + '\n\nМи пишемо не частіше ніж раз на тиждень — і лише корисне.',
+      kb: { inline_keyboard: [[{ text: '👍 Залишити ввімкненим', callback_data: 'set|keep|' + it[0] }], [{ text: 'Так, вимкнути', callback_data: 'set|off|' + it[0] }]] } });
+    return '';
+  }
+  var msg = withLock(function () {
+    var list = readAll(SH_P, PC), p = findTg(list, q.from.id);
+    if (!p) return 'Спершу підключіть кабінет';
+    if (d[1] === 'on' || d[1] === 'off') { var st = onbState(p); if (d[1] === 'on') delete st[it[1]]; else st[it[1]] = 1; delete st.blk; p.onb = JSON.stringify(st); write(SH_P, PC, p); }
+    edit(settingsView(p));
+    return d[1] === 'on' ? 'Увімкнено ✅' : d[1] === 'off' ? 'Вимкнено' : 'Чудово, залишаємо 👍';
+  });
+  return msg;
+}
+
+/* ================= Досягнення: челендж «Перші 10 замовлень», значки, умова нового рівня =================
+   Ті самі правила, що в badges.js (кабінет і Mini App). Привітання — після нового замовлення чи зміни статусу.
+   Партнерам, у яких на момент запуску вже були значки, їх зараховано тихо — привітання лише за нові. */
+var BADGES = [
+  ['first', '🥇', 'Перше замовлення', function (s) { return s.orders >= 1; }, 'Перший крок зроблено — далі легше. Тримайте клієнта в курсі: підтвердили, відправили, ТТН.'],
+  ['deliv1', '📦', 'Перша доставка', function (s) { return s.deliv >= 1; }, 'Клієнт отримав посилку, а ви — перший заробіток. Попросіть у клієнта відгук і фото — це найкращий контент.'],
+  ['ch10', '🏆', 'Челендж «Перші 10»', function (s) { return s.orders >= 10; }, 'Десять замовлень — ви вже не новачок, а продавець. Наступна ціль — 25.'],
+  ['earn1k', '💰', 'Перші 1 000 ₴', function (s) { return s.earned >= 1000; }, 'Перша тисяча заробітку з отриманих замовлень. Далі — 10 000.'],
+  ['month5', '📈', '5 за місяць', function (s) { return s.bestMonth >= 5; }, 'П’ять замовлень за місяць — стабільний ритм. Так виходять на рівень Pro.'],
+  ['streak4', '🔥', '4 тижні поспіль', function (s) { return s.streak >= 4; }, 'Замовлення щотижня місяць поспіль. Регулярність — головний секрет найкращих партнерів.'],
+  ['d25', '⭐', '25 замовлень', function (s) { return s.orders >= 25; }, '25 замовлень! Наступна ціль — 50.'],
+  ['earn10k', '💸', '10 000 ₴', function (s) { return s.earned >= 10000; }, '10 000 ₴ заробітку. Це вже серйозний додатковий дохід.'],
+  ['d50', '💎', '50 замовлень', function (s) { return s.orders >= 50; }, '50 замовлень — ви в числі найактивніших партнерів.'],
+  ['d100', '👑', '100 замовлень', function (s) { return s.orders >= 100; }, 'Сто замовлень. Дякуємо, що ви з нами!']];
+var LV_TURN = { Pro: 20000, Team: 80000 }, LV_NEXT = { Starter: 'Pro', Pro: 'Team' };
+function pStats(pid, all) {
+  var L = all.filter(function (o) { return o.partnerId === pid && CANCELLED.indexOf(o.status) < 0; }), D = L.filter(function (o) { return OK_ST.indexOf(o.status) >= 0; });
+  var byM = {}, weeks = {}, wk = function (iso) { var t = new Date(Date.parse(onbDay(iso) + 'T12:00:00Z')); t = new Date(t - ((t.getUTCDay() + 6) % 7) * 864e5); return t.toISOString().slice(0, 10); };
+  L.forEach(function (o) { var m = onbDay(o.created).slice(0, 7); byM[m] = (byM[m] || 0) + 1; weeks[wk(o.created)] = 1; });
+  var streak = 0, t = Date.parse(wk(new Date().toISOString()) + 'T12:00:00Z');
+  if (!weeks[new Date(t).toISOString().slice(0, 10)]) t -= 7 * 864e5;
+  while (weeks[new Date(t).toISOString().slice(0, 10)]) { streak++; t -= 7 * 864e5; }
+  var mon = onbDay().slice(0, 7), turn = L.filter(function (o) { return onbDay(o.created).slice(0, 7) === mon; }).reduce(function (a, o) { return a + num(o.sale); }, 0);
+  var best = 0; Object.keys(byM).forEach(function (k) { best = Math.max(best, byM[k]); });
+  return { orders: L.length, deliv: D.length, earned: D.reduce(function (a, o) { return a + earnOf(o); }, 0), bestMonth: best, streak: streak, turn: turn, month: mon };
+}
+function bar10(n) { n = Math.max(0, Math.min(10, n)); return new Array(n + 1).join('▰') + new Array(11 - n).join('▱'); }
+function award(pid) {
+  try {
+    if (!prop('DROP_BOT_TOKEN')) return;
+    var list = readAll(SH_P, PC), p = findById(list, pid);
+    if (!p) return;
+    var s = pStats(pid, readAll(SH_O, OC)), st = onbState(p), got = BADGES.filter(function (b) { return b[3](s); }).map(function (b) { return b[0]; });
+    var had = st.bdg, fresh = [], changed = false, msgs = [];
+    if (!had) { st.bdg = got; changed = true; if (s.orders <= 1) fresh = got; }          // перший запуск: старі значки — тихо
+    else { fresh = got.filter(function (x) { return had.indexOf(x) < 0; }); if (fresh.length) { st.bdg = had.concat(fresh); changed = true; } }
+    if (fresh.length && !st.aoff) {
+      var B = BADGES.filter(function (b) { return fresh.indexOf(b[0]) >= 0; }), nx = BADGES.filter(function (b) { return got.indexOf(b[0]) < 0; })[0];
+      var ch = s.orders < 10 ? '\n\n🏆 Челендж «Перші 10 замовлень»: ' + bar10(s.orders) + ' <b>' + s.orders + '/10</b>' : '';
+      msgs.push('🏅 <b>Нове досягнення: ' + B.map(function (b) { return b[1] + ' ' + b[2]; }).join(', ') + '!</b>\n' + B[B.length - 1][4] + ch +
+        (nx ? '\n\nНаступна ціль: ' + nx[1] + ' ' + nx[2] : ''));
+    }
+    // умова нового рівня маржі: оборот за місяць ≥ порогу → підказка партнеру й менеджеру (рівень підвищує менеджер)
+    var nl = LV_NEXT[p.level || 'Starter'], key = nl ? s.month + ':' + nl : '';
+    if (nl && s.turn >= LV_TURN[nl] && st.lvq !== key) {
+      st.lvq = key; changed = true;
+      if (!st.aoff) msgs.push('🎯 <b>Ви виконали умову рівня ' + nl + '!</b>\nОборот за цей місяць — ' + money(s.turn) + ' (поріг ' + money(LV_TURN[nl]) + '). Менеджер перевірить і підвищить рівень — маржа стане від ' + LEVELS[nl] + '%.');
+      notifyManager('📈 <b>Партнер досяг обороту рівня ' + nl + '</b>\n' + h(p.id + ' · ' + p.name) + ' (зараз ' + h(p.level || 'Starter') + ')\nОборот за місяць: ' + money(s.turn) + ' з ' + money(LV_TURN[nl]) +
+        '\nПідвищити: адмінка → Партнери → ' + h(p.id) + ' → рівень ' + nl + '.');
+    }
+    if (changed) {
+      var sh = sheet(SH_P, PC), col = PC.map(function (c) { return c[0]; }).indexOf('onb') + 1;
+      if (String(sh.getRange(p._r, 1).getValue()) === p.id) sh.getRange(p._r, col).setNumberFormat('@').setValue(JSON.stringify(st));
+    }
+    if (p.tgId) msgs.forEach(function (m) { send(p.tgId, m, { inline_keyboard: [[{ text: '🏆 Мої досягнення', web_app: { url: APP_URL + '#home' } }, { text: '⚙️ Налаштування', callback_data: 'set|show' }]] }); });
+  } catch (x) { console.error('award', x); }
+}
