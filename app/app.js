@@ -253,6 +253,8 @@ function vHome(){
   <div class="bars">${R.map(r=>`<div class="bar"><div class="col"><b style="height:${(r.ok/mx*100).toFixed(1)}%"></b><b class="w" style="height:${(r.w/mx*100).toFixed(1)}%"></b></div><span>${E(r.l)}</span></div>`).join('')}</div>
   <div class="leg"><span><i></i>отримано</span><span><i class="w"></i>в роботі</span></div>
   ${nx?`<div class="prog"><div class="row"><span>До рівня <b style="color:var(--tx)">${nx[0]}</b> (${nx[2]}%)</span><span>${M(s.mTurn)} з ${M(nx[1])}</span></div><i><b style="width:${pct}%"></b></i></div>`:'<p class="small mt">У вас найвищий рівень — дякуємо за роботу!</p>'}</div>
+ <div class="vit">${ico('store')}<em>Головна фішка партнерства</em><b>🏪 Своя вітрина</b><p>Ваш магазин за одним посиланням: назва, логотип і ціни — ваші. Покупці замовляють самі, ми відправляємо.</p>
+  <div class="row"><button class="btn sm" data-nav="../v/edit.html?from=app">Моя вітрина</button><button class="btn sm ghost" data-url="${SITE}course-vitryna.html">Курс</button></div></div>
  <div class="h3">Останні замовлення</div>
  ${orders.length?orders.filter(o=>!sent.includes(o)).slice(0,4).map(oCard).join('')+(orders.length>4?`<button class="more" data-go2="orders">Усі замовлення (${orders.length})</button>`:'')
   :`<div class="card empty">${ico('box')}<b>Замовлень ще немає</b>Знайдіть товар у розділі «Товари», скопіюйте текст оголошення й розмістіть його. Коли клієнт замовить — оформіть тут.<br><button class="btn sm" data-go2="cat">Обрати товари</button></div>`}
@@ -458,8 +460,9 @@ function vProfile(){
  <div class="list"><button class="li" data-anketa><span class="ic">${ico('info')}</span><span class="t"><b>Анкета партнера</b><small>${me.anketaAt?'Заповнена — можна оновити':'Ще не заповнена'}</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}partners.html"><span class="ic">${ico('grid')}</span><span class="t"><b>Товари для продажу на сайті</b><small>Повні тексти й усі фото</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}academy.html"><span class="ic">${ico('book')}</span><span class="t"><b>Академія партнера</b></span>${ico('chev')}</button>
-  <button class="li" data-nav="../v/edit.html?from=app"><span class="ic">${ico('grid')}</span><span class="t"><b>Моя вітрина</b><small>Власний магазин за посиланням</small></span>${ico('chev')}</button>
+  <button class="li" data-nav="../v/edit.html?from=app"><span class="ic">${ico('store')}</span><span class="t"><b>Моя вітрина</b><small>Власний магазин за посиланням</small></span>${ico('chev')}</button>
   <button class="li" data-go2="help"><span class="ic">${ico('info')}</span><span class="t"><b>Питання й відповіді</b><small>Пароль, ТТН, виплати, Telegram</small></span>${ico('chev')}</button>
+  <button class="li" data-url="${SITE}course-vitryna.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Своя вітрина»</b><small>Назва, логотип з ШІ, продаючі тексти</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}course-sales3.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Продажі 3.0»</b><small>Скрипти відповідей клієнтам</small></span>${ico('chev')}</button></div>
  <div class="h3">Вхід на сайті</div>
  <form id="pwf" class="card" novalidate><p class="small" style="margin-bottom:10px">Кабінет є й на сайті samostroy.shop/kabinet.html — логін ваш телефон. Задайте пароль, щоб входити з комп’ютера.</p>

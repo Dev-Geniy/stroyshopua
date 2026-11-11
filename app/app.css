@@ -304,3 +304,13 @@ body.fbon #app{padding-bottom:calc(96px + var(--safe-b))}
 @keyframes sk{to{background-position:-200% 0}}
 @media(min-width:420px){.kpi b{font-size:17px}}
 @media(max-width:340px){.kpi{grid-template-columns:1fr 1fr}.f2{grid-template-columns:1fr}}
+
+/* вітрина партнера (модуль v/) */
+.vit{position:relative;overflow:hidden;border-radius:var(--r);padding:16px;margin-bottom:10px;color:#fff;background:linear-gradient(135deg,#2b3138,color-mix(in srgb,#2b3138 65%,var(--acc)))}
+.vit em{font-style:normal;font:700 11px/1 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.vit b{display:block;font-size:17px;margin:6px 0 4px}
+.vit p{font-size:13.5px;line-height:1.4;color:rgba(255,255,255,.82);margin:0 0 12px}
+.vit .row{gap:8px;flex-wrap:wrap}
+.vit .btn{min-height:40px;font-size:14px}
+.vit .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+.vit>.i{position:absolute;right:-8px;top:-6px;width:84px;height:84px;color:rgba(255,255,255,.08)}

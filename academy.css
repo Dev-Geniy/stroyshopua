@@ -240,3 +240,5 @@
 .ac-next b{font-size:17px}.ac-next span{font-size:14px;color:var(--soft)}
 @media(max-width:1020px){.ac-next{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.ac-next{grid-template-columns:1fr}}
+.ac-next a.hot{grid-column:1/-1;border-color:var(--orange);box-shadow:inset 0 4px 0 var(--orange);background:color-mix(in srgb,var(--orange) 6%,var(--panel))}
+.ac-next a.hot b{font-size:19px}

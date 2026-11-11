@@ -817,7 +817,7 @@ def sitemap(prods, cats, arts):
     static = [('', 'daily', '1.0'), ('vinil.html', 'weekly', '0.8'), ('pazl-pidloga.html', 'weekly', '0.8'), ('mebli.html', 'weekly', '0.8'),
               ('kylimky.html', 'weekly', '0.8'), ('ekoshkira.html', 'weekly', '0.8'), ('dzerkala.html', 'weekly', '0.8'), ('opt.html', 'monthly', '0.7'),
               ('dropshipping.html', 'monthly', '0.8'), ('academy.html', 'monthly', '0.7'), ('course-dropshipping.html', 'monthly', '0.6'),
-              ('course-sales3.html', 'monthly', '0.6'), ('partners.html', 'weekly', '0.6'), ('lk.html', 'monthly', '0.5'), ('postachalniky.html', 'monthly', '0.6'),
+              ('course-sales3.html', 'monthly', '0.6'), ('course-vitryna.html', 'monthly', '0.6'), ('partners.html', 'weekly', '0.6'), ('lk.html', 'monthly', '0.5'), ('postachalniky.html', 'monthly', '0.6'),
               ('franchise.html', 'monthly', '0.5'), ('jobs.html', 'weekly', '0.5'), ('blog.html', 'weekly', '0.7'), ('reviews.html', 'weekly', '0.6'), ('povernennya.html', 'monthly', '0.4'), ('bio.html', 'monthly', '0.3')]
     rows = []
     for path, fr, pr in static:

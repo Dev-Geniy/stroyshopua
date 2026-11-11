@@ -138,7 +138,7 @@ function draw(){
  $i('kbUser').innerHTML=`<button type="button" class="btn ghost sm" data-out>Вийти</button>`;
  const nWork=orders.filter(o=>WORK.includes(o.status)).length;
  const nFav=favs().length;
- app.innerHTML=`<nav class="kb-tabs" aria-label="Розділи кабінету">${TABS.map(([k,l,i])=>`<a href="#${k}" data-tab="${k}"${tab==k?' aria-current="page"':''}>${ico(i)}<span>${l}</span>${k=='orders'&&nWork?`<i>${nWork}</i>`:k=='mine'&&nFav?`<i class="soft">${nFav}</i>`:''}</a>`).join('')}</nav><div id="kbP"></div>`;
+ app.innerHTML=`<nav class="kb-tabs" aria-label="Розділи кабінету">${TABS.map(([k,l,i])=>`<a href="#${k}" data-tab="${k}"${tab==k?' aria-current="page"':''}>${ico(i)}<span>${l}</span>${k=='orders'&&nWork?`<i>${nWork}</i>`:k=='mine'&&nFav?`<i class="soft">${nFav}</i>`:''}</a>${k=='mine'?`<a href="v/edit.html" class="kb-tv" title="Своя вітрина — ваш магазин за посиланням">${ico('store')}<span>Вітрина</span><b>NEW</b></a>`:''}`).join('')}</nav><div id="kbP"></div>`;
  ({home:vHome,order:vOrder,orders:vOrders,mine:vMine,learn:vLearn,help:vHelp,profile:vProfile})[tab]()}
 /* ---------- допомога (база знань kb.js) — доступна й без входу ---------- */
 function vHelp(open){const P=$i('kbP')||app;P.innerHTML=`<div class="kb-card"><h3 style="margin-bottom:4px">Питання й відповіді</h3><p class="kb-small" style="margin:0 0 14px">Вхід і пароль, замовлення, ТТН, заробіток і виплати, Telegram-бот.</p><div id="kbHelp"></div></div>`;
@@ -158,9 +158,15 @@ const grow=()=>`<section class="kb-grow" aria-labelledby="kbGrowH"><div class="k
  <article class="kb-g"><span class="kb-gi">${ico('play')}</span><h4>Курси</h4>
   <a class="kb-gl" href="course-dropshipping.html"><b>Дропшипінг з нуля</b><small>Від першого оголошення до перших замовлень</small>${ico('arrow')}</a>
   <a class="kb-gl" href="course-sales3.html"><b>Продажі 3.0</b><small>Скрипти відповідей і робота з запереченнями</small>${ico('arrow')}</a>
+  <a class="kb-gl" href="course-vitryna.html"><b>Своя вітрина</b><small>Назва, логотип з ШІ й продаючі тексти</small>${ico('arrow')}</a>
   <a class="kb-gl" href="lk.html"><b>Де й як продавати</b><small>Порівняння майданчиків і план на тиждень</small>${ico('arrow')}</a></article>
 </div></section>`;
 
+/* ---------- вітрина партнера (модуль v/): промо на огляді ---------- */
+const vitPromo=()=>`<section class="kb-vit" aria-labelledby="kbVitH"><div><em>Головна фішка партнерства</em><h3 id="kbVitH">🏪 Своя вітрина — ваш магазин за 10 хвилин</h3>
+ <p>Ваша назва, логотип і ціни за одним посиланням. Покупці замовляють самі, замовлення падають у кабінет, а ми пакуємо й відправляємо.</p>
+ <div class="kb-va"><a class="btn" href="v/edit.html">Відкрити редактор вітрини</a><a class="btn ghost" href="course-vitryna.html">Курс: як зробити, щоб продавала</a></div></div>
+ <ul><li>${ico('check')}<span>Безкоштовно, без сайту й програміста</span></li><li>${ico('check')}<span>Логотип і тексти — з ШІ за готовими промптами</span></li><li>${ico('check')}<span>Замовлення 24/7, оплата при отриманні</span></li><li>${ico('check')}<span>QR-код, віджет на сайт і готові пости</span></li></ul></section>`;
 /* ---------- огляд ---------- */
 function stats(){
  const live=orders.filter(o=>!CANC.includes(o.status)),now=new Date(),ms=new Date(now.getFullYear(),now.getMonth(),1);
@@ -200,6 +206,7 @@ function vHome(){
  </div>
  <div class="kb-card"><div class="kb-ch"><h3>Останні замовлення</h3>${orders.length?'<a href="#orders" data-tab="orders" class="kb-link">Усі замовлення</a>':''}</div>
   ${orders.length?`<div class="kb-list">${orders.slice(0,5).map(row).join('')}</div>`:`<div class="kb-none"><p>Тут з’являться ваші замовлення зі статусами й ТТН.</p><a class="btn ghost sm" href="partners.html">Обрати товари для продажу</a></div>`}</div>
+ ${vitPromo()}
  ${grow()}`}
 function pl(n,a,b,c){const m=n%10,h=n%100;return m==1&&h!=11?a:m>=2&&m<=4&&(h<10||h>=20)?b:c}
 

@@ -42,7 +42,7 @@
 .lk-week input{width:20px;height:20px;accent-color:var(--ok)}
 .lk-week label.on{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--panel))}
 .lk-week label.on span{color:var(--soft);text-decoration:line-through}
-.lk-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.lk-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
 .lk-tools a{text-decoration:none;background:var(--slate);color:#fff;border-radius:var(--r);padding:16px;display:grid;gap:2px}
 .lk-tools span{font-size:13px;color:#c3cad0}
 .lk-tools a:hover{background:#3a434d}
