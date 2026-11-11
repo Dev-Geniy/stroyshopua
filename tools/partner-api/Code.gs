@@ -44,7 +44,13 @@ var AC = [['at', 'Видалено'], ['type', 'Що'], ['id', 'ID'], ['data', '
 var SH_P = 'Партнери', SH_O = 'Замовлення партнерів', SH_H = 'Видалені записи сайту', SH_A = 'Архів видаленого';
 
 /* ---------------- вхід ---------------- */
-function doGet() { return out({ ok: true, service: 'samostroy-partners' }); }
+function doGet(e) {
+  if (e && e.parameter && e.parameter.health) {   // для сторожа (.github/workflows/watchdog.yml): таблиця відкривається
+    try { return out({ ok: true, service: 'samostroy-partners', health: true, rows: SpreadsheetApp.getActiveSpreadsheet().getSheets().length }); }
+    catch (x) { return out({ ok: false, service: 'samostroy-partners', health: true, error: String(x && x.message || x).slice(0, 200) }); }
+  }
+  return out({ ok: true, service: 'samostroy-partners' });
+}
 function doPost(e) {
   if (e && e.parameter && e.parameter.tg) return botWebhook(e);
   var b = {};

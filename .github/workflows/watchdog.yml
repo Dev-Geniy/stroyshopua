@@ -1,0 +1,60 @@
+name: Сторож сайту й скриптів
+
+# Кожні ~15 хвилин перевіряє сайт, каталог, три скрипти Google і ботів.
+# Якщо щось не працює — пише в адмін-бот (секрети ADMIN_BOT_TOKEN і ADMIN_CHAT_ID).
+# Інструкція — tools/watchdog/ЯК-УВІМКНУТИ.md. Ручний запуск з галочкою «report» надсилає звіт навіть коли все добре.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      report:
+        description: 'Надіслати звіт в адмін-бот, навіть якщо все працює'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            config.js
+            v/config.js
+            tools/watchdog
+          sparse-checkout-cone-mode: false
+
+      - name: Попередній стан
+        uses: actions/cache/restore@v4
+        with:
+          path: .watchdog
+          key: watchdog-${{ github.run_id }}
+          restore-keys: watchdog-
+
+      - name: Перевірка
+        id: w
+        env:
+          ADMIN_BOT_TOKEN: ${{ secrets.ADMIN_BOT_TOKEN }}
+          ADMIN_CHAT_ID: ${{ secrets.ADMIN_CHAT_ID }}
+          CLIENT_BOT_TOKEN: ${{ secrets.CLIENT_BOT_TOKEN }}
+          DROP_BOT_TOKEN: ${{ secrets.DROP_BOT_TOKEN }}
+          WATCH_REPORT: ${{ github.event.inputs.report }}
+        run: python3 tools/watchdog/watchdog.py
+
+      - name: Зберегти стан
+        if: steps.w.outputs.changed == '1'
+        uses: actions/cache/save@v4
+        with:
+          path: .watchdog
+          key: watchdog-${{ github.run_id }}

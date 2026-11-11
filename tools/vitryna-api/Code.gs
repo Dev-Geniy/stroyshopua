@@ -30,6 +30,7 @@ function doGet(e) {
   var p = (e && e.parameter) || {};
   try {
     if (p.a === 'get') return out(getStore(str(p.s, 40).toLowerCase(), p.pv === '1'));
+    if (p.health) return out({ ok: true, service: 'samostroy-vitryny', health: true, rows: sheet(SH_S, SC).getLastRow() });   // для сторожа
     return out({ ok: true, service: 'samostroy-vitryny' });
   } catch (x) { return out({ ok: false, error: x.code || 'server' }); }
 }

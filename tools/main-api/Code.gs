@@ -27,8 +27,14 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzeYmkpMqlVwH6RsNc6
 const PARTNER_API = 'https://script.google.com/macros/s/AKfycbxEYmnhjGKGAZz-3RwFFQTR7XItSeFp8xPlrVQfFtrh-6L0reedHd-C21a0_HZ227mI/exec';
 
 /* ---------------- вхід ---------------- */
-function doGet() {
+function doGet(e) {
+  if (e && e.parameter && e.parameter.health) return out_(health_());
   return out_({ ok: true, service: 'samostroy-orders', time: new Date().toISOString() });
+}
+// для сторожа (.github/workflows/watchdog.yml): перевіряє, що таблиця відкривається
+function health_() {
+  try { const n = sheet_().getLastRow(); return { ok: true, service: 'samostroy-orders', health: true, rows: n }; }
+  catch (x) { return { ok: false, service: 'samostroy-orders', health: true, error: String(x && x.message || x).slice(0, 200) }; }
 }
 
 function doPost(e) {
