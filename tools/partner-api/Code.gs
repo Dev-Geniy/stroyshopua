@@ -1085,9 +1085,16 @@ function setupOnboarding() {
     'партнери, що зареєструвалися до ' + prop('ONB_START') + ', — одразу уроки тижня (раз на 7 днів).\nПодивитися повідомлення: onbPreview.');
 }
 function onbPreview() {
-  var chats = adminChats(), st = { n: 0 };
+  // кому: чат менеджера в боті партнерів, а якщо його немає — ваш Telegram з TG_CHAT (спершу натисніть Start у боті партнерів)
+  var chats = adminChats().length ? adminChats() : prop('TG_CHAT').split(',').map(function (c) { return c.trim(); }).filter(String), st = { n: 0 };
   var L = ONB_D.map(function (it) { return onbMsg(it, st, 1); }).concat([onbNext({ tgId: 1, created: '2000-01-01' }, {}, onbDay(), onbDay()), onbNext({ tgId: 1, created: '2000-01-01' }, { w: 1 }, onbDay(), onbDay())].map(function (n) { return onbMsg(n.it, st, 1); }));
-  if (!chats.length) { L.forEach(function (m) { console.log(m.text + '\n---'); }); return console.log('Чат менеджера в боті партнерів не підключено — тексти вище в журналі.'); }
-  chats.forEach(function (c) { send(c, '👀 <b>Перегляд навчання в боті</b>: 7 кроків для нових партнерів і 2 перші уроки тижня (кнопки працюють як у партнерів).'); L.forEach(function (m) { send(c, m.text, m.kb); Utilities.sleep(80); }); });
-  console.log('Надіслано в чат менеджера: ' + L.length);
+  if (!chats.length || !prop('DROP_BOT_TOKEN')) { L.forEach(function (m) { console.log(m.text + '\n---'); }); return console.log('Немає чату для перегляду (DROP_ADMIN_CHATS / TG_CHAT) — тексти вище в журналі.'); }
+  var bad = [];
+  chats.forEach(function (c) {
+    var r = send(c, '👀 <b>Перегляд навчання в боті</b>: 7 кроків для нових партнерів і 2 перші уроки тижня. Так їх побачать партнери (у них кнопки «Кабінет» відкривають Mini App).');
+    if (!r || !r.ok) { bad.push(c + ' (' + (r && r.description || 'немає відповіді') + ')'); return; }
+    L.forEach(function (m) { send(c, m.text, m.kb); Utilities.sleep(80); });
+  });
+  if (bad.length) console.log('⚠️ Не вдалося надіслати в чат ' + bad.join(', ') + '.\nВідкрийте бота партнерів @' + (botUser() || 'samostroy_drop_bot') + ' у Telegram, натисніть «Start» і запустіть onbPreview ще раз.');
+  console.log('Перегляд надіслано: ' + (chats.length - bad.length) + ' чат(и), по ' + L.length + ' повідомлень.');
 }
