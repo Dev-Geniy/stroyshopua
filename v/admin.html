@@ -64,7 +64,7 @@ function stub(s){const c=s.cfg||{},img=c.cover||c.logo||'',d=c.slogan||('Віт�
 async function putStub(s){if(!gtok())return{ok:false,msg:'Немає ключа GitHub. Додайте його в адмінці → Налаштування → «Ключ GitHub» (на цьому пристрої).'};
  const f='v/'+s.slug+'/index.html',sh=await sha(f);
  const r=await gh('/contents/'+f,{method:'PUT',body:JSON.stringify({message:'Вітрина '+s.slug+': '+(s.cfg.name||''),content:b64e(stub(s)),branch:'main',...(sh?{sha:sh}:{})})});
- return r.ok?{ok:true}:{ok:false,msg:r.status==401?'GitHub не прийняв ключ. Відкрийте адмінку → Налаштування → «Ключ GitHub» → «Перевірити» — там буде причина.':r.status==403||r.status==404?'Ключ GitHub без доступу до запису в stroyshopua. Адмінка → Налаштування → «Перевірити».':'Не вдалося записати сторінку на GitHub'}}
+ return r.ok?{ok:true}:{ok:false,msg:r.status==401?'GitHub не прийняв ключ. Відкрийте адмінку → Налаштування → «Ключ GitHub» → «Перевірити» — там буде причина.':r.status==403||r.status==404?'Ключ GitHub без права запису ('+((r.j&&r.j.message)||r.status)+'). На GitHub: ваш ключ → Edit → Contents → «Read and write» → Update. Потім адмінка → Налаштування → «Перевірити».':'Не вдалося записати сторінку на GitHub'}}
 async function delStub(slug){if(!gtok())return;const f='v/'+slug+'/index.html',sh=await sha(f);if(sh)await gh('/contents/'+f,{method:'DELETE',body:JSON.stringify({message:'Вітрину '+slug+' видалено',sha:sh,branch:'main'})})}
 
 function login(msg){$('#app').innerHTML=`<form class="login" id="lf"><b>Вхід</b><p class="note">Пароль адмінки (ADMIN_PASS).</p><input type="password" id="lp" autocomplete="current-password" required><p class="note" style="color:var(--bad)">${E(msg||'')}</p><button class="btn">Увійти</button></form>`;

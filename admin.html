@@ -1020,8 +1020,12 @@ document.addEventListener('click',e=>{const b=e.target.closest('button,a,[data-a
   case'seenall':orders.forEach(o=>seen.add(o.id));saveSeen();render();return toast('Готово')}});
 async function ghCheck(){const t=ghTok(),el=$('#s-ghst');el.textContent='Перевіряю…';const r=await gh('');
  const del=' <button class="link" data-a="ghdel">Видалити ключ</button>',who='<br><span class="soft">Збережено: <code>'+ghShow(t)+'</code></span>';
- if(r.ok&&r.j&&r.j.permissions&&r.j.permissions.push)return el.innerHTML='✓ Ключ працює: можна публікувати відгуки, змінювати націнку й схвалювати вітрини.'+del;
- if(r.ok)return el.innerHTML='Ключ дійсний, але <b>без права запису</b>. На GitHub відкрийте ключ → Repository permissions → <b>Contents: Read and write</b> → Update.'+who+del;
+ if(r.ok){
+  // permissions.push — це права акаунта, а не ключа. Перевіряємо саме ключ: пробний запис невидимого blob (нічого на сайті не змінює)
+  const w=await gh('/git/blobs',{method:'POST',body:JSON.stringify({content:'samostroy key check',encoding:'utf-8'})});
+  if(w.ok)return el.innerHTML='✓ Ключ працює: можна публікувати відгуки, змінювати націнку й схвалювати вітрини.'+del;
+  if(w.status==403||w.status==404)return el.innerHTML='<b style="color:var(--bad)">Ключ бачить сайт, але не має права запису.</b> GitHub: «'+esc((w.j&&w.j.message)||'немає доступу')+'». Відкрийте <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">сторінку ключів</a> → ваш ключ → <b>Edit</b> → Repository permissions → <b>Contents</b> → змініть «Read-only» на <b>«Read and write»</b> → <b>Update</b>. Ключ той самий — вставляти заново не треба, просто натисніть «Перевірити».'+who+del;
+  return el.innerHTML=esc(ghErr(w))+'.'+who+del}
  if(r.status==401)return el.innerHTML='<b style="color:var(--bad)">GitHub не прийняв ключ</b> (відповідь: «'+esc((r.j&&r.j.message)||'Bad credentials')+'»). Найчастіші причини:<br>1) скопійовано не весь ключ або не той рядок — ключ має бути ~93 символи й починатися з github_pat_;<br>2) ключ видалено або минув термін дії — перевірте на <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">сторінці ключів</a>;<br>3) ключ створено в іншому акаунті GitHub.<br>Найпростіше — створіть новий ключ за кроками вище й вставте його.'+who+del;
  if(r.status==403||r.status==404){let u=null;try{const x=await fetch('https://api.github.com/user',{cache:'no-store',headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+t}});if(x.ok)u=await x.json()}catch(e){}
   return el.innerHTML='<b style="color:var(--bad)">Ключ дійсний'+(u&&u.login?' (акаунт '+esc(u.login)+')':'')+', але не має доступу до репозиторію '+esc(REPO)+'.</b> Під час створення ключа: <b>Resource owner</b> — Dev-Geniy, <b>Repository access</b> → Only select repositories → stroyshopua. Якщо Dev-Geniy — організація, ключ може чекати схвалення власником організації.'+who+del}
