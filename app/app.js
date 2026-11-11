@@ -148,7 +148,7 @@ function notTg(){
  <div class="mt">${BOT?`<a class="btn wide" href="https://t.me/${E(BOT)}">Відкрити бота в Telegram</a>`:''}<a class="btn ${BOT?'ghost':''} wide" href="../kabinet.html" style="margin-top:8px">Кабінет на сайті</a></div></div>`}
 
 /* ---------- вхід і реєстрація ---------- */
-let W={mode:'',name:'',phone:'',city:'',err:''};
+let W={mode:'',name:'',phone:'',city:'',err:'',exists:0};
 function welcome(u){
  $('#nav').hidden=true;mainOff();backOff();W.name=W.name||u.name||'';
  $('#app').innerHTML=`<div class="wel"><b class="brand">SAMOSTROY<i>DROP</i></b>
@@ -172,14 +172,15 @@ function authForm(){
  <label class="f"><span>Пароль для входу на сайті — необов’язково</span><input name="password" type="password" autocomplete="new-password" placeholder="можна задати пізніше в профілі"></label>`
  :`<label class="f"><span>Пароль</span><input name="password" type="password" autocomplete="current-password"></label>
  <p class="small" style="margin:-4px 2px 12px">Забули пароль? <a href="#" data-forgot>Менеджер надішле тимчасовий</a></p>`}
- <p class="err" id="aerr">${E(W.err)}</p>
+ ${!reg&&W.exists?`<div class="banner">${ico('info')}<div><b>Цей номер уже має кабінет партнера</b><span>Його створили раніше — на сайті або тут. Введіть пароль від нього, і Telegram підключиться до цього кабінету.<br>Не пам’ятаєте пароль? Натисніть «Менеджер надішле тимчасовий» — або увійдіть у кабінет на сайті й там у «Профілі» натисніть «Підключити Telegram» (без пароля тут).</span></div></div>`:''}
+ <p class="err" id="aerr">${E(W.exists&&!reg?'':W.err)}</p>
  ${reg?'<p class="small">Реєструючись, ви погоджуєтесь з умовами партнерської програми. Дані бачить лише менеджер Samostroy Shop.</p>':''}
  </form>
  <button class="lnk mt" data-sw>${reg?'Вже є кабінет? Увійти':'Ще немає кабінету? Зареєструватися'}</button></div>`;
  const f=$('#af');
  f.addEventListener('input',e=>{const n=e.target.name;if(n&&n in W)W[n]=e.target.value;e.target.closest('.f')&&e.target.closest('.f').classList.remove('bad')});
  f.addEventListener('submit',e=>{e.preventDefault();authSend()});
- $('[data-sw]').onclick=()=>{W.mode=reg?'login':'reg';W.err='';authForm()};
+ $('[data-sw]').onclick=()=>{W.mode=reg?'login':'reg';W.err='';W.exists=0;authForm()};
  const fg=$('[data-forgot]');if(fg)fg.onclick=e=>{e.preventDefault();openTg(mgrUrl('Добрий день! Не пам’ятаю пароль від кабінету партнера, допоможіть, будь ласка.'))};
  const cb=$('[data-contact]');if(cb)cb.onclick=()=>{tg.requestContact((ok,res)=>{const ph=ok&&res&&res.responseUnsafe&&res.responseUnsafe.contact&&res.responseUnsafe.contact.phone_number;
   if(ph){W.phone='+'+String(ph).replace(/\D/g,'');f.elements.phone.value=W.phone;hap('ok')}else if(ok)toast('Номер надіслано. Якщо поле порожнє — впишіть його вручну')})};
@@ -196,7 +197,7 @@ async function authSend(){
  const r=await api(reg?{action:'tg_register',initData:tg.initData,name:el.name.value,phone:el.phone.value,city:el.city.value,password:pw}
   :{action:'tg_login',initData:tg.initData,phone:el.phone.value,password:pw});
  mainBusy(false);
- if(!r.ok){if(r.error=='exists'){W.mode='login';W.err=ERR.exists;return authForm()}return err(errMsg(r.error))}
+ if(!r.ok){if(r.error=='exists'){W.mode='login';W.exists=1;W.err='';return authForm()}return err(r.error=='wrong'&&W.exists?'Пароль не підходить. Попросіть у менеджера тимчасовий пароль — кнопка вище.':errMsg(r.error))}
  hap('ok');keep(r);mainOff();backOff();route=reg?'home':'home';start();toast(reg?'Кабінет створено. Вітаємо!':'Telegram підключено до кабінету')}
 
 /* ---------- каркас ---------- */
