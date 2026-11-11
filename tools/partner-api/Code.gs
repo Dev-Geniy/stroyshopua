@@ -668,7 +668,16 @@ function botDecor() {
   var me = bot('getMe', {});
   if (me && me.ok) setProp('BOT_USER', me.result.username);
 }
-function stopPolling() { ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'pollBot') ScriptApp.deleteTrigger(t); }); }
+// без дозволу на «тригери» (ще не надано в редакторі) підключення бота все одно спрацює
+function stopPolling() {
+  try { ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'pollBot') ScriptApp.deleteTrigger(t); }); }
+  catch (x) { console.error('triggers', x); }
+}
+/** Запустіть один раз у редакторі, якщо адмінка пише «Помилка скрипта кабінету»: Google попросить усі потрібні дозволи. */
+function authorize() {
+  ScriptApp.getProjectTriggers();
+  console.log('Дозволи надано ✓ Бот партнерів: ' + (prop('DROP_BOT_TOKEN') ? 'токен є' : 'немає DROP_BOT_TOKEN') + '. Тепер натисніть «Підключити бота» в адмінці.');
+}
 
 /* ---------------- Telegram: виклики Bot API ---------------- */
 function bot(method, payload) {
