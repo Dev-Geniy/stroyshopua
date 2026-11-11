@@ -8,8 +8,8 @@
  *
  * Властивості скрипта (Налаштування проєкту → Властивості скрипта):
  *   ADMIN_PASS     — пароль адмінки (той самий, що в основному скрипті)
- *   TG_TOKEN       — токен основного Telegram-бота магазину (необов’язково, для сповіщень)
- *   TG_CHAT        — ID чату для сповіщень основного бота (необов’язково)
+ *   TG_TOKEN       — токен адмін-бота магазину (той самий BOT_TOKEN, що в основному скрипті)
+ *   TG_CHAT        — ID вашого чату з адмін-ботом (той самий CHAT_ID, що в основному скрипті)
  *   DROP_BOT_TOKEN — токен бота партнерів «Samostroy Drop» від @BotFather (для бота й Mini App)
  * Решту (адреса Mini App, секрет вебхука, чати менеджерів) скрипт зберігає сам після кнопки
  * «Підключити бота» в адмінці → Налаштування.
@@ -128,15 +128,22 @@ function cache() { return CacheService.getScriptCache(); }
 function code(n) { var abc = 'abcdefghkmnpqrstuvwxyz23456789', s = ''; for (var k = 0; k < (n || 8); k++) s += abc.charAt(Math.floor(Math.random() * abc.length)); return s; }
 function h(s) { return String(s === undefined || s === null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function plain(s) { return String(s).replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'); }
-// сповіщення основним ботом магазину (як і раніше)
-function tg(text) {
-  var t = prop('TG_TOKEN'), c = prop('TG_CHAT');
-  if (!t || !c) return;
-  try {
-    UrlFetchApp.fetch('https://api.telegram.org/bot' + t + '/sendMessage',
-      { method: 'post', payload: { chat_id: c, text: text.slice(0, 3900), disable_web_page_preview: 'true' }, muteHttpExceptions: true });
-  } catch (x) { console.error(x); }
+// сповіщення в адмін-бот магазину (TG_TOKEN → TG_CHAT): з кнопками, які обробляє основний скрипт
+function tgAdmin(html, kb) {
+  var t = prop('TG_TOKEN'), n = 0;
+  if (!t) return 0;
+  prop('TG_CHAT').split(',').filter(String).forEach(function (c) {
+    try {
+      var p = { chat_id: c.trim(), text: String(html).slice(0, 4000), parse_mode: 'HTML', disable_web_page_preview: true };
+      if (kb) p.reply_markup = kb;
+      var r = JSON.parse(UrlFetchApp.fetch('https://api.telegram.org/bot' + t + '/sendMessage',
+        { method: 'post', contentType: 'application/json', payload: JSON.stringify(p), muteHttpExceptions: true }).getContentText());
+      if (r.ok) n++;
+    } catch (x) { console.error(x); }
+  });
+  return n;
 }
+function tg(text) { return tgAdmin(h(text)); }
 function money(n) { return Math.round(n).toLocaleString('uk-UA').replace(/ /g, ' ') + ' грн'; }
 function marginOf(p) { return LEVELS[p.level] || LEVELS.Starter; }
 function earnOf(o) { return o.earnFinal !== '' ? num(o.earnFinal) : num(o.earn); }
@@ -601,6 +608,16 @@ ACTIONS.a_unhide = function (b) {
   });
 };
 
+// відповідь власника з адмін-бота (основний скрипт) → партнеру в бот партнерів
+ACTIONS.a_tgsend = function (b) {
+  admin(b);
+  var chat = str(b.chat, 20), text = str(b.text, 3500);
+  if (!/^\d+$/.test(chat) || !text) fail('bad');
+  var r = send(chat, '💬 <b>Менеджер Samostroy Shop:</b>\n' + h(text));
+  if (!r || !r.ok) fail('blocked');
+  return { ok: true };
+};
+
 /* ---------------- адмінка → налаштування бота ---------------- */
 ACTIONS.a_bot = function (b) {
   admin(b);
@@ -639,7 +656,7 @@ function botStatus() {
   if (me && me.ok) setProp('BOT_USER', me.result.username);
   return { ok: true, token: true, valid: !!(me && me.ok), user: me && me.ok ? me.result.username : '', name: me && me.ok ? me.result.first_name : '',
     mode: prop('BOT_MODE') || '', hook: !!w.url, pending: w.pending_update_count || 0, error: w.last_error_message || '',
-    errorAt: w.last_error_date ? new Date(w.last_error_date * 1000).toISOString() : '', admins: adminChats().length, app: APP_URL };
+    errorAt: w.last_error_date ? new Date(w.last_error_date * 1000).toISOString() : '', admins: adminChats().length, adminBot: !!(prop('TG_TOKEN') && prop('TG_CHAT')), app: APP_URL };
 }
 function botDecor() {
   bot('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Кабінет', web_app: { url: APP_URL } } });
@@ -679,15 +696,14 @@ function send(chat, text, kb, extra) {
 function adminChats() { return prop('DROP_ADMIN_CHATS').split(',').filter(String); }
 function appKb(text, hash) { return { inline_keyboard: [[{ text: '📱 ' + text, web_app: { url: APP_URL + (hash ? '#' + hash : '') } }]] }; }
 function toPartner(p, text, kb) { if (p && p.tgId && prop('DROP_BOT_TOKEN')) send(p.tgId, text, kb || appKb('Відкрити кабінет')); }
-// менеджеру: ботом партнерів (з кнопками), якщо його чат підключено; інакше — основним ботом магазину
+// менеджеру: в адмін-бот магазину (TG_TOKEN/TG_CHAT) з кнопками; якщо підключено чат у боті партнерів — і туди
 function notifyManager(text, kb) {
-  var L = prop('DROP_BOT_TOKEN') ? adminChats() : [];
-  if (!L.length) { tg(plain(text)); return 0; }
-  var n = 0;
+  var L = prop('DROP_BOT_TOKEN') ? adminChats() : [], n = 0;
   L.forEach(function (c) { var r = send(c, text, kb); if (r && r.ok) n++; });
-  if (!n) tg(plain(text));
+  if (!n || prop('TG_TOKEN')) n += tgAdmin(text, kb);
   return n;
 }
+function managerReachable() { return adminChats().length > 0 || !!(prop('TG_TOKEN') && prop('TG_CHAT')); }
 function notifyNewPartner(p, where) {
   notifyManager('🤝 <b>Новий партнер</b> (' + where + ')\n' + h(p.id + ' · ' + p.name) + '\nТелефон: +' + h(p.phone) + (p.city ? '\nМісто: ' + h(p.city) : '') +
     (p.msg ? '\nЗв’язок: ' + h(p.msg) : '') + '\nАнкета: ' + (p.anketaAt ? 'заповнена' : 'ще ні'));
@@ -750,8 +766,9 @@ function handleOnce(u) {
 }
 // запасний режим без вебхука: щохвилини забирає нові повідомлення (кнопка «Резервний режим» в адмінці)
 function pollBot() {
-  var l = LockService.getScriptLock();
-  if (!l.tryLock(1000)) return;
+  var c = cache();
+  if (c.get('polling')) return;
+  c.put('polling', '1', 70);
   try {
     var off = Number(prop('BOT_OFFSET') || 0), end = Date.now() + 50000;
     while (Date.now() < end) {
@@ -759,7 +776,7 @@ function pollBot() {
       if (!r || !r.ok || !r.result.length) break;
       r.result.forEach(function (u) { off = u.update_id + 1; setProp('BOT_OFFSET', off); handleOnce(u); });
     }
-  } finally { l.releaseLock(); }
+  } finally { c.remove('polling'); }
 }
 function onUpdate(u) {
   if (u.callback_query) return onCallback(u.callback_query);
@@ -815,13 +832,16 @@ function onMessage(m) {
   if (cmd[1]) return welcome(chat, p);
   // звичайне повідомлення — менеджеру
   var L = adminChats();
-  if (!L.length) return send(chat, 'Напишіть, будь ласка, менеджеру: @' + MANAGER, { inline_keyboard: [[{ text: 'Написати менеджеру', url: 'https://t.me/' + MANAGER }]] });
+  if (!managerReachable()) return send(chat, 'Напишіть, будь ласка, менеджеру: @' + MANAGER, { inline_keyboard: [[{ text: 'Написати менеджеру', url: 'https://t.me/' + MANAGER }]] });
   var who = p ? h(p.name) + ' · ' + h(p.id) + ' · +' + h(p.phone) : h([from.first_name, from.last_name].filter(String).join(' ')) + ' (ще не партнер)';
   var head = '💬 <b>Повідомлення від партнера</b>\n' + who + (from.username ? ' · @' + h(from.username) : '') + '\n#u' + from.id;
+  var note = '\n\n<i>Відповідайте (Reply) на це повідомлення — відповідь піде партнеру.</i>';
   L.forEach(function (c) {
-    if (text) send(c, head + '\n\n' + h(text) + '\n\n<i>Відповідайте (Reply) на це повідомлення — відповідь піде партнеру.</i>');
+    if (text) send(c, head + '\n\n' + h(text) + note);
     else bot('copyMessage', { chat_id: c, from_chat_id: chat, message_id: m.message_id, caption: plain(head) + (m.caption ? '\n\n' + m.caption : ''), });
   });
+  if (prop('TG_TOKEN')) tgAdmin(head.replace('Повідомлення від партнера', 'Партнер пише в бот') + '\n\n' + (text ? h(text) : (m.caption ? h(m.caption) + '\n' : '') +
+    '📎 <i>надіслав ' + (m.photo ? 'фото' : m.document ? 'файл' : m.voice ? 'голосове' : 'вкладення') + ' — його видно лише в боті партнерів; попросіть описати текстом</i>') + note);
   return send(chat, '✅ Передали менеджеру. Відповідь прийде сюди.');
 }
 function onAdmin(m, chat, text) {
