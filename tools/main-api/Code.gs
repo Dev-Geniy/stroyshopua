@@ -653,3 +653,36 @@ function testOrder() {
     items: [{ id: 'test', name: 'Тестовий товар', sku: 'SW-TEST', q: 2, price: 100 }], key: 'test-' + Date.now()
   })));
 }
+
+/* ---------------- резервна копія таблиці раз на тиждень ----------------
+   Один раз запустіть setupBackup (▶ Виконати → дозволи): щонеділі близько 03:00 у Google Диску, у папці
+   «Samostroy — резервні копії», з’являтиметься копія цієї таблиці. Зберігаються останні 8 копій (≈ 2 місяці).
+   backupNow — зробити копію зараз. Відновлення: відкрийте потрібну копію → Файл → Створити копію / скопіюйте аркуш назад. */
+var BACKUP_FOLDER = 'Samostroy — резервні копії', BACKUP_KEEP = 8;
+function backupNow() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), it = DriveApp.getFoldersByName(BACKUP_FOLDER);
+  var folder = it.hasNext() ? it.next() : DriveApp.createFolder(BACKUP_FOLDER);
+  var prefix = 'Копія · ' + ss.getName() + ' · ';
+  var name = prefix + Utilities.formatDate(new Date(), 'Europe/Kiev', 'yyyy-MM-dd HH:mm');
+  DriveApp.getFileById(ss.getId()).makeCopy(name, folder);
+  var list = [], files = folder.getFiles();
+  while (files.hasNext()) { var f = files.next(); if (f.getName().indexOf(prefix) === 0) list.push(f); }
+  list.sort(function (a, b) { return b.getDateCreated().getTime() - a.getDateCreated().getTime(); });
+  list.slice(BACKUP_KEEP).forEach(function (f) { f.setTrashed(true); });
+  console.log('✓ Копію збережено: «' + name + '» (папка «' + BACKUP_FOLDER + '», зберігаються ' + BACKUP_KEEP + ' останніх)');
+  return name;
+}
+function backupWeekly() {
+  try { backupNow(); }
+  catch (x) {
+    var nm = ''; try { nm = SpreadsheetApp.getActiveSpreadsheet().getName(); } catch (y) { }
+    try { (function (h) { adminChats_().forEach(function (c) { tg_(prop_('BOT_TOKEN'), c, h); }); })('💾 <b>Не вдалося зробити резервну копію</b> таблиці «' + nm + '»\n' + String(x && x.message || x).slice(0, 300) + '\nApps Script → «Виконання» — там деталі. Найчастіше допомагає ще раз запустити setupBackup.'); } catch (y) { }
+    throw x;
+  }
+}
+function setupBackup() {
+  ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'backupWeekly') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('backupWeekly').timeBased().onWeekDay(ScriptApp.WeekDay.SUNDAY).atHour(3).inTimezone('Europe/Kiev').create();
+  var n = backupNow();
+  console.log('✓ Щотижнева резервна копія увімкнена: щонеділі близько 03:00. Першу копію вже зроблено: «' + n + '»');
+}

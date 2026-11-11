@@ -803,7 +803,76 @@ def app_catalog(prods, by_cat):
     cats = [[s, CAT[s][2], len(by_cat[s])] for g in GROUPS for s in ORDER.get(g[0], []) if s in CAT and by_cat.get(s)]
     write('app/catalog.json', json.dumps({'updated': NOW.strftime('%Y-%m-%d %H:%M'), 'cats': cats,
           'f': ['id', 'name', 'sku', 'price', 'av', 'img', 'cat', 'qty'], 'items': items}, ensure_ascii=False, separators=(',', ':')))
+    feeds(prods)
 
+
+# ---------------------------------------------------------------- фіди для Google Merchant Center і Prom.ua
+# feeds/google-merchant.xml — безкоштовні покази в Google Покупках; feeds/prom.xml — імпорт на Prom.ua (YML).
+# Інструкція — tools/feeds/ЯК-ПІДКЛЮЧИТИ.md. Ціни й наявність — такі самі, як на сайті (оновлюються разом з каталогом).
+def _plain(h, n=5000):
+    t = re.sub(r'<\s*(br|/p|/li|/h\d)\s*/?>', '\n', h or '', flags=re.I)
+    t = html.unescape(re.sub(r'<[^>]+>', ' ', t))
+    t = '\n'.join(re.sub(r'[ \t\u00a0]+', ' ', x).strip() for x in t.split('\n'))
+    t = re.sub(r'\n{2,}', '\n', t).strip()
+    return t[:n].rsplit(' ', 1)[0] if len(t) > n else t
+
+
+def _x(v):
+    return html.escape(str(v), quote=True).replace('\x00', '')
+
+
+def feeds(prods):
+    good = [p for p in prods if p['imgs'] and p['price'] > 0]
+    ptype = lambda p: (GNAME.get(CAT[p['cat']][1], '') + ' > ' + CAT[p['cat']][2]) if p['cat'] in CAT else 'Матеріали для ремонту'
+    # Google Merchant Center (RSS 2.0 + g:)
+    G = ['<?xml version="1.0" encoding="UTF-8"?>', '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0"><channel>',
+         '<title>Samostroy Shop</title>', f'<link>{SITE}</link>', '<description>Матеріали для ремонту своїми руками</description>']
+    for p in good:
+        title = p['name'][:150]
+        desc = _plain(p['desc']) or p['name']
+        it = [f'<g:id>{_x(p["id"])}</g:id>', f'<title>{_x(title)}</title>', f'<description>{_x(desc)}</description>',
+              f'<link>{SITE}p/{_x(p["id"])}.html</link>', f'<g:image_link>{_x(p["imgs"][0])}</g:image_link>']
+        it += [f'<g:additional_image_link>{_x(u)}</g:additional_image_link>' for u in p['imgs'][1:11]]
+        it += [f'<g:availability>{"in_stock" if p["av"] else "out_of_stock"}</g:availability>', f'<g:price>{p["price"]:.2f} UAH</g:price>',
+               '<g:condition>new</g:condition>', f'<g:brand>{_x(p["brand"] or "Samostroy Shop")}</g:brand>']
+        if p['sku']:
+            it.append(f'<g:mpn>{_x(p["sku"])}</g:mpn>')
+        it += ['<g:identifier_exists>no</g:identifier_exists>', f'<g:product_type>{_x(ptype(p))}</g:product_type>']
+        G.append('<item>' + ''.join(it) + '</item>')
+    G.append('</channel></rss>')
+    write('feeds/google-merchant.xml', '\n'.join(G) + '\n')
+    # Prom.ua (YML)
+    cids = {}
+    for p in good:
+        cids.setdefault(p['cat'], len(cids) + 1)
+    Y = ['<?xml version="1.0" encoding="UTF-8"?>', f'<yml_catalog date="{NOW.strftime("%Y-%m-%d %H:%M")}">', '<shop>',
+         '<name>Samostroy Shop</name>', '<company>Samostroy Shop</company>', f'<url>{SITE}</url>',
+         '<currencies><currency id="UAH" rate="1"/></currencies>', '<categories>']
+    Y += [f'<category id="{i}">{_x(CAT[c][2] if c in CAT else "Інше")}</category>' for c, i in cids.items()]
+    Y += ['</categories>', '<offers>']
+    for p in good:
+        it = [f'<url>{SITE}p/{_x(p["id"])}.html</url>', f'<price>{p["price"]:.2f}</price>', '<currencyId>UAH</currencyId>',
+              f'<categoryId>{cids[p["cat"]]}</categoryId>']
+        it += [f'<picture>{_x(u)}</picture>' for u in p['imgs'][:10]]
+        it += [f'<name>{_x(p["name"])}</name>', f'<vendor>{_x(p["brand"] or "Samostroy Shop")}</vendor>']
+        if p['sku']:
+            it.append(f'<vendorCode>{_x(p["sku"])}</vendorCode>')
+        if p['qty'] is not None and p['qty'] >= 0:
+            it.append(f'<quantity_in_stock>{p["qty"] if p["av"] else 0}</quantity_in_stock>')
+        d = (p['desc'] or '').replace(']]>', ']]&gt;')
+        it.append(f'<description><![CDATA[{d or _x(p["name"])}]]></description>')
+        it += [f'<param name="{_x(a)}">{_x(b)}</param>' for a, b in p['par'][:30]]
+        Y.append(f'<offer id="{_x(p["id"])}" available="{"true" if p["av"] else "false"}">' + ''.join(it) + '</offer>')
+    Y += ['</offers>', '</shop>', '</yml_catalog>']
+    body = '\n'.join(Y) + '\n'
+    try:   # дата у фіді змінюється щоразу — перезаписуємо файл, лише якщо змінились самі товари
+        with open(P('feeds/prom.xml'), encoding='utf-8') as f:
+            if re.sub(r'<yml_catalog date="[^"]*">', '', f.read()) == re.sub(r'<yml_catalog date="[^"]*">', '', body):
+                WRITTEN.add('feeds/prom.xml')
+                return
+    except OSError:
+        pass
+    write('feeds/prom.xml', body)
 
 def sitemap(prods, cats, arts):
     old = {}
