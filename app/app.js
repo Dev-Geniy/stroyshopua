@@ -118,6 +118,7 @@ function boot(){
  if(!API)return screenMsg('Кабінет ще не підключено','Спробуйте трохи пізніше або напишіть менеджеру.',[['Написати менеджеру',()=>openTg(mgrUrl())]]);
  if(!inTg)return notTg();
  if(token&&me&&LS.get('da_uid','')==tgUid()){start();refresh(true,1);return}
+ if(route=='help'&&!token){helpPublic();return}
  auth()}
 async function auth(){
  $('#app').innerHTML=`<div class="boot"><b class="brand">SAMOSTROY<i>DROP</i></b><span class="spin"></span></div>`;
@@ -127,7 +128,7 @@ async function auth(){
  if(!r.linked){forget();return welcome(r.tg||{})}
  keep(r);start()}
 function parseHash(){const h=decodeURIComponent(location.hash.slice(1));
- if(/^o=/.test(h)){route='order';arg=h.slice(2)}else if(['home','orders','new','cat','profile'].includes(h))route=h;}
+ if(/^help(-|$)/.test(h)){route='help';arg=h.slice(5)}else if(/^o=/.test(h)){route='order';arg=h.slice(2)}else if(['home','orders','new','cat','profile'].includes(h))route=h;}
 async function refresh(quiet,first){
  if(!token)return;const r=await api({action:'p_me',token});
  if(!r.ok){if(r.error=='auth'){forget();return auth()}if(r.error=='blocked'){forget();return auth()}if(!quiet)toast(errMsg(r.error));return}
@@ -158,8 +159,8 @@ function welcome(u){
  <li><span class="ic">${ico('truck')}</span><div><b>Відправляємо від вашого імені</b><span>Нова Пошта або Укрпошта, оплата при отриманні</span></div></li>
  <li><span class="ic">${ico('wallet')}</span><div><b>Маржа 10–20% і більше</b><span>Ставите свою ціну — бачите заробіток одразу</span></div></li></ul>
  <button class="btn" data-w="reg">Стати партнером</button><button class="btn ghost" data-w="login">У мене вже є кабінет на сайті</button>
- <p class="small" style="text-align:center;margin-top:10px">Питання? <a href="#" data-w="mgr">Напишіть менеджеру</a></p></div>`;
- $$('[data-w]').forEach(b=>b.onclick=e=>{e.preventDefault();const w=b.dataset.w;if(w=='mgr')return openTg(mgrUrl());W.mode=w;W.err='';authForm()})}
+ <p class="small" style="text-align:center;margin-top:10px"><a href="#" data-w="help">Питання й відповіді</a> · <a href="#" data-w="mgr">Написати менеджеру</a></p></div>`;
+ $$('[data-w]').forEach(b=>b.onclick=e=>{e.preventDefault();const w=b.dataset.w;if(w=='mgr')return openTg(mgrUrl());if(w=='help')return helpPublic();W.mode=w;W.err='';authForm()})}
 function authForm(){
  const reg=W.mode=='reg';
  $('#app').innerHTML=`<div class="wel" style="padding-top:6px"><h1 class="h1" style="font-size:21px">${reg?'Реєстрація партнера':'Вхід у наявний кабінет'}</h1>
@@ -209,11 +210,16 @@ function go(r,a=''){
 function draw(){
  if(!me)return;
  mainOff();backOff();
- const flow=route=='new'||route=='order';
+ const flow=route=='new'||route=='order'||route=='help';
  $('#nav').hidden=flow;document.body.classList.toggle('flow',flow);
  $$('#nav [data-go]').forEach(b=>b.classList.toggle('on',b.dataset.go==route));
  const nW=orders.filter(o=>WORK.includes(o.status)).length;$('#navN').textContent=nW||'';
- ({home:vHome,orders:vOrders,order:vOrder,new:vNew,cat:vCat,profile:vProfile}[route]||vHome)()}
+ ({home:vHome,orders:vOrders,order:vOrder,new:vNew,cat:vCat,profile:vProfile,help:vHelp}[route]||vHome)()}
+/* ---------- питання й відповіді (база знань ../kb.js) ---------- */
+const kbOpts=()=>({aud:'p',open:arg,toast,onLink:u=>{if(/^https:\/\/t\.me\//.test(u))openTg(u);else openUrl(u);return true}});
+function vHelp(){$('#app').innerHTML=`<h1 class="h1" style="margin:2px 2px 4px">Питання й відповіді</h1><p class="sub" style="margin:0 2px 12px">Вхід, замовлення, ТТН, заробіток, Telegram</p><div id="kbh"></div>`;
+ if(window.KB)KB.mount($('#kbh'),kbOpts());backBtn(()=>go(prevRoute&&prevRoute!='help'?prevRoute:'profile'))}
+function helpPublic(){$('#nav').hidden=true;mainOff();arg='';$('#app').innerHTML=`<h1 class="h1" style="margin:2px 2px 12px">Питання й відповіді</h1><div id="kbh"></div>`;if(window.KB)KB.mount($('#kbh'),kbOpts());backBtn(()=>welcome({}));scrollTo(0,0)}
 $('#nav').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;hap('sel');go(b.dataset.go)});
 
 /* ---------- головна ---------- */
@@ -452,6 +458,7 @@ function vProfile(){
  <div class="list"><button class="li" data-anketa><span class="ic">${ico('info')}</span><span class="t"><b>Анкета партнера</b><small>${me.anketaAt?'Заповнена — можна оновити':'Ще не заповнена'}</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}partners.html"><span class="ic">${ico('grid')}</span><span class="t"><b>Товари для продажу на сайті</b><small>Повні тексти й усі фото</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}academy.html"><span class="ic">${ico('book')}</span><span class="t"><b>Академія партнера</b></span>${ico('chev')}</button>
+  <button class="li" data-go2="help"><span class="ic">${ico('info')}</span><span class="t"><b>Питання й відповіді</b><small>Пароль, ТТН, виплати, Telegram</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}course-sales3.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Продажі 3.0»</b><small>Скрипти відповідей клієнтам</small></span>${ico('chev')}</button></div>
  <div class="h3">Вхід на сайті</div>
  <form id="pwf" class="card" novalidate><p class="small" style="margin-bottom:10px">Кабінет є й на сайті samostroy.shop/kabinet.html — логін ваш телефон. Задайте пароль, щоб входити з комп’ютера.</p>

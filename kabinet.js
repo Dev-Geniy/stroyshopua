@@ -70,7 +70,7 @@ function authView(mode,msg){
    <label class="kb-f">Пароль<span class="kb-pw"><input name="password" type="password" autocomplete="current-password" required><button type="button" class="kb-eye" data-eye aria-label="Показати пароль">${ico('eye')}</button></span></label>
    <p class="kb-err" id="kbErr" role="alert">${E(msg||'')}</p>
    <button class="btn kb-wide" id="kbGo">Увійти</button>
-   <p class="kb-small">Забули пароль? <a href="${tgLink('Добрий день! Не можу увійти в особистий кабінет партнера, допоможіть відновити пароль.')}" target="_blank" rel="noopener">Напишіть менеджеру</a> — він надішле тимчасовий.</p>
+   <p class="kb-small">Забули пароль? <a href="${tgLink('Добрий день! Не можу увійти в особистий кабінет партнера, допоможіть відновити пароль.')}" target="_blank" rel="noopener">Напишіть менеджеру</a> — він надішле тимчасовий. <a href="#help-forgot">Як це працює</a> · <a href="#help">Питання й відповіді</a></p>
   </form>`:`<form id="kbF" novalidate>
    <input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
    <label class="kb-f">Ім’я *<input name="name" autocomplete="name" required value="${E(an&&an.name||'')}"></label>
@@ -128,9 +128,9 @@ const lockBox=()=>`<div class="kb-card kb-lock">${ico('lock')}<div><h3>Запо�
  <p class="kb-small">Якщо пропустите, нагадування з’явиться при наступному вході.</p></div></div>`;
 
 /* ---------- каркас кабінету ---------- */
-const TABS=[['home','Огляд','chart'],['order','Нове замовлення','plus'],['orders','Мої замовлення','list'],['mine','Мої товари','heart'],['learn','Інструкції','book'],['profile','Профіль','user']];
+const TABS=[['home','Огляд','chart'],['order','Нове замовлення','plus'],['orders','Мої замовлення','list'],['mine','Мої товари','heart'],['learn','Інструкції','book'],['help','Допомога','info'],['profile','Профіль','user']];
 function start(){
- const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h))tab=h;
+ const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h))tab=h;else if(/^help-/.test(h))tab='help';
  draw();clearInterval(timer);timer=setInterval(()=>{if(!document.hidden)refresh(true)},120000)}
 function draw(){
  if(!me)return authView('login');
@@ -139,7 +139,14 @@ function draw(){
  const nWork=orders.filter(o=>WORK.includes(o.status)).length;
  const nFav=favs().length;
  app.innerHTML=`<nav class="kb-tabs" aria-label="Розділи кабінету">${TABS.map(([k,l,i])=>`<a href="#${k}" data-tab="${k}"${tab==k?' aria-current="page"':''}>${ico(i)}<span>${l}</span>${k=='orders'&&nWork?`<i>${nWork}</i>`:k=='mine'&&nFav?`<i class="soft">${nFav}</i>`:''}</a>`).join('')}</nav><div id="kbP"></div>`;
- ({home:vHome,order:vOrder,orders:vOrders,mine:vMine,learn:vLearn,profile:vProfile})[tab]()}
+ ({home:vHome,order:vOrder,orders:vOrders,mine:vMine,learn:vLearn,help:vHelp,profile:vProfile})[tab]()}
+/* ---------- допомога (база знань kb.js) — доступна й без входу ---------- */
+function vHelp(open){const P=$i('kbP')||app;P.innerHTML=`<div class="kb-card"><h3 style="margin-bottom:4px">Питання й відповіді</h3><p class="kb-small" style="margin:0 0 14px">Вхід і пароль, замовлення, ТТН, заробіток і виплати, Telegram-бот.</p><div id="kbHelp"></div></div>`;
+ if(window.KB)KB.mount($i('kbHelp'),{aud:'p',open:open||helpId(),toast:note});else $i('kbHelp').textContent='Завантаження…'}
+const helpId=()=>{const m=location.hash.match(/^#help-([\w-]+)/);return m?m[1]:''};
+function helpPublic(){tab='help';$i('kbUser').innerHTML='';$i('kbSub').textContent='Відповіді на часті питання партнерів.';
+ app.innerHTML=`<p style="margin:0 0 12px"><a href="kabinet.html" class="btn ghost sm" data-tologin>← До входу в кабінет</a></p><div id="kbP"></div>`;vHelp();
+ $i('kbApp')&&app.querySelector('[data-tologin]').addEventListener('click',e=>{e.preventDefault();history.replaceState(null,'',location.pathname);authView('login')})}
 function go(t){tab=t;history.replaceState(null,'','#'+t);draw();$i('kbApp').scrollIntoView({behavior:'smooth',block:'start'})}
 
 /* ---------- інструменти й навчання (дашборд та інструкції) ---------- */
@@ -470,7 +477,7 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-tgli
  if(!r.ok){if(w)w.close();return note(r.error=='nobot'?'Бот партнерів ще налаштовується — спробуйте пізніше.':errMsg(r.error))}
  if(w)w.location.href=r.url;else location.href=r.url;note('Натисніть «Почати» в боті — і Telegram підключиться')});
 document.addEventListener('click',e=>{const r=$i('kbRes');if(r&&!r.hidden&&!e.target.closest('.kb-srch'))r.hidden=true});
-addEventListener('hashchange',()=>{if(!me)return;const h=location.hash.slice(1);if(TABS.some(t=>t[0]==h)&&h!=tab){tab=h;draw()}});
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(/^help(-|$)/.test(h)){if(!me)return helpPublic();if(tab!='help'){tab='help';draw()}else vHelp();return}if(!me)return;if(TABS.some(t=>t[0]==h)&&h!=tab){tab=h;draw()}});
 addEventListener('catalog',()=>{if(tab=='mine')draw();if(tab=='order'&&!sent){const q=$i('kbQ');if(q){q.placeholder='Назва або артикул: 3D панель, PET плитка…';q.value&&search(q.value)}}
  // оновлюємо фото й ціни в чернетці з актуального каталогу
  let ch=0;D.items.forEach(x=>{const p=x.id&&prod(x.id);if(p){if(!x.img&&p.imgs&&p.imgs[0]){x.img=p.imgs[0];ch=1}if(+p.price!=x.price){x.price=+p.price;ch=1}}});if(ch){saveD();if(tab=='order')drawItems(),sumBox()}});
@@ -479,6 +486,6 @@ $i('kbGateSkip')&&$i('kbGateSkip').addEventListener('click',skip);
 /* ---------- старт ---------- */
 const setTop=()=>{const h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--kb-top',h.offsetHeight+'px')};setTop();addEventListener('resize',setTop);
 if(!API)noApi();
-else if(!token||!me)authView(location.hash=='#reg'?'reg':'login');
+else if(!token||!me){if(/^#help(-|$)/.test(location.hash))helpPublic();else authView(location.hash=='#reg'?'reg':'login')}
 else{start();refresh(true).then(()=>{if(me&&SS.get('pk_seen')!='1'){SS.set('pk_seen','1');gate()}})}
 })();

@@ -338,6 +338,7 @@ button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
   <a href="#stats" data-v="stats">Аналітика</a>
   <a href="#catalog" data-v="catalog">Каталог</a>
   <a href="#settings" data-v="settings">Налаштування</a>
+  <a href="#help" data-v="help">Довідка</a>
  </div></nav>
  <main class="w">
 
@@ -394,6 +395,7 @@ button.stat{font:inherit;color:inherit;cursor:pointer;width:100%}
    <div id="c-body"></div>
   </section>
 
+  <section class="view" id="v-help" hidden><div class="sh"><div><h1>Довідка</h1><p>Відповіді на питання партнерів — з готовим текстом і посиланням, яке можна надіслати, — і покрокові дії для менеджера («🛠 Для менеджера»).</p></div></div><div class="box" id="help-kb"></div></section>
   <section class="view" id="v-settings" hidden>
    <div class="sh"><div><h1>Налаштування</h1><p>Публікація відгуків, націнка й пошукові системи.</p></div></div>
    <div class="g2">
@@ -572,8 +574,9 @@ const saveSeen=()=>store.set('adm_seen',JSON.stringify([...seen].slice(-4000)));
 function logout(msg){store.del('adm_pass');store.del('adm_tools');pass='';clearInterval(timer);dr(false);$('#app').hidden=true;$('#login').hidden=false;$('#lpass').value='';$('#lerr').textContent=msg||''}
 
 /* ---------- навігація ---------- */
-const VIEWS=['home','orders','leads','partners','reviews','blog','stats','catalog','settings'];
-function go(v){v=VIEWS.includes(v)?v:'home';const ch=v!=view;view=v;
+const VIEWS=['home','orders','leads','partners','reviews','blog','stats','catalog','settings','help'];
+let helpOpen='',helpOn=false;
+function go(v){if(/^help-/.test(v||'')){helpOpen=v.slice(5);helpOn=false;v='help'}v=VIEWS.includes(v)?v:'home';const ch=v!=view;view=v;
  $$('.view').forEach(s=>s.hidden=s.id!='v-'+v);$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.v==v));
  render();if(ch)scrollTo(0,0)}
 addEventListener('hashchange',()=>{if(!$('#app').hidden)go(location.hash.slice(1))});
@@ -582,7 +585,8 @@ function render(){
  $('#b-ord').textContent=nO||'';$('#b-lead').textContent=nL||'';$('#b-rev').textContent=nR||'';
  const n=nO+nL+nR;document.title=(n?`(${n}) `:'')+'Адмінка — Samostroy Shop';
  if(window.PA)PA.tick();
- ({home:rHome,orders:()=>rList('ord'),leads:()=>rList('lead'),partners:()=>window.PA?PA.render():0,reviews:rRev,blog:()=>window.BL?BL.render():0,stats:rStats,catalog:rCat,settings:rSet})[view]()}
+ ({home:rHome,orders:()=>rList('ord'),leads:()=>rList('lead'),partners:()=>window.PA?PA.render():0,reviews:rRev,blog:()=>window.BL?BL.render():0,stats:rStats,catalog:rCat,settings:rSet,help:rHelp})[view]()}
+function rHelp(){if(helpOn||!window.KB)return;helpOn=true;KB.mount($('#help-kb'),{aud:'a',open:helpOpen,toast});helpOpen=''}
 
 /* ---------- огляд ---------- */
 function rHome(){
@@ -1025,6 +1029,7 @@ document.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-tip]
 if(api&&pass){call({action:'list'}).then(r=>r.ok?start(r):logout(r.error=='net'?ERR.net:''))}
 </script>
 <script src="admin-blog.js?v=4fd56da3"></script>
-<script src="admin-partners.js?v=315de20f"></script>
+<script src="kb.js?v=678b1ab6"></script>
+<script src="admin-partners.js?v=12ff262e"></script>
 </body>
 </html>
