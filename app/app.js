@@ -467,14 +467,14 @@ function vProfile(){
   <button class="li" data-go2="help"><span class="ic">${ico('info')}</span><span class="t"><b>Питання й відповіді</b><small>Пароль, ТТН, виплати, Telegram</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}course-vitryna.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Своя вітрина»</b><small>Назва, логотип з ШІ, продаючі тексти</small></span>${ico('chev')}</button>
   <button class="li" data-url="${SITE}course-sales3.html"><span class="ic">${ico('spark')}</span><span class="t"><b>Курс «Продажі 3.0»</b><small>Скрипти відповідей клієнтам</small></span>${ico('chev')}</button></div>
-${window.REFER?`<div class="h3">Порекомендувати Samostroy</div><div class="card" id="rfc">${REFER.html(null,me)}</div>`:''}
+${window.REFER?`<div class="h3">Порекомендувати Samostroy</div><div class="card" id="rfc">${REFER.html(null,me)}</div>`:''}<div id="rfi"></div>
  <div class="h3">Вхід на сайті</div>
  <form id="pwf" class="card" novalidate><p class="small" style="margin-bottom:10px">Кабінет є й на сайті samostroy.shop/kabinet.html — логін ваш телефон. Задайте пароль, щоб входити з комп’ютера.</p>
   <label class="f"><span>Новий пароль</span><input name="pw" type="password" autocomplete="new-password" minlength="6"></label><button class="btn ghost wide">Зберегти пароль</button></form>
  <div class="list"><button class="li" data-mgr><span class="ic">${ico('chat')}</span><span class="t"><b>Написати менеджеру</b><small>@${E(MGR)}</small></span>${ico('chev')}</button>
   <button class="li" data-unlink><span class="ic" style="background:color-mix(in srgb,var(--bad) 12%,var(--card))"><svg class="i" style="color:var(--bad)"><use href="#i-lock"/></svg></span><span class="t"><b style="color:var(--bad)">Відв’язати Telegram</b><small>Кабінет і замовлення залишаться</small></span></button></div>
  <p class="small" style="text-align:center;margin:14px 0 4px">Samostroy Drop · партнер з ${me.created?new Date(me.created).toLocaleDateString('uk-UA'):''}</p>`;
- if(window.REFER)api({action:'p_ref',token}).then(r=>{const el=$('#rfc');if(el)el.innerHTML=REFER.html(r.ok?r:false,me,{note:m=>{hap('ok');toast(m)},open:openTg})});
+ if(window.REFER)api({action:'p_ref',token}).then(r=>{const el=$('#rfc');if(el)el.innerHTML=REFER.html(r.ok?r:false,me,{note:m=>{hap('ok');toast(m)},open:openTg});const li=r.ok?REFER.list(r):'',x=$('#rfi');if(x&&li)x.innerHTML=`<div class="h3">Ваші запрошені</div><div class="card">${li}</div>`});
  $('#pf').onsubmit=async e=>{e.preventDefault();const el=e.target.elements,b=e.target.querySelector('.btn');b.classList.add('busy');
   const r=await api({action:'p_profile',token,name:el.name.value,city:el.city.value,msg:el.msg.value,payout:el.payout.value});b.classList.remove('busy');
   if(!r.ok){hap('error');return toast(errMsg(r.error))}keep(r);hap('ok');toast('Збережено')};

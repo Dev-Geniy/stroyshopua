@@ -350,12 +350,14 @@ function vLearn(){
 function vProfile(){
  const since=me.created?new Date(me.created).toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'}):'';
  $i('kbP').innerHTML=`<div class="kb-cols">
- <form class="kb-card" id="kbPr" novalidate><h3>Профіль</h3>
+ <div class="kb-side"><form class="kb-card" id="kbPr" novalidate><h3>Профіль</h3>
   <label class="kb-f">Ім’я<input name="name" value="${E(me.name)}" autocomplete="name"></label>
   <div class="kb-2"><label class="kb-f">Місто<input name="city" value="${E(me.city)}" autocomplete="address-level2"></label>
   <label class="kb-f">Telegram або Viber<input name="msg" value="${E(me.msg)}"></label></div>
   <label class="kb-f">Реквізити для виплат <small>IBAN або картка й ПІБ отримувача</small><textarea name="payout" rows="2">${E(me.payout)}</textarea></label>
   <p class="kb-err" id="kbPE" role="alert"></p><button class="btn" id="kbPS">Зберегти</button></form>
+  ${window.REFER?`<div class="kb-card" id="kbRf"><h3>🤝 Порекомендувати Samostroy</h3><div id="kbRfB">${REFER.html(null,me)}</div></div>
+  <div class="kb-card" id="kbRi" hidden><h3>Ваші запрошені</h3><div id="kbRiB"></div></div>`:''}</div>
  <div class="kb-side">
   <div class="kb-card"><h3>Акаунт</h3><dl class="kb-dl"><dt>ID партнера</dt><dd>${E(me.id)}</dd><dt>Логін</dt><dd>+${E(me.phone)}</dd><dt>Рівень</dt><dd>${E(me.level||'Starter')} · маржа ≈ ${margin()}%</dd>${since?`<dt>Партнер з</dt><dd>${E(since)}</dd>`:''}<dt>Анкета</dt><dd>${me.anketaAt?'заповнена · <a href="anketa.html?kab=1">оновити</a>':'<a href="anketa.html?kab=1">заповнити</a>'}</dd></dl>
    <button type="button" class="btn ghost sm" data-out style="margin-top:12px">Вийти з кабінету</button></div>
@@ -365,7 +367,6 @@ function vProfile(){
    <label class="kb-f">Поточний пароль<input name="old" type="password" autocomplete="current-password"></label>
    <label class="kb-f">Новий пароль <small>щонайменше 6 символів</small><input name="nw" type="password" autocomplete="new-password"></label>
    <p class="kb-err" id="kbWE" role="alert"></p><button class="btn ghost" id="kbWS">Змінити пароль</button></form>
-  ${window.REFER?`<div class="kb-card" id="kbRf"><h3>🤝 Порекомендувати Samostroy</h3><div id="kbRfB">${REFER.html(null,me)}</div></div>`:''}
  </div></div>`;
  refLoad();
  $i('kbPr').addEventListener('submit',async e=>{e.preventDefault();const el=e.target.elements;if(el.name.value.trim().length<2){$i('kbPE').textContent=ERR.name;return}
@@ -375,7 +376,7 @@ function vProfile(){
   const b=$i('kbWS');busy(b,1);const r=await api({action:'p_profile',token,oldPassword:el.old.value,newPassword:el.nw.value});busy(b,0);
   if(!r.ok){$i('kbWE').textContent=r.error=='wrong'?'Поточний пароль невірний.':errMsg(r.error);return}e.target.reset();$i('kbWE').textContent='';note('Пароль змінено')})}
 
-async function refLoad(){if(!window.REFER||!$i('kbRfB'))return;const r=await api({action:'p_ref',token});const el=$i('kbRfB');if(el)el.innerHTML=REFER.html(r.ok?r:false,me,{note})}
+async function refLoad(){if(!window.REFER||!$i('kbRfB'))return;const r=await api({action:'p_ref',token});const el=$i('kbRfB');if(el)el.innerHTML=REFER.html(r.ok?r:false,me,{note});const li=r.ok?REFER.list(r):'',c=$i('kbRi');if(c&&li){$i('kbRiB').innerHTML=li;c.hidden=false}}
 /* ---------- мої товари: обране для продажу ---------- */
 // зберігається в акаунті партнера (бачить і сайт, і Telegram Mini App) + копія в браузері й у списку «Товари для продажу»
 const FK='pk_favs';
