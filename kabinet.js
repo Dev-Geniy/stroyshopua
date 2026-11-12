@@ -44,7 +44,7 @@ async function api(b){
  try{const r=await fetch(API,{method:'POST',body:JSON.stringify(b),signal:ac.signal,redirect:'follow'});return await r.json()}
  catch(e){return{ok:false,error:'net'}}finally{clearTimeout(t)}}
 function keep(r){if(r.me){if(!favT)FAV=null;me=r.me;LS.set('pk_me',me)}if(r.orders){orders=r.orders;LS.set('pk_orders',orders)}}
-function out(msg){FAV=null;LS.del('pk_favs');LS.del('pk_favs_m');token='';me=null;orders=[];LS.del('pk_token');LS.del('pk_me');LS.del('pk_orders');SS.del('pk_skip');SS.del('pk_seen');clearInterval(timer);authView('login',msg)}
+function out(msg){FAV=null;window.KOWN&&KOWN.reset();LS.del('pk_favs');LS.del('pk_favs_m');token='';me=null;orders=[];LS.del('pk_token');LS.del('pk_me');LS.del('pk_orders');SS.del('pk_skip');SS.del('pk_seen');clearInterval(timer);authView('login',msg)}
 async function refresh(quiet){
  if(!token)return;const r=await api({action:'p_me',token});
  if(!r.ok){if(r.error=='auth'||r.error=='blocked')return out(errMsg(r.error));if(!quiet)note(errMsg(r.error));return}
@@ -402,14 +402,15 @@ function vMine(){
  const P=$i('kbP');
  if(!ready()){P.innerHTML=`<div class="kb-card kb-none"><p>Завантажуємо каталог…</p></div>`;return}
  const L=favs().map(id=>prod(id)).filter(Boolean),gone=favs().length-L.length;
- if(!L.length){P.innerHTML=`<div class="kb-card kb-mine0">${ico('heart')}<h2>Тут будуть товари, які ви продаєте</h2>
+ const OB=window.KOWN?KOWN.block():'';
+ if(!L.length){P.innerHTML=OB+`<div class="kb-card kb-mine0">${ico('heart')}<h2>Тут будуть товари, які ви продаєте</h2>
   <p>Каталог великий — оберіть ті позиції, з якими працюєте, і вони завжди будуть під рукою: ціни й наявність зі складу, ваш заробіток, тексти оголошень і швидке замовлення.</p>
   <button type="button" class="btn" data-pick>${ico('plus')}Обрати зараз</button> <a class="btn ghost" href="v/edit.html">🏪 Створити вітрину</a>${gone?`<p class="kb-small">${gone} обраних товарів більше немає в каталозі.</p>`:''}</div>`;return}
  const cats=[...new Set(L.map(p=>p.cat))],q=MF.q.trim().toLowerCase();
  if(MF.c&&!cats.includes(MF.c))MF.c='';
  const S2=L.filter(p=>(!MF.c||p.cat==MF.c)&&(!q||(p.name+' '+(p.sku||'')).toLowerCase().includes(q)));
  const out=L.filter(p=>!p.av),m=margin();
- P.innerHTML=`<div class="kb-card"><div class="kb-ch"><div><h3>Мої товари <span class="kb-small">· ${L.length}</span></h3><p class="kb-small" style="margin:2px 0 0">Ціни й наявність оновлюються зі складу автоматично.</p></div>
+ P.innerHTML=OB+`<div class="kb-card"><div class="kb-ch"><div><h3>Мої товари <span class="kb-small">· ${L.length}</span></h3><p class="kb-small" style="margin:2px 0 0">Ціни й наявність оновлюються зі складу автоматично.</p></div>
   <div class="kb-acts"><a class="btn ghost sm" href="v/edit.html">🏪 Моя вітрина</a><button type="button" class="btn ghost sm" data-copyall>${ico('list')}Тексти всіх</button><button type="button" class="btn sm" data-pick>${ico('plus')}Додати товари</button></div></div>
   ${out.length?`<div class="kb-banner warn">${ico('info')}<span><b>${out.length} ${pl(out.length,'товар закінчився','товари закінчились','товарів закінчились')}</b> — призупиніть оголошення: ${E(out.slice(0,3).map(shortT).join('; '))}${out.length>3?'…':''}</span></div>`:''}
   ${L.length>6?`<div class="kb-mtools"><div class="kb-srch sm">${ico('search')}<input id="kbMq" type="search" placeholder="Пошук серед моїх товарів" value="${E(MF.q)}" autocomplete="off"></div>
@@ -507,6 +508,8 @@ $i('kbGateSkip')&&$i('kbGateSkip').addEventListener('click',skip);
 
 /* ---------- старт ---------- */
 const setTop=()=>{const h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--kb-top',h.offsetHeight+'px')};setTop();addEventListener('resize',setTop);
+// для модуля власних товарів (kown.js): кабінет живе в замкненні
+window.KCTX={get me(){return me},get token(){return token},get tab(){return tab},get all(){return typeof all!='undefined'?all:[]},api,E,M,ico,note,catN,vMine};
 if(!API)noApi();
 else if(!token||!me){if(/^#help(-|$)/.test(location.hash))helpPublic();else authView(location.hash=='#reg'?'reg':'login')}
 else{start();refresh(true).then(()=>{if(me&&SS.get('pk_seen')!='1'){SS.set('pk_seen','1');gate()}})}

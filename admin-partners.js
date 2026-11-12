@@ -7,7 +7,7 @@ const COL={'Нове':'var(--s-new)','Підтверджене':'var(--s-conf)',
 const HINT={'Нове':'Зателефонуйте партнеру або клієнту й підтвердіть','Підтверджене':'Зберіть і відправте, впишіть ТТН','Відправлене':'Чекаємо, поки клієнт забере','Отримане':'Клієнт забрав — заробіток до виплати','Виплачено':'Партнеру виплачено','Скасоване':'Не відправлялось','Повернення':'Клієнт не забрав або повернув'};
 const LV={Starter:10,Pro:15,Team:20};
 const WORK=['Нове','Підтверджене','Відправлене'],CANC=['Скасоване','Повернення'];
-const S={refs:[],partners:[],orders:[],loaded:false,loading:false,at:0,err:'',sub:'orders',tab:'Нове',q:'',pid:'',n:60};
+const S={own:[],ownTab:'На модерації',refs:[],partners:[],orders:[],loaded:false,loading:false,at:0,err:'',sub:'orders',tab:'Нове',q:'',pid:'',n:60};
 let co=null,cp=null;
 const $v=()=>document.getElementById('v-partners');
 const earn=o=>o.earnNow!=null?+o.earnNow:(o.earnFinal!=null?+o.earnFinal:+o.earn||0);
@@ -26,7 +26,7 @@ async function load(quiet){
  if(!PAPI||S.loading)return;S.loading=true;
  const r=await call({action:'a_list'});S.loading=false;S.at=Date.now();
  if(!r.ok){S.err=errT(r.error);if(!quiet)toast(S.err);if(view=='partners')draw();return}
- S.err='';S.loaded=true;S.partners=r.partners||[];S.refs=r.refs||[];S.cfg=r.ref||null;S.orders=(r.orders||[]).sort((a,b)=>t(b.created)-t(a.created));S.bot=r.bot||'';
+ S.err='';S.loaded=true;S.partners=r.partners||[];S.refs=r.refs||[];S.cfg=r.ref||null;S.own=r.own||[];S.orders=(r.orders||[]).sort((a,b)=>t(b.created)-t(a.created));S.bot=r.bot||'';
  if(r.hidden&&window.onHidden)onHidden(r.hidden);
  badge();if(view=='partners')draw()}
 function badge(){const b=document.getElementById('b-par');if(b)b.textContent=S.orders.filter(o=>o.status=='Нове').length||''}
@@ -54,9 +54,9 @@ function draw(){const v=$v();if(!v)return;
   <button class="stat" data-psub="orders" data-pft="work"><span>У роботі</span><b>${work.length}</b><small>підтверджені й у дорозі</small></button>
   <button class="stat${due.length||refDue().length?' hot':''}" data-psub="pay"><span>До виплати партнерам</span><b>${money(due.reduce((a,o)=>a+earn(o),0)+rsum(refDue()))}</b><small>${pl(due.length,'замовлення','замовлення','замовлень')}${refDue().length?' + бонуси за рекомендації':''}</small></button>
   <div class="stat"><span>Оборот партнерів за місяць</span><b>${money(mo.reduce((a,o)=>a+(+o.sale||0),0))}</b><small>${pl(mo.length,'замовлення','замовлення','замовлень')} · ${pl(act.length,'партнер','партнери','партнерів')}</small></div></div>
- <div class="chips">${[['orders','Замовлення',O.length],['people','Партнери',S.partners.length],['pay','Виплати',new Set(due.map(o=>o.partnerId).concat(refDue().map(x=>x.refId))).size]].map(([k,l,n])=>`<button data-psub="${k}" class="${S.sub==k?'on':''}">${l}<i>${n}</i></button>`).join('')}</div>
+ <div class="chips">${[['orders','Замовлення',O.length],['people','Партнери',S.partners.length],['pay','Виплати',new Set(due.map(o=>o.partnerId).concat(refDue().map(x=>x.refId))).size]].concat(S.own.length||S.partners.some(p=>p.feat&&p.feat.own)?[['own','Власні товари',S.own.filter(x=>x.status=='На модерації').length]]:[]).map(([k,l,n])=>`<button data-psub="${k}" class="${S.sub==k?'on':''}">${l}<i>${n}</i></button>`).join('')}</div>
  <div id="pa-body"></div>`;
- ({orders:dOrders,people:dPeople,pay:dPay})[S.sub]()}
+ ({orders:dOrders,people:dPeople,pay:dPay,own:dOwn})[S.sub]()}
 
 function match(o,q){if(!q)return true;const qd=q.replace(/\D/g,'');
  return [o.id,o.partner,o.partnerId,o.client,o.city,o.branch,o.ttn,(o.items||[]).map(x=>x.name+' '+x.sku).join(' ')].join(' ').toLowerCase().includes(q)||(qd.length>=3&&String(o.phone).includes(qd))}
@@ -96,6 +96,25 @@ function dPay(){
   ${x.os.some(o=>o.earnFinal==null)?'<p class="note" style="margin-top:8px">≈ — орієнтовний заробіток. Відкрийте замовлення, щоб вписати точну суму.</p>':''}
   <div class="acts" style="margin-top:12px"><button class="btn sm" data-pa="pay" data-pp="${esc(x.p.id)}">Позначити виплаченим · ${money(x.sum)}</button>${x.p.payout?`<button class="btn ghost sm" data-pa="cpay" data-pp="${esc(x.p.id)}">Копіювати реквізити</button>`:''}</div></div>`).join('')}</div>`:'<div class="box empty">Немає замовлень до виплати</div>'}`}
 
+/* ---------- власні товари партнерів: модерація ---------- */
+function dOwn(){
+ const T=[['На модерації','На перевірці'],['Схвалено','Схвалені'],['Відхилено','Відхилені'],['','Усі']],L=S.own.filter(x=>!S.ownTab||x.status==S.ownTab);
+ document.getElementById('pa-body').innerHTML=`<p class="note" style="margin-bottom:10px">Товари, яких немає в каталозі, — партнери додають їх самі (якщо в картці партнера увімкнено «Власні товари»). На вітрину потрапляють лише схвалені. Обираєте, хто відправляє: <b>партнер сам</b> (гроші від покупця отримує він) або <b>магазин</b> (тоді вкажіть закупівельну — заробіток партнера = ціна − закупівельна).</p>
+ <div class="chips" style="margin-bottom:12px">${T.map(([k,l])=>`<button data-pa="owntab" data-ot="${esc(k)}" class="${S.ownTab==k?'on':''}">${l}<i>${S.own.filter(x=>!k||x.status==k).length}</i></button>`).join('')}</div>
+ ${L.length?`<div class="pa-own">${L.map(ownBox).join('')}</div>`:'<div class="box"><p class="note">Тут порожньо.</p></div>'}`;
+ document.querySelectorAll('.pa-own [data-ocost]').forEach(i=>i.addEventListener('input',()=>{const x=S.own.find(y=>y.id==i.dataset.ocost),e=document.getElementById('ow-e-'+x.id),c=+i.value||0;if(e)e.textContent=c?`Заробіток партнера з одиниці: ${money(x.price-c)}`:''}));
+ document.querySelectorAll('.pa-own [name^=ow-ship-]').forEach(r=>r.addEventListener('change',()=>{const id=r.name.slice(8),w=document.getElementById('ow-cw-'+id);if(w)w.hidden=r.value!='shop'}))}
+function ownBox(x){const p=pById(x.partnerId)||{name:x.partner,id:x.partnerId},shop=x.ship=='shop',pill2={'На модерації':'⏳ на перевірці','Схвалено':'✅ схвалено','Відхилено':'✖️ відхилено'}[x.status]||x.status;
+ return `<div class="box pa-ob"><div class="pa-oph">${(x.photos||[]).map(u=>`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" loading="lazy"></a>`).join('')}</div>
+ <div class="pa-obb"><div class="pa-ph"><div><b>${esc(x.name)}</b><span class="note">${esc(x.id)} · <button class="link" data-pid="${esc(p.id)}">${esc(p.name)}</button> · ${pill2}${x.status=='Схвалено'?' · '+(shop?'відправляє магазин, закупівельна '+money(x.cost):'відправляє партнер'):''}</span></div><b class="pa-sum">${money(x.price)}</b></div>
+  <dl class="kv">${x.cat?`<dt>Категорія</dt><dd>${esc(x.cat)}</dd>`:''}${x.sku?`<dt>Артикул</dt><dd>${esc(x.sku)}</dd>`:''}<dt>Наявність</dt><dd>${x.av?'в наявності':'немає'}</dd>${x.desc?`<dt>Опис</dt><dd style="white-space:pre-line">${esc(x.desc)}</dd>`:''}<dt>Оновлено</dt><dd>${x.updated?fdt(t(x.updated)):'—'}</dd></dl>
+  <div class="pa-om"><div class="lbl">Хто відправляє покупцю</div>
+   <label class="pa-r"><input type="radio" name="ow-ship-${esc(x.id)}" value="partner"${shop?'':' checked'}> Партнер сам — оплату отримує він</label>
+   <label class="pa-r"><input type="radio" name="ow-ship-${esc(x.id)}" value="shop"${shop?' checked':''}> Магазин — партнер отримує різницю</label>
+   <div id="ow-cw-${esc(x.id)}"${shop?'':' hidden'}><label class="pa-r">Закупівельна за одиницю, ₴ <input data-ocost="${esc(x.id)}" id="ow-c-${esc(x.id)}" inputmode="numeric" value="${shop?x.cost:''}" style="max-width:110px"></label><span class="note" id="ow-e-${esc(x.id)}">${shop?'Заробіток партнера з одиниці: '+money(x.price-x.cost):''}</span></div>
+   <input id="ow-n-${esc(x.id)}" placeholder="Коментар партнеру (для відхилення — причина)" value="${esc(x.note||'')}" style="margin-top:8px">
+   <div class="acts" style="margin-top:10px"><button class="btn sm" data-pa="ownok" data-oid="${esc(x.id)}">${x.status=='Схвалено'?'Зберегти умови':'✅ Схвалити'}</button>${x.status!='Відхилено'?`<button class="btn ghost sm" data-pa="ownno" data-oid="${esc(x.id)}">${x.status=='Схвалено'?'Зняти з продажу':'✖️ Відхилити'}</button>`:''}</div></div></div></div>`}
+
 /* ---------- картка замовлення ---------- */
 function oText(o){return `Замовлення партнера № ${o.id}\n${(o.items||[]).map((x,i)=>`${i+1}. ${clean(x.name)}${x.sku?' ('+x.sku+')':''} × ${x.q} — ${money(x.sale*x.q)}`).join('\n')}\nСума для клієнта: ${money(o.sale)}${/наклад/i.test(o.pay)?` (накладений платіж ${money(o.sale)})`:''}\nОтримувач: ${o.client}, +${o.phone}\n${[o.delivery,o.city,o.branch].filter(Boolean).join(', ')}\nОплата: ${o.pay||'—'}${o.note?'\nКоментар партнера: '+o.note:''}`}
 function openO(id){const o=S.orders.find(x=>x.id==id);if(!o)return;co={...o};cp=null;const p=pById(o.partnerId)||{};
@@ -128,6 +147,9 @@ function openP(id){const p=pById(id);if(!p)return;cp={...p};co=null;const s=pSta
   <div class="acts" style="margin-top:10px"><button class="btn ghost sm" data-pa="porders" data-pp="${esc(p.id)}">Замовлення партнера</button></div></div>
  <div class="sec"><h3>Анкета</h3>${a?`<dl class="kv">${yes.length?yes.map(([k,x])=>`<dt>${esc(k)}</dt><dd>${/^https?:/.test(x.link)?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.link)}</a>`:esc(x.link)}<br><span class="note">досвід: ${esc(x.exp||'—')} · аудиторія: ${esc(x.aud||'—')}</span></dd>`).join(''):'<dt>Платформи</dt><dd>поки немає — стартує з нуля</dd>'}
   <dt>ФОП</dt><dd>${esc(a.fop||'—')}</dd><dt>Час на день</dt><dd>${esc(a.time||'—')}</dd>${a.other?`<dt>Інше</dt><dd>${esc(a.other)}</dd>`:''}${a.note?`<dt>Коментар</dt><dd>${esc(a.note)}</dd>`:''}</dl><p class="note" style="margin-top:6px">Заповнена ${fdt(t(p.anketaAt))}</p>`:'<p class="note">Партнер ще не заповнював анкету.</p>'}</div>
+ <div class="sec"><h3>Можливості <small class="note">— за замовчуванням вимкнені</small></h3>
+  <label class="pa-r"><input type="checkbox" id="pa-f-own"${p.feat&&p.feat.own?' checked':''}> 🧩 <b>Власні товари</b> — партнер може додавати товари, яких немає в каталозі. Кожен з’являється у вкладці «Власні товари» на перевірку; на вітрину — лише після вашого схвалення.</label>
+  ${S.own.some(x=>x.partnerId==p.id)?`<p class="note" style="margin-top:6px">Його власних товарів: ${S.own.filter(x=>x.partnerId==p.id).length} (на перевірці ${S.own.filter(x=>x.partnerId==p.id&&x.status=='На модерації').length}).</p>`:''}</div>
  ${refSec(p)}
  <div class="sec"><h3>Нотатка менеджера <small class="note">— партнер не бачить</small></h3><textarea id="pa-note">${esc(p.note||'')}</textarea></div>
  <div class="sec"><h3>Telegram</h3><p class="note">${p.tg?`Підключено${p.tgName?': <b>'+esc(p.tgName)+'</b>':''} — партнер отримує статуси, ТТН і виплати в боті${S.bot?' @'+esc(S.bot):''}.`:'Не підключено. Партнер може відкрити бота партнерів і увійти, або натиснути «Підключити Telegram» у профілі на сайті.'}</p></div>
@@ -141,7 +163,7 @@ function refSec(p){const inv=S.partners.filter(x=>x.ref==p.id),R=S.refs.filter(x
   <p class="note" style="margin-top:6px">Бонус запрошувачу — ${S.cfg?S.cfg.first:20}% від заробітку запрошеного перші ${S.cfg?S.cfg.months:6} міс., далі ${S.cfg?S.cfg.then:10}%. Нараховується сам, коли замовлення «Отримане»; виплачується разом із заробітком. Змінити запрошувача — впишіть ID і «Зберегти».</p></div>`}
 async function saveP(b,extra){if(!cp)return;b&&b.classList.add('busy');
  const rf=$('#pa-ref')?$('#pa-ref').value.trim().toUpperCase():undefined;
- const r=await call({action:'a_partner',id:cp.id,level:cp.level||'Starter',note:$('#pa-note')?$('#pa-note').value:cp.note,...(rf!==undefined&&rf!==(cp.ref||'')?{ref:rf}:{}),...(extra||{})});
+ const r=await call({action:'a_partner',id:cp.id,level:cp.level||'Starter',note:$('#pa-note')?$('#pa-note').value:cp.note,...(rf!==undefined&&rf!==(cp.ref||'')?{ref:rf}:{}),...($('#pa-f-own')?{feat:{own:$('#pa-f-own').checked?1:0}}:{}),...(extra||{})});
  b&&b.classList.remove('busy');if(!r.ok){toast(errT(r.error));return false}
  const i=S.partners.findIndex(x=>x.id==cp.id);if(i>=0)S.partners[i]=r.partner;cp={...r.partner};return true}
 
@@ -182,6 +204,14 @@ document.addEventListener('click',async e=>{
    b.classList.add('busy');const r=await call({action:'a_pay',partnerId:d.pp});b.classList.remove('busy');if(!r.ok)return toast(errT(r.error));
    toast(`Виплачено: ${money(r.sum)} · ${r.count} замовл.${r.bonusCount?' + бонуси':''}`);return load()}
   case'cpay':{const p=pById(d.pp);return p&&copy(`${p.name}\n${p.payout}`)}
+  case'owntab':S.ownTab=d.ot;return dOwn();
+  case'ownok':case'ownno':{const x=S.own.find(y=>y.id==d.oid);if(!x)return;
+   const ship=(document.querySelector(`[name="ow-ship-${CSS.escape(x.id)}"]:checked`)||{}).value||'partner',cost=+(document.getElementById('ow-c-'+x.id)||{}).value||0,note=(document.getElementById('ow-n-'+x.id)||{}).value||'';
+   if(d.pa=='ownok'&&ship=='shop'&&!(cost>0&&cost<=x.price))return toast('Вкажіть закупівельну: більше 0 і не вище ціни для покупця');
+   if(d.pa=='ownno'&&!note.trim()&&!confirm('Відхилити без пояснення? Партнеру буде легше виправити, якщо вказати причину.'))return;
+   b.classList.add('busy');const r=await call({action:'a_own',id:x.id,op:d.pa=='ownok'?'approve':'reject',ship,cost,note});b.classList.remove('busy');
+   if(!r.ok)return toast(r.error=='action'?'Оновіть скрипт кабінету партнерів':r.error=='cost'?'Невірна закупівельна ціна':errT(r.error));
+   Object.assign(x,r.item);toast(d.pa=='ownok'?'Схвалено — партнер отримав повідомлення':'Відхилено — партнер отримав повідомлення');return draw()}
   case'csv':{const q=c=>'"'+String(c??'').replace(/"/g,'""')+'"';
    const head=['№','Дата','Статус','Партнер','ID партнера','Клієнт','Телефон','Місто','Відділення','Доставка','Оплата','Товари','Сума для клієнта','Оптова ≈','Заробіток','Підтверджено','ТТН','Звідки','Виплачено'];
    const rows=S.orders.filter(o=>!S.pid||o.partnerId==S.pid).map(o=>[o.id,new Date(o.created).toLocaleString('uk-UA'),o.status,o.partner,o.partnerId,o.client,o.phone,o.city,o.branch,o.delivery,o.pay,(o.items||[]).map(x=>`${x.name} × ${x.q}`).join('\n'),o.sale,o.whole,earn(o),o.earnFinal==null?'ні':'так',o.ttn,o.source,o.paidAt?new Date(o.paidAt).toLocaleDateString('uk-UA'):''].map(q).join(';'));

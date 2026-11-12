@@ -75,7 +75,7 @@ if (EMBED) document.documentElement.classList.add('embed');
 /* ---------- старт ---------- */
 async function boot() {
   if (!API) return off('Вітрина тимчасово недоступна', 'Спробуйте трохи пізніше.');
-  if (PREVIEW) { window.addEventListener('message', e => { if (e.origin === location.origin && e.data && e.data.vcfg) { S = { slug: e.data.slug || SLUG || 'preview', cfg: e.data.vcfg }; apply(); } }); await loadCat(); parent.postMessage({ vready: 1 }, location.origin); return; }
+  if (PREVIEW) { window.addEventListener('message', e => { if (e.origin === location.origin && e.data && e.data.vcfg) { S = { slug: e.data.slug || SLUG || 'preview', cfg: e.data.vcfg, own: e.data.vown || [] }; apply(); } }); await loadCat(); parent.postMessage({ vready: 1 }, location.origin); return; }
   if (!SLUG) return off('Вітрину не знайдено', 'Перевірте посилання.');
   const [r] = await Promise.all([fetch(API + '?a=get&s=' + encodeURIComponent(SLUG)).then(x => x.json()).catch(() => null), loadCat()]);
   if (!r) return off('Немає зв’язку', 'Перевірте інтернет і оновіть сторінку.', 1);
@@ -110,6 +110,8 @@ function apply() {
   document.title = cfg.name || 'Вітрина';
   if (cfg.logo) { let ic = $('link[rel=icon]'); if (!ic) { ic = document.createElement('link'); ic.rel = 'icon'; document.head.appendChild(ic); } ic.href = cfg.logo; }
   cart = LS.get('vcart:' + S.slug, {});
+  // власні товари партнера (схвалені менеджером): фото й опис — від партнера, ціна — без націнки
+  (S.own || []).forEach(x => byId.set(String(x.id), { id: String(x.id), name: x.name, sku: x.sku || '', price: +x.price, av: x.av ? 1 : 0, img: (x.photos || [])[0] || '', imgs: x.photos || [], cat: x.cat || 'own', own: 1, desc: x.desc || '' }));
   list = (cfg.items || []).map(id => byId.get(String(id))).filter(p => p && (p.av || !cfg.hideOut));
   const k = docKey(); if (k) return docView(k);
   VIEW = 'home'; render();
@@ -117,6 +119,7 @@ function apply() {
 }
 // ціна вітрини — так само рахує сервер: не нижче ціни сайту, націнка або своя ціна, округлення
 function price(p) {
+  if (p.own) return Math.round(+p.price);
   const base = +p.price, o = cfg.over && cfg.over[p.id];
   let v;
   if (o) v = +o;
@@ -254,6 +257,8 @@ addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 // картка товару: фото й опис беремо зі сторінки товару сайту
 async function details(id) {
   if (pd[id]) return pd[id];
+  const op = byId.get(String(id));
+  if (op && op.own) return pd[id] = { imgs: op.imgs || [], desc: op.desc ? op.desc.split(/\n{2,}/).map(t => '<p>' + E(t).replace(/\n/g, '<br>') + '</p>').join('') : '' };
   try {
     const html = await fetch('/p/' + encodeURIComponent(id) + '.html').then(r => r.ok ? r.text() : '');
     const doc = new DOMParser().parseFromString(html, 'text/html');

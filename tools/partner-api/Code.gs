@@ -34,7 +34,7 @@ var PC = [['id', 'ID'], ['created', 'Зареєстровано'], ['name', 'І�
   ['msg', 'Telegram / Viber'], ['level', 'Рівень'], ['status', 'Статус'], ['payout', 'Реквізити для виплат'],
   ['note', 'Нотатка менеджера'], ['anketaAt', 'Анкета заповнена'], ['anketa', 'Анкета (дані)'],
   ['lastLogin', 'Останній вхід'], ['pass', 'Пароль (хеш)'], ['salt', 'Сіль'], ['tokens', 'Сесії'],
-  ['tgId', 'Telegram ID'], ['tgName', 'Telegram'], ['favs', 'Мої товари'], ['onb', 'Поради в боті'], ['ref', 'Запросив (ID)']];
+  ['tgId', 'Telegram ID'], ['tgName', 'Telegram'], ['favs', 'Мої товари'], ['onb', 'Поради в боті'], ['ref', 'Запросив (ID)'], ['feat', 'Можливості']];
 var OC = [['id', '№'], ['created', 'Створено'], ['updated', 'Оновлено'], ['partnerId', 'ID партнера'], ['partner', 'Партнер'],
   ['status', 'Статус'], ['client', 'Клієнт'], ['phone', 'Телефон клієнта'], ['city', 'Місто'], ['delivery', 'Доставка'],
   ['branch', 'Відділення'], ['pay', 'Оплата'], ['sale', 'Сума для клієнта'], ['whole', 'Оптова (орієнтовно)'],
@@ -48,6 +48,11 @@ var AC = [['at', 'Видалено'], ['type', 'Що'], ['id', 'ID'], ['data', '
 // бонуси за рекомендації: один рядок на замовлення запрошеного партнера
 var RC = [['order', '№ замовлення'], ['created', 'Нараховано'], ['refId', 'Отримує (ID)'], ['refName', 'Отримує'], ['partnerId', 'Запрошений (ID)'],
   ['partner', 'Запрошений'], ['earn', 'Заробіток запрошеного'], ['pct', '%'], ['bonus', 'Бонус'], ['status', 'Статус'], ['paidAt', 'Виплачено']];
+// власні товари партнерів (не з каталогу) — кожен проходить модерацію; ship: хто відправляє ('partner' | 'shop'), cost — закупівельна для 'shop'
+var XC = [['id', 'ID'], ['partnerId', 'ID партнера'], ['partner', 'Партнер'], ['status', 'Статус'], ['created', 'Створено'], ['updated', 'Оновлено'],
+  ['name', 'Назва'], ['cat', 'Категорія'], ['price', 'Ціна для покупця'], ['desc', 'Опис'], ['sku', 'Артикул'], ['photos', 'Фото (дані)'],
+  ['av', 'В наявності'], ['ship', 'Хто відправляє'], ['cost', 'Закупівельна, грн'], ['note', 'Коментар модератора']];
+var SH_X = 'Власні товари партнерів';
 var SH_P = 'Партнери', SH_O = 'Замовлення партнерів', SH_H = 'Видалені записи сайту', SH_A = 'Архів видаленого', SH_R = 'Бонуси за рекомендації';
 
 /* ---------------- вхід ---------------- */
@@ -169,7 +174,7 @@ function track(o) {
 function pubPartner(p) {
   return { id: p.id, created: p.created, name: p.name, phone: p.phone, city: p.city, msg: p.msg, level: p.level || 'Starter',
     margin: marginOf(p), status: p.status, payout: p.payout, anketa: json(p.anketa, null), anketaAt: p.anketaAt,
-    tg: !!p.tgId, tgName: p.tgName, bot: prop('BOT_USER'), favs: json(p.favs, []) };
+    tg: !!p.tgId, tgName: p.tgName, bot: prop('BOT_USER'), favs: json(p.favs, []), feat: json(p.feat, {}) };
 }
 function pubOrder(o) {
   return { id: o.id, created: o.created, updated: o.updated, partnerId: o.partnerId, partner: o.partner, status: o.status,
@@ -339,7 +344,11 @@ ACTIONS.p_order = function (b) {
 function makeOrder(p, o, items, ph, key, via) {
     if (key) { var d2 = cache().get('key:' + key); if (d2) return { ok: true, id: d2, dup: true }; }
     var m = marginOf(p), sale = 0, whole = 0;
-    items.forEach(function (x) { sale += x.q * x.sale; whole += x.q * x.price * (1 - m / 100); });
+    items.forEach(function (x) {
+      sale += x.q * x.sale;
+      // власний товар: магазин відправляє — платимо закупівельну; партнер відправляє сам — гроші отримує він, заробітку через магазин немає
+      whole += x.own ? x.q * (x.ship === 'shop' ? num(x.cost) : x.sale) : x.q * x.price * (1 - m / 100);
+    });
     var all = readAll(SH_O, OC);
     var r = { id: nextId(all, 'Z', 1001), created: now(), updated: now(), partnerId: p.id, partner: p.name, status: 'Нове',
       client: str(o.client, 120), phone: ph, city: str(o.city, 120), delivery: str(o.delivery, 40), branch: str(o.branch, 80),
@@ -362,7 +371,8 @@ ACTIONS.ext_order = function (b) {
   var o = b.order || {}, key = str(b.key, 40), pid = str(b.partnerId, 20);
   var items = (o.items || []).slice(0, 50).map(function (x) {
     return { id: str(x.id, 40), name: str(x.name, 200), sku: str(x.sku, 60), q: Math.max(1, Math.min(9999, Math.round(num(x.q)))),
-      price: Math.max(0, num(x.price)), sale: Math.max(0, num(x.sale)) };
+      price: Math.max(0, num(x.price)), sale: Math.max(0, num(x.sale)), own: x.own ? 1 : undefined, ship: x.own ? (x.ship === 'shop' ? 'shop' : 'partner') : undefined,
+      cost: x.own ? Math.max(0, num(x.cost)) : undefined };
   }).filter(function (x) { return x.name; });
   if (!items.length) fail('items');
   var ph = phoneNorm(o.phone);
@@ -526,7 +536,7 @@ function hiddenList() {
 ACTIONS.a_list = function (b) {
   admin(b);
   return { ok: true, partners: readAll(SH_P, PC).map(adminPartner), orders: readAll(SH_O, OC).map(pubOrder), statuses: STATUSES, levels: LEVELS,
-    hidden: hiddenList(), bot: prop('BOT_USER'), refs: readAll(SH_R, RC).map(pubRef), ref: REF };
+    hidden: hiddenList(), bot: prop('BOT_USER'), refs: readAll(SH_R, RC).map(pubRef), ref: REF, own: readAll(SH_X, XC).map(pubOwn) };
 };
 
 // зміна замовлення партнера (з адмінки або кнопками в Telegram) + повідомлення партнеру
@@ -565,6 +575,13 @@ ACTIONS.a_partner = function (b) {
       if (b.level !== undefined) { if (!LEVELS[b.level]) fail('level'); p.level = b.level; }
       if (b.status !== undefined) { if (['Активний', 'Заблокований'].indexOf(b.status) < 0) fail('status'); p.status = b.status; if (b.status === 'Заблокований') p.tokens = '[]'; }
       if (b.note !== undefined) p.note = str(b.note, 1000);
+      if (b.feat && typeof b.feat === 'object') {                                     // можливості, які вмикає адміністратор
+        var F = json(p.feat, {}), was = !!F.own;
+        ['own', 'multi'].forEach(function (k) { if (b.feat[k] !== undefined) { if (b.feat[k]) F[k] = 1; else delete F[k]; } });
+        p.feat = Object.keys(F).length ? JSON.stringify(F) : '';
+        if (F.own && !was) toPartner(p, '🧩 <b>Вам відкрито «Власні товари»</b>\nТепер у кабінеті → «Мої товари» можна додавати товари, яких немає в каталозі: фото з телефона, назва, ціна й опис. Після схвалення менеджером їх можна додати на вітрину.',
+          { inline_keyboard: [[{ text: '🧩 Додати товар', url: SITE + 'kabinet.html#mine' }]] });
+      }
       if (b.ref !== undefined && str(b.ref, 20).toUpperCase() !== (p.ref || '')) {       // змінити запрошувача може лише адміністратор
         var nr = str(b.ref, 20).toUpperCase();
         if (nr && (nr === p.id || !findById(list, nr))) fail('ref');
@@ -781,7 +798,8 @@ function notifyNewPartner(p, where) {
 function orderCard(r, p) {
   var items = json(r.items, []);
   return '📦 <b>Замовлення партнера ' + h(r.id) + '</b>' + (r.via === 'Telegram' ? ' · з Telegram' : r.via === 'Вітрина' ? ' · 🏪 з вітрини' + (r.source ? ' (' + h(r.source.replace(/^Вітрина\s*/, '')) + ')' : '') : '') + '\nПартнер: ' + h(p.name) + ' (' + h(p.id) + ', ' + h(p.level || 'Starter') + ')' + (p.tgName ? ' ' + h(p.tgName) : '') + '\n\n' +
-    items.map(function (x, i) { return (i + 1) + '. ' + h(x.name) + (x.sku ? ' (' + h(x.sku) + ')' : '') + ' × ' + x.q + ' — ' + money(x.sale * x.q); }).join('\n') +
+    items.map(function (x, i) { return (i + 1) + '. ' + h(x.name) + (x.sku ? ' (' + h(x.sku) + ')' : '') + ' × ' + x.q + ' — ' + money(x.sale * x.q) +
+      (x.own ? '\n   🧩 власний товар партнера · ' + (x.ship === 'shop' ? 'відправляє магазин (закупівельна ' + money(num(x.cost)) + ')' : '<b>відправляє партнер сам</b>') : ''); }).join('\n') +
     '\n\nСума для клієнта: <b>' + money(num(r.sale)) + '</b>\nКлієнт: ' + h(r.client) + ', +' + h(r.phone) + '\nДоставка: ' + h([r.delivery, r.city, r.branch].filter(String).join(', ')) +
     '\nОплата: ' + h(r.pay || '—') + (r.note ? '\nКоментар: ' + h(r.note) : '');
 }
@@ -1378,6 +1396,93 @@ function pStats(pid, all) {
   return { orders: L.length, deliv: D.length, earned: D.reduce(function (a, o) { return a + earnOf(o); }, 0), bestMonth: best, streak: streak, turn: turn, month: mon };
 }
 function bar10(n) { n = Math.max(0, Math.min(10, n)); return new Array(n + 1).join('▰') + new Array(11 - n).join('▱'); }
+/* ---------------- власні товари партнера (вмикає адміністратор: feat.own) ---------------- */
+var OWN_MAX = 100, IMG_RE = /^https:\/\/(i\.ibb\.co|ibb\.co|i\.imgur\.com|lh3\.googleusercontent\.com)\/[\w\-./%~+=]+$/i;
+function pubOwn(x) {
+  return { id: x.id, partnerId: x.partnerId, partner: x.partner, status: x.status, created: x.created, updated: x.updated, name: x.name, cat: x.cat,
+    price: num(x.price), desc: x.desc, sku: x.sku, photos: json(x.photos, []), av: x.av !== '0', ship: x.ship, cost: num(x.cost), note: x.note };
+}
+function ownOn(p) { return !!json(p.feat, {}).own; }
+function ownCard(x, title) {
+  var P = json(x.photos, []);
+  return '🧩 <b>' + title + '</b> · ' + h(x.id) + '\n' + h(x.partner) + ' (' + h(x.partnerId) + ')\n\n<b>' + h(x.name) + '</b>\nЦіна для покупця: ' + money(num(x.price)) +
+    (x.cat ? '\nКатегорія: ' + h(x.cat) : '') + (x.sku ? '\nАртикул: ' + h(x.sku) : '') + (x.desc ? '\n\n' + h(String(x.desc).slice(0, 600)) : '') +
+    (P.length ? '\n\nФото: ' + P.map(function (u, i) { return '<a href="' + h(u) + '">' + (i + 1) + '</a>'; }).join(' · ') : '');
+}
+ACTIONS.p_own = function (b) {
+  var p = auth(b);
+  if (!ownOn(p)) return { ok: true, off: true, items: [] };
+  return { ok: true, items: readAll(SH_X, XC).filter(function (x) { return x.partnerId === p.id; }).map(pubOwn).reverse() };
+};
+ACTIONS.p_own_save = function (b) {
+  var p = auth(b);
+  if (!ownOn(p)) fail('feature');
+  if (p.status === 'Заблокований') fail('blocked');
+  var it = b.item || {}, onlyAv = !!(it.id && it.onlyAv);
+  var name = str(it.name, 160), price = Math.round(num(it.price)), desc = str(it.desc, 2000), cat = str(it.cat, 60), sku = str(it.sku, 40);
+  var photos = (Array.isArray(it.photos) ? it.photos : []).map(function (u) { return str(u, 400); }).filter(function (u) { return IMG_RE.test(u); }).slice(0, 5);
+  if (!onlyAv) {
+    if (name.length < 3) fail('name');
+    if (!(price > 0 && price <= 1000000)) fail('price');
+    if (!photos.length) fail('photos');
+  }
+  if (tooMany('own:' + p.id, 60, 3600)) fail('rate');
+  return withLock(function () {
+    var L = readAll(SH_X, XC), x = null, id = str(it.id, 20);
+    if (id) { for (var i = 0; i < L.length; i++) if (L[i].id === id && L[i].partnerId === p.id) x = L[i]; if (!x) fail('notfound'); }
+    if (onlyAv) { x.av = it.av ? '1' : '0'; x.updated = now(); write(SH_X, XC, x); return { ok: true, item: pubOwn(x) }; }   // наявність — без повторної модерації
+    if (!x && L.filter(function (y) { return y.partnerId === p.id; }).length >= OWN_MAX) fail('limit');
+    var isNew = !x, was = x ? x.status : '';
+    if (!x) x = { id: nextId(L, 'X', 1001), partnerId: p.id, created: now(), ship: '', cost: '', note: '' };
+    x.partner = p.name; x.name = name; x.price = String(price); x.desc = desc; x.cat = cat; x.sku = sku; x.photos = JSON.stringify(photos);
+    x.av = it.av === false ? '0' : '1'; x.updated = now(); x.status = 'На модерації';     // будь-яка зміна — знову на перевірку
+    write(SH_X, XC, x);
+    notifyManager(ownCard(x, isNew ? 'Новий власний товар на модерації' : 'Власний товар змінено' + (was === 'Схвалено' ? ' (був схвалений — знято з вітрини до перевірки)' : '')),
+      { inline_keyboard: [[{ text: 'Перевірити в адмінці', url: SITE + 'admin.html#partners' }]] });
+    return { ok: true, item: pubOwn(x) };
+  });
+};
+ACTIONS.p_own_del = function (b) {
+  var p = auth(b), id = str(b.id, 20);
+  return withLock(function () {
+    var L = readAll(SH_X, XC);
+    for (var i = 0; i < L.length; i++) if (L[i].id === id && L[i].partnerId === p.id) { archive('Власний товар', L[i]); delRow(SH_X, XC, L[i]._r); return { ok: true, id: id }; }
+    fail('notfound');
+  });
+};
+// модерація: approve (ship: partner | shop, cost — закупівельна, якщо відправляє магазин), reject (note — причина)
+ACTIONS.a_own = function (b) {
+  admin(b);
+  var id = str(b.id, 20), op = str(b.op, 20);
+  return withLock(function () {
+    var L = readAll(SH_X, XC), x = null;
+    for (var i = 0; i < L.length; i++) if (L[i].id === id) x = L[i];
+    if (!x) fail('notfound');
+    var p = findById(readAll(SH_P, PC), x.partnerId);
+    if (op === 'approve') {
+      var ship = b.ship === 'shop' ? 'shop' : 'partner', cost = Math.round(num(b.cost));
+      if (ship === 'shop' && !(cost > 0 && cost <= num(x.price))) fail('cost');
+      x.status = 'Схвалено'; x.ship = ship; x.cost = ship === 'shop' ? String(cost) : ''; x.note = str(b.note, 300);
+      if (p) toPartner(p, '✅ <b>Товар схвалено:</b> ' + h(x.name) + '\n' + (ship === 'shop' ? 'Відправляє магазин. Ваш заробіток з одиниці: ' + money(num(x.price) - cost) + '.' : 'Відправляєте ви самі — оплату отримуєте напряму від покупця.') +
+        '\nТепер його можна додати на вітрину.' + (x.note ? '\n\nКоментар: ' + h(x.note) : ''), { inline_keyboard: [[{ text: '🏪 Додати на вітрину', url: SITE + 'v/edit.html' }]] });
+    } else if (op === 'reject') {
+      x.status = 'Відхилено'; x.note = str(b.note, 300);
+      if (p) toPartner(p, '✖️ <b>Товар не схвалено:</b> ' + h(x.name) + (x.note ? '\nПричина: ' + h(x.note) : '') + '\nВиправте й надішліть ще раз: кабінет → «Мої товари».',
+        { inline_keyboard: [[{ text: '🧩 Мої товари', url: SITE + 'kabinet.html#mine' }]] });
+    } else fail('bad');
+    x.updated = now();
+    write(SH_X, XC, x);
+    return { ok: true, item: pubOwn(x) };
+  });
+};
+// для скрипта вітрин: схвалені власні товари партнера (лише якщо можливість увімкнена)
+ACTIONS.own_pub = function (b) {
+  admin(b);
+  var pid = str(b.partnerId, 20), p = findById(readAll(SH_P, PC), pid);
+  if (!p || !ownOn(p)) return { ok: true, items: [] };
+  return { ok: true, items: readAll(SH_X, XC).filter(function (x) { return x.partnerId === pid && x.status === 'Схвалено'; }).map(pubOwn) };
+};
+
 /* ---------------- реферальна програма (тиха) ---------------- */
 function pubRef(r) {
   return { order: r.order, created: r.created, refId: r.refId, refName: r.refName, partnerId: r.partnerId, partner: r.partner,

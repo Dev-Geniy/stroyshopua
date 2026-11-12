@@ -17,7 +17,7 @@ const from = new URLSearchParams(location.search).get('from') || sessionStorage.
 if (from) sessionStorage.setItem('v_from', from);
 if (from === 'app') { $('#back').href = '../app/#profile'; $('#back').textContent = '‹ Telegram-кабінет'; }
 
-let token = '', me = null, store = null, cfg = null, CAT = [], byId = new Map(), cats = {}, dirty = false, slugOk = true, frame = null, frameReady = false;
+let OWN = [], OWNP = [], token = '', me = null, store = null, cfg = null, CAT = [], byId = new Map(), cats = {}, dirty = false, slugOk = true, frame = null, frameReady = false;
 const blank = () => ({ name: '', slogan: '', logo: '', cover: '', theme: 'classic', accent: '#f08a1c', font: 'golos', radius: 'round', hero: 'cover', grid: 'normal', bar: '', perks: [], featTitle: '', preset: '', hideOut: true, markup: 0, round: '9', items: [], over: {}, feat: [],
   about: '', delivery: '', payment: '', fop: '', contacts: { phone: '', tg: '', viber: '', ig: '', tt: '', fb: '', hours: '' } });
 let slug = '';
@@ -41,6 +41,10 @@ async function boot() {
     return center('Не вдалося завантажити', ERR[r.error] || 'Спробуйте оновити сторінку.', '<button class="btn" onclick="location.reload()">Оновити</button>');
   }
   me = r.me; store = r.store;
+  // власні товари партнера: схвалені — у загальний список як товари; на модерації/відхилені — лише показуємо статус
+  OWN = (me.feat && me.feat.own && r.own) || [];
+  OWNP = OWN.filter(x => x.status === 'Схвалено').map(x => ({ id: String(x.id), name: x.name, sku: x.sku || '', price: +x.price, av: x.av ? 1 : 0, img: (x.photos || [])[0] || '', cat: '__own', own: 1, ship: x.ship, cost: +x.cost || 0, key: (x.name + ' ' + (x.sku || '')).toLowerCase() }));
+  OWNP.forEach(p => byId.set(p.id, p));
   const draft = LS.get('vdraft:' + me.id, null);
   cfg = Object.assign(blank(), store ? store.cfg : {}, draft && draft.cfg && (!store || draft.at > Date.parse(store.updated || 0)) ? draft.cfg : {});
   cfg.contacts = Object.assign(blank().contacts, cfg.contacts || {});
@@ -62,13 +66,14 @@ function suggest(n) { const s = String(n || '').toLowerCase().split('').map(c =>
 
 /* ---------- ціни (так само рахує сервер) ---------- */
 function price(p) {
+  if (p.own) return Math.round(+p.price);
   const base = +p.price, o = cfg.over[p.id];
   let v;
   if (o) v = +o;
   else { v = base * (1 + Math.max(0, +cfg.markup || 0) / 100); v = cfg.round === '10' ? Math.ceil(v / 10) * 10 : cfg.round === '9' ? Math.ceil((v + 1) / 10) * 10 - 1 : Math.ceil(v); }
   return Math.max(Math.ceil(base), Math.round(v));
 }
-const whole = p => +p.price * (1 - (+me.margin || 10) / 100);
+const whole = p => p.own ? (p.ship === 'shop' ? +p.cost : +p.price) : +p.price * (1 - (+me.margin || 10) / 100);
 
 /* ---------- готові вітрини (v/presets.js) ---------- */
 const PRK = {};
@@ -147,7 +152,8 @@ function draw() {
    <label class="f"><span>Назва блоку «Популярне»</span><input data-k="featTitle" maxlength="40" value="${E(cfg.featTitle)}" placeholder="Популярне"></label></section>
 
   <section class="card"><h2><span class="n">3</span>Товари <span class="note" id="cnt"></span></h2><p class="sub">Оберіть, що продаєте. ★ — «Популярне» вгорі вітрини (до 12). <a class="tip" href="${SITE}course-vitryna.html#l=v2" target="_blank" rel="noopener">💡 Що поставити на вітрину</a></p>
-   <div class="acts"><button class="btn sm" data-pick>${ico('plus')}Обрати з каталогу</button>${me.favs && me.favs.length ? `<button class="btn ghost sm" data-favs>Додати «Мої товари» (${me.favs.length})</button>` : ''}${cfg.items.length ? '<button class="btn ghost sm" data-clear>Прибрати всі</button>' : ''}</div>
+   <div class="acts"><button class="btn sm" data-pick>${ico('plus')}Обрати з каталогу</button>${me.favs && me.favs.length ? `<button class="btn ghost sm" data-favs>Додати «Мої товари» (${me.favs.length})</button>` : ''}${OWNP.length ? `<button class="btn ghost sm" data-ownall>🧩 Власні товари (${OWNP.length})</button>` : ''}${cfg.items.length ? '<button class="btn ghost sm" data-clear>Прибрати всі</button>' : ''}</div>
+   ${me.feat && me.feat.own ? ownNote() : ''}
    <label class="chk"><input type="checkbox" id="hideOut"${cfg.hideOut ? ' checked' : ''}> Не показувати товари, яких немає в наявності</label>
    <div class="items" id="items"></div></section>
 
@@ -188,14 +194,20 @@ function share() {
    <div class="lbl">Віджет для вашого сайту (Tilda, WordPress, Wix, будь-який HTML)</div><div class="txt" style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px">${E(emb)}</div><button class="btn ghost sm" data-copy="${E(emb)}">${ico('copy')}Копіювати код</button>
    <p class="note" style="margin-top:12px">Статистика: переглядів ≈ ${store.views || 0}, замовлень з вітрини: ${store.orders || 0}. Замовлення приходять у кабінет із позначкою «з вітрини».</p></section>`;
 }
+function ownNote() {
+  const pend = OWN.filter(x => x.status === 'На модерації').length, rej = OWN.filter(x => x.status === 'Відхилено').length;
+  return `<p class="note" style="margin:8px 0 0">🧩 Власні товари: схвалено ${OWNP.length}${pend ? ` · на перевірці ${pend} — з’являться тут після схвалення` : ''}${rej ? ` · відхилено ${rej}` : ''}. <a href="../kabinet.html#mine">Додати або змінити</a></p>`;
+}
 function items() {
   const L = cfg.items.map(id => byId.get(String(id))).filter(Boolean), gone = cfg.items.length - L.length;
   $('#cnt').textContent = L.length ? '· ' + L.length : '';
   $('#items').innerHTML = L.length ? L.slice(0, items.n || 60).map(p => {
     const pr = price(p), ov = cfg.over[p.id], f = cfg.feat.includes(p.id);
+    if (p.own) return `<div class="it">${p.img ? `<img src="${E(p.img)}" alt="" loading="lazy">` : '<span class="noimg"></span>'}<div class="t"><b title="${E(p.name)}">🧩 ${E(p.name)}</b><small${p.av ? '' : ' class="out"'}>${p.av ? 'ваш товар · ' + M(pr) + ' · ' + (p.ship === 'shop' ? 'відправляє магазин, заробіток ' + M(pr - whole(p)) : 'відправляєте самі') : 'немає в наявності'}</small></div>
+    <div class="c"><button data-feat="${E(p.id)}" class="${f ? 'on' : ''}" aria-label="Популярне">${ico('star')}</button><button data-rm="${E(p.id)}" aria-label="Прибрати">${ico('x')}</button></div></div>`;
     return `<div class="it">${p.img ? `<img src="${E(p.img)}" alt="" loading="lazy">` : '<span class="noimg"></span>'}<div class="t"><b title="${E(p.name)}">${E(p.name)}</b><small${p.av ? '' : ' class="out"'}>${p.av ? 'сайт ' + M(p.price) + ' · ваш заробіток ≈ ' + M(pr - whole(p)) : 'немає в наявності'}</small></div>
     <div class="c"><input inputmode="numeric" data-ov="${E(p.id)}" value="${ov || ''}" placeholder="${pr}" title="Своя ціна (порожньо — за націнкою)"${ov && ov < Math.ceil(p.price) ? ' class="bad"' : ''}><button data-feat="${E(p.id)}" class="${f ? 'on' : ''}" aria-label="Популярне">${ico('star')}</button><button data-rm="${E(p.id)}" aria-label="Прибрати">${ico('x')}</button></div></div>`;
-  }).join('') + (L.length > (items.n || 60) ? `<button class="more" data-imore>Показати всі (${L.length})</button>` : '') + (gone ? `<p class="note" style="margin-top:8px">${gone} товарів більше немає в каталозі — їх прибрано з вітрини.</p>` : '')
+  }).join('') + (L.length > (items.n || 60) ? `<button class="more" data-imore>Показати всі (${L.length})</button>` : '') + (gone ? `<p class="note" style="margin-top:8px">${gone} товарів недоступні (немає в каталозі або власний товар ще на перевірці) — на вітрині їх не буде.</p>` : '')
     : '<p class="note" style="padding:14px 0">Ще немає товарів. Натисніть «Обрати з каталогу».</p>';
   $$('#items [data-ov]').forEach(i => i.addEventListener('change', () => {
     const p = byId.get(i.dataset.ov), v = Math.round(+i.value.replace(/[^\d.]/g, '') || 0);
@@ -223,7 +235,7 @@ function checkSlug() {
 
 /* ---------- перегляд ---------- */
 let pt = null;
-function push() { clearTimeout(pt); pt = setTimeout(() => { if (frame && frameReady) frame.contentWindow.postMessage({ vcfg: cfg, slug: slug || 'preview' }, location.origin); }, 200); }
+function push() { clearTimeout(pt); pt = setTimeout(() => { if (frame && frameReady) frame.contentWindow.postMessage({ vcfg: cfg, slug: slug || 'preview', vown: OWN.filter(x => x.status === 'Схвалено') }, location.origin); }, 200); }
 addEventListener('message', e => { if (e.origin === location.origin && e.data && e.data.vready) { frameReady = true; push(); } });
 
 /* ---------- фото: стискаємо в браузері й вантажимо на imgbb ---------- */
@@ -251,7 +263,7 @@ function picker() {
   const cs = {}; CAT.forEach(p => cs[p.cat] = (cs[p.cat] || 0) + 1);
   o.innerHTML = `<div class="hd"><div class="r1"><h3>Оберіть товари для вітрини</h3><button class="btn" data-pkdone>Готово<span id="pkn"></span></button></div>
    <div class="r2"><input class="q" id="pkq" type="search" placeholder="Пошук: 3D панель, PET плитка, артикул…" value="${E(PK.q)}" autocomplete="off"><label class="chk" style="margin:0"><input type="checkbox" id="pkav"${PK.av ? ' checked' : ''}> Лише в наявності</label></div>
-   <div class="chips">${[['', 'Усі'], ['__sel', 'Обрані']].concat(Object.keys(cs).sort((a, b) => cs[b] - cs[a]).map(c => [c, cats[c] || c])).map(([k, l]) => `<button data-pkc="${E(k)}" aria-pressed="${PK.c === k}">${E(l)}</button>`).join('')}</div></div><div class="gr" id="pkg"></div>`;
+   <div class="chips">${[['', 'Усі'], ['__sel', 'Обрані']].concat(OWNP.length ? [['__own', '🧩 Власні']] : []).concat(Object.keys(cs).sort((a, b) => cs[b] - cs[a]).map(c => [c, cats[c] || c])).map(([k, l]) => `<button data-pkc="${E(k)}" aria-pressed="${PK.c === k}">${E(l)}</button>`).join('')}</div></div><div class="gr" id="pkg"></div>`;
   document.body.appendChild(o); document.body.style.overflow = 'hidden';
   $('#pkq').addEventListener('input', e => { PK.q = e.target.value; PK.n = 60; pgrid(); });
   $('#pkav').addEventListener('change', e => { PK.av = e.target.checked ? 1 : 0; PK.n = 60; pgrid(); });
@@ -259,7 +271,7 @@ function picker() {
 }
 function pgrid() {
   const w = PK.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  let L = PK.c === '__sel' ? cfg.items.map(id => byId.get(String(id))).filter(Boolean) : CAT.filter(p => (!PK.c || p.cat === PK.c) && (!PK.av || p.av) && (!w.length || w.every(x => p.key.includes(x))));
+  let L = PK.c === '__sel' ? cfg.items.map(id => byId.get(String(id))).filter(Boolean) : PK.c === '__own' ? OWNP.filter(p => !w.length || w.every(x => p.key.includes(x))) : CAT.filter(p => (!PK.c || p.cat === PK.c) && (!PK.av || p.av) && (!w.length || w.every(x => p.key.includes(x))));
   $('#pkn').textContent = cfg.items.length ? ' · ' + cfg.items.length : '';
   $('#pkg').innerHTML = L.slice(0, PK.n).map(p => { const on = cfg.items.includes(p.id); return `<div class="pc${on ? ' on' : ''}"><button class="im" data-tog="${E(p.id)}" aria-pressed="${on}">${p.img ? `<img src="${E(p.img)}" alt="" loading="lazy">` : ''}<span class="pl">${ico(on ? 'check' : 'plus')}</span></button><div class="b"><b>${E(p.name)}</b><span>${M(p.price)}</span></div></div>`; }).join('')
     + (L.length > PK.n ? `<button class="btn ghost" style="grid-column:1/-1;justify-self:center" data-pkmore>Показати ще · ${L.length - PK.n}</button>` : '') + (L.length ? '' : '<p class="note" style="grid-column:1/-1;text-align:center;padding:30px">Нічого не знайдено</p>');
@@ -307,6 +319,7 @@ document.addEventListener('click', e => {
   if (d.clr) { cfg[d.clr] = ''; dirtyOn(); const y = scrollY; draw(); return scrollTo(0, y); }
   if (d.pick !== undefined) return picker();
   if (d.favs !== undefined) { const before = cfg.items.length; me.favs.forEach(id => { id = String(id); if (byId.get(id) && !cfg.items.includes(id)) cfg.items.push(id); }); toast('Додано: ' + (cfg.items.length - before)); dirtyOn(); items(); return prices(); }
+  if (d.ownall !== undefined) { const before = cfg.items.length; OWNP.forEach(p => { if (!cfg.items.includes(p.id)) cfg.items.push(p.id); }); toast('Додано: ' + (cfg.items.length - before)); dirtyOn(); items(); return prices(); }
   if (d.clear !== undefined) { if (!confirm('Прибрати всі товари з вітрини?')) return; cfg.items = []; cfg.feat = []; cfg.over = {}; dirtyOn(); return items(); }
   if (d.rm) { cfg.items = cfg.items.filter(x => x !== d.rm); cfg.feat = cfg.feat.filter(x => x !== d.rm); delete cfg.over[d.rm]; dirtyOn(); return items(); }
   if (d.feat) { if (cfg.feat.includes(d.feat)) cfg.feat = cfg.feat.filter(x => x !== d.feat); else if (cfg.feat.length >= 12) return toast('До 12 популярних товарів'); else cfg.feat.push(d.feat); dirtyOn(); return items(); }

@@ -111,6 +111,17 @@ function tgAdmin(html, url) {
   });
 }
 
+/* ---------------- власні товари партнера (схвалені адміністратором; id X1001…) ---------------- */
+function ownOf(pid) {
+  var k = 'own:' + pid, c = cache().get(k);
+  if (c) return JSON.parse(c);
+  var r = papi({ action: 'own_pub', pass: prop('ADMIN_PASS'), partnerId: pid }), m = {};
+  if (r && r.ok) (r.items || []).forEach(function (x) { m[x.id] = x; });
+  try { cache().put(k, JSON.stringify(m), 120); } catch (x) { }
+  return m;
+}
+function ownPublic(x) { return { id: x.id, name: x.name, cat: x.cat, price: x.price, desc: x.desc, sku: x.sku, photos: x.photos, av: x.av }; }   // без закупівельної ціни
+
 /* ---------------- каталог сайту (ціни й наявність — для перевірки замовлень) ---------------- */
 function catalog() {
   var c = cache(), n = Number(c.get('cat_n') || 0), parts = [];
@@ -183,7 +194,8 @@ function getStore(slug, preview) {
   else { s = findSlug(readAll(SH_S, SC), slug); if (!s) fail('notfound'); delete s._r; cache().put(key, JSON.stringify(s), 300); }
   if (s.status === 'Вимкнена') return { ok: true, off: true };
   if (!preview) countView(slug);
-  var o = pubStore(s);
+  var o = pubStore(s), ids = (o.cfg.items || []).filter(function (id) { return /^X\d+$/.test(id); });
+  if (ids.length) { var m = ownOf(s.partnerId); o.own = ids.map(function (id) { return m[id]; }).filter(Boolean).map(ownPublic); }
   delete o.partner.id;
   return { ok: true, store: o };
 }
@@ -271,8 +283,15 @@ ACTIONS.v_order = function (b) {
   var s = findSlug(readAll(SH_S, SC), slug);
   if (!s || s.status === 'Вимкнена') fail('off');
   var cfg = json(s.config, {}), cat = catalog(), bad = [];
+  var own = null;
   var items = (o.items || []).slice(0, 40).map(function (x) {
     var id = str(x.id, 40), p = cat[id];
+    if (/^X\d+$/.test(id)) {                                    // власний товар партнера: ціна — та, що схвалена, без націнки
+      own = own || ownOf(s.partnerId); var w = own[id];
+      if (!w || cfg.items.indexOf(id) < 0) { bad.push(id); return null; }
+      if (!w.av) { bad.push(w.name); return null; }
+      return { id: id, name: w.name, sku: w.sku, q: Math.max(1, Math.min(999, Math.round(num(x.q)))), price: w.price, sale: w.price, own: 1, ship: w.ship, cost: w.cost };
+    }
     if (!p || cfg.items.indexOf(id) < 0) { bad.push(id); return null; }
     if (!p[1]) { bad.push(p[2]); return null; }
     return { id: id, name: p[2], sku: p[3], q: Math.max(1, Math.min(999, Math.round(num(x.q)))), price: p[0], sale: priceOf(cfg, id, p[0]) };
@@ -328,7 +347,9 @@ ACTIONS.v_stats = function (b) {
 /* ---------------- партнер: редактор вітрини ---------------- */
 ACTIONS.v_mine = function (b) {
   var me = partnerMe(b.token), s = findPartner(readAll(SH_S, SC), me.id);
-  return { ok: true, me: { id: me.id, name: me.name, level: me.level, margin: me.margin, favs: me.favs || [], tg: me.tg }, store: s ? pubStore(s, true) : null };
+  var feat = me.feat || {}, own = [];
+  if (feat.own) { var r = papi({ action: 'p_own', token: str(b.token, 80) }); own = r && r.ok ? (r.items || []).map(function (x) { var o = ownPublic(x); o.status = x.status; o.ship = x.ship; o.cost = x.cost; return o; }) : []; }
+  return { ok: true, me: { id: me.id, name: me.name, level: me.level, margin: me.margin, favs: me.favs || [], tg: me.tg, feat: feat }, store: s ? pubStore(s, true) : null, own: own };
 };
 ACTIONS.v_slug = function (b) {
   var me = partnerMe(b.token), slug = str(b.slug, 40).toLowerCase();
@@ -346,6 +367,12 @@ ACTIONS.v_save = function (b) {
   var me = partnerMe(b.token);
   if (me.status === 'Заблокований') fail('blocked');
   var cfg = cleanCfg(b.cfg, me), slug = str(b.slug, 40).toLowerCase();
+  if (cfg.items.some(function (id) { return /^X\d+$/.test(id); })) {          // власні товари — лише схвалені
+    cache().remove('own:' + me.id);
+    var om = (me.feat && me.feat.own) ? ownOf(me.id) : {}, okId = function (id) { return !/^X\d+$/.test(id) || !!om[id]; };
+    cfg.items = cfg.items.filter(okId); cfg.feat = cfg.feat.filter(okId);
+    Object.keys(cfg.over).forEach(function (k) { if (/^X\d+$/.test(k)) delete cfg.over[k]; });
+  }
   if (!cfg.items.length) fail('noitems');
   return withLock(function () {
     var list = readAll(SH_S, SC), s = findPartner(list, me.id), first = !s;
