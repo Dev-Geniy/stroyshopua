@@ -526,7 +526,7 @@ function clientUpdate_(u) {
   if (cmd[1] === 'menu') return send_(tok, chat, '⌨️ Меню — внизу екрана.', CLIENT_KB);
   if (CLIENT_ACT[text]) return CLIENT_ACT[text](tok, chat);
   if (cmd[1] === 'catalog') return send_(tok, chat, 'Каталог Samostroy Shop:', { inline_keyboard: [[{ text: '🛍 Відкрити каталог', web_app: { url: SITE } }]] });
-  if (cmd[1] === 'help') return send_(tok, chat, '💬 Напишіть питання сюди — менеджер відповість у цей чат.\nТелефон: +380 98 492 79 48\nПн–Сб, 9:00–19:00');
+  if (cmd[1] === 'help') return send_(tok, chat, '💬 Напишіть питання сюди — менеджер відповість у цей чат.\nТелефон: +380 75 219 32 07\nПн–Сб, 9:00–19:00');
   if (cmd[1]) return send_(tok, chat, 'Оберіть дію в меню внизу 👇', CLIENT_KB);
   // повідомлення клієнта — власнику в адмін-бот
   if (!adminTok_() || !adminChats_().length) return send_(tok, chat, 'Напишіть, будь ласка, менеджеру: @' + MANAGER, { inline_keyboard: [[{ text: 'Написати менеджеру', url: 'https://t.me/' + MANAGER }]] });
@@ -550,7 +550,7 @@ const CLIENT_ACT = {
       [{ text: 'Підготовка стіни', url: B_('pidhotovka-poverkhni-pered-pokleykoyu') }, { text: 'Скільки потрібно', url: B_('yak-rozrakhuvaty-material') }]] }),
   '🔁 Обмін і повернення': (tok, chat) => send_(tok, chat, '🔁 <b>Обмін і повернення</b>\n• Протягом 14 днів з дня отримання — якщо товар у цілій заводській упаковці й не використовувався. Зворотну доставку оплачує покупець.\n• Брак або не та модель чи колір — замінимо за наш рахунок.\n• Панель зі знятою плівкою повернути не можна.\n\nЩоб оформити — напишіть сюди номер замовлення й що саме повертаєте, менеджер підкаже далі.',
     { inline_keyboard: [[{ text: '📄 Усі умови', url: SITE + 'povernennya.html' }]] }),
-  '💬 Менеджер': (tok, chat) => send_(tok, chat, '💬 <b>Напишіть питання сюди</b> одним повідомленням — менеджер відповість у цей чат. Можна додати розміри чи номер замовлення.\n\n📞 +380 98 492 79 48 · Пн–Сб, 9:00–19:00',
+  '💬 Менеджер': (tok, chat) => send_(tok, chat, '💬 <b>Напишіть питання сюди</b> одним повідомленням — менеджер відповість у цей чат. Можна додати розміри чи номер замовлення.\n\n📞 +380 75 219 32 07 · Пн–Сб, 9:00–19:00',
     { inline_keyboard: [[{ text: 'Написати менеджеру в Telegram', url: 'https://t.me/' + MANAGER }]] })
 };
 function contactKb_() { return { keyboard: [[{ text: '📱 Поділитися номером', request_contact: true }]], resize_keyboard: true, one_time_keyboard: true }; }

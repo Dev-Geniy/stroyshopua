@@ -4,7 +4,7 @@
    якщо змінюєте правила там — оновіть і тут. */
 window.VPOLICY = (() => {
 const UPD = '2026-11-11', UPD_T = '11 листопада 2026 р.';
-const SHOP = { tg: 'manager_samostroy_shop', phone: '+380 98 492 79 48', tel: '+380984927948', site: 'https://samostroy.shop/' };
+const SHOP = { tg: 'manager_samostroy_shop', phone: '+380 75 219 32 07', tel: '+380752193207', site: 'https://samostroy.shop/' };
 const E = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // мінімальний Markdown: ## / ###, абзаци, «- » і «1. » списки, «> » порада, **жирний**, [текст](посилання); {{…}} — вставка готового HTML
 function md(src, raw) {

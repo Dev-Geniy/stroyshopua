@@ -2,7 +2,7 @@
 """Зміст PDF-курсів для партнерів Samostroy Shop. Один словник = один PDF."""
 
 TG = '@manager_samostroy_shop'
-PHONE = '+380 98 492 79 48'
+PHONE = '+380 75 219 32 07'
 SITE = 'samostroy.shop'
 
 # Однакові для всіх PDF блоки

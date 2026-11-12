@@ -30,7 +30,7 @@ G = '{http://base.google.com/ns/1.0}'
 NOW = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=2)))
 TODAY = NOW.strftime('%Y-%m-%d')
 TG = 'manager_samostroy_shop'
-PHONE = '+380984927948'
+PHONE = '+380752193207'
 SAME_AS = ['https://t.me/samostroy_shop', 'https://www.tiktok.com/@stroyshop_ua', 'https://www.instagram.com/samostroy.shop']
 RETURNS_URL = SITE + 'povernennya.html'
 RETURNS_UPDATED = '2026-11-01'

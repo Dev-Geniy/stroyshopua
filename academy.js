@@ -211,7 +211,7 @@ function planHTML(){
    <input id="acHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
    <div class="hint full" id="acHint"></div>
    <button class="btn" id="acBtn" type="submit">Надіслати заявку з планом</button>
-   <p class="note2">Або <button type="button" class="link" data-ac="tgplan">надішліть план менеджеру в Telegram</button> чи зателефонуйте: <a href="tel:+380984927948">+380 98 492 79 48</a>.</p>
+   <p class="note2">Або <button type="button" class="link" data-ac="tgplan">надішліть план менеджеру в Telegram</button> чи зателефонуйте: <a href="tel:+380752193207">+380 75 219 32 07</a>.</p>
   </form>
  </div>
  <p class="ac-again"><button type="button" class="link" data-ac="reset">Пройти академію заново</button></p>`}

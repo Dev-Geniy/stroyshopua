@@ -5,8 +5,8 @@ var CFG={
  xml:'products.xml',                                   // файл з товарами поруч з index.html
  xmlBackup:'https://raw.githubusercontent.com/Dev-Geniy/stroyshopua/main/products.xml',
  tg:'manager_samostroy_shop',                          // Telegram менеджера (без @)
- viber:'+380984927948',                                // номер Viber. Порожньо '' = кнопку сховано
- phone:'+380984927948',
+ viber:'+380752193207',                                // номер Viber. Порожньо '' = кнопку сховано
+ phone:'+380752193207',
  step:24,                                              // скільки товарів показувати за раз
  samplesNote:'',                                       // напр. 'Зразки 3 матеріалів — 50 грн'. Порожньо = без ціни
  quizBonus:'',                                         // напр. 'Знижка 5% на перше замовлення після підбору'. Порожньо = без бонусу

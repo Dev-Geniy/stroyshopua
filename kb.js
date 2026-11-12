@@ -4,7 +4,7 @@
    Формат тексту: абзаци, «- » список, «1. » кроки, «> » порада, **жирний**, [текст](посилання).
    Поля статті: id, cat, q — питання, a — відповідь партнеру, do — що зробити менеджеру, reply — готове повідомлення партнеру, tags — слова для пошуку. */
 window.KB = (() => {
-const SITE = 'https://samostroy.shop/', BOT = 'samostroy_drop_bot', MGR = 'manager_samostroy_shop', PHONE = '+380 98 492 79 48';
+const SITE = 'https://samostroy.shop/', BOT = 'samostroy_drop_bot', MGR = 'manager_samostroy_shop', PHONE = '+380 75 219 32 07';
 const CATS = [['start', 'Початок', '🚀'], ['acc', 'Вхід і акаунт', '🔑'], ['ord', 'Замовлення', '📦'], ['money', 'Заробіток і виплати', '💸'],
   ['tg', 'Telegram-бот', '✈️'], ['sell', 'Продажі й оголошення', '📣'], ['shop', 'Своя вітрина', '🏪'], ['mgr', 'Для менеджера', '🛠']];
 

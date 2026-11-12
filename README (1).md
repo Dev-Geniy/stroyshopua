@@ -298,7 +298,7 @@ php -S localhost:8080
 
 | Что | Значение |
 |---|---|
-| Телефон | `+380 98 492 79 48` |
+| Телефон | `+380 75 219 32 07` |
 | Telegram менеджера | [`@manager_samostroy_shop`](https://t.me/manager_samostroy_shop) |
 | Telegram-канал | [`@samostroy_shop`](https://t.me/samostroy_shop) |
 | Instagram | [`samostroy.shop`](https://www.instagram.com/samostroy.shop) |
@@ -690,7 +690,7 @@ Sitemap: https://samostroy.shop/sitemap.xml
 | | |
 |---|---|
 | 🌐 Сайт | [samostroy.shop](https://samostroy.shop) |
-| 📞 Телефон | [+380 98 492 79 48](tel:+380984927948) |
+| 📞 Телефон | [+380 75 219 32 07](tel:+380752193207) |
 | 💬 Менеджер | [@manager_samostroy_shop](https://t.me/manager_samostroy_shop) |
 | 📣 Канал | [@samostroy_shop](https://t.me/samostroy_shop) |
 | 📸 Instagram | [samostroy.shop](https://www.instagram.com/samostroy.shop) |
