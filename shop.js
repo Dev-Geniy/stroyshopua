@@ -27,7 +27,7 @@ fh:['Часті питання','Частые вопросы'],q1:['Як опл�
 rm:['Читати далі','Читать далее'],rl:['Згорнути','Свернуть'],fabout:['Самоклеючі матеріали для ремонту своїми руками. Доставка по всій Україні.','Самоклеящиеся материалы для ремонта своими руками. Доставка по всей Украине.'],fcat:['Каталог','Каталог'],fspec:['Добірки','Подборки'],fbiz:['Співпраця','Сотрудничество'],fpart:['Партнерам','Партнёрам'],facad:['Академія партнера','Академия партнёра'],fcab:['Товари для продажу','Товары для продажи'],fkab:['Особистий кабінет','Личный кабинет'],fhub:['Де й як продавати','Где и как продавать'],fc1:['Курс «Дропшипінг з нуля»','Курс «Дропшиппинг с нуля»'],fc2:['Курс «Продажі 3.0»','Курс «Продажи 3.0»'],fp:['Партнерам','Партнёрам'],fsup:['Постачальникам','Поставщикам'],ffr:['Франшиза','Франшиза'],fjob:['Вакансії','Вакансии'],fblog:['Блог','Блог'],
 fabp:['Потрібна допомога з розрахунком? Надішліть фото чи розміри стіни, менеджер підбере й порахує.','Нужна помощь с расчётом? Отправьте фото или размеры стены, менеджер подберёт и посчитает.'],call:['Подзвонити','Позвонить'],
 tot:['Разом','Итого'],nm:['Ім’я','Имя'],phn:['Телефон','Телефон'],cy:['Місто та відділення пошти','Город и отделение почты'],pay:['Оплата','Оплата'],p1:['При отриманні','При получении'],p2:['На картку','На карту'],dl:['Доставка','Доставка'],send:['Надіслати замовлення менеджеру','Отправить заказ менеджеру'],
-g1:['Безкоштовно порахуємо кількість','Бесплатно посчитаем количество'],g2:['Відправка в день замовлення','Отправка в день заказа'],g3:['Умови обміну й повернення','Условия обмена и возврата'],
+g1:['Безкоштовно порахуємо кількість','Бесплатно посчитаем количество'],g2:['Відправка в день замовлення','Отправка в день заказа'],g3:['Умови обміну й повернення','Условия обмена и возврата'],g4:['Політика конфіденційності','Политика конфиденциальности'],
 left:['Залишилось {n} шт.','Осталось {n} шт.'],empty:['Кошик порожній. Додайте товари з каталогу.','Кошик пуст. Добавьте товары из каталога.'],toCat:['Перейти до каталогу','Перейти в каталог'],add:['У кошик','В кошик'],inCart:['Додано в кошик','Добавлено в кошик'],one:['Купити в 1 клік','Купить в 1 клик'],q1b:['В 1 клік','В 1 клик'],inst:['В наявності','В наличии'],outst:['Немає в наявності','Нет в наличии'],ask:['Запитати','Спросить'],
 none:['За цим запитом нічого не знайшли. Спробуйте коротше слово або напишіть менеджеру, він підбере.','По этому запросу ничего не нашли. Попробуйте слово короче или напишите менеджеру, он подберёт.'],askm:['Написати менеджеру','Написать менеджеру'],reset:['Скинути фільтри','Сбросить фильтры'],
 err:['Не вдалося завантажити каталог. Перевірте інтернет і спробуйте ще раз.','Не удалось загрузить каталог. Проверьте интернет и попробуйте ещё раз.'],retry:['Спробувати ще раз','Попробовать ещё раз'],
@@ -750,7 +750,7 @@ function save(){
  $('#items').innerHTML=ids.length?ids.map(i=>{const c=cart[i];return`<div class="it"><img src="${esc(c.img)}" alt="" onerror="this.style.opacity=0"><div><a href="?p=${encodeURIComponent(i)}" data-p="${esc(i)}" style="text-decoration:none">${esc(c.name)}</a><br><span class="soft">${money(c.price)}&nbsp;&nbsp;${esc(c.sku||'')}</span><div class="qty" style="margin-top:6px"><button data-m="${esc(i)}" aria-label="−">−</button><input data-qi="${esc(i)}" value="${c.q}" inputmode="numeric" aria-label="Кількість"><button data-pl="${esc(i)}" aria-label="+">+</button></div></div><div class="side2"><button class="del" data-del="${esc(i)}" aria-label="${t('del')}" title="${t('del')}"><svg class="i"><use href="#i-x"/></svg></button><span class="lt">${money(c.price*c.q)}</span></div></div>`}).join(''):`<div class="empty" style="margin:20px 0">${t('empty')}<br><button class="btn" data-a="tocat">${t('toCat')}</button></div>`;
  $('#cform').hidden=$('#dfoot').hidden=!ids.length;$('#clr').hidden=!ids.length;
  $('#cn').textContent=n?'· '+n+' '+t('pcs'):'';
- $('#total').textContent=money(sum)}
+ $('#total').textContent=money(sum);draft()}
 let doneHTML='',lastMsg='';
 const panel=o=>{if(!o&&doneHTML){doneHTML='';setTimeout(save,300)}$('#cart').classList.toggle('on',o);$('#shade').classList.toggle('on',o);$('#cart').setAttribute('aria-hidden',!o);if(o)setTimeout(()=>$('#cart .xb').focus(),50)};
 function add(id,n=1){const p=byId.get(id);if(!p||!(n>0))return;cart[id]=cart[id]||{name:p.name,price:p.price,img:p.img,sku:p.sku,q:0};cart[id].price=p.price;cart[id].q+=n;save();toast(t('inCart')+': '+p.name.slice(0,60));
@@ -773,10 +773,21 @@ const VISIT=(()=>{const K='ss_src';try{const q=new URLSearchParams(location.sear
 function withSrc(u){try{if(!VISIT)return u;const x=new URL(u);if(x.searchParams.get('utm_source'))return u;for(const k in VISIT)if(k!='t')x.searchParams.set(k,VISIT[k]);return x.toString()}catch(e){return u}}
 async function api(body){
  if(body&&body.order&&body.order.page)body.order.page=withSrc(body.order.page);
+ if(body&&body.cart&&body.cart.page)body.cart.page=withSrc(body.cart.page);
  const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),20000);
  try{const r=await fetch(CFG.api,{method:'POST',body:JSON.stringify(body),signal:ac.signal,redirect:'follow'});return await r.json()}finally{clearTimeout(tm)}}
 const doneBox=(id,fail,err,pd,bot)=>`<div class="done${fail?' fail':''}"><div class="ic"><svg class="i"><use href="#${fail?'i-chat':'i-check'}"/></svg></div><h3>${fail?t('failH'):t('okH',{id:esc(id)})}</h3><p>${fail?(err=='rate'?t('rate'):t('failP')):t('okP')}</p>${!fail&&bot&&/^https:\/\/t\.me\/\w+\?start=o_[\w-]+$/.test(bot)?`<a class="btn" href="${esc(bot)}" target="_blank" rel="noopener"><svg class="i"><use href="#i-tg"/></svg>${t('okBot')}</a><p class="note" style="margin:6px 0 10px">${t('okBotP')}</p>`:''}<button class="btn${!fail&&bot?' ghost':''}" data-a="tgmsg">${fail?t('failTg'):t('okTg')}</button>${fail?`<button class="link" data-a="${err=='one'?'retry1':'order'}">${t('retry2')}</button>`:`<button class="link" data-a="${pd?'pdclose':'close'}">${t('okMore')}</button>`}</div>`;
 let pendingKey='';
+/* кинутий кошик: покупець ввів телефон, але не натиснув «Оформити» — зберігаємо чернетку, щоб менеджер міг передзвонити й допомогти */
+var draftT=null,draftSig='';
+function draft(){
+ if(!CFG.api||doneHTML)return;const ph=$('#fp'),ids=Object.keys(cart);if(!ph||!phoneOk(ph.value)||!ids.length)return;
+ clearTimeout(draftT);draftT=setTimeout(()=>{
+  let k=ls.get('cdk','');if(!k){k=okey();ls.set('cdk',k)}
+  const items=ids.map(i=>({id:i,name:cart[i].name,sku:cart[i].sku,q:cart[i].q,price:cart[i].price})),sig=JSON.stringify([ph.value,$('#fn').value,items]);
+  if(sig==draftSig)return;draftSig=sig;
+  api({action:'cart',cart:{key:k,name:$('#fn').value,phone:ph.value,items,page:location.href,lang}}).catch(()=>{})},3000)}
+document.addEventListener('input',e=>{if(e.target&&(e.target.id=='fp'||e.target.id=='fn'))draft()});
 async function order(btn){
  const ids=Object.keys(cart);if(!ids.length)return toast(t('inc'));
  const ph=$('#fp');if(!phoneOk(ph.value))return bad(ph,t('phr'));
@@ -785,9 +796,9 @@ async function order(btn){
  const msg=id=>[`🛒 ${t('newo')}${id?' '+t('num')+id:''}`,...lines,'',`${t('tot')}: ${money(sum)}`,`${t('nm')}: ${$('#fn').value}`,`${t('phn')}: ${ph.value}`,`${t('addr')}: ${$('#fc').value}`,`${t('pay')}: ${pay}`,`${t('dl')}: ${dl}`].join('\n');
  if(!CFG.api){tg(msg());return toast(t('copied'))}
  const b=$('[data-a=order]');b.classList.add('busy');pendingKey=pendingKey||okey();
- let r=null;try{r=await api({action:'order',order:{type:'Кошик',name:$('#fn').value,phone:ph.value,city:$('#fc').value,pay,delivery:dl,total:sum,items:ids.map(i=>({id:i,name:cart[i].name,sku:cart[i].sku,q:cart[i].q,price:cart[i].price})),page:location.href,lang,key:pendingKey,hp:$('#fhp').value}})}catch(e){}
+ let r=null;try{r=await api({action:'order',order:{type:'Кошик',name:$('#fn').value,phone:ph.value,city:$('#fc').value,pay,delivery:dl,total:sum,items:ids.map(i=>({id:i,name:cart[i].name,sku:cart[i].sku,q:cart[i].q,price:cart[i].price})),page:location.href,lang,key:pendingKey,draft:ls.get('cdk',''),hp:$('#fhp').value}})}catch(e){}
  b.classList.remove('busy');
- if(r&&r.ok){lastMsg=msg(r.id);pendingKey='';cart={};doneHTML=doneBox(r.id,0,0,0,r.tg);save()}
+ if(r&&r.ok){lastMsg=msg(r.id);pendingKey='';clearTimeout(draftT);ls.set('cdk','');draftSig='';cart={};doneHTML=doneBox(r.id,0,0,0,r.tg);save()}
  else{lastMsg=msg();const old=$('#items .done');old&&old.remove();$('#items').insertAdjacentHTML('afterbegin',doneBox('',1,r&&r.error));$('#cart .dbody').scrollTop=0}}
 function oneClick(id){const i=$('#mp'),p=byId.get(id);if(!phoneOk(i.value))return bad(i,t('phr'));cust.fp=i.value;ls.set('cust',cust);
 const msg=n=>`⚡ ${t('o1c')}${n?' '+t('num')+n:''}\n${p.name}${p.sku?' ('+p.sku+')':''}\n${money(p.price)}\n${CFG.site}${href(p)}\n${t('phn')}: ${i.value}`;

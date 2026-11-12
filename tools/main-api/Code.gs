@@ -43,6 +43,7 @@ function doPost(e) {
   try { req = JSON.parse(e.postData.contents); } catch (x) { return out_({ ok: false, error: 'bad_json' }); }
   try {
     if (req.action === 'order') return out_(newOrder_(req.order || {}));
+    if (req.action === 'cart') return out_(cartDraft_(req.cart || {}));
     if (req.action === 'login' || req.action === 'list' || req.action === 'update') {
       const a = auth_(req.pass);
       if (a !== true) return out_({ ok: false, error: a });
@@ -64,6 +65,7 @@ function out_(o) {
 /* ---------------- нове замовлення ---------------- */
 function newOrder_(o) {
   if (o.hp) return { ok: true, id: '0' };                  // пастка для ботів-спамерів: тихо ігноруємо
+  const draftKey = clean_(o.draft, 40);                    // ключ чернетки кошика (кинуті кошики)
   const phone = clean_(o.phone, 30);
   const digits = phone.replace(/\D/g, '');
   if (digits.length < 10 || digits.length > 13) return { ok: false, error: 'phone' };
@@ -118,6 +120,7 @@ function newOrder_(o) {
   } finally { lock.releaseLock(); }
 
   try { notify_(o); } catch (err) { console.error('telegram', err); }   // помилка бота не скасовує замовлення
+  if (kind_(o.type) === 'order') try { cartDone_(draftKey, digits, id); } catch (err) { console.error('cart', err); }
   return withTg_({ ok: true, id }, o.type);
 }
 // посилання «Стежити за статусом у Telegram» для сторінки подяки (лише для замовлень товарів)
@@ -359,6 +362,7 @@ function adminUpdate_(u) {
   if (cmd[1] === 'start' || cmd[1] === 'help') return send_(tok, chat, '👋 <b>Адмін-бот Samostroy Shop</b>\n📊 Сьогодні — продажі й що в роботі\n🆕 Нові — необроблені замовлення й заявки з кнопками\n🔎 Пошук — /find номер або телефон\n\nЩоб відповісти клієнту чи партнеру — відповідайте (Reply) на його повідомлення.', ADMIN_KB);
   if (cmd[1] === 'today' || text === '📊 Сьогодні') return send_(tok, chat, summary_(false), { inline_keyboard: [[{ text: 'Аналітика в адмінці', url: SITE + 'admin.html#stats' }]] });
   if (cmd[1] === 'new' || text === '🆕 Нові') return sendNew_(chat);
+  if (cmd[1] === 'month') return send_(tok, chat, monthReport_(new Date(), true), { inline_keyboard: [[{ text: 'Аналітика в адмінці', url: SITE + 'admin.html#stats' }]] });
   if (cmd[1] === 'find' && cmd[2]) return sendFind_(chat, cmd[2]);
   if (text === '🔎 Пошук') return send_(tok, chat, 'Надішліть номер замовлення (напр. 1111-003) або телефон клієнта відповіддю на це повідомлення.', { force_reply: true, input_field_placeholder: 'Номер або телефон' });
   if (text === '🌐 Адмінка') return send_(tok, chat, 'Адмінка магазину:', { inline_keyboard: [[{ text: 'Відкрити адмінку', url: SITE + 'admin.html' }]] });
@@ -414,6 +418,10 @@ function adminCallback_(q) {
         ans = 'Статус: ' + to + '. Партнер отримав сповіщення';
       } else ans = 'Не вдалося: ' + (r && r.error || 'немає зв’язку з кабінетом партнерів');
     }
+  } else if (d[0] === 'k') {                                                         // кинутий кошик
+    const to = { d: 'Зв’язалися', x: 'Без дзвінка' }[d[1]], ok = to && cartSet_(d[2], to);
+    if (ok) tgCall_(tok, 'editMessageText', { chat_id: chat, message_id: q.message.message_id, text: String(q.message.text || '').slice(0, 3700) + '\n\n➜ ' + to + stamp_(q, true), disable_web_page_preview: true });
+    ans = ok ? to : 'Кошик не знайдено';
   } else if (d[0] === 'more') { sendNew_(chat, +d[1] || 10); }
   tgCall_(tok, 'answerCallbackQuery', { callback_query_id: q.id, text: ans });
 }
@@ -570,6 +578,185 @@ function sheet_() {
 function clean_(s, max) { return String(s == null ? '' : s).replace(/[\u0000-\u0008\u000b-\u001f]/g, '').trim().slice(0, max || 200); }
 function money_(n) { return Math.round(n).toLocaleString('uk-UA').replace(/ /g, ' ') + ' ₴'; }
 
+/* ---------------- кинуті кошики ----------------
+   Покупець ввів телефон у кошику, але не натиснув «Оформити». Сайт (shop.js → draft) надсилає чернетку,
+   а cartCheck (тригер кожні 15 хв) через CART_WAIT хвилин нагадує менеджеру в адмін-бот — лише вдень. */
+const CART_SHEET = 'Кинуті кошики';
+const CART_HEAD = ['Ключ', 'Створено', 'Оновлено', 'Ім’я', 'Телефон', 'Сума, ₴', 'Товари', 'Сторінка', 'Статус', 'Нагадано', 'Замовлення', 'Товари (дані)'];
+const K = {}; CART_HEAD.forEach((h, i) => K[h] = i);
+const CART_WAIT = 60, CART_DAY = [9, 21];          // хвилин до нагадування; години, коли можна турбувати менеджера
+function cartSheet_() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sh = ss.getSheetByName(CART_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(CART_SHEET);
+    sh.appendRow(CART_HEAD); sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, CART_HEAD.length).setFontWeight('bold').setBackground('#2b3138').setFontColor('#ffffff');
+    sh.getRange('B:C').setNumberFormat('dd.MM.yyyy HH:mm'); sh.getRange('J:J').setNumberFormat('dd.MM.yyyy HH:mm');
+    [110, 120, 120, 120, 130, 90, 380, 220, 110, 120, 100].forEach((w, i) => sh.setColumnWidth(i + 1, w));
+    sh.hideColumns(1); sh.hideColumns(K['Товари (дані)'] + 1);
+  }
+  return sh;
+}
+function cartRows_(n) {
+  const sh = cartSheet_(), last = sh.getLastRow();
+  if (last < 2) return [];
+  const from = Math.max(2, last - (n || 500) + 1);
+  return sh.getRange(from, 1, last - from + 1, CART_HEAD.length).getValues().map((r, i) => ({ r: from + i, raw: r }));
+}
+function kyivHour_() { return +Utilities.formatDate(new Date(), TZ, 'H'); }
+const tail9_ = s => String(s || '').replace(/\D/g, '').slice(-9);
+function cartDraft_(c) {
+  const key = clean_(c.key, 40), phone = clean_(c.phone, 30), digits = phone.replace(/\D/g, '');
+  if (!/^[\w-]{6,40}$/.test(key) || digits.length < 10 || digits.length > 13) return { ok: false, error: 'bad' };
+  const items = (Array.isArray(c.items) ? c.items : []).slice(0, 100).map(x => ({ id: clean_(x.id, 40), name: clean_(x.name, 200), sku: clean_(x.sku, 40),
+    q: Math.max(1, Math.min(9999, parseInt(x.q, 10) || 1)), price: Math.max(0, Math.round((+x.price || 0) * 100) / 100) })).filter(x => x.name);
+  if (!items.length) return { ok: false, error: 'items' };
+  const cache = CacheService.getScriptCache(), k1 = 'cd_' + key, n1 = +(cache.get(k1) || 0), n2 = +(cache.get('cd_all') || 0);
+  if (n1 >= 20 || n2 >= 300) return { ok: false, error: 'rate' };
+  cache.put(k1, String(n1 + 1), 600); cache.put('cd_all', String(n2 + 1), 600);
+  const total = items.reduce((a, x) => a + x.q * x.price, 0), text = items.map(x => `${x.name}${x.sku ? ' (' + x.sku + ')' : ''} × ${x.q} = ${money_(x.q * x.price)}`).join('\n');
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    const sh = cartSheet_(), now = new Date(), row = cartRows_(300).find(x => x.raw[K['Ключ']] === key);
+    if (row && ['Оформлено', 'Зв’язалися', 'Без дзвінка'].indexOf(String(row.raw[K['Статус']])) >= 0) return { ok: true };
+    const r = row ? row.raw : new Array(CART_HEAD.length).fill('');
+    if (!row) { r[K['Ключ']] = key; r[K['Створено']] = now; r[K['Статус']] = 'Відкритий'; }
+    r[K['Оновлено']] = now; r[K['Ім’я']] = clean_(c.name, 80); r[K['Телефон']] = "'" + phone; r[K['Сума, ₴']] = total;
+    r[K['Товари']] = text; r[K['Сторінка']] = clean_(c.page, 300); r[K['Товари (дані)']] = JSON.stringify(items);
+    if (row) sh.getRange(row.r, 1, 1, CART_HEAD.length).setValues([r]); else sh.appendRow(r);
+  } finally { lock.releaseLock(); }
+  return { ok: true };
+}
+// оформили замовлення — чернетку (за ключем або телефоном) закриваємо
+function cartDone_(key, digits, id) {
+  const t9 = tail9_(digits), L = cartRows_(300).filter(x => ['Відкритий', 'Нагадано'].indexOf(String(x.raw[K['Статус']])) >= 0 && ((key && x.raw[K['Ключ']] === key) || tail9_(x.raw[K['Телефон']]) === t9));
+  if (!L.length) return;
+  const sh = cartSheet_();
+  L.forEach(x => { sh.getRange(x.r, K['Статус'] + 1).setValue('Оформлено'); sh.getRange(x.r, K['Замовлення'] + 1).setValue(id); });
+}
+function cartSet_(key, status) {
+  const x = cartRows_(1000).find(y => y.raw[K['Ключ']] === key);
+  if (!x) return false;
+  cartSheet_().getRange(x.r, K['Статус'] + 1).setValue(status);
+  return true;
+}
+function cartCard_(r) {
+  let items = []; try { items = JSON.parse(r[K['Товари (дані)']] || '[]'); } catch (x) { }
+  const ago = Math.round((Date.now() - new Date(r[K['Оновлено']]).getTime()) / 60000), page = String(r[K['Сторінка']] || '');
+  const src = (page.match(/utm_source=([^&#]+)/) || [])[1];
+  const first = items[0] ? items[0].name.split(/[,(]/)[0].trim() : 'товари';
+  return '🛒 <b>Кинутий кошик</b> · ' + (ago < 120 ? ago + ' хв' : Math.round(ago / 60) + ' год') + ' тому\n' +
+    (r[K['Ім’я']] ? 'Ім’я: ' + h_(r[K['Ім’я']]) + '\n' : '') + 'Телефон: <b>' + h_(String(r[K['Телефон']]).replace(/^'/, '')) + '</b>\n' +
+    'Сума: <b>' + money_(+r[K['Сума, ₴']] || 0) + '</b>\n\n' + items.slice(0, 10).map((x, i) => (i + 1) + '. ' + h_(x.name) + ' × ' + x.q + ' — ' + money_(x.q * x.price)).join('\n') +
+    (items.length > 10 ? '\n… ще ' + (items.length - 10) : '') + (src ? '\n\nДжерело: ' + h_(decodeURIComponent(src)) : '') +
+    '\n\n<i>Клієнт ввів телефон, але не оформив замовлення. Можна сказати: «Бачу, ви обирали ' + h_(first.slice(0, 60)) + ' — допомогти з кількістю чи доставкою?»</i>';
+}
+// чернетки старші за 90 днів видаляємо (так обіцяє політика конфіденційності) — не частіше ніж раз на 6 годин
+function cartPurge_() {
+  const c = CacheService.getScriptCache();
+  if (c.get('cart_purge')) return;
+  c.put('cart_purge', '1', 21600);
+  const sh = cartSheet_(), last = sh.getLastRow();
+  if (last < 2) return;
+  const d = sh.getRange(2, K['Створено'] + 1, last - 1, 1).getValues(), old = Date.now() - 90 * 864e5;
+  let n = 0; while (n < d.length && d[n][0] && new Date(d[n][0]).getTime() < old) n++;   // рядки йдуть за датою створення
+  if (n) sh.deleteRows(2, n);
+}
+/** Кинуті кошики: нагадування менеджеру (тригер кожні 15 хв, створює setupReports). */
+function cartCheck() {
+  cartPurge_();
+  if (!adminTok_() || !adminChats_().length) return;
+  const hr = kyivHour_();
+  if (hr < CART_DAY[0] || hr >= CART_DAY[1]) return;
+  const now = Date.now(), L = cartRows_(300).filter(x => x.raw[K['Статус']] === 'Відкритий' && now - new Date(x.raw[K['Оновлено']]).getTime() > CART_WAIT * 60000);
+  if (!L.length) return;
+  const orders = allRows_().slice(-400).map(x => x.o).filter(o => kind_(o.type) === 'order'), sh = cartSheet_();
+  let sent = 0;
+  L.forEach(x => {
+    const r = x.raw, t9 = tail9_(r[K['Телефон']]), since = new Date(r[K['Створено']]).getTime() - 30 * 60000;
+    const o = orders.find(y => tail9_(y.phone) === t9 && new Date(y.created).getTime() >= since);
+    if (o) { sh.getRange(x.r, K['Статус'] + 1).setValue('Оформлено'); sh.getRange(x.r, K['Замовлення'] + 1).setValue(o.id); return; }
+    if (now - new Date(r[K['Оновлено']]).getTime() > 3 * 864e5) { sh.getRange(x.r, K['Статус'] + 1).setValue('Застарілий'); return; }
+    if (sent >= 10) return;
+    toAdmins_(cartCard_(r), { inline_keyboard: [[{ text: '📞 Зв’язалися', callback_data: 'k|d|' + r[K['Ключ']] }, { text: '🚫 Не дзвонити', callback_data: 'k|x|' + r[K['Ключ']] }]] });
+    sh.getRange(x.r, K['Статус'] + 1).setValue('Нагадано'); sh.getRange(x.r, K['Нагадано'] + 1).setValue(new Date()); sent++;
+  });
+}
+
+/* ---------------- звіт за місяць ---------------- */
+function monthBounds_(d, cur) {
+  // початок місяця за київським часом; mi — номер місяця від нуля року 0 (щоб легко рахувати сусідні)
+  const at = mi => { const yy = Math.floor(mi / 12), mm = mi % 12; return new Date(Utilities.formatDate(new Date(Date.UTC(yy, mm, 15)), TZ, "yyyy-MM-'01T00:00:00'XXX")); };
+  const mi = +Utilities.formatDate(d, TZ, 'yyyy') * 12 + (+Utilities.formatDate(d, TZ, 'M') - 1) - (cur ? 0 : 1), y1 = Math.floor(mi / 12), m1 = mi % 12 + 1;
+  return { a: at(mi), b: at(mi + 1), pa: at(mi - 1), label: ['січень', 'лютий', 'березень', 'квітень', 'травень', 'червень', 'липень', 'серпень', 'вересень', 'жовтень', 'листопад', 'грудень'][m1 - 1] + ' ' + y1 };
+}
+function pct_(a, b) { if (!b) return a ? ' (нове)' : ''; const p = Math.round((a - b) / b * 100); return ' (' + (p > 0 ? '▲ +' : p < 0 ? '▼ ' : '') + p + '%)'; }
+/** Текст звіту: за попередній місяць (cur=false) або з початку поточного (cur=true). */
+function monthReport_(d, cur) {
+  const B = monthBounds_(d || new Date(), cur), inM = (s, a, b) => { const t = new Date(s); return t >= a && t < b; };
+  const all = allRows_().map(x => x.o), ord = all.filter(o => kind_(o.type) === 'order');
+  const live = ord.filter(o => o.status !== 'Скасоване'), M = live.filter(o => inM(o.created, B.a, B.b)), P = live.filter(o => inM(o.created, B.pa, B.a));
+  const sum = A => A.reduce((a, o) => a + o.total, 0), canc = ord.filter(o => o.status === 'Скасоване' && inM(o.created, B.a, B.b)).length;
+  const out = [(cur ? '📅 <b>Samostroy Shop — ' : '📈 <b>Підсумки місяця · ') + B.label + (cur ? ' (поки що)' : '') + '</b>', ''];
+  out.push('🛍 <b>Магазин</b>', `Замовлень: <b>${M.length}</b>${cur ? '' : pct_(M.length, P.length)} · виручка <b>${money_(sum(M))}</b>${cur ? '' : pct_(sum(M), sum(P))}`);
+  if (M.length) out.push(`Середній чек: ${money_(sum(M) / M.length)} · виконано: ${M.filter(o => o.status === 'Виконане').length} · скасовано: ${canc}`);
+  const leads = all.filter(o => inM(o.created, B.a, B.b)), lc = t => leads.filter(o => kind_(o.type) === t).length;
+  out.push(`Заявок: ${lc('lead')} · відгуків: ${lc('review')}`);
+  // топ товарів
+  const top = {};
+  M.forEach(o => (o.items || []).forEach(x => { const k = x.name; top[k] = top[k] || { q: 0, s: 0 }; top[k].q += x.q; top[k].s += x.q * x.price; }));
+  const T = Object.keys(top).map(k => [k, top[k]]).sort((a, b) => b[1].s - a[1].s).slice(0, 5);
+  if (T.length) out.push('', '🏆 <b>Топ товарів</b>', ...T.map((x, i) => `${i + 1}. ${h_(x[0].slice(0, 70))} — ${x[1].q} шт · ${money_(x[1].s)}`));
+  // джерела
+  const src = {};
+  M.forEach(o => { const s = decodeURIComponent((String(o.page).match(/utm_source=([^&#]+)/) || [])[1] || 'сайт напряму / пошук'); src[s] = (src[s] || 0) + 1; });
+  const S = Object.keys(src).sort((a, b) => src[b] - src[a]).slice(0, 4);
+  if (S.length) out.push('', '🧭 <b>Звідки замовлення</b>', S.map(k => `${h_(k)} — ${src[k]}`).join(' · '));
+  // кинуті кошики
+  try {
+    const C = cartRows_(3000).map(x => x.raw).filter(r => r[K['Створено']] && inM(r[K['Створено']], B.a, B.b));
+    if (C.length) {
+      const st = s => C.filter(r => r[K['Статус']] === s).length, back = C.filter(r => r[K['Статус']] === 'Оформлено' && r[K['Нагадано']]).length;
+      out.push('', '🛒 <b>Кинуті кошики</b>', `Усього: ${C.length} · оформили самі: ${st('Оформлено') - back} · після нагадування: ${back} · зв’язалися: ${st('Зв’язалися')}`);
+    }
+  } catch (x) { }
+  // партнери (кабінет партнерів)
+  const p = papi_({ action: 'a_list' });
+  let pTurn = 0;
+  if (p && p.ok) {
+    const PO = (p.orders || []).filter(o => ['Скасоване', 'Повернення'].indexOf(o.status) < 0), pm = PO.filter(o => inM(o.created, B.a, B.b));
+    const ppm = PO.filter(o => inM(o.created, B.pa, B.a)), turn = A => A.reduce((a, o) => a + (+o.sale || 0), 0);
+    const paid = (p.orders || []).filter(o => o.paidAt && inM(o.paidAt, B.a, B.b)).reduce((a, o) => a + (+o.earnNow || 0), 0);
+    const R = (p.refs || []).filter(r => r.status !== 'Скасовано'), rIn = R.filter(r => inM(r.created, B.a, B.b)), rPaid = R.filter(r => r.paidAt && inM(r.paidAt, B.a, B.b));
+    const act = new Set(pm.map(o => o.partnerId)).size, nw = (p.partners || []).filter(x => inM(x.created, B.a, B.b)).length, vit = pm.filter(o => o.via === 'Вітрина').length;
+    const best = {}; pm.forEach(o => { best[o.partner] = (best[o.partner] || 0) + (+o.sale || 0); });
+    const bp = Object.keys(best).sort((a, b) => best[b] - best[a]).slice(0, 3);
+    pTurn = turn(pm);
+    out.push('', '🤝 <b>Партнери</b>', `Замовлень: <b>${pm.length}</b>${cur ? '' : pct_(pm.length, ppm.length)} · оборот <b>${money_(pTurn)}</b>${vit ? ` · з вітрин: ${vit}` : ''}`,
+      `Нових партнерів: ${nw} · продавали: ${act} з ${(p.partners || []).length}`,
+      `Виплачено партнерам: ${money_(paid)}` + (R.length ? ` · бонуси за рекомендації: нараховано ${money_(rIn.reduce((a, r) => a + r.bonus, 0))}, виплачено ${money_(rPaid.reduce((a, r) => a + r.bonus, 0))}` : ''));
+    if (bp.length) out.push('Найкращі: ' + bp.map(k => `${h_(k)} (${money_(best[k])})`).join(', '));
+  } else out.push('', '🤝 Партнери: немає зв’язку з кабінетом партнерів');
+  out.push('', `💰 <b>Разом оборот: ${money_(sum(M) + pTurn)}</b>`);
+  return out.join('\n');
+}
+/** Звіт за минулий місяць (тригер 1-го числа о 10:00, створює setupReports). */
+function monthlyReport() {
+  if (!adminTok_() || !adminChats_().length) return;
+  toAdmins_(monthReport_(new Date(), false), { inline_keyboard: [[{ text: 'Аналітика в адмінці', url: SITE + 'admin.html#stats' }]] });
+}
+/** Запустіть один раз: кинуті кошики (перевірка кожні 15 хв) і звіт 1-го числа кожного місяця. */
+function setupReports() {
+  ScriptApp.getProjectTriggers().forEach(t => { if (['cartCheck', 'monthlyReport'].indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('cartCheck').timeBased().everyMinutes(15).create();
+  ScriptApp.newTrigger('monthlyReport').timeBased().onMonthDay(1).atHour(10).inTimezone(TZ).create();
+  cartSheet_();
+  console.log('✓ Кинуті кошики: перевірка кожні 15 хв (нагадування 9:00–21:00)\n✓ Звіт за місяць: 1-го числа о 10:00\nПеревірити звіт зараз: запустіть monthPreview.');
+}
+/** Надіслати собі звіт за минулий місяць зараз (перевірка). */
+function monthPreview() { monthlyReport(); }
+
 /* =============== ЗАПУСКАЙТЕ ВРУЧНУ З РЕДАКТОРА =============== */
 
 /** 1. Створює аркуш «Замовлення» з заголовками. Запустіть один раз. */
@@ -592,7 +779,7 @@ function setupBots() {
     const r = tgCall_(tok, 'setWebhook', { url: url + '?bot=' + who + '&k=' + sec, allowed_updates: ['message', 'callback_query'], drop_pending_updates: true });
     if (who === 'admin') {
       tgCall_(tok, 'setMyCommands', { commands: [{ command: 'today', description: 'Підсумки за сьогодні' }, { command: 'new', description: 'Необроблені замовлення й заявки' },
-        { command: 'find', description: 'Пошук: /find номер або телефон' }, { command: 'login', description: 'Підключити чат: /login пароль' }] });
+        { command: 'find', description: 'Пошук: /find номер або телефон' }, { command: 'month', description: 'Звіт за цей місяць' }, { command: 'login', description: 'Підключити чат: /login пароль' }] });
       tgCall_(tok, 'setMyDescription', { description: 'Службовий бот власника Samostroy Shop. Вхід: /login пароль_адмінки.' });
     } else {
       tgCall_(tok, 'setChatMenuButton', { menu_button: { type: 'web_app', text: 'Каталог', web_app: { url: SITE } } });

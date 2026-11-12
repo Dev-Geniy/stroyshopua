@@ -33,7 +33,9 @@ TG = 'manager_samostroy_shop'
 PHONE = '+380984927948'
 SAME_AS = ['https://t.me/samostroy_shop', 'https://www.tiktok.com/@stroyshop_ua', 'https://www.instagram.com/samostroy.shop']
 RETURNS_URL = SITE + 'povernennya.html'
-RETURNS_UPDATED = '2026-11-01'   # дата редакції правил повернення (змінюйте разом із tools/povernennya.md)
+RETURNS_UPDATED = '2026-11-01'
+PRIVACY_URL = SITE + 'privacy.html'
+PRIVACY_UPDATED = '2026-11-12'   # дата редакції політики конфіденційності (змінюйте разом із tools/privacy.md)   # дата редакції правил повернення (змінюйте разом із tools/povernennya.md)
 # Політика повернення для Google: використаний товар не приймається; нерозпакований — 14 днів поштою,
 # зворотна доставка за рахунок покупця; брак — безкоштовно.
 RETURN_POLICY = {"@type": "MerchantReturnPolicy", "applicableCountry": "UA", "returnPolicyCountry": "UA",
@@ -716,6 +718,38 @@ def returns_page():
     return page(hd, main, 'Обмін і повернення', title, desc, url)
 
 
+def privacy_page():
+    url = PRIVACY_URL
+    title = 'Політика конфіденційності — Samostroy Shop'
+    desc = ('Які персональні дані збирає Samostroy Shop під час замовлення, у кошику, в Telegram і в кабінеті партнера, '
+            'навіщо, кому передаються, скільки зберігаються і як їх видалити.')
+    cr = [('Головна', SITE), ('Політика конфіденційності', url)]
+    web = {"@type": "WebPage", "@id": url + "#page", "name": 'Політика конфіденційності', "url": url, "description": desc,
+           "inLanguage": "uk", "dateModified": PRIVACY_UPDATED, "about": {"@id": SITE + "#store"}}
+    hd = head(title, desc, url, SITE + 'og/home.jpg', alt='Samostroy Shop', extra=ld(crumbs_ld(cr), web))
+    ic = lambda i: f'<svg class="i"><use href="#i-{i}"/></svg>'
+    main = f'''<main id="top" class="ba-page">
+<div class="w">
+{crumbs_html(cr)}
+<article class="ba pol">
+ <p class="ba-m">Правила магазину · Редакція від <time datetime="{PRIVACY_UPDATED}">{udate(PRIVACY_UPDATED)}</time></p>
+ <h1>Політика конфіденційності</h1>
+ <p class="lead">Ми збираємо лише те, без чого не можемо продати й доставити товар: ім'я, телефон і відділення пошти. Не продаємо дані й не передаємо їх для реклами.</p>
+ <div class="pol-sum">
+  <div>{ic('check')}<b>Лише потрібне для доставки</b><span>Ім'я, телефон, місто й відділення — щоб відправити посилку й повідомити ТТН.</span></div>
+  <div>{ic('check')}<b>Не продаємо й не передаємо для реклами</b><span>Дані бачать лише власник, менеджер, постачальник і служба доставки.</span></div>
+  <div>{ic('check')}<b>Без рекламних cookie</b><span>Кошик і мова зберігаються лише у вашому браузері.</span></div>
+  <div>{ic('check')}<b>Видалимо за запитом</b><span>Напишіть менеджеру — покажемо, що зберігається, виправимо чи видалимо.</span></div>
+ </div>
+ <div class="ba-txt">{md(read('tools/privacy.md'))}</div>
+ <aside class="ba-ask"><div><b>Питання щодо ваших даних?</b><span>Напишіть менеджеру — відповімо, які дані зберігаються, і за потреби видалимо їх.</span></div>
+  <div class="acts"><a class="btn" href="https://t.me/{TG}?text={e('Вітаю! Питання щодо моїх персональних даних:')}" target="_blank" rel="noopener">Написати в Telegram</a><a class="btn ghost" href="povernennya.html">Обмін і повернення</a></div></aside>
+</article>
+</div>
+</main>'''
+    return page(hd, main, 'Політика конфіденційності', title, desc, url)
+
+
 def not_found_page():
     url = SITE + '404.html'
     title = 'Сторінку не знайдено — Samostroy Shop'
@@ -887,7 +921,7 @@ def sitemap(prods, cats, arts):
               ('kylimky.html', 'weekly', '0.8'), ('ekoshkira.html', 'weekly', '0.8'), ('dzerkala.html', 'weekly', '0.8'), ('opt.html', 'monthly', '0.7'),
               ('dropshipping.html', 'monthly', '0.8'), ('academy.html', 'monthly', '0.7'), ('course-dropshipping.html', 'monthly', '0.6'),
               ('course-sales3.html', 'monthly', '0.6'), ('course-vitryna.html', 'monthly', '0.6'), ('partners.html', 'weekly', '0.6'), ('lk.html', 'monthly', '0.5'), ('postachalniky.html', 'monthly', '0.6'),
-              ('franchise.html', 'monthly', '0.5'), ('jobs.html', 'weekly', '0.5'), ('blog.html', 'weekly', '0.7'), ('reviews.html', 'weekly', '0.6'), ('povernennya.html', 'monthly', '0.4'), ('bio.html', 'monthly', '0.3')]
+              ('franchise.html', 'monthly', '0.5'), ('jobs.html', 'weekly', '0.5'), ('blog.html', 'weekly', '0.7'), ('reviews.html', 'weekly', '0.6'), ('povernennya.html', 'monthly', '0.4'), ('privacy.html', 'yearly', '0.3'), ('bio.html', 'monthly', '0.3')]
     rows = []
     for path, fr, pr in static:
         u = SITE + path
@@ -973,6 +1007,7 @@ def main():
     write('blog.html', blog_index(arts), SITE + 'blog.html')
     write('reviews.html', reviews_page(), SITE + 'reviews.html')
     write('povernennya.html', returns_page(), RETURNS_URL)
+    write('privacy.html', privacy_page(), PRIVACY_URL)
     write('404.html', not_found_page())
     # прибрати сторінки товарів, категорій і статей, яких більше немає
     for d in ('p', 'c', 'blog'):
