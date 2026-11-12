@@ -130,3 +130,38 @@ document.addEventListener('change', async e => {
 });
 return { block, load, reset() { L = null; } };
 })();
+
+/* Відгуки покупців (reviews.json сайту) — у «Мої товари»: готовий контент для оголошень партнера (фото «до/після» й текст). */
+window.KREV = (() => {
+let R = null, all = false;
+const C = () => window.KCTX || {}, E = s => C().E(s);
+async function load() {
+  try { R = await fetch('reviews.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : []); } catch (e) { R = []; }
+  if (!Array.isArray(R)) R = [];
+  if (C().tab == 'mine') C().vMine();
+}
+const nb = s => String(s || '').replace(/samostroy\.?\s*shop|самострой\s*шоп|самострой/gi, '').replace(/\s{2,}/g, ' ').replace(/(^|[.!?]\s+)(\p{Ll})/gu, (m, a, b) => a + b.toUpperCase()).trim();
+const adText = r => `${'⭐'.repeat(+r.rating || 5)}\n«${nb(r.text)}»\n— ${r.name || 'Покупець'}${r.city ? ', ' + r.city : ''}${r.product ? '\nТовар: ' + nb(r.product) : ''}`;
+function block() {
+  if (!R) { load(); return ''; }
+  const L = R.filter(r => (+r.rating || 5) >= 4 && String(r.text || '').length >= 10).sort((a, b) => (b.before || b.after ? 1 : 0) - (a.before || a.after ? 1 : 0) || String(b.date).localeCompare(String(a.date)));
+  if (!L.length) return '';
+  const S = all ? L : L.slice(0, 6);
+  return `<div class="kb-card" id="kbRev" style="margin-top:14px"><div class="kb-ch"><div><h3>📸 Відгуки покупців — для ваших оголошень</h3>
+   <p class="kb-small" style="margin:2px 0 0">Справжні відгуки з фото. Копіюйте текст і додавайте фото «до/після» в оголошення, сторіс і на вітрину — це найкраще переконує нових покупців.</p></div></div>
+   <div class="kb-revs">${S.map((r, i) => `<figure class="kb-rv">${r.before || r.after ? `<div class="kb-rvph">${[r.before, r.after].filter(Boolean).map((u, j, a) => `<a href="${E(u)}" target="_blank" rel="noopener" download><img src="${E(u)}" alt="" loading="lazy"><span>${a.length > 1 ? (j ? 'після' : 'до') : 'фото'}</span></a>`).join('')}</div>` : ''}
+    <div class="kb-rvs">${'★'.repeat(+r.rating || 5)}</div><blockquote>${E(nb(r.text))}</blockquote><figcaption><b>${E(r.name || 'Покупець')}</b>${r.city ? ' · ' + E(r.city) : ''}${r.product ? `<small>${E(nb(r.product))}</small>` : ''}</figcaption>
+    <button type="button" class="btn ghost sm" data-rvcopy="${i}">Копіювати текст</button></figure>`).join('')}</div>
+   ${L.length > 6 && !all ? `<button type="button" class="btn ghost sm" data-rvall style="margin-top:12px">Показати всі (${L.length})</button>` : ''}</div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-rvcopy],[data-rvall]'); if (!b || !$i('kbRev') || !$i('kbRev').contains(b)) return;
+  if (b.dataset.rvall !== undefined) { all = true; return C().vMine(); }
+  const L = R.filter(r => (+r.rating || 5) >= 4 && String(r.text || '').length >= 10).sort((a, b) => (b.before || b.after ? 1 : 0) - (a.before || a.after ? 1 : 0) || String(b.date).localeCompare(String(a.date)));
+  const t = adText(L[+b.dataset.rvcopy]);
+  const ok = () => C().note('Текст відгуку скопійовано');
+  try { navigator.clipboard.writeText(t).then(ok, () => { }); } catch (x) { }
+});
+const $i = id => document.getElementById(id);
+return { block };
+})();

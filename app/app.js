@@ -228,7 +228,7 @@ function stats(){
  const live=orders.filter(o=>!CANC.includes(o.status)),now=new Date(),ms=new Date(now.getFullYear(),now.getMonth(),1);
  const sum=(L,f)=>L.reduce((a,o)=>a+f(o),0),mL=live.filter(o=>new Date(o.created)>=ms);
  return{live,work:live.filter(o=>WORK.includes(o.status)),due:live.filter(o=>o.status=='Отримане'),paid:live.filter(o=>o.status=='Виплачено'),
-  mL,mTurn:sum(mL,o=>+o.sale||0),mEarn:sum(mL.filter(o=>o.status=='Отримане'||o.status=='Виплачено'),earn),mAll:sum(mL,earn),sum}}
+  mL,mTurn:sum(mL,o=>(+o.sale||0)-(+o.own||0)),mOwn:sum(mL,o=>+o.own||0),mEarn:sum(mL.filter(o=>o.status=='Отримане'||o.status=='Виплачено'),earn),mAll:sum(mL,earn),sum}}
 function months(){const now=new Date(),R=[];
  for(let k=5;k>=0;k--){const a=new Date(now.getFullYear(),now.getMonth()-k,1),b=new Date(now.getFullYear(),now.getMonth()-k+1,1);
   const L=orders.filter(o=>!CANC.includes(o.status)&&new Date(o.created)>=a&&new Date(o.created)<b);

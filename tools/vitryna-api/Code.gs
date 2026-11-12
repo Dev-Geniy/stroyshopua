@@ -181,7 +181,7 @@ function cleanCfg(c, me) {
     name: str(c.name, 60) || me.name, slogan: str(c.slogan, 140), logo: url(c.logo), cover: url(c.cover),
     theme: THEMES.indexOf(c.theme) >= 0 ? c.theme : 'classic', accent: hex(c.accent, '#f08a1c'), font: FONTS.indexOf(c.font) >= 0 ? c.font : 'golos',
     radius: ['square', 'xl'].indexOf(c.radius) >= 0 ? c.radius : 'round', hideOut: !!c.hideOut,
-    hero: ['split', 'compact'].indexOf(c.hero) >= 0 ? c.hero : 'cover', grid: ['large', 'compact'].indexOf(c.grid) >= 0 ? c.grid : 'normal',
+    noRev: !!c.noRev, hero: ['split', 'compact'].indexOf(c.hero) >= 0 ? c.hero : 'cover', grid: ['large', 'compact'].indexOf(c.grid) >= 0 ? c.grid : 'normal',
     bar: str(c.bar, 120), featTitle: str(c.featTitle, 40), preset: str(c.preset, 20),
     perks: (Array.isArray(c.perks) ? c.perks : []).slice(0, 4).map(function (x) { return str(x, 60); }),
     markup: Math.max(0, Math.min(200, Math.round(num(c.markup)))), round: ['', '10', '9'].indexOf(c.round) >= 0 ? c.round : '',
@@ -328,6 +328,7 @@ ACTIONS.v_order = function (b) {
       });
     } catch (e) { console.error('stat', e); }
   });
+  if (!r.dup) cartDone(slug, str(b.ck, 40), o.phone, r.id);
   return { ok: true, id: r.id, total: total };
 };
 
@@ -444,9 +445,96 @@ ACTIONS.a_set = function (b) {
   });
 };
 
+/* ---------------- кинуті кошики на вітринах ----------------
+   Покупець ввів телефон у формі оформлення, але не підтвердив замовлення. Через CART_WAIT хвилин (лише 9:00–21:00)
+   партнер отримує в Drop-бот картку з контактом і товарами — щоб зв’язатися й допомогти. Записи старші за 90 днів видаляються.
+   Запустіть один раз setupCarts (перевірка кожні 15 хвилин). */
+var KC = [['key', 'Ключ'], ['slug', 'Вітрина'], ['partnerId', 'ID партнера'], ['created', 'Створено'], ['updated', 'Оновлено'], ['name', 'Ім’я'],
+  ['phone', 'Телефон'], ['items', 'Товари (дані)'], ['total', 'Сума'], ['status', 'Статус'], ['notified', 'Нагадано'], ['order', 'Замовлення']];
+var SH_K = 'Кинуті кошики', CART_WAIT = 60, CART_DAY = [9, 21];
+function kyivHour() { return Number(Utilities.formatDate(new Date(), 'Europe/Kiev', 'H')); }
+function tail9(s) { return String(s || '').replace(/\D/g, '').slice(-9); }
+// ціни й назви — як у замовленні: з каталогу сайту або зі схвалених власних товарів
+function cartItems(s, cfg, raw) {
+  var cat = catalog(), own = null;
+  return (raw || []).slice(0, 40).map(function (x) {
+    var id = str(x.id, 40), q = Math.max(1, Math.min(999, Math.round(num(x.q))));
+    if (cfg.items.indexOf(id) < 0) return null;
+    if (/^X\d+$/.test(id)) { own = own || ownOf(s.partnerId); var w = own[id]; return w ? { id: id, name: w.name, q: q, sale: w.price } : null; }
+    var p = cat[id]; return p ? { id: id, name: p[2], q: q, sale: priceOf(cfg, id, p[0]) } : null;
+  }).filter(Boolean);
+}
+ACTIONS.v_cart = function (b) {
+  var slug = str(b.slug, 40).toLowerCase(), key = str(b.key, 40), c = b.cart || {}, digits = String(c.phone || '').replace(/\D/g, '');
+  if (!/^[\w-]{6,40}$/.test(key) || digits.length < 10 || digits.length > 13) return { ok: false, error: 'bad' };
+  if (tooMany('vc:' + key, 20, 600) || tooMany('vc_all', 400, 600)) return { ok: false, error: 'rate' };
+  var s = findSlug(readAll(SH_S, SC), slug);
+  if (!s || s.status === 'Вимкнена' || (s.extra === '1' && !s.approvedAt)) return { ok: false, error: 'off' };
+  var cfg = json(s.config, {}), items = cartItems(s, cfg, c.items);
+  if (!items.length) return { ok: false, error: 'items' };
+  var total = items.reduce(function (a, x) { return a + x.q * x.sale; }, 0);
+  return withLock(function () {
+    var L = readAll(SH_K, KC), x = null;
+    for (var i = L.length - 1; i >= 0 && i >= L.length - 400; i--) if (L[i].key === key) { x = L[i]; break; }
+    if (x && x.status !== 'Відкритий' && x.status !== 'Нагадано') return { ok: true };
+    if (!x) x = { key: key, slug: slug, partnerId: s.partnerId, created: now(), status: 'Відкритий', notified: '', order: '' };
+    x.updated = now(); x.name = str(c.name, 80); x.phone = str(c.phone, 30); x.items = JSON.stringify(items); x.total = String(Math.round(total));
+    write(SH_K, KC, x);
+    return { ok: true };
+  });
+};
+// замовлення оформлено — чернетку закриваємо (за ключем або телефоном на цій вітрині)
+function cartDone(slug, key, phone, id) {
+  try {
+    withLock(function () {
+      var t = tail9(phone);
+      readAll(SH_K, KC).forEach(function (x) {
+        if ((x.status === 'Відкритий' || x.status === 'Нагадано') && x.slug === slug && ((key && x.key === key) || tail9(x.phone) === t)) { x.status = 'Оформлено'; x.order = id; write(SH_K, KC, x); }
+      });
+    });
+  } catch (e) { console.error('cartDone', e); }
+}
+function cartPurge() {
+  if (cache().get('vc_purge')) return;
+  cache().put('vc_purge', '1', 21600);
+  var sh = sheet(SH_K, KC), L = readAll(SH_K, KC), old = Date.now() - 90 * 864e5, n = 0;
+  while (n < L.length && Date.parse(L[n].created) < old) n++;
+  if (n) sh.deleteRows(2, n);
+}
+/** Кинуті кошики вітрин → партнеру в Drop-бот (тригер кожні 15 хвилин, створює setupCarts). */
+function cartCheck() {
+  cartPurge();
+  var hr = kyivHour();
+  if (hr < CART_DAY[0] || hr >= CART_DAY[1]) return;
+  var L = readAll(SH_K, KC), t = Date.now(), stores = null, sent = 0;
+  L.forEach(function (x) {
+    if (x.status !== 'Відкритий' || sent >= 20) return;
+    var age = t - Date.parse(x.updated);
+    if (age < CART_WAIT * 60000) return;
+    if (age > 3 * 864e5) { x.status = 'Застарілий'; write(SH_K, KC, x); return; }
+    stores = stores || readAll(SH_S, SC);
+    var s = findSlug(stores, x.slug), nm = s ? (json(s.config, {}).name || x.slug) : x.slug, items = json(x.items, []);
+    var first = items[0] ? String(items[0].name).split(/[,(]/)[0].trim().slice(0, 60) : 'товари';
+    var mins = Math.round(age / 60000);
+    var text = '🛒 <b>Кинутий кошик на вашій вітрині «' + h(nm) + '»</b> · ' + (mins < 120 ? mins + ' хв' : Math.round(mins / 60) + ' год') + ' тому\n' +
+      (x.name ? 'Ім’я: ' + h(x.name) + '\n' : '') + 'Телефон: <b>' + h(x.phone) + '</b>\nСума: <b>' + Math.round(num(x.total)).toLocaleString('uk-UA') + ' грн</b>\n\n' +
+      items.slice(0, 8).map(function (y, i) { return (i + 1) + '. ' + h(y.name) + ' × ' + y.q; }).join('\n') + (items.length > 8 ? '\n… ще ' + (items.length - 8) : '') +
+      '\n\n<i>Покупець ввів телефон, але не підтвердив замовлення. Зателефонуйте чи напишіть у Viber: «Бачу, ви обирали ' + h(first) + ' — допомогти з кількістю чи доставкою?» Якщо погодиться — оформіть замовлення в кабінеті.</i>';
+    var r = papi({ action: 'ext_notify', pass: prop('ADMIN_PASS'), partnerId: x.partnerId, text: text, kind: 'cart' });
+    x.status = 'Нагадано'; x.notified = now(); write(SH_K, KC, x); sent++;
+    if (!r || !r.ok) console.error('cart notify', r);
+  });
+}
+function setupCarts() {
+  ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'cartCheck') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('cartCheck').timeBased().everyMinutes(15).create();
+  sheet(SH_K, KC);
+  console.log('✓ Кинуті кошики вітрин: перевірка кожні 15 хв, партнер отримує картку в Drop-бот (9:00–21:00)');
+}
+
 /** Запустіть один раз у редакторі після вставки коду: створить аркуші й попросить дозволи. */
 function setup() {
-  sheet(SH_S, SC); sheet(SH_R, RC); sheet(SH_T, TC);
+  sheet(SH_S, SC); sheet(SH_R, RC); sheet(SH_T, TC); sheet(SH_K, KC);
   var n = Object.keys(catalog()).length;
   var p = papi({ action: 'a_list', pass: prop('ADMIN_PASS') });
   console.log('Аркуші готові ✓\nКаталог сайту: ' + n + ' товарів ✓\nЗв’язок з кабінетом партнерів: ' + (p && p.ok ? 'є ✓' : 'НЕМАЄ — перевірте ADMIN_PASS (має збігатися зі скриптом партнерів)') +

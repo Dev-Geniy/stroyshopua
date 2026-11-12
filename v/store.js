@@ -198,6 +198,23 @@ function perks() {
   const P = (cfg.perks || []).filter(Boolean).slice(0, 4);
   return P.length && !EMBED ? `<div class="v-wrap"><ul class="v-perks">${P.map(x => `<li>${E(x)}</li>`).join('')}</ul></div>` : '';
 }
+/* відгуки покупців (reviews.json сайту): спершу ті, що про товари цієї вітрини; лише 4–5⭐ з текстом */
+let RV = null;
+const words = t => String(t || '').toLowerCase().replace(/[^a-zа-яіїєґ0-9 ]+/gi, ' ').split(/\s+/).filter(w => w.length >= 4);
+async function revs() {
+  const el = $('#vrev'); if (!el) return;
+  if (!RV) { try { RV = await fetch('/reviews.json', { cache: 'default' }).then(r => r.ok ? r.json() : []); } catch (e) { RV = []; } }
+  const el2 = $('#vrev'); if (!el2) return;
+  const W = new Set(list.flatMap(p => words(p.name)));
+  const L = (Array.isArray(RV) ? RV : []).filter(r => (+r.rating || 5) >= 4 && String(r.text || '').length >= 20)
+    .map(r => ({ r, m: words(r.product).filter(w => W.has(w)).length + (r.before || r.after ? 1 : 0) })).sort((a, b) => b.m - a.m || String(b.r.date).localeCompare(String(a.r.date))).slice(0, 6).map(x => x.r);
+  if (!L.length) return;
+  const nb = s => String(s || '').replace(/samostroy\.?\s*shop|самострой\s*шоп|самострой/gi, '').replace(/\s{2,}/g, ' ').replace(/(^|[.!?]\s+)(\p{Ll})/gu, (m, a, b) => a + b.toUpperCase()).trim();
+  el2.innerHTML = `<h2 class="v-h2">${ico('star')}Відгуки покупців</h2><div class="v-revs">${L.map(r => `<figure class="v-rv"><div class="st" aria-label="${+r.rating || 5} з 5">${'★'.repeat(+r.rating || 5)}</div>
+   ${r.before || r.after ? `<div class="ph">${[r.before, r.after].filter(Boolean).map((u, i, a) => `<a href="${E(u)}" target="_blank" rel="noopener"><img src="${E(u)}" alt="" loading="lazy"><span>${a.length > 1 ? (i ? 'після' : 'до') : 'результат'}</span></a>`).join('')}</div>` : ''}
+   <blockquote>${E(nb(r.text))}</blockquote><figcaption><b>${E(r.name || 'Покупець')}</b>${r.city ? ' · ' + E(r.city) : ''}${r.product ? `<small>${E(nb(r.product))}</small>` : ''}</figcaption></figure>`).join('')}</div>`;
+  el2.hidden = false; height();
+}
 function render() {
   const cats = [...new Set(list.map(p => p.cat))], feat = (cfg.feat || []).map(id => byId.get(String(id))).filter(p => p && p.av);
   const nm = cfg.name || 'Вітрина', ini = nm.trim().slice(0, 1).toUpperCase();
@@ -210,6 +227,7 @@ function render() {
    <section class="v-sec" id="vall"><h2 class="v-h2">${EMBED ? E(nm) : 'Усі товари'}</h2>
     ${list.length > 8 ? `<div class="v-tools"><label class="v-srch">${ico('search')}<input id="vq" type="search" placeholder="Пошук товару" value="${E(V.q)}" autocomplete="off"></label></div>` : ''}
     ${cats.length > 1 ? `<div class="v-chips" id="vcats"></div>` : ''}<div id="vgrid" style="margin-top:12px"></div></section>
+   ${!EMBED && !cfg.noRev ? '<section class="v-sec" id="vrev" hidden></section>' : ''}
    ${!EMBED && (cfg.about || cfg.delivery || cfg.payment || (cfg.contacts && cfg.contacts.hours)) ? `<section class="v-sec"><div class="v-info">
     ${cfg.about ? `<div><h3>${ico('info')}Про нас</h3><p>${E(cfg.about)}</p></div>` : ''}
     <div><h3>${ico('truck')}Доставка</h3><p>${E(cfg.delivery || 'Відправляємо Новою Поштою або Укрпоштою по всій Україні, зазвичай у день замовлення.')}</p></div>
@@ -219,7 +237,7 @@ function render() {
   </main>
   ${ftr()}
   <div class="v-toast" id="vtoast"></div>`;
-  chips(); grid();
+  chips(); grid(); revs();
   const q = $('#vq'); if (q) q.addEventListener('input', () => { V.q = q.value; V.n = 24; grid(); });
   height();
 }
@@ -332,12 +350,27 @@ function checkout() {
    <p class="v-err" id="verr"></p>
    <button class="v-btn wide" id="vsend">${PREVIEW ? 'Це перегляд — замовлення вимкнено' : 'Підтвердити замовлення · ' + M(tot)}</button></form>`, 'sm');
   const f = $('#vf');
-  f.addEventListener('input', e => { const n = e.target.name; if (n && n !== 'hp' && n !== 'note') { F[n] = e.target.value; LS.set('vform', F); } const x = e.target.closest('.v-f'); if (x) x.classList.remove('bad'); });
+  f.addEventListener('input', e => { const n = e.target.name; if (n && n !== 'hp' && n !== 'note') { F[n] = e.target.value; LS.set('vform', F); } const x = e.target.closest('.v-f'); if (x) x.classList.remove('bad'); if (n === 'phone' || n === 'client') draft(); });
+  draft();
   $$('[data-dl]').forEach(b => b.onclick = () => { F.delivery = b.dataset.dl; LS.set('vform', F); checkout(); });
   f.addEventListener('submit', e => { e.preventDefault(); send(); });
 }
 const ERR = { phone: 'Перевірте номер телефону.', client: 'Вкажіть прізвище та ім’я.', city: 'Вкажіть місто.', branch: 'Вкажіть відділення.', rate: 'Забагато замовлень за короткий час. Спробуйте за кілька хвилин.',
   off: 'Вітрина зараз не приймає замовлення. Напишіть продавцю.', update: 'Вітрина зараз не приймає замовлення. Напишіть продавцю.', net: 'Немає зв’язку. Спробуйте ще раз.', items: 'Кошик порожній.' };
+// кинутий кошик: покупець ввів телефон, але ще не підтвердив — продавець зможе зв’язатися й допомогти
+let draftT = null, draftSig = '';
+function draft() {
+  if (PREVIEW || !API) return;
+  const f = $('#vf'); if (!f) return;
+  const ph = f.elements.phone.value, nm = f.elements.client.value, items = Object.keys(cart).filter(id => byId.get(id)).map(id => ({ id, q: cart[id] }));
+  if (ph.replace(/\D/g, '').length < 10 || !items.length) return;
+  clearTimeout(draftT);
+  draftT = setTimeout(() => {
+    const sig = JSON.stringify([ph, nm, items]); if (sig === draftSig) return; draftSig = sig;
+    let k = LS.get('vck:' + S.slug, ''); if (!k) { k = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); LS.set('vck:' + S.slug, k); }
+    fetch(API, { method: 'POST', body: JSON.stringify({ action: 'v_cart', slug: S.slug, key: k, cart: { phone: ph, name: nm, items } }) }).catch(() => { });
+  }, 3000);
+}
 async function send() {
   if (PREVIEW) return;
   const f = $('#vf'), el = f.elements, err = m => { $('#verr').textContent = m; }, bad = n => { el[n].closest('.v-f').classList.add('bad'); el[n].focus(); };
@@ -349,11 +382,11 @@ async function send() {
   key = key || Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
   const items = Object.keys(cart).filter(id => byId.get(id)).map(id => ({ id, q: cart[id] }));
   let r;
-  try { r = await fetch(API, { method: 'POST', body: JSON.stringify({ action: 'v_order', slug: S.slug, key, src: SRC, hp: el.hp.value, order: { items, client: el.client.value, phone: el.phone.value, city: el.city.value, branch: el.branch.value, delivery: F.delivery, note: el.note.value } }) }).then(x => x.json()); }
+  try { r = await fetch(API, { method: 'POST', body: JSON.stringify({ action: 'v_order', slug: S.slug, key, ck: LS.get('vck:' + S.slug, ''), src: SRC, hp: el.hp.value, order: { items, client: el.client.value, phone: el.phone.value, city: el.city.value, branch: el.branch.value, delivery: F.delivery, note: el.note.value } }) }).then(x => x.json()); }
   catch (e) { r = { ok: false, error: 'net' }; }
   b.classList.remove('busy');
   if (!r.ok) return err(r.error === 'stock' ? 'Деяких товарів уже немає в наявності: ' + (r.msg || '') + '. Приберіть їх із кошика.' : ERR[r.error] || 'Не вдалося оформити замовлення. Напишіть продавцю.');
-  key = ''; cart = {}; saveCart(); $$('[data-add]').forEach(x => x.innerHTML = ico('plus'));
+  key = ''; cart = {}; saveCart(); clearTimeout(draftT); LS.set('vck:' + S.slug, ''); draftSig = ''; $$('[data-add]').forEach(x => x.innerHTML = ico('plus'));
   const nm = cfg.name || 'Продавець';
   modal(`<div class="v-done"><div class="ok">${ico('check')}</div><h3>Дякуємо! Замовлення № ${E(r.id)} прийнято</h3>
    <p>${E(nm)} зв’яжеться з вами для підтвердження. Після відправки ви отримаєте номер ТТН.</p><div class="v-cts" style="justify-content:center;margin-bottom:16px">${contacts('v-btn line')}</div>

@@ -180,8 +180,11 @@ function pubOrder(o) {
   return { id: o.id, created: o.created, updated: o.updated, partnerId: o.partnerId, partner: o.partner, status: o.status,
     client: o.client, phone: o.phone, city: o.city, delivery: o.delivery, branch: o.branch, pay: o.pay,
     sale: num(o.sale), whole: num(o.whole), earn: num(o.earn), earnFinal: o.earnFinal === '' ? null : num(o.earnFinal),
-    earnNow: earnOf(o), ttn: o.ttn, source: o.source, note: o.note, comment: o.comment, paidAt: o.paidAt, items: json(o.items, []), via: o.via };
+    earnNow: earnOf(o), ttn: o.ttn, source: o.source, note: o.note, comment: o.comment, paidAt: o.paidAt, items: json(o.items, []), via: o.via, own: ownSale(o) };
 }
+// сума власних товарів, які відправляє сам партнер: гроші йдуть повз магазин, тому в оборот рівня не рахуються
+function ownSale(o) { return json(o.items, []).reduce(function (a, x) { return a + (x.own && x.ship !== 'shop' ? num(x.q) * num(x.sale) : 0); }, 0); }
+function lvSale(o) { return Math.max(0, num(o.sale) - ownSale(o)); }
 function findPhone(list, ph) { for (var i = 0; i < list.length; i++) if (list[i].phone === ph) return list[i]; return null; }
 function findTg(list, id) { id = String(id); for (var i = 0; i < list.length; i++) if (list[i].tgId && list[i].tgId === id) return list[i]; return null; }
 
@@ -366,6 +369,15 @@ function makeOrder(p, o, items, ph, key, via) {
 
 /* ---------------- вітрини партнерів (окремий модуль v/ і tools/vitryna-api) ----------------
    Скрипт вітрин сам перевіряє ціни й товари й передає сюди готове замовлення. Якщо модуль вітрин прибрати — ця дія просто не викликається. */
+// сповіщення партнеру від скрипта вітрин (кинутий кошик тощо)
+ACTIONS.ext_notify = function (b) {
+  admin(b);
+  var p = findById(readAll(SH_P, PC), str(b.partnerId, 20));
+  if (!p || !p.tgId || p.status === 'Заблокований' || json(p.onb, {}).blk) return { ok: true, sent: false };
+  var kb = b.kind === 'cart' ? { inline_keyboard: [[{ text: '➕ Оформити замовлення', web_app: { url: APP_URL + '#new' } }], [{ text: '📊 Статистика вітрини', url: SITE + 'v/edit.html#stats' }]] } : appKb('Кабінет');
+  var r = send(p.tgId, str(b.text, 3800), kb);
+  return { ok: true, sent: !!(r && r.ok) };
+};
 ACTIONS.ext_order = function (b) {
   admin(b);
   var o = b.order || {}, key = str(b.key, 40), pid = str(b.partnerId, 20);
@@ -1393,7 +1405,7 @@ function pStats(pid, all) {
   var streak = 0, t = Date.parse(wk(new Date().toISOString()) + 'T12:00:00Z');
   if (!weeks[new Date(t).toISOString().slice(0, 10)]) t -= 7 * 864e5;
   while (weeks[new Date(t).toISOString().slice(0, 10)]) { streak++; t -= 7 * 864e5; }
-  var mon = onbDay().slice(0, 7), turn = L.filter(function (o) { return onbDay(o.created).slice(0, 7) === mon; }).reduce(function (a, o) { return a + num(o.sale); }, 0);
+  var mon = onbDay().slice(0, 7), turn = L.filter(function (o) { return onbDay(o.created).slice(0, 7) === mon; }).reduce(function (a, o) { return a + lvSale(o); }, 0);
   var best = 0; Object.keys(byM).forEach(function (k) { best = Math.max(best, byM[k]); });
   return { orders: L.length, deliv: D.length, earned: D.reduce(function (a, o) { return a + earnOf(o); }, 0), bestMonth: best, streak: streak, turn: turn, month: mon };
 }

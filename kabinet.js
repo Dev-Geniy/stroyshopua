@@ -183,7 +183,7 @@ function stats(){
  const sum=(L,f)=>L.reduce((a,o)=>a+f(o),0),inM=o=>new Date(o.created)>=ms;
  const mL=live.filter(inM);
  return {live,work:live.filter(o=>WORK.includes(o.status)),due:live.filter(o=>o.status=='Отримане'),paid:live.filter(o=>o.status=='Виплачено'),
-  mL,mTurn:sum(mL,o=>+o.sale||0),mEarn:sum(mL.filter(o=>o.status=='Отримане'||o.status=='Виплачено'),earn),sum}}
+  mL,mTurn:sum(mL,o=>(+o.sale||0)-(+o.own||0)),mOwn:sum(mL,o=>+o.own||0),mEarn:sum(mL.filter(o=>o.status=='Отримане'||o.status=='Виплачено'),earn),sum}}
 function months(){
  const now=new Date(),R=[];
  for(let k=5;k>=0;k--){const a=new Date(now.getFullYear(),now.getMonth()-k,1),b=new Date(now.getFullYear(),now.getMonth()-k+1,1);
@@ -209,7 +209,7 @@ function vHome(){
    <div class="kb-bars">${R.map(r=>`<div class="kb-bar" title="${E(r.l)}: ${M(r.ok)} підтверджено, ${M(r.w)} в роботі, ${r.n} замовл."><div class="kb-col"><b style="height:${(r.w/mx*100).toFixed(1)}%" class="w"></b><b style="height:${(r.ok/mx*100).toFixed(1)}%"></b></div><span>${E(r.l)}</span><small>${r.ok+r.w?M(r.ok+r.w):'—'}</small></div>`).join('')}</div></div>
   <div class="kb-card"><h3>Ваше партнерство</h3>
    <dl class="kb-dl"><dt>Рівень</dt><dd><span class="kb-lv">${E(L[0])}</span> маржа ≈ ${margin()}% від рекомендованої ціни</dd>
-   <dt>Оборот за ${E(mn)}</dt><dd>${M(s.mTurn)} · ${s.mL.length} ${pl(s.mL.length,'замовлення','замовлення','замовлень')}</dd>
+   <dt>Оборот за ${E(mn)}</dt><dd>${M(s.mTurn)} · ${s.mL.length} ${pl(s.mL.length,'замовлення','замовлення','замовлень')}${s.mOwn?`<br><small class="kb-small">+ ${M(s.mOwn)} — власні товари, які відправляєте самі (у рівень не входять)</small>`:''}</dd>
    <dt>Виплати</dt><dd>За запитом або раз на тиждень чи місяць — за домовленістю з менеджером</dd></dl>
    ${nx?`<div class="kb-prog"><div><span>До рівня <b>${nx[0]}</b> (маржа від ${nx[2]}%)</span><span>${M(s.mTurn)} з ${M(nx[1])}</span></div><i><b style="width:${pct}%"></b></i><p class="kb-small">${s.mTurn>=nx[1]?`✅ Умову рівня ${nx[0]} цього місяця виконано — менеджер підвищить рівень.`:`Ще <b>${M(nx[1]-s.mTurn)}</b> обороту цього місяця — і маржа від ${nx[2]}%.`}</p></div>`:'<p class="kb-small">У вас найвищий рівень — дякуємо!</p>'}
    <p class="kb-small">Рівень змінює менеджер, коли оборот тримається стабільно. Питання — <a href="${tgLink()}" target="_blank" rel="noopener">@${E(TGM)}</a></p></div>
@@ -405,7 +405,7 @@ function vMine(){
  const OB=window.KOWN?KOWN.block():'';
  if(!L.length){P.innerHTML=OB+`<div class="kb-card kb-mine0">${ico('heart')}<h2>Тут будуть товари, які ви продаєте</h2>
   <p>Каталог великий — оберіть ті позиції, з якими працюєте, і вони завжди будуть під рукою: ціни й наявність зі складу, ваш заробіток, тексти оголошень і швидке замовлення.</p>
-  <button type="button" class="btn" data-pick>${ico('plus')}Обрати зараз</button> <a class="btn ghost" href="v/edit.html">🏪 Створити вітрину</a>${gone?`<p class="kb-small">${gone} обраних товарів більше немає в каталозі.</p>`:''}</div>`;return}
+  <button type="button" class="btn" data-pick>${ico('plus')}Обрати зараз</button> <a class="btn ghost" href="v/edit.html">🏪 Створити вітрину</a>${gone?`<p class="kb-small">${gone} обраних товарів більше немає в каталозі.</p>`:''}</div>`+(window.KREV?KREV.block():'');return}
  const cats=[...new Set(L.map(p=>p.cat))],q=MF.q.trim().toLowerCase();
  if(MF.c&&!cats.includes(MF.c))MF.c='';
  const S2=L.filter(p=>(!MF.c||p.cat==MF.c)&&(!q||(p.name+' '+(p.sku||'')).toLowerCase().includes(q)));
@@ -421,7 +421,7 @@ function vMine(){
    <div class="kb-mb"><b>${E(p.name)}</b><small>${E(p.sku||'')} · ${E(catN(p.cat))}</small>
     <dl><dt>Рекомендована</dt><dd>${M(p.price)}</dd><dt>Ваша оптова ≈</dt><dd>${M(w)}</dd><dt>Заробіток</dt><dd class="g">+${M(p.price-w)}</dd></dl>
     <div class="kb-mact"><button type="button" class="btn sm" data-ford="${E(p.id)}"${p.av?'':' disabled'}>${ico('plus')}В замовлення</button><button type="button" class="btn ghost sm" data-ftxt="${E(p.id)}">Текст</button></div></div></article>`}).join('')||'<p class="kb-none">Нічого не знайдено</p>'}</div>
-  <p class="kb-small" style="margin-top:12px">Фото, повні описи й експорт у таблицю — на сторінці <a href="partners.html">«Товари для продажу»</a> (там ваш список теж збережено).</p></div>`;
+  <p class="kb-small" style="margin-top:12px">Фото, повні описи й експорт у таблицю — на сторінці <a href="partners.html">«Товари для продажу»</a> (там ваш список теж збережено).</p></div>`+(window.KREV?KREV.block():'');
  const i=$i('kbMq');if(i)i.addEventListener('input',()=>{MF.q=i.value;const pos=i.selectionStart;vMine();const j=$i('kbMq');j.focus();j.setSelectionRange(pos,pos)})}
 
 /* повноекранний вибір товарів */

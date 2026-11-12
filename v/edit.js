@@ -161,7 +161,8 @@ function draw() {
    <div class="lbl">Блоки</div>
    <label class="f"><span>Стрічка вгорі (необов’язково)</span><input data-k="bar" maxlength="120" value="${E(cfg.bar)}" placeholder="🚚 Відправка в день замовлення · Оплата при отриманні"></label>
    <div class="f"><span>Переваги під обкладинкою — до 4 коротких пунктів (необов’язково)</span><div class="g2">${[0, 1, 2, 3].map(i => `<input data-perk="${i}" maxlength="60" value="${E((cfg.perks || [])[i] || '')}" placeholder="${['⏱ Монтаж за один вечір', '💳 Оплата після огляду', '📐 Порахуємо кількість', '↩️ Обмін 14 днів'][i]}">`).join('')}</div></div>
-   <label class="f"><span>Назва блоку «Популярне»</span><input data-k="featTitle" maxlength="40" value="${E(cfg.featTitle)}" placeholder="Популярне"></label></section>
+   <label class="f"><span>Назва блоку «Популярне»</span><input data-k="featTitle" maxlength="40" value="${E(cfg.featTitle)}" placeholder="Популярне"></label>
+   <label class="chk"><input type="checkbox" id="showRev"${cfg.noRev ? '' : ' checked'}> Показувати відгуки покупців (з фото, 4–5⭐; спершу — про ваші товари)</label></section>
 
   <section class="card"><h2><span class="n">3</span>Товари <span class="note" id="cnt"></span></h2><p class="sub">Оберіть, що продаєте. ★ — «Популярне» вгорі вітрини (до 12). <a class="tip" href="${SITE}course-vitryna.html#l=v2" target="_blank" rel="noopener">💡 Що поставити на вітрину</a></p>
    <div class="acts"><button class="btn sm" data-pick>${ico('plus')}Обрати з каталогу</button>${me.favs && me.favs.length ? `<button class="btn ghost sm" data-favs>Додати «Мої товари» (${me.favs.length})</button>` : ''}${OWNP.length ? `<button class="btn ghost sm" data-ownall>🧩 Власні товари (${OWNP.length})</button>` : ''}${cfg.items.length ? '<button class="btn ghost sm" data-clear>Прибрати всі</button>' : ''}</div>
@@ -323,6 +324,7 @@ document.addEventListener('input', e => {
   else if (t.id === 'color') { cfg.accent = t.value; $$('[data-color]').forEach(b => b.setAttribute('aria-pressed', b.dataset.color === cfg.accent)); dirtyOn(); }
 });
 document.addEventListener('change', e => {
+  if (e.target.id === 'showRev') { cfg.noRev = !e.target.checked; dirtyOn(); return; }
   const t = e.target;
   if (t.dataset.up && t.files[0]) upload(t.files[0], t.dataset.up);
   if (t.id === 'hideOut') { cfg.hideOut = t.checked; dirtyOn(); }

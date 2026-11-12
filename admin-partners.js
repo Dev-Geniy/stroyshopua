@@ -34,7 +34,7 @@ function tick(){if(PAPI&&pass&&!S.loading&&(!S.loaded||Date.now()-S.at>60000))lo
 
 /* ---------- розрахунки ---------- */
 function pStats(id){const L=S.orders.filter(o=>o.partnerId==id),live=L.filter(o=>!CANC.includes(o.status));
- return{n:L.length,live:live.length,turn:live.reduce((a,o)=>a+(+o.sale||0),0),earn:live.filter(o=>o.status=='Отримане'||o.status=='Виплачено').reduce((a,o)=>a+earn(o),0),
+ return{n:L.length,live:live.length,turn:live.reduce((a,o)=>a+(+o.sale||0)-(+o.own||0),0),own:live.reduce((a,o)=>a+(+o.own||0),0),earn:live.filter(o=>o.status=='Отримане'||o.status=='Виплачено').reduce((a,o)=>a+earn(o),0),
   due:live.filter(o=>o.status=='Отримане').reduce((a,o)=>a+earn(o),0),dueN:live.filter(o=>o.status=='Отримане').length,work:live.filter(o=>WORK.includes(o.status)).length,last:L[0]&&L[0].created}}
 
 const refDue=id=>S.refs.filter(x=>x.status=='До виплати'&&(!id||x.refId==id));
@@ -143,7 +143,7 @@ function openP(id){const p=pById(id);if(!p)return;cp={...p};co=null;const s=pSta
  $('#dtitle').textContent=p.name;$('#dsub').textContent=p.id+' · з '+(p.created?new Date(p.created).toLocaleDateString('uk-UA'):'')+(p.lastLogin?' · останній вхід '+fdt(t(p.lastLogin)):'');
  $('#dbody').innerHTML=`<div class="sec"><h3>Рівень партнера</h3><div class="seg" id="pa-lv">${Object.keys(LV).map(l=>`<button style="--c:var(--slate)" data-plv="${l}" class="${(p.level||'Starter')==l?'on':''}">${l} · ${LV[l]}%</button>`).join('')}</div><p class="note" style="margin-top:6px">Маржа — від рекомендованої ціни. Від рівня залежить орієнтовний заробіток у нових замовленнях.</p></div>
  <div class="sec"><h3>Контакти</h3><dl class="kv"><dt>Телефон</dt><dd><a href="tel:+${esc(p.phone)}"><b>+${esc(p.phone)}</b></a></dd><dt>Telegram / Viber</dt><dd>${esc(p.msg||'—')}</dd><dt>Місто</dt><dd>${esc(p.city||'—')}</dd><dt>Реквізити</dt><dd>${esc(p.payout||'—')}</dd></dl></div>
- <div class="sec"><h3>Результати</h3><dl class="kv"><dt>Замовлень</dt><dd>${s.n} (${s.work} у роботі)</dd><dt>Оборот</dt><dd>${money(s.turn)}</dd><dt>Заробив</dt><dd>${money(s.earn)}</dd><dt>До виплати</dt><dd>${money(s.due)}</dd></dl>
+ <div class="sec"><h3>Результати</h3><dl class="kv"><dt>Замовлень</dt><dd>${s.n} (${s.work} у роботі)</dd><dt>Оборот</dt><dd>${money(s.turn)}${s.own?` <span class="note">+ ${money(s.own)} власних товарів, які відправляє сам (у рівень не входять)</span>`:''}</dd><dt>Заробив</dt><dd>${money(s.earn)}</dd><dt>До виплати</dt><dd>${money(s.due)}</dd></dl>
   <div class="acts" style="margin-top:10px"><button class="btn ghost sm" data-pa="porders" data-pp="${esc(p.id)}">Замовлення партнера</button></div></div>
  <div class="sec"><h3>Анкета</h3>${a?`<dl class="kv">${yes.length?yes.map(([k,x])=>`<dt>${esc(k)}</dt><dd>${/^https?:/.test(x.link)?`<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.link)}</a>`:esc(x.link)}<br><span class="note">досвід: ${esc(x.exp||'—')} · аудиторія: ${esc(x.aud||'—')}</span></dd>`).join(''):'<dt>Платформи</dt><dd>поки немає — стартує з нуля</dd>'}
   <dt>ФОП</dt><dd>${esc(a.fop||'—')}</dd><dt>Час на день</dt><dd>${esc(a.time||'—')}</dd>${a.other?`<dt>Інше</dt><dd>${esc(a.other)}</dd>`:''}${a.note?`<dt>Коментар</dt><dd>${esc(a.note)}</dd>`:''}</dl><p class="note" style="margin-top:6px">Заповнена ${fdt(t(p.anketaAt))}</p>`:'<p class="note">Партнер ще не заповнював анкету.</p>'}</div>

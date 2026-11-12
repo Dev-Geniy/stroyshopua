@@ -16,7 +16,7 @@
 
 const SHEET_NAME = 'Замовлення';
 const HEAD = ['№', 'Дата', 'Статус', 'Ім’я', 'Телефон', 'Місто / відділення', 'Оплата', 'Доставка',
-  'Сума, ₴', 'Товари', 'Тип', 'ТТН', 'Коментар', 'Оновлено', 'Сторінка', 'Мова', 'Товари (дані)', 'Ключ', 'Telegram клієнта'];
+  'Сума, ₴', 'Товари', 'Тип', 'ТТН', 'Коментар', 'Оновлено', 'Сторінка', 'Мова', 'Товари (дані)', 'Ключ', 'Telegram клієнта', 'Після покупки'];
 const C = {}; HEAD.forEach((h, i) => C[h] = i);           // номер колонки за назвою (від 0)
 const STATUSES = ['Нове', 'Підтверджене', 'Відправлене', 'Виконане', 'Скасоване'];
 const TZ = 'Europe/Kyiv';
@@ -171,6 +171,7 @@ function updateCore_(id, ch) {
     old = rowToObj_(row);
     if (ch.status !== undefined) {
       if (STATUSES.indexOf(ch.status) < 0) return { ok: false, error: 'status' };
+      if (ch.status === 'Виконане' && row[C['Статус']] !== 'Виконане') { const a = afterOf_(row); if (!a.done) { a.done = new Date().toISOString(); row[C['Після покупки']] = JSON.stringify(a); } }
       row[C['Статус']] = ch.status;
     }
     if (ch.ttn !== undefined) row[C['ТТН']] = "'" + clean_(ch.ttn, 40).replace(/^'/, '');
@@ -496,6 +497,15 @@ function clientUpdate_(u) {
   const tok = clientTok_();
   if (u.callback_query) {
     const q = u.callback_query;
+    const qc = String(q.message.chat.id), d = String(q.data || '').split('|');
+    if (d[0] === 'rv') return tgCall_(tok, 'answerCallbackQuery', { callback_query_id: q.id, text: rvRate_(q, qc, d[1], Math.max(1, Math.min(5, +d[2] || 5))) });
+    if (d[0] === 'rvd') { rvSend_(qc); return tgCall_(tok, 'answerCallbackQuery', { callback_query_id: q.id }); }
+    if (d[0] === 'rvx') { rvState_(qc, null); send_(tok, qc, 'Добре, скасовано. Якщо захочете — просто напишіть нам сюди.', CLIENT_KB); return tgCall_(tok, 'answerCallbackQuery', { callback_query_id: q.id }); }
+    if (d[0] === 'nofu') {
+      const L = noFollow_(); if (L.indexOf(qc) < 0) { L.push(qc); setProp_('NOFU', JSON.stringify(L.slice(-3000))); }
+      send_(tok, qc, '🔕 Добре, більше не нагадуватимемо. Статуси ваших замовлень і далі приходитимуть сюди.', CLIENT_KB);
+      return tgCall_(tok, 'answerCallbackQuery', { callback_query_id: q.id, text: 'Нагадування вимкнено' });
+    }
     if (q.data === 'my') clientOrders_(String(q.message.chat.id));
     if (q.data === 'help') send_(tok, q.message.chat.id, '💬 Напишіть своє питання сюди одним повідомленням — менеджер відповість у цей чат. Можна надіслати фото стіни чи розміри.');
     return tgCall_(tok, 'answerCallbackQuery', { callback_query_id: q.id });
@@ -528,6 +538,8 @@ function clientUpdate_(u) {
   if (cmd[1] === 'catalog') return send_(tok, chat, 'Каталог Samostroy Shop:', { inline_keyboard: [[{ text: '🛍 Відкрити каталог', web_app: { url: SITE } }]] });
   if (cmd[1] === 'help') return send_(tok, chat, '💬 Напишіть питання сюди — менеджер відповість у цей чат.\nТелефон: +380 75 219 32 07\nПн–Сб, 9:00–19:00');
   if (cmd[1]) return send_(tok, chat, 'Оберіть дію в меню внизу 👇', CLIENT_KB);
+  const rvs = rvState_(chat);
+  if (rvs && (text || m.photo || m.caption)) return rvCollect_(m, chat, rvs);   // чекаємо текст і фото для відгуку
   // повідомлення клієнта — власнику в адмін-бот
   if (!adminTok_() || !adminChats_().length) return send_(tok, chat, 'Напишіть, будь ласка, менеджеру: @' + MANAGER, { inline_keyboard: [[{ text: 'Написати менеджеру', url: 'https://t.me/' + MANAGER }]] });
   const ids = allRows_().filter(x => clientChats_(x.raw[C['Telegram клієнта']]).indexOf(chat) >= 0).map(x => '№' + x.o.id).slice(-3);
@@ -580,12 +592,11 @@ function sheet_() {
       SpreadsheetApp.newDataValidation().requireValueInList(STATUSES, true).build());
     [90, 130, 110, 120, 130, 220, 110, 110, 90, 380, 80, 130, 220].forEach((w, i) => sh.setColumnWidth(i + 1, w));
     sh.hideColumns(C['Товари (дані)'] + 1, 3);
-  } else if (!CacheService.getScriptCache().get('head_ok')) {
-    // новий стовпець «Telegram клієнта» в наявній таблиці
+  } else if (!CacheService.getScriptCache().get('head_ok2')) {
+    // нові службові стовпці («Telegram клієнта», «Після покупки») в наявній таблиці
     if (sh.getMaxColumns() < HEAD.length) sh.insertColumnsAfter(sh.getMaxColumns(), HEAD.length - sh.getMaxColumns());
-    const hc = sh.getRange(1, C['Telegram клієнта'] + 1);
-    if (!hc.getValue()) { hc.setValue('Telegram клієнта').setFontWeight('bold'); sh.hideColumns(C['Telegram клієнта'] + 1); }
-    CacheService.getScriptCache().put('head_ok', '1', 21600);
+    ['Telegram клієнта', 'Після покупки'].forEach(n => { const hc = sh.getRange(1, C[n] + 1); if (!hc.getValue()) { hc.setValue(n).setFontWeight('bold'); sh.hideColumns(C[n] + 1); } });
+    CacheService.getScriptCache().put('head_ok2', '1', 21600);
   }
   return sh;
 }
@@ -698,6 +709,113 @@ function cartCheck() {
   });
 }
 
+/* ---------------- після покупки: відгук з фото й нагадування про дозамовлення ----------------
+   Коли замовлення стає «Виконане», у стовпці «Після покупки» запам’ятовуємо дату. Щодня о 12:00 (afterBuy, створює setupReports):
+   • через REVIEW_DAYS днів — клієнту в бот: «Як вам товар?» з оцінкою ⭐1–5, далі текст і фото → відгук на модерацію в адмінку;
+   • через REPEAT_DAYS днів — один раз: «Не вистачило? Ця модель є в наявності» з кнопкою дозамовити.
+   Лише клієнтам, які самі підключили бот; кнопка «🔕 Не нагадувати» вимикає обидва повідомлення. */
+const REVIEW_DAYS = 3, REPEAT_DAYS = 18;
+const IMGBB = '15e623a143a716e907d3402a0e84ce78';                      // той самий ключ, що й для фото у відгуках на сайті (config.js)
+function afterOf_(raw) { try { return JSON.parse(raw[C['Після покупки']] || '{}') || {}; } catch (x) { return {}; } }
+function noFollow_() { try { return JSON.parse(prop_('NOFU') || '[]'); } catch (x) { return []; } }
+function firstItem_(o) { const x = (o.items || [])[0]; return x ? String(x.name).split(/[,(]/)[0].trim().slice(0, 60) : 'товар'; }
+function catalogMap_() {
+  try {
+    const j = JSON.parse(UrlFetchApp.fetch(SITE + 'app/catalog.json?t=' + Date.now(), { muteHttpExceptions: true }).getContentText()), m = {};
+    j.items.forEach(a => { const o = {}; j.f.forEach((k, i) => o[k] = a[i]); m[String(o.id)] = o; });
+    return m;
+  } catch (x) { console.error('catalog', x); return null; }
+}
+/** Щодня: прохання про відгук і нагадування про дозамовлення (тригер створює setupReports). */
+function afterBuy() {
+  const tok = clientTok_();
+  if (!tok) return;
+  const now = Date.now(), off = noFollow_(), sh = sheet_(), rows = allRows_().slice(-1500);
+  let cat = null, sent = 0;
+  rows.forEach(x => {
+    const o = x.o;
+    if (sent >= 40 || kind_(o.type) !== 'order' || o.status !== 'Виконане') return;
+    const a = afterOf_(x.raw);
+    if (!a.done) return;
+    const chats = clientChats_(x.raw[C['Telegram клієнта']]).filter(c => off.indexOf(c) < 0);
+    if (!chats.length) return;
+    const days = (now - Date.parse(a.done)) / 864e5;
+    let ch = false;
+    if (!a.rv && days >= REVIEW_DAYS && days <= 30) {
+      chats.forEach(c => send_(tok, c, `⭐ <b>Як вам ${h_(firstItem_(o))}?</b>\nЗамовлення №${h_(o.id)}. Оцініть, будь ласка, — це займе 10 секунд і дуже допоможе іншим покупцям.`,
+        { inline_keyboard: [[1, 2, 3, 4, 5].map(n => ({ text: n + '⭐', callback_data: 'rv|' + o.id + '|' + n })), [{ text: '🔕 Не нагадувати', callback_data: 'nofu' }]] }));
+      a.rv = new Date().toISOString(); ch = true; sent++;
+    } else if (!a.rp && days >= REPEAT_DAYS && days <= 60) {
+      cat = cat || catalogMap_();
+      if (!cat) return;
+      const av = (o.items || []).map(i => cat[String(i.id)]).filter(p => p && p.av);
+      if (av.length) {
+        const p = av[0];
+        chats.forEach(c => send_(tok, c, `🧰 <b>Як просувається ремонт?</b>\nЯкщо ${h_(String(p.name).split(/[,(]/)[0].trim().slice(0, 60))} не вистачило — ця модель зараз <b>є в наявності</b>, ${h_(money_(p.price))}.\nЩоб відтінок збігся з попередньою партією, у коментарі до замовлення вкажіть: «дозамовлення до №${h_(o.id)}».`,
+          { inline_keyboard: [[{ text: '🛒 Дозамовити', web_app: { url: SITE + 'p/' + encodeURIComponent(p.id) + '.html' } }], [{ text: '🔕 Не нагадувати', callback_data: 'nofu' }]] }));
+        sent++;
+      }
+      a.rp = new Date().toISOString(); ch = true;                       // перевіряємо лише раз — навіть якщо товару немає
+    }
+    if (ch) sh.getRange(x.r, C['Після покупки'] + 1).setValue(JSON.stringify(a));
+  });
+}
+// відгук у боті: стан — у властивостях скрипта RV_<chat> (оцінка, текст, фото), діє 2 доби
+function rvState_(chat, v) {
+  const k = 'RV_' + chat;
+  if (v === undefined) { try { const s = JSON.parse(prop_(k) || 'null'); return s && Date.now() - s.at < 2 * 864e5 ? s : null; } catch (x) { return null; } }
+  setProp_(k, v ? JSON.stringify(v) : '');
+}
+const RV_KB = { inline_keyboard: [[{ text: '✅ Надіслати відгук', callback_data: 'rvd' }], [{ text: 'Скасувати', callback_data: 'rvx' }]] };
+function rvRate_(q, chat, id, n) {
+  const tok = clientTok_(), x = allRows_().find(r => r.o.id === id && clientChats_(r.raw[C['Telegram клієнта']]).indexOf(chat) >= 0);
+  if (!x) return 'Замовлення не знайдено';
+  rvState_(chat, { id, r: n, t: '', ph: [], at: Date.now() });
+  tgCall_(tok, 'editMessageReplyMarkup', { chat_id: chat, message_id: q.message.message_id, reply_markup: { inline_keyboard: [[{ text: 'Ваша оцінка: ' + '⭐'.repeat(n), callback_data: 'noop' }]] } });
+  send_(tok, chat, n >= 4
+    ? `Дякуємо за ${n}⭐!\n\n✍️ Напишіть кілька слів: що купували, як клеїлось, як виглядає. 📷 І додайте фото результату — можна 2: «до» і «після». Найкращі відгуки з фото ми публікуємо на сайті.\n\nКоли закінчите — натисніть «Надіслати відгук».`
+    : `Нам шкода, що щось пішло не так 😔\n\nНапишіть, будь ласка, що саме — менеджер розбереться й допоможе (заміна, повернення чи порада з монтажу). Можна додати фото.\n\nКоли закінчите — натисніть «Надіслати відгук».`, RV_KB);
+  return 'Дякуємо!';
+}
+function imgbbFromTg_(tok, fileId) {
+  const f = tgCall_(tok, 'getFile', { file_id: fileId });
+  if (!f || !f.ok) return '';
+  const blob = UrlFetchApp.fetch('https://api.telegram.org/file/bot' + tok + '/' + f.result.file_path).getBlob();
+  const r = JSON.parse(UrlFetchApp.fetch('https://api.imgbb.com/1/upload?key=' + IMGBB, { method: 'post', payload: { image: Utilities.base64Encode(blob.getBytes()) }, muteHttpExceptions: true }).getContentText());
+  return r && r.success ? r.data.url : '';
+}
+// повідомлення клієнта, поки чекаємо на відгук: текст і фото додаємо до чернетки
+function rvCollect_(m, chat, st) {
+  const tok = clientTok_();
+  if (m.photo && m.photo.length) {
+    if (st.ph.length >= 2) return send_(tok, chat, 'Фото вже 2 — цього достатньо. Натисніть «Надіслати відгук».', RV_KB);
+    let url = '';
+    try { url = imgbbFromTg_(tok, m.photo[m.photo.length - 1].file_id); } catch (x) { console.error('rv photo', x); }
+    if (!url) return send_(tok, chat, 'Не вдалося зберегти фото — спробуйте ще раз або надішліть інше.', RV_KB);
+    st.ph.push(url);
+  }
+  const t = clean_(m.text || m.caption || '', 1500);
+  if (t) st.t = (st.t ? st.t + '\n' : '') + t;
+  rvState_(chat, st);
+  send_(tok, chat, `Додано ✓ ${st.t ? 'Текст є' : 'Тексту ще немає'} · фото: ${st.ph.length} з 2.\nМожна додати ще або натиснути «Надіслати відгук».`, RV_KB);
+}
+function rvSend_(chat) {
+  const tok = clientTok_(), st = rvState_(chat);
+  if (!st) return send_(tok, chat, 'Чернетку відгуку не знайдено — можливо, вона вже надіслана.', CLIENT_KB);
+  const x = allRows_().find(r => r.o.id === st.id);
+  if (!x) return send_(tok, chat, 'Замовлення не знайдено.', CLIENT_KB);
+  const o = x.o, parts = ['Оцінка: ' + st.r + '/5'];
+  if (o.city) parts.push('Місто: ' + o.city.split(/[,·]/)[0].trim());
+  parts.push('Товар: ' + (o.items || []).slice(0, 3).map(i => String(i.name).split(/[,(]/)[0].trim()).join('; '));
+  if (st.ph.length === 1) parts.push('Фото після: ' + st.ph[0]);
+  if (st.ph.length === 2) { parts.push('Фото до: ' + st.ph[0]); parts.push('Фото після: ' + st.ph[1]); }
+  parts.push('Джерело: Telegram-бот, замовлення №' + o.id);
+  parts.push('Відгук: ' + (st.t || '(лише оцінка, без тексту)'));
+  const r = newOrder_({ type: 'Відгук', name: o.name, phone: o.phone, city: o.city, pay: '', delivery: '', items: parts.map(n => ({ name: n, q: 1, price: 0 })), page: 'telegram-bot', key: 'rv-' + o.id + '-' + st.at });
+  rvState_(chat, null);
+  send_(tok, chat, r && r.ok ? (st.r >= 4 ? '🙏 <b>Дякуємо за відгук!</b> Він з’явиться на сайті після перевірки.' : '🙏 Дякуємо, що написали. Менеджер зв’яжеться з вами найближчим часом.') : 'Не вдалося надіслати — спробуйте пізніше або напишіть менеджеру.', CLIENT_KB);
+}
+
 /* ---------------- звіт за місяць ---------------- */
 function monthBounds_(d, cur) {
   // початок місяця за київським часом; mi — номер місяця від нуля року 0 (щоб легко рахувати сусідні)
@@ -740,14 +858,14 @@ function monthReport_(d, cur) {
   let pTurn = 0;
   if (p && p.ok) {
     const PO = (p.orders || []).filter(o => ['Скасоване', 'Повернення'].indexOf(o.status) < 0), pm = PO.filter(o => inM(o.created, B.a, B.b));
-    const ppm = PO.filter(o => inM(o.created, B.pa, B.a)), turn = A => A.reduce((a, o) => a + (+o.sale || 0), 0);
+    const ppm = PO.filter(o => inM(o.created, B.pa, B.a)), turn = A => A.reduce((a, o) => a + (+o.sale || 0) - (+o.own || 0), 0), ownT = pm.reduce((a, o) => a + (+o.own || 0), 0);
     const paid = (p.orders || []).filter(o => o.paidAt && inM(o.paidAt, B.a, B.b)).reduce((a, o) => a + (+o.earnNow || 0), 0);
     const R = (p.refs || []).filter(r => r.status !== 'Скасовано'), rIn = R.filter(r => inM(r.created, B.a, B.b)), rPaid = R.filter(r => r.paidAt && inM(r.paidAt, B.a, B.b));
     const act = new Set(pm.map(o => o.partnerId)).size, nw = (p.partners || []).filter(x => inM(x.created, B.a, B.b)).length, vit = pm.filter(o => o.via === 'Вітрина').length;
-    const best = {}; pm.forEach(o => { best[o.partner] = (best[o.partner] || 0) + (+o.sale || 0); });
+    const best = {}; pm.forEach(o => { best[o.partner] = (best[o.partner] || 0) + (+o.sale || 0) - (+o.own || 0); });
     const bp = Object.keys(best).sort((a, b) => best[b] - best[a]).slice(0, 3);
     pTurn = turn(pm);
-    out.push('', '🤝 <b>Партнери</b>', `Замовлень: <b>${pm.length}</b>${cur ? '' : pct_(pm.length, ppm.length)} · оборот <b>${money_(pTurn)}</b>${vit ? ` · з вітрин: ${vit}` : ''}`,
+    out.push('', '🤝 <b>Партнери</b>', `Замовлень: <b>${pm.length}</b>${cur ? '' : pct_(pm.length, ppm.length)} · оборот <b>${money_(pTurn)}</b>${vit ? ` · з вітрин: ${vit}` : ''}${ownT ? `\nВласні товари партнерів, які вони відправляють самі: ${money_(ownT)} (не входять в оборот)` : ''}`,
       `Нових партнерів: ${nw} · продавали: ${act} з ${(p.partners || []).length}`,
       `Виплачено партнерам: ${money_(paid)}` + (R.length ? ` · бонуси за рекомендації: нараховано ${money_(rIn.reduce((a, r) => a + r.bonus, 0))}, виплачено ${money_(rPaid.reduce((a, r) => a + r.bonus, 0))}` : ''));
     if (bp.length) out.push('Найкращі: ' + bp.map(k => `${h_(k)} (${money_(best[k])})`).join(', '));
@@ -762,11 +880,12 @@ function monthlyReport() {
 }
 /** Запустіть один раз: кинуті кошики (перевірка кожні 15 хв) і звіт 1-го числа кожного місяця. */
 function setupReports() {
-  ScriptApp.getProjectTriggers().forEach(t => { if (['cartCheck', 'monthlyReport'].indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t); });
+  ScriptApp.getProjectTriggers().forEach(t => { if (['cartCheck', 'monthlyReport', 'afterBuy'].indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t); });
   ScriptApp.newTrigger('cartCheck').timeBased().everyMinutes(15).create();
+  ScriptApp.newTrigger('afterBuy').timeBased().atHour(12).everyDays(1).inTimezone(TZ).create();
   ScriptApp.newTrigger('monthlyReport').timeBased().onMonthDay(1).atHour(10).inTimezone(TZ).create();
   cartSheet_();
-  console.log('✓ Кинуті кошики: перевірка кожні 15 хв (нагадування 9:00–21:00)\n✓ Звіт за місяць: 1-го числа о 10:00\nПеревірити звіт зараз: запустіть monthPreview.');
+  console.log('✓ Кинуті кошики: перевірка кожні 15 хв (нагадування 9:00–21:00)\n✓ Після покупки: щодня о 12:00 — прохання про відгук (через ' + REVIEW_DAYS + ' дні) і нагадування про дозамовлення (через ' + REPEAT_DAYS + ' днів)\n✓ Звіт за місяць: 1-го числа о 10:00\nПеревірити звіт зараз: запустіть monthPreview.');
 }
 /** Надіслати собі звіт за минулий місяць зараз (перевірка). */
 function monthPreview() { monthlyReport(); }
