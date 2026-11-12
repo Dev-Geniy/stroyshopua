@@ -163,6 +163,7 @@
 .nf-s{display:flex;gap:8px;width:min(100%,520px)}
 .nf-s input{flex:1;height:48px;border:1.5px solid var(--line);border-radius:var(--r-s);background:var(--panel);padding:0 14px;font-size:16px;min-width:0}
 .nf .cp-sib{flex-wrap:wrap;justify-content:center}
+.nf{grid-template-columns:minmax(0,1fr)}.nf>*{max-width:100%}
 
 @media(max-width:1020px){.bl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:820px){
@@ -210,3 +211,5 @@
 .ba-sh .ba-nat:hover{color:var(--orange-ink);filter:brightness(1.05)}
 .ba-sh [data-copyshare].ok{border-color:var(--ok);color:var(--ok)}
 @media(max-width:640px){.ba-sh a,.ba-sh button{min-height:42px}.ba-sh .ba-nat{width:100%;justify-content:center}}
+
+@media(min-width:761px){.cp-sib{flex-wrap:wrap;overflow:visible}}

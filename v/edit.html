@@ -20,6 +20,7 @@ img{display:block;max-width:100%}[hidden]{display:none!important}
 .top .in{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 16px;min-height:62px}
 .top h1{font:700 18px/1.2 Unbounded,"Golos Text",sans-serif}
 .top .st{font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--field);white-space:nowrap}
+@media(max-width:560px){.top .in{flex-wrap:wrap;row-gap:6px;padding:8px 12px}.top h1{font-size:16px}.top .sp{display:none}.top #open{margin-left:auto}}
 .st.mod{background:color-mix(in srgb,#e07b0e 18%,var(--card));color:#b45f08}.st.pub{background:color-mix(in srgb,var(--ok) 16%,var(--card));color:var(--ok)}.st.off{background:color-mix(in srgb,var(--bad) 14%,var(--card));color:var(--bad)}
 .sp{flex:1}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:11px;background:var(--acc);color:var(--acc-ink);font-weight:700;font-size:14.5px;text-decoration:none;white-space:nowrap}
@@ -110,7 +111,7 @@ img{display:block;max-width:100%}[hidden]{display:none!important}
 .qr img{width:120px;height:120px;border-radius:10px;background:#fff;padding:6px}
 .txt{background:var(--field);border-radius:10px;padding:10px 12px;font-size:14px;white-space:pre-wrap;margin-bottom:6px}
 .note{font-size:13.5px;color:var(--soft)}
-.vsw{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 14px}
+.ed{min-width:0}.vsw{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 14px;min-width:0}.vsw-i{flex:0 1 auto}@media(max-width:600px){.vsw-i{max-width:calc(50% - 4px)}}
 .vsw .lbl{font-weight:700;margin-right:4px}
 .vsw-i{display:flex;flex-direction:column;gap:1px;padding:7px 12px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);background:var(--card);min-width:0;max-width:240px}
 .vsw-i b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vsw-i small{font-size:12px;color:var(--soft)}

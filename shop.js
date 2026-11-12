@@ -950,3 +950,9 @@ safe(()=>{view=readURL();render()},'render');
 // старі посилання ?p=… ведуть на статичну сторінку товару (з прев’ю для месенджерів)
 {const u=new URLSearchParams(location.search);if(!LAND&&u.get('p')&&!u.get('c')&&!u.get('g')&&!u.get('q')&&/^[\w-]+$/.test(u.get('p')))location.replace('p/'+u.get('p')+'.html')}
 load();
+
+/* стрічки товарів (Новинки, Ви переглядали): на ПК — стрілки прокрутки */
+(function(){document.querySelectorAll('.strip').forEach(function(s){if(s.dataset.ar)return;s.dataset.ar=1;var w=document.createElement('div');w.className='strip-w';s.parentNode.insertBefore(w,s);w.appendChild(s);
+ ['‹','›'].forEach(function(t,i){var b=document.createElement('button');b.type='button';b.className='strip-ar '+(i?'nx':'pv');b.setAttribute('aria-label',i?'Гортати далі':'Гортати назад');b.textContent=t;b.onclick=function(){s.scrollBy({left:(i?1:-1)*s.clientWidth*.85,behavior:'smooth'})};w.appendChild(b)});
+ var upd=function(){w.classList.toggle('at-s',s.scrollLeft<4);w.classList.toggle('at-e',s.scrollLeft+s.clientWidth>=s.scrollWidth-4);w.classList.toggle('no-ov',s.scrollWidth<=s.clientWidth+4)};
+ s.addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);new MutationObserver(upd).observe(s,{childList:true});upd()})})();

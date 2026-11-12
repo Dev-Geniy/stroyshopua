@@ -142,7 +142,7 @@ header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1p
 .card h3 a{text-decoration:none}
 .card h3 a:hover{color:var(--orange-d)}
 .meta{font-size:12px;color:var(--soft);display:flex;justify-content:space-between;gap:6px}
-.meta span:last-child{white-space:nowrap}
+.meta span:last-child{white-space:nowrap}.meta span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .price{font-family:var(--f-d);font-weight:700;font-size:19px}
 .ppm{font-size:12px;color:var(--soft);font-family:var(--f-b);font-weight:500;margin-left:6px}
 .card .ab{display:flex;gap:6px;margin-top:auto;padding-top:6px}
@@ -568,3 +568,11 @@ dialog#pd::backdrop{background:#000a}
 .b2b-more{margin-top:16px;font-size:15px;color:var(--soft)}
 .b2b-more a{color:var(--orange-d);font-weight:600}
 .pshare{display:inline-block;font-size:14px;margin:-8px 0 14px}
+
+/* ПК: рядки посилань переносяться, а не ховаються за прокруткою; стрічки товарів — зі стрілками */
+@media(min-width:761px){.pnav .w{flex-wrap:wrap;overflow:visible;row-gap:2px;gap:2px}.pnav a{padding:6px 8px;font-size:13.5px}.subs{flex-wrap:wrap;overflow:visible}}
+@media(min-width:761px) and (max-width:1099px){.pnav b{display:none}}
+.as{grid-template-columns:minmax(0,1fr)}.as>*{min-width:0}
+.strip-w{position:relative}.strip-ar{display:none}
+@media(hover:hover) and (min-width:761px){.strip-ar{display:grid;place-items:center;position:absolute;top:38%;z-index:2;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:26px;line-height:1;cursor:pointer;box-shadow:0 4px 14px #0002}
+ .strip-ar:hover{border-color:var(--orange)}.strip-ar.pv{left:-10px}.strip-ar.nx{right:-10px}.strip-w.at-s .pv,.strip-w.at-e .nx,.strip-w.no-ov .strip-ar{display:none}}

@@ -52,3 +52,5 @@
 @media(max-width:520px){.sp-cats{grid-template-columns:1fr 1fr}.sp-ch{grid-template-columns:1fr}}
 .sp-cmp th:last-child,.sp-cmp td:last-child{background:var(--panel)}
 .sp-cmp thead th,.sp-cmp thead th:last-child{background:var(--wall);color:var(--ink)}
+
+.sp-cat{grid-template-columns:minmax(0,1fr)}.sp-cat>*,.sp-cat .tx>*{min-width:0}.sp-cat small{overflow-wrap:anywhere}

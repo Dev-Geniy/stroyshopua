@@ -60,6 +60,7 @@ header{background:var(--slate);color:#fff;position:sticky;top:0;z-index:20}
 .nv a{flex:none;display:flex;align-items:center;gap:8px;padding:0 14px;height:48px;text-decoration:none;font-weight:500;color:var(--soft);border-bottom:2.5px solid transparent}
 .nv a:hover{color:var(--ink)}
 .nv a.on{color:var(--ink);border-color:var(--orange)}
+@media(min-width:761px){.nv{flex-wrap:wrap;overflow:visible}.nv a{padding:0 10px;height:44px;gap:6px}}
 .nv a i{font-style:normal;font-size:12px;font-weight:600;background:var(--orange);color:#1f2328;border-radius:999px;padding:0 7px;line-height:19px}
 .nv a i:empty{display:none}
 
@@ -97,6 +98,7 @@ h2.sub{font-size:13px;color:var(--soft);font-weight:600;margin:22px 0 10px;text-
 .tools .sr{flex:1;min-width:200px}
 .tools select{width:auto}
 .tabs,.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;scrollbar-width:thin}
+@media(min-width:700px){.chips,.tabs{flex-wrap:wrap;overflow:visible}}
 .tabs button,.chips button{flex:none;border:1.5px solid var(--line);background:var(--panel);border-radius:6px;padding:6px 12px;font-weight:500;display:flex;gap:8px;align-items:center;font-size:14px}
 .tabs button i,.chips button i{font-style:normal;font-size:12px;color:var(--soft)}
 .tabs button.on,.chips button.on{background:var(--slate);border-color:var(--slate);color:#fff}
