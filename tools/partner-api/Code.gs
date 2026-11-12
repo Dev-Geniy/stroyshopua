@@ -495,6 +495,7 @@ ACTIONS.tg_register = function (b) {
     refJoined(list, p);
     toPartner(p, '🎉 <b>Вітаємо в партнерській програмі Samostroy Shop!</b>\nВаш кабінет: ' + h(p.id) + '.\n\nЯк почати:\n1. Оберіть товари й тексти в розділі «Товари для продажу».\n2. Розмістіть оголошення.\n3. Коли клієнт замовить — оформіть замовлення тут, у кабінеті. Ми все відправимо самі.',
       { inline_keyboard: [[{ text: '📱 Відкрити кабінет', web_app: { url: APP_URL } }], [{ text: '🛍 Товари для продажу', url: SITE + 'partners.html' }]] });
+    try { menuHint(p.tgId, p); } catch (x) { }
     return { ok: true, linked: true, token: token, me: pubPartner(p), orders: [] };
   });
 };
@@ -721,7 +722,8 @@ function botDecor() {
   bot('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Кабінет', web_app: { url: APP_URL } } });
   bot('setMyCommands', { commands: [
     { command: 'start', description: 'Головне меню' }, { command: 'new', description: 'Нове замовлення' },
-    { command: 'orders', description: 'Мої замовлення' }, { command: 'help', description: 'Як працювати й зв’язок з менеджером' }] });
+    { command: 'orders', description: 'Мої замовлення' }, { command: 'menu', description: 'Показати меню' }, { command: 'settings', description: 'Налаштування повідомлень' },
+    { command: 'help', description: 'Як працювати й зв’язок з менеджером' }] });
   bot('setMyShortDescription', { short_description: 'Бот партнерів Samostroy Shop: замовлення для дропшипінгу, статуси, ТТН і заробіток.' });
   bot('setMyDescription', { description: 'Samostroy Drop — кабінет партнера Samostroy Shop у Telegram.\n\n• оформлюйте замовлення клієнтів за 1 хвилину\n• бачте статуси, ТТН і свій заробіток\n• отримуйте сповіщення про відправку й виплати\n\nНатисніть «Почати», щоб зареєструватися або увійти.' });
   var me = bot('getMe', {});
@@ -858,6 +860,60 @@ function welcome(chat, p) {
   return send(chat, '👋 <b>Samostroy Drop — бот партнерів Samostroy Shop</b>\nПродавайте самоклеючі 3D панелі, плитку, плівку й інші товари без вкладень: ви знаходите клієнта, ми пакуємо й відправляємо, ви отримуєте різницю в ціні.\n\nНатисніть «Відкрити кабінет», щоб зареєструватися за 1 хвилину або увійти в наявний кабінет.',
     { inline_keyboard: [[{ text: '📱 Відкрити кабінет', web_app: { url: APP_URL } }], [{ text: 'Як це працює', url: SITE + 'dropshipping.html' }, { text: 'Менеджер', url: 'https://t.me/' + MANAGER }]] });
 }
+/* ---------------- меню внизу екрана (reply-клавіатура) ----------------
+   Партнер: дві кнопки в рядку, щоб підписи читалися. Гість (ще не партнер): реєстрація, як це працює, менеджер. */
+var DROP_KB = { keyboard: [[{ text: '➕ Нове замовлення' }, { text: '📦 Мої замовлення' }], [{ text: '💰 Заробіток' }, { text: '🏪 Моя вітрина' }],
+  [{ text: '🎓 Допомога' }, { text: '⚙️ Налаштування' }]], resize_keyboard: true, is_persistent: true, input_field_placeholder: 'Питання менеджеру — пишіть сюди' };
+var GUEST_KB = { keyboard: [[{ text: '🚀 Стати партнером' }, { text: '❓ Як це працює' }], [{ text: '💬 Менеджер' }]], resize_keyboard: true, is_persistent: true };
+var MENU_ACT = { '➕ Нове замовлення': 1, '📦 Мої замовлення': 1, '💰 Заробіток': 1, '🏪 Моя вітрина': 1, '🎓 Допомога': 1, '⚙️ Налаштування': 1 };
+var GUEST_ACT = {
+  '🚀 Стати партнером': function (chat) { return send(chat, 'Реєстрація займає 2 хвилини — прямо тут, у Telegram. Після неї відкриється кабінет із товарами й цінами для продажу.', appKb('Зареєструватися')); },
+  '❓ Як це працює': function (chat) {
+    return send(chat, '<b>Як заробляти з Samostroy</b>\n1. Обираєте товари й розміщуєте оголошення (OLX, Instagram, Prom, своя вітрина).\n2. Клієнт замовив — оформлюєте замовлення в кабінеті за хвилину.\n3. Ми пакуємо й відправляємо від імені магазину, клієнт платить при отриманні.\n4. Ваша маржа — від 10% — приходить після того, як клієнт забрав посилку.\n\nБез складу, вкладень і закупівлі.',
+      { inline_keyboard: [[{ text: '📖 Детальніше', url: SITE + 'dropshipping.html' }], [{ text: '🚀 Зареєструватися', web_app: { url: APP_URL } }]] });
+  },
+  '💬 Менеджер': function (chat) { return send(chat, '💬 Напишіть питання сюди одним повідомленням — менеджер відповість у цей чат.', { inline_keyboard: [[{ text: 'Написати в Telegram', url: 'https://t.me/' + MANAGER }]] }); }
+};
+function menuHint(chat, p) {
+  return send(chat, p ? '⌨️ <b>Меню — внизу екрана.</b> Нове замовлення, статуси, заробіток, вітрина й допомога — в один дотик. Якщо меню сховалося — натисніть значок ⌨️ біля поля вводу або /menu.\nПитання менеджеру — просто напишіть повідомлення.'
+    : '⌨️ Меню — внизу екрана: реєстрація, як це працює й зв’язок з менеджером.', p ? DROP_KB : GUEST_KB);
+}
+function menuAct(text, chat, from, p) {
+  if (text === '➕ Нове замовлення') return send(chat, '➕ <b>Нове замовлення</b>\nПідготуйте: ім’я й телефон клієнта, місто, відділення пошти й товари. Оформлення — близько хвилини.', appKb('Оформити замовлення', 'new'));
+  if (text === '📦 Мої замовлення') return send(chat, ordersText(p), appKb('Усі замовлення', 'orders'));
+  if (text === '⚙️ Налаштування') return settingsShow(chat, from.id);
+  if (text === '💰 Заробіток') return send(chat, earnText(p), appKb('Кабінет', 'home'));
+  if (text === '🏪 Моя вітрина') return send(chat, '🏪 <b>Моя вітрина</b> — ваш власний інтернет-магазин на samostroy.shop: ваші ціни, ваше оформлення, замовлення одразу у ваш кабінет.\nПосилання на вітрину можна ставити в Instagram, TikTok, оголошення й розсилки.',
+    { inline_keyboard: [[{ text: '🏪 Відкрити редактор', web_app: { url: onbApp(SITE + 'v/edit.html') } }], [{ text: '📊 Статистика', web_app: { url: onbApp(SITE + 'v/edit.html#stats') } }, { text: '🎓 Курс', url: SITE + 'course-vitryna.html' }]] });
+  if (text === '🎓 Допомога') return send(chat, '🎓 <b>Навчання й допомога</b>\n• База знань — відповіді на часті питання\n• Інструкції в PDF — як продавати на OLX, Instagram, TikTok, Prom та ін.\n• Курси — дропшипінг з нуля, продажі, своя вітрина\n\n💬 Не знайшли відповідь? Напишіть питання сюди — менеджер відповість у цей чат.',
+    { inline_keyboard: [[{ text: '📚 База знань', web_app: { url: APP_URL + '#help' } }, { text: '📄 Інструкції PDF', url: SITE + 'lk.html' }], [{ text: '🎓 Академія й курси', url: SITE + 'academy.html' }, { text: '💬 Менеджер', url: 'https://t.me/' + MANAGER }]] });
+}
+// короткий звіт про гроші: місяць, у роботі, до виплати, виплачено, прогрес рівня й челендж
+function earnText(p) {
+  var all = readAll(SH_O, OC), L = all.filter(function (o) { return o.partnerId === p.id; }), mon = onbDay().slice(0, 7), sum = function (A) { return A.reduce(function (a, o) { return a + earnOf(o); }, 0); };
+  var inM = function (o) { return onbDay(o.created).slice(0, 7) === mon; }, live = L.filter(function (o) { return CANCELLED.indexOf(o.status) < 0; });
+  var work = live.filter(function (o) { return WORK_ST.indexOf(o.status) >= 0; }), due = live.filter(function (o) { return o.status === 'Отримане'; }), paid = live.filter(function (o) { return o.status === 'Виплачено'; });
+  var mo = live.filter(inM), md = mo.filter(function (o) { return OK_ST.indexOf(o.status) >= 0; }), s = pStats(p.id, all);
+  var rb = 0; try { rb = readAll(SH_R, RC).filter(function (r) { return r.refId === p.id && r.status === 'До виплати'; }).reduce(function (a, r) { return a + num(r.bonus); }, 0); } catch (x) { }
+  var nx = LV_NEXT[p.level || 'Starter'], out = ['💰 <b>Заробіток</b> · рівень ' + h(p.level || 'Starter') + ' (' + marginOf(p) + '%)', '',
+    '📅 <b>Цей місяць:</b> ' + mo.length + ' замовл. · оборот ' + money(s.turn) + '\n   заробіток з отриманих: <b>' + money(sum(md)) + '</b>',
+    '⏳ <b>У роботі:</b> ' + work.length + ' замовл. · очікується +' + money(sum(work)),
+    '💳 <b>До виплати:</b> <b>' + money(sum(due) + rb) + '</b>' + (rb ? ' (з них бонуси за рекомендації ' + money(rb) + ')' : ''),
+    '✅ <b>Виплачено всього:</b> ' + money(sum(paid))];
+  if (nx) out.push('', s.turn >= LV_TURN[nx] ? '🎯 Умову рівня ' + nx + ' цього місяця виконано — менеджер підвищить рівень.' : '🎯 До рівня <b>' + nx + '</b> (маржа ' + LEVELS[nx] + '%): ще ' + money(LV_TURN[nx] - s.turn) + ' обороту цього місяця.');
+  if (s.orders < 10) out.push('🏆 Челендж «Перші 10 замовлень»: ' + bar10(s.orders) + ' ' + s.orders + '/10');
+  return out.join('\n');
+}
+/** Розіслати меню всім партнерам з Telegram (один раз після оновлення). Повідомлення коротке, без реклами. */
+function menuRollout() {
+  var n = 0;
+  readAll(SH_P, PC).forEach(function (p) {
+    if (!p.tgId || p.status === 'Заблокований' || json(p.onb, {}).blk) return;
+    try { var r = send(p.tgId, '⌨️ <b>У боті з’явилося меню</b> — кнопки внизу екрана: нове замовлення, мої замовлення, заробіток, вітрина, допомога й налаштування. Усе потрібне — в один дотик.', DROP_KB); if (r && r.ok) n++; } catch (x) { }
+    Utilities.sleep(60);
+  });
+  console.log('Меню надіслано партнерам: ' + n);
+}
 function ordersText(p) {
   var L = myOrders(p).slice(0, 8);
   if (!L.length) return 'Замовлень ще немає. Натисніть «Нове замовлення», коли клієнт буде готовий.';
@@ -891,11 +947,16 @@ function onMessage(m) {
       write(SH_P, PC, x);
       cache().remove('lnk:' + cmd[2].slice(5));
       send(chat, '🔗 Telegram підключено до кабінету <b>' + h(x.id) + '</b>. Тепер статуси замовлень, ТТН і виплати приходитимуть сюди.');
-      return welcome(chat, x);
+      welcome(chat, x);
+      return menuHint(chat, x);
     });
   }
   if (cmd[1] === 'start' && cmd[2] && /^r_P\d{3,7}$/i.test(cmd[2]) && !p) refKeep(from.id, cmd[2].slice(2).toUpperCase());
-  if (cmd[1] === 'start') return welcome(chat, p);
+  if (cmd[1] === 'start') { welcome(chat, p); return menuHint(chat, p); }
+  if (cmd[1] === 'menu') return menuHint(chat, p);
+  var mb = MENU_ACT[text];
+  if (mb && (p || mb === 'guest')) return menuAct(text, chat, from, p);
+  if (!p && GUEST_ACT[text]) return GUEST_ACT[text](chat);
   if (cmd[1] === 'new') return send(chat, p ? 'Оформіть замовлення клієнта:' : 'Спершу відкрийте кабінет і зареєструйтесь:', appKb(p ? 'Нове замовлення' : 'Відкрити кабінет', p ? 'new' : ''));
   if (cmd[1] === 'orders') return p ? send(chat, ordersText(p), appKb('Усі замовлення', 'orders')) : welcome(chat, null);
   if (cmd[1] === 'help') return send(chat, '<b>Як працювати</b>\n1. Оберіть товари для продажу й розмістіть оголошення.\n2. Клієнт замовив — «Нове замовлення» в кабінеті: товари, ваша ціна, дані клієнта.\n3. Менеджер підтверджує, ми відправляємо, ТТН приходить сюди.\n4. Клієнт забрав посилку — заробіток переходить «до виплати».\n\nПитання — напишіть повідомлення в цей чат, відповість менеджер. Або @' + MANAGER + '.',
@@ -913,7 +974,7 @@ function onMessage(m) {
   });
   if (prop('TG_TOKEN')) tgAdmin(head.replace('Повідомлення від партнера', 'Партнер пише в бот') + '\n\n' + (text ? h(text) : (m.caption ? h(m.caption) + '\n' : '') +
     '📎 <i>надіслав ' + (m.photo ? 'фото' : m.document ? 'файл' : m.voice ? 'голосове' : 'вкладення') + ' — його видно лише в боті партнерів; попросіть описати текстом</i>') + note);
-  return send(chat, '✅ Передали менеджеру. Відповідь прийде сюди.');
+  return send(chat, '✅ Передали менеджеру. Відповідь прийде сюди.', p ? DROP_KB : GUEST_KB);
 }
 function onAdmin(m, chat, text) {
   var rt = m.reply_to_message, src = rt ? String(rt.text || rt.caption || '') : '';

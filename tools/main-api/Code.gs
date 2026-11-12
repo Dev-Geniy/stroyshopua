@@ -509,7 +509,7 @@ function clientUpdate_(u) {
     if (!id || s !== sig_(id)) return send_(tok, chat, 'Посилання не спрацювало. Натисніть «📦 Мої замовлення» й поділіться номером телефону — знайдемо ваші замовлення.', contactKb_());
     const o = linkClient_(id, chat);
     if (!o) return send_(tok, chat, 'Замовлення не знайдено.');
-    send_(tok, chat, `✅ <b>Ви стежите за замовленням №${h_(o.id)}</b>\nСюди прийдуть підтвердження, ТТН і статус доставки.\n\n${clientLine_(o)}`, menuKb_());
+    send_(tok, chat, `✅ <b>Ви стежите за замовленням №${h_(o.id)}</b>\nСюди прийдуть підтвердження, ТТН і статус доставки.\n\n${clientLine_(o)}\n\n⌨️ Меню внизу: каталог, ваші замовлення, доставка, як клеїти, обмін і зв’язок з менеджером.`, CLIENT_KB);
     return;
   }
   if (m.contact) {
@@ -517,15 +517,17 @@ function clientUpdate_(u) {
     const dg = String(m.contact.phone_number).replace(/\D/g, '').slice(-9);
     const L = allRows_().filter(x => kind_(x.o.type) === 'order' && x.o.phone.replace(/\D/g, '').slice(-9) === dg).slice(-10);
     L.forEach(x => linkClient_(x.o.id, chat));
-    send_(tok, chat, L.length ? `📱 Номер підтверджено. Знайшли замовлень: <b>${L.length}</b>. Статуси й ТТН тепер приходитимуть сюди.` : '📱 Номер підтверджено, але замовлень з ним поки немає. Коли оформите — натисніть на сайті «Отримувати статус у Telegram».', { remove_keyboard: true });
+    send_(tok, chat, L.length ? `📱 Номер підтверджено. Знайшли замовлень: <b>${L.length}</b>. Статуси й ТТН тепер приходитимуть сюди.` : '📱 Номер підтверджено, але замовлень з ним поки немає. Коли оформите — натисніть на сайті «Отримувати статус у Telegram».', CLIENT_KB);
     if (L.length) clientOrders_(chat);
     return;
   }
-  if (cmd[1] === 'start') return send_(tok, chat, `👋 <b>Вітаємо в Samostroy Shop!</b>\nСамоклеючі 3D панелі, PET і вінілова плитка, плівка, шпалери й підлога — ремонт своїми руками без майстрів і бруду.\n\n• 🛍 Каталог з цінами — прямо тут\n• 📦 Статус замовлення й ТТН\n• 💬 Питання — просто напишіть повідомлення, відповість менеджер`, menuKb_());
+  if (cmd[1] === 'start') return send_(tok, chat, `👋 <b>Вітаємо в Samostroy Shop!</b>\nСамоклеючі 3D панелі, PET і вінілова плитка, плівка, шпалери й підлога — ремонт своїми руками без майстрів і бруду.\n\n• 🛍 Каталог з цінами — прямо тут\n• 📦 Статус замовлення й ТТН\n• 💬 Питання — просто напишіть повідомлення, відповість менеджер\n\n⌨️ Усе потрібне — у меню внизу екрана.`, CLIENT_KB);
   if (cmd[1] === 'orders' || text === '📦 Мої замовлення') return clientOrders_(chat);
+  if (cmd[1] === 'menu') return send_(tok, chat, '⌨️ Меню — внизу екрана.', CLIENT_KB);
+  if (CLIENT_ACT[text]) return CLIENT_ACT[text](tok, chat);
   if (cmd[1] === 'catalog') return send_(tok, chat, 'Каталог Samostroy Shop:', { inline_keyboard: [[{ text: '🛍 Відкрити каталог', web_app: { url: SITE } }]] });
   if (cmd[1] === 'help') return send_(tok, chat, '💬 Напишіть питання сюди — менеджер відповість у цей чат.\nТелефон: +380 98 492 79 48\nПн–Сб, 9:00–19:00');
-  if (cmd[1]) return send_(tok, chat, 'Оберіть дію:', menuKb_());
+  if (cmd[1]) return send_(tok, chat, 'Оберіть дію в меню внизу 👇', CLIENT_KB);
   // повідомлення клієнта — власнику в адмін-бот
   if (!adminTok_() || !adminChats_().length) return send_(tok, chat, 'Напишіть, будь ласка, менеджеру: @' + MANAGER, { inline_keyboard: [[{ text: 'Написати менеджеру', url: 'https://t.me/' + MANAGER }]] });
   const ids = allRows_().filter(x => clientChats_(x.raw[C['Telegram клієнта']]).indexOf(chat) >= 0).map(x => '№' + x.o.id).slice(-3);
@@ -533,12 +535,24 @@ function clientUpdate_(u) {
   const head = `💬 <b>Клієнт пише в бот</b>\n${who}${ids.length ? '\nЗамовлення: ' + ids.join(', ') : ''}\n#c${chat}`;
   const body = text ? h_(text) : (m.caption ? h_(m.caption) + '\n' : '') + '📎 <i>надіслав ' + (m.photo ? 'фото' : m.voice ? 'голосове' : m.document ? 'файл' : 'вкладення') + ' — його видно лише в клієнтському боті; попросіть описати текстом або продублювати в Viber</i>';
   toAdmins_(head + '\n\n' + body + '\n\n<i>Відповідайте (Reply) на це повідомлення — відповідь піде клієнту.</i>');
-  send_(tok, chat, '✅ Передали менеджеру. Відповідь прийде сюди — зазвичай протягом години в робочий час.');
+  send_(tok, chat, '✅ Передали менеджеру. Відповідь прийде сюди — зазвичай протягом години в робочий час.', CLIENT_KB);
 }
-function menuKb_() {
-  return { inline_keyboard: [[{ text: '🛍 Каталог', web_app: { url: SITE } }, { text: '📦 Мої замовлення', callback_data: 'my' }],
-    [{ text: '💬 Питання менеджеру', callback_data: 'help' }], [{ text: '⭐ Відгуки покупців', url: SITE + 'reviews.html' }]] };
-}
+/* меню клієнтського бота внизу екрана: по дві кнопки в рядку. «Каталог» відкриває сайт як Mini App одразу. */
+const CLIENT_KB = { keyboard: [[{ text: '🛍 Каталог', web_app: { url: SITE } }, { text: '📦 Мої замовлення' }], [{ text: '🚚 Доставка й оплата' }, { text: '🧰 Як клеїти' }],
+  [{ text: '🔁 Обмін і повернення' }, { text: '💬 Менеджер' }]], resize_keyboard: true, is_persistent: true, input_field_placeholder: 'Питання менеджеру — пишіть сюди' };
+const B_ = s => SITE + 'blog/' + s + '.html';
+const CLIENT_ACT = {
+  '🚚 Доставка й оплата': (tok, chat) => send_(tok, chat, '🚚 <b>Доставка й оплата</b>\n• Відправляємо Новою Поштою та Укрпоштою по всій Україні, зазвичай у день замовлення.\n• Оплата — при отриманні на відділенні (з оглядом посилки) або передоплатою на картку, як вам зручніше.\n• Номер ТТН і статус доставки приходять сюди, у цей чат.\n\nПеред оплатою огляньте посилку на відділенні: якщо упаковка пошкоджена — не забирайте й напишіть нам.',
+    { inline_keyboard: [[{ text: '📦 Як оглянути посилку', url: B_('yak-ohlyanuty-posylku-na-viddilenni') }], [{ text: '🛒 Як замовити', url: B_('yak-zamovyty-v-samostroy-shop') }]] }),
+  '🧰 Як клеїти': (tok, chat) => send_(tok, chat, '🧰 <b>Інструкції з монтажу</b>\nУсе клеїться своїми руками — без майстрів і бруду. Оберіть інструкцію.\n\n📷 Сумніваєтеся? Надішліть сюди фото стіни й розміри — менеджер порадить матеріал і порахує кількість.',
+    { inline_keyboard: [[{ text: '3D панелі', url: B_('yak-pokleyity-3d-paneli') }, { text: 'Вінілова плитка', url: B_('yak-pokladty-vinilovu-plytku') }],
+      [{ text: 'Плівка на фасади', url: B_('obkleyity-kukhonni-fasady') }, { text: 'Пухирі під плівкою', url: B_('puzyri-pid-plivkoyu') }],
+      [{ text: 'Підготовка стіни', url: B_('pidhotovka-poverkhni-pered-pokleykoyu') }, { text: 'Скільки потрібно', url: B_('yak-rozrakhuvaty-material') }]] }),
+  '🔁 Обмін і повернення': (tok, chat) => send_(tok, chat, '🔁 <b>Обмін і повернення</b>\n• Протягом 14 днів з дня отримання — якщо товар у цілій заводській упаковці й не використовувався. Зворотну доставку оплачує покупець.\n• Брак або не та модель чи колір — замінимо за наш рахунок.\n• Панель зі знятою плівкою повернути не можна.\n\nЩоб оформити — напишіть сюди номер замовлення й що саме повертаєте, менеджер підкаже далі.',
+    { inline_keyboard: [[{ text: '📄 Усі умови', url: SITE + 'povernennya.html' }]] }),
+  '💬 Менеджер': (tok, chat) => send_(tok, chat, '💬 <b>Напишіть питання сюди</b> одним повідомленням — менеджер відповість у цей чат. Можна додати розміри чи номер замовлення.\n\n📞 +380 98 492 79 48 · Пн–Сб, 9:00–19:00',
+    { inline_keyboard: [[{ text: 'Написати менеджеру в Telegram', url: 'https://t.me/' + MANAGER }]] })
+};
 function contactKb_() { return { keyboard: [[{ text: '📱 Поділитися номером', request_contact: true }]], resize_keyboard: true, one_time_keyboard: true }; }
 function clientLine_(o) {
   const st = { 'Нове': '🕐 Прийнято, чекає підтвердження', 'Підтверджене': '✅ Підтверджено, готуємо до відправки', 'Відправлене': '🚚 Відправлено', 'Виконане': '🎉 Виконано', 'Скасоване': '✖️ Скасовано' }[o.status] || o.status;
@@ -783,7 +797,7 @@ function setupBots() {
       tgCall_(tok, 'setMyDescription', { description: 'Службовий бот власника Samostroy Shop. Вхід: /login пароль_адмінки.' });
     } else {
       tgCall_(tok, 'setChatMenuButton', { menu_button: { type: 'web_app', text: 'Каталог', web_app: { url: SITE } } });
-      tgCall_(tok, 'setMyCommands', { commands: [{ command: 'start', description: 'Головне меню' }, { command: 'orders', description: 'Мої замовлення' },
+      tgCall_(tok, 'setMyCommands', { commands: [{ command: 'start', description: 'Головне меню' }, { command: 'orders', description: 'Мої замовлення' }, { command: 'menu', description: 'Показати меню' },
         { command: 'catalog', description: 'Каталог товарів' }, { command: 'help', description: 'Зв’язок з менеджером' }] });
       tgCall_(tok, 'setMyShortDescription', { short_description: 'Samostroy Shop — самоклеючі панелі, плитка й плівка для ремонту своїми руками. Статус замовлення й ТТН тут.' });
       tgCall_(tok, 'setMyDescription', { description: 'Samostroy Shop — ремонт своїми руками без майстрів.\n\n🛍 Каталог з цінами прямо в Telegram\n📦 Статус замовлення й ТТН\n💬 Питання менеджеру — просто напишіть\n\nНатисніть «Почати».' });
