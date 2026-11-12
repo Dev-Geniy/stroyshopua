@@ -149,7 +149,7 @@ async function vVit(){const P=$i('kbP');P.innerHTML=`<div id="kbVs"><div class="
  if(!VCFG.api||VCFG.on===false){el.innerHTML=`<div class="kb-card">Вітрини тимчасово недоступні.</div>`;return}
  VSTATS.mount(el,{api:VCFG.api,token,edit:'v/edit.html',orders:'#orders',acc:getComputedStyle(document.documentElement).getPropertyValue('--orange').trim()||'#e8590c',
   empty:`${vitPromo()}`})}
-const VV='9f2175ec';
+const VV='8080ba88';
 /* ---------- допомога (база знань kb.js) — доступна й без входу ---------- */
 function vHelp(open){const P=$i('kbP')||app;P.innerHTML=`<div class="kb-card"><h3 style="margin-bottom:4px">Питання й відповіді</h3><p class="kb-small" style="margin:0 0 14px">Вхід і пароль, замовлення, ТТН, заробіток і виплати, Telegram-бот.</p><div id="kbHelp"></div></div>`;
  if(window.KB)KB.mount($i('kbHelp'),{aud:'p',open:open||helpId(),toast:note});else $i('kbHelp').textContent='Завантаження…'}

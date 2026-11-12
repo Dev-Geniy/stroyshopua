@@ -80,7 +80,7 @@ async function boot() {
   const [r] = await Promise.all([fetch(API + '?a=get&s=' + encodeURIComponent(SLUG)).then(x => x.json()).catch(() => null), loadCat()]);
   if (!r) return off('Немає зв’язку', 'Перевірте інтернет і оновіть сторінку.', 1);
   if (!r.ok) return off('Вітрину не знайдено', 'Можливо, адресу змінено. Перевірте посилання.');
-  if (r.off) return off('Вітрина тимчасово недоступна', 'Продавець призупинив роботу вітрини.');
+  if (r.off) return r.pending ? off('Вітрина скоро відкриється', 'Магазин проходить перевірку. Загляньте трохи пізніше.') : off('Вітрина тимчасово недоступна', 'Продавець призупинив роботу вітрини.');
   S = r.store; apply(); trackInit();
 }
 async function loadCat() {

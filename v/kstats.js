@@ -23,6 +23,9 @@ function style() {
 .vs-top b{font-size:18px}.vs-top a.vs-l{color:inherit;font-size:13.5px;word-break:break-all}
 .vs-chip{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px;background:var(--vs-bg);border:1px solid var(--vs-line);margin-left:6px;vertical-align:2px}
 .vs-chip.ok{color:#1f7a3f;border-color:color-mix(in srgb,#1f7a3f 40%,transparent)}.vs-chip.wait{color:#b45309;border-color:color-mix(in srgb,#b45309 40%,transparent)}
+.vs-sw{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.vs-sw button{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--vs-line);background:none;color:inherit;border-radius:999px;padding:7px 14px;cursor:pointer;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vs-sw button[aria-pressed=true]{background:var(--vs-acc);border-color:var(--vs-acc);color:#fff}
 .vs-per{display:inline-flex;border:1px solid var(--vs-line);border-radius:999px;padding:3px;gap:2px}
 .vs-per button{font:inherit;font-size:13px;font-weight:600;border:0;background:none;color:inherit;border-radius:999px;padding:6px 12px;cursor:pointer}
 .vs-per button[aria-pressed=true]{background:var(--vs-acc);color:#fff}
@@ -120,9 +123,11 @@ function view(R, per, o) {
   const conv = P(t.n, t.vis), convP = P(tp.n, tp.vis), avg = t.n ? t.s / t.n : 0;
   const has = Object.keys(D).length > 0;
   const per3 = [[7, '7 днів'], [30, '30 днів'], [90, '90 днів']];
-  const top = `<div class="vs-card vs-top"><div><b>${E(st.name || 'Моя вітрина')}</b><span class="vs-chip ${st.status === 'Опублікована' ? 'ok' : st.status === 'Вимкнена' ? '' : 'wait'}">${E(st.status)}</span><br><a class="vs-l" href="https://${link}" target="_blank" rel="noopener">${E(link)}</a></div>
+  // кілька вітрин: перемикач над статистикою (у редакторі — лише поточна)
+  const sw = R.stores && R.stores.length > 1 && !o.sidFixed ? `<div class="vs-sw" role="group" aria-label="Вітрина">${R.stores.map(x => `<button type="button" data-sid="${E(x.sid)}" aria-pressed="${x.sid === st.sid}">${E(x.name)}</button>`).join('')}</div>` : '';
+  const top = sw + `<div class="vs-card vs-top"><div><b>${E(st.name || 'Моя вітрина')}</b><span class="vs-chip ${st.status === 'Опублікована' ? 'ok' : st.status === 'Вимкнена' ? '' : 'wait'}">${E(st.status)}</span><br><a class="vs-l" href="https://${link}" target="_blank" rel="noopener">${E(link)}</a></div>
    <div class="vs-act"><div class="vs-per" role="group" aria-label="Період">${per3.map(([d, l]) => `<button type="button" data-per="${d}" aria-pressed="${d === per}">${l}</button>`).join('')}</div>
-   <a class="vs-btn" href="${E(o.edit || 'v/edit.html')}">✏️ Редагувати</a><button type="button" class="vs-btn" data-rf title="Оновити">↻</button></div></div>`;
+   <a class="vs-btn" href="${E((o.edit || 'v/edit.html') + (st.sid && !o.sidFixed && R.stores ? '?s=' + encodeURIComponent(st.sid) : ''))}">✏️ Редагувати</a><button type="button" class="vs-btn" data-rf title="Оновити">↻</button></div></div>`;
   if (!has) return top + `<div class="vs-card vs-empty"><b>Статистика з’явиться після перших відвідувачів</b><p class="vs-s">Поділіться посиланням на вітрину — тут ви побачите відвідувачів, джерела, воронку й найпопулярніші товари.</p>${srcLinks(link)}</div>`;
   const kpi = [['Відвідувачі', N(t.vis), `${t.u ? N(t.v) + ' переглядів · ' : ''}${delta(t.vis, tp.vis)}`],
     ['Замовлення', N(t.n), delta(t.n, tp.n)],
@@ -173,14 +178,15 @@ function mount(el, o) {
   };
   const load = async () => {
     if (!R) el.innerHTML = '<div class="vs-load">Завантажуємо статистику…</div>';
-    try { R = await (await fetch(o.api, { method: 'POST', body: JSON.stringify({ action: 'v_stats', token: o.token }) })).json(); }
+    try { R = await (await fetch(o.api, { method: 'POST', body: JSON.stringify({ action: 'v_stats', token: o.token, sid: o.sid || '' }) })).json(); }
     catch (e) { R = { ok: false, error: 'net' }; }
     if (!R.ok) { const m = R.error === 'action' ? 'Статистика ще не ввімкнена: оновіть скрипт вітрин (інструкція — tools/vitryna-api/ЯК-ЗАПУСТИТИ.md).' : R.error === 'auth' ? 'Увійдіть у кабінет ще раз.' : 'Не вдалося завантажити статистику. Спробуйте пізніше.'; el.innerHTML = `<div class="vs-card vs-empty"><p class="vs-s">${m}</p><button type="button" class="vs-btn" data-rf>Спробувати ще раз</button></div>`; R = null; bind(); return; }
     draw();
   };
   function bind() {
     el.onclick = async e => {
-      const b = e.target.closest('[data-per],[data-rf],[data-copy]'); if (!b) return;
+      const b = e.target.closest('[data-per],[data-rf],[data-copy],[data-sid]'); if (!b) return;
+      if (b.dataset.sid) { o.sid = b.dataset.sid; return load(); }
       if (b.dataset.per) { per = +b.dataset.per; return draw(); }
       if (b.dataset.rf !== undefined) return load();
       if (b.dataset.copy) { try { await navigator.clipboard.writeText(b.dataset.copy); } catch (x) { const t = document.createElement('textarea'); t.value = b.dataset.copy; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); } const l = b.textContent; b.textContent = '✓ Скопійовано'; setTimeout(() => b.textContent = l, 1400); }

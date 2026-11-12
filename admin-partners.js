@@ -149,7 +149,8 @@ function openP(id){const p=pById(id);if(!p)return;cp={...p};co=null;const s=pSta
   <dt>ФОП</dt><dd>${esc(a.fop||'—')}</dd><dt>Час на день</dt><dd>${esc(a.time||'—')}</dd>${a.other?`<dt>Інше</dt><dd>${esc(a.other)}</dd>`:''}${a.note?`<dt>Коментар</dt><dd>${esc(a.note)}</dd>`:''}</dl><p class="note" style="margin-top:6px">Заповнена ${fdt(t(p.anketaAt))}</p>`:'<p class="note">Партнер ще не заповнював анкету.</p>'}</div>
  <div class="sec"><h3>Можливості <small class="note">— за замовчуванням вимкнені</small></h3>
   <label class="pa-r"><input type="checkbox" id="pa-f-own"${p.feat&&p.feat.own?' checked':''}> 🧩 <b>Власні товари</b> — партнер може додавати товари, яких немає в каталозі. Кожен з’являється у вкладці «Власні товари» на перевірку; на вітрину — лише після вашого схвалення.</label>
-  ${S.own.some(x=>x.partnerId==p.id)?`<p class="note" style="margin-top:6px">Його власних товарів: ${S.own.filter(x=>x.partnerId==p.id).length} (на перевірці ${S.own.filter(x=>x.partnerId==p.id&&x.status=='На модерації').length}).</p>`:''}</div>
+  <label class="pa-r"><input type="checkbox" id="pa-f-multi"${p.feat&&p.feat.multi?' checked':''}> 🏪 <b>Кілька вітрин</b> — партнер може створювати додаткові вітрини (до 10). Кожна нова — на перевірку в «Вітрини»; покупці бачать її лише після схвалення.</label>
+    ${S.own.some(x=>x.partnerId==p.id)?`<p class="note" style="margin-top:6px">Його власних товарів: ${S.own.filter(x=>x.partnerId==p.id).length} (на перевірці ${S.own.filter(x=>x.partnerId==p.id&&x.status=='На модерації').length}).</p>`:''}</div>
  ${refSec(p)}
  <div class="sec"><h3>Нотатка менеджера <small class="note">— партнер не бачить</small></h3><textarea id="pa-note">${esc(p.note||'')}</textarea></div>
  <div class="sec"><h3>Telegram</h3><p class="note">${p.tg?`Підключено${p.tgName?': <b>'+esc(p.tgName)+'</b>':''} — партнер отримує статуси, ТТН і виплати в боті${S.bot?' @'+esc(S.bot):''}.`:'Не підключено. Партнер може відкрити бота партнерів і увійти, або натиснути «Підключити Telegram» у профілі на сайті.'}</p></div>
@@ -163,7 +164,7 @@ function refSec(p){const inv=S.partners.filter(x=>x.ref==p.id),R=S.refs.filter(x
   <p class="note" style="margin-top:6px">Бонус запрошувачу — ${S.cfg?S.cfg.first:20}% від заробітку запрошеного перші ${S.cfg?S.cfg.months:6} міс., далі ${S.cfg?S.cfg.then:10}%. Нараховується сам, коли замовлення «Отримане»; виплачується разом із заробітком. Змінити запрошувача — впишіть ID і «Зберегти».</p></div>`}
 async function saveP(b,extra){if(!cp)return;b&&b.classList.add('busy');
  const rf=$('#pa-ref')?$('#pa-ref').value.trim().toUpperCase():undefined;
- const r=await call({action:'a_partner',id:cp.id,level:cp.level||'Starter',note:$('#pa-note')?$('#pa-note').value:cp.note,...(rf!==undefined&&rf!==(cp.ref||'')?{ref:rf}:{}),...($('#pa-f-own')?{feat:{own:$('#pa-f-own').checked?1:0}}:{}),...(extra||{})});
+ const r=await call({action:'a_partner',id:cp.id,level:cp.level||'Starter',note:$('#pa-note')?$('#pa-note').value:cp.note,...(rf!==undefined&&rf!==(cp.ref||'')?{ref:rf}:{}),...($('#pa-f-own')?{feat:{own:$('#pa-f-own').checked?1:0,multi:$('#pa-f-multi')&&$('#pa-f-multi').checked?1:0}}:{}),...(extra||{})});
  b&&b.classList.remove('busy');if(!r.ok){toast(errT(r.error));return false}
  const i=S.partners.findIndex(x=>x.id==cp.id);if(i>=0)S.partners[i]=r.partner;cp={...r.partner};return true}
 

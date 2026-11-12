@@ -16,7 +16,7 @@ var SITE = 'https://samostroy.shop/';
 var PARTNER_API = 'https://script.google.com/macros/s/AKfycbxEYmnhjGKGAZz-3RwFFQTR7XItSeFp8xPlrVQfFtrh-6L0reedHd-C21a0_HZ227mI/exec';
 var SC = [['slug', 'Адреса'], ['partnerId', 'ID партнера'], ['partner', 'Партнер'], ['phone', 'Телефон партнера'], ['status', 'Статус'],
   ['created', 'Створено'], ['updated', 'Оновлено'], ['approvedAt', 'Схвалено'], ['views', 'Перегляди'], ['orders', 'Замовлення'],
-  ['note', 'Нотатка'], ['config', 'Налаштування (дані)']];
+  ['note', 'Нотатка'], ['config', 'Налаштування (дані)'], ['sid', 'ID вітрини'], ['extra', 'Додаткова']];
 var RC = [['at', 'Дата'], ['slug', 'Вітрина'], ['text', 'Скарга'], ['contact', 'Контакт']];
 var TC = [['slug', 'Вітрина'], ['updated', 'Оновлено'], ['data', 'Статистика (дані)']];
 var SH_S = 'Вітрини', SH_R = 'Скарги', SH_T = 'Статистика';
@@ -80,7 +80,20 @@ function num(v) { var n = Number(String(v).replace(',', '.')); return isFinite(n
 function json(v, d) { try { return v ? JSON.parse(v) : d; } catch (x) { return d; } }
 function h(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function findSlug(list, slug) { for (var i = 0; i < list.length; i++) if (list[i].slug === slug) return list[i]; return null; }
-function findPartner(list, pid) { for (var i = 0; i < list.length; i++) if (list[i].partnerId === pid) return list[i]; return null; }
+function findPartner(list, pid) { var L = mineOf(list, pid); return L[0] || null; }
+// усі вітрини партнера: перша (основна) — найстаріша. Кілька вітрин — можливість, яку вмикає адміністратор (feat.multi)
+function mineOf(list, pid) { return list.filter(function (x) { return x.partnerId === pid; }).sort(function (a, b) { return String(a.created).localeCompare(String(b.created)); }); }
+function nextSid(list) { var n = 1000; list.forEach(function (x) { var m = /^S(\d+)$/.exec(x.sid || ''); if (m) n = Math.max(n, +m[1]); }); return 'S' + (n + 1); }
+// старим рядкам без ID вітрини — присвоїти (лише всередині withLock)
+function ensureSids(list, pid) { mineOf(list, pid).forEach(function (x) { if (!x.sid) { x.sid = nextSid(list); write(SH_S, SC, x); } }); }
+function findStore(list, pid, sid) {
+  var L = mineOf(list, pid);
+  if (!sid) return L[0] || null;
+  for (var i = 0; i < L.length; i++) if (L[i].sid === sid) return L[i];
+  return null;
+}
+var MULTI_MAX = 10;
+function storeBrief(x) { var c = json(x.config, {}); return { sid: x.sid, slug: x.slug, name: c.name || x.slug, status: x.status, approved: !!x.approvedAt, extra: x.extra === '1' }; }
 function tooMany(key, max, sec) { var c = cache(), n = Number(c.get(key) || 0); if (n >= max) return true; c.put(key, String(n + 1), sec); return false; }
 
 /* ---------------- зв’язок з кабінетом партнерів ---------------- */
@@ -181,7 +194,7 @@ function cleanCfg(c, me) {
 }
 function pubStore(s, full) {
   var c = json(s.config, {});
-  var o = { slug: s.slug, status: s.status, approved: !!s.approvedAt, updated: s.updated, cfg: c, partner: { id: s.partnerId, name: s.partner } };
+  var o = { slug: s.slug, sid: s.sid, extra: s.extra === '1', status: s.status, approved: !!s.approvedAt, updated: s.updated, cfg: c, partner: { id: s.partnerId, name: s.partner } };
   if (full) { o.views = Number(s.views || 0); o.orders = Number(s.orders || 0); o.note = s.note; o.approvedAt = s.approvedAt; o.created = s.created; o.phone = s.phone; }
   return o;
 }
@@ -193,6 +206,7 @@ function getStore(slug, preview) {
   if (c) s = JSON.parse(c);
   else { s = findSlug(readAll(SH_S, SC), slug); if (!s) fail('notfound'); delete s._r; cache().put(key, JSON.stringify(s), 300); }
   if (s.status === 'Вимкнена') return { ok: true, off: true };
+  if (s.extra === '1' && !s.approvedAt && !preview) return { ok: true, off: true, pending: true };   // додаткова вітрина — лише після схвалення
   if (!preview) countView(slug);
   var o = pubStore(s), ids = (o.cfg.items || []).filter(function (id) { return /^X\d+$/.test(id); });
   if (ids.length) { var m = ownOf(s.partnerId); o.own = ids.map(function (id) { return m[id]; }).filter(Boolean).map(ownPublic); }
@@ -281,7 +295,7 @@ ACTIONS.v_order = function (b) {
   if (!str(o.branch)) fail('branch');
   if (tooMany('vo:' + digits.slice(-9), 5, 600) || tooMany('vo_all', 120, 600)) fail('rate');
   var s = findSlug(readAll(SH_S, SC), slug);
-  if (!s || s.status === 'Вимкнена') fail('off');
+  if (!s || s.status === 'Вимкнена' || (s.extra === '1' && !s.approvedAt)) fail('off');
   var cfg = json(s.config, {}), cat = catalog(), bad = [];
   var own = null;
   var items = (o.items || []).slice(0, 40).map(function (x) {
@@ -331,32 +345,35 @@ ACTIONS.v_stats = function (b) {
   var t = str(b.token, 80); if (!t) fail('auth');
   var r = papi({ action: 'p_me', token: t });
   if (!r) fail('net'); if (!r.ok) fail(r.error || 'auth');
-  var s = findPartner(readAll(SH_S, SC), r.me.id);
+  var all = readAll(SH_S, SC), mine = mineOf(all, r.me.id), s = findStore(all, r.me.id, str(b.sid, 20)) || mine[0];
   if (!s) return { ok: true, store: null };
   flushViews(s.slug, day()); flushViews(s.slug, day(-1));
   var data = statRow(s.slug).data, D = data.d || {}, names = {}, cat = {};
   try { cat = catalog(); } catch (x) { }
   Object.keys(D).forEach(function (k) { Object.keys(D[k].p || {}).forEach(function (id) { if (!names[id]) names[id] = cat[id] ? cat[id][2] : ''; }); });
-  var orders = (r.orders || []).filter(function (o) { return o.via === 'Вітрина'; }).map(function (o) {
+  var orders = (r.orders || []).filter(function (o) { return o.via === 'Вітрина' && (mine.length < 2 || String(o.source || '').indexOf('Вітрина ' + s.slug + ' ') === 0); }).map(function (o) {
     return { id: o.id, created: o.created, status: o.status, sale: o.sale, earn: o.earnNow != null ? o.earnNow : (o.earnFinal != null ? o.earnFinal : o.earn), n: (o.items || []).length };
   });
-  return { ok: true, today: day(), store: { slug: s.slug, name: json(s.config, {}).name || '', status: s.status, approved: !!s.approvedAt, created: s.created, views: Number(s.views || 0), orders: Number(s.orders || 0) },
+  return { ok: true, today: day(), stores: mine.length > 1 ? mine.map(storeBrief) : undefined, store: { sid: s.sid, slug: s.slug, name: json(s.config, {}).name || '', status: s.status, approved: !!s.approvedAt, created: s.created, views: Number(s.views || 0), orders: Number(s.orders || 0) },
     days: D, names: names, list: orders };
 };
 
 /* ---------------- партнер: редактор вітрини ---------------- */
 ACTIONS.v_mine = function (b) {
-  var me = partnerMe(b.token), s = findPartner(readAll(SH_S, SC), me.id);
+  var me = partnerMe(b.token), list = readAll(SH_S, SC);
+  if (mineOf(list, me.id).some(function (x) { return !x.sid; })) withLock(function () { list = readAll(SH_S, SC); ensureSids(list, me.id); });
+  var s = findStore(list, me.id, str(b.sid, 20)), mine = mineOf(list, me.id);
   var feat = me.feat || {}, own = [];
   if (feat.own) { var r = papi({ action: 'p_own', token: str(b.token, 80) }); own = r && r.ok ? (r.items || []).map(function (x) { var o = ownPublic(x); o.status = x.status; o.ship = x.ship; o.cost = x.cost; return o; }) : []; }
-  return { ok: true, me: { id: me.id, name: me.name, level: me.level, margin: me.margin, favs: me.favs || [], tg: me.tg, feat: feat }, store: s ? pubStore(s, true) : null, own: own };
+  return { ok: true, me: { id: me.id, name: me.name, level: me.level, margin: me.margin, favs: me.favs || [], tg: me.tg, feat: feat }, store: s ? pubStore(s, true) : null, own: own,
+    stores: mine.map(storeBrief), multiMax: MULTI_MAX };
 };
 ACTIONS.v_slug = function (b) {
-  var me = partnerMe(b.token), slug = str(b.slug, 40).toLowerCase();
+  var me = partnerMe(b.token), slug = str(b.slug, 40).toLowerCase(), sid = str(b.sid, 20);
   var err = slugErr(slug);
   if (err) return { ok: true, free: false, why: err };
-  var s = findSlug(readAll(SH_S, SC), slug);
-  return { ok: true, free: !s || s.partnerId === me.id, why: s && s.partnerId !== me.id ? 'Ця адреса вже зайнята' : '' };
+  var s = findSlug(readAll(SH_S, SC), slug), mineSame = s && s.partnerId === me.id && (!s.sid || !sid || s.sid === sid) && !(b['new'] && s);
+  return { ok: true, free: !s || mineSame, why: s && !mineSame ? (s.partnerId === me.id ? 'Цю адресу має інша ваша вітрина' : 'Ця адреса вже зайнята') : '' };
 };
 function slugErr(slug) {
   if (!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(slug)) return 'Від 3 до 30 символів: латинські літери, цифри й дефіс';
@@ -375,20 +392,26 @@ ACTIONS.v_save = function (b) {
   }
   if (!cfg.items.length) fail('noitems');
   return withLock(function () {
-    var list = readAll(SH_S, SC), s = findPartner(list, me.id), first = !s;
+    var list = readAll(SH_S, SC); ensureSids(list, me.id);
+    var mine = mineOf(list, me.id), isNew = !!b['new'] || !mine.length, s = isNew ? null : findStore(list, me.id, str(b.sid, 20)), first = !s;
+    if (!isNew && !s) fail('notfound');
+    if (isNew && mine.length) {                                   // друга й наступні вітрини — лише з дозволу адміністратора
+      if (!(me.feat && me.feat.multi)) fail('multi');
+      if (mine.length >= MULTI_MAX) fail('limit');
+    }
     if (s && s.approvedAt && slug && slug !== s.slug) fail('slocked');
     if (!s || !s.approvedAt) {
       var e = slugErr(slug); if (e) fail('slug', e);
-      var other = findSlug(list, slug); if (other && other.partnerId !== me.id) fail('taken');
+      var other = findSlug(list, slug); if (other && other !== s && (!s || other._r !== s._r)) fail('taken');
     }
-    if (!s) s = { slug: slug, partnerId: me.id, created: now(), status: 'На модерації', views: '0', orders: '0', note: '', approvedAt: '' };
+    if (!s) s = { slug: slug, partnerId: me.id, created: now(), status: 'На модерації', views: '0', orders: '0', note: '', approvedAt: '', sid: nextSid(list), extra: mine.length ? '1' : '' };
     else if (!s.approvedAt) s.slug = slug;
     s.partner = me.name; s.phone = me.phone; s.updated = now(); s.config = JSON.stringify(cfg);
     write(SH_S, SC, s);
     cache().remove('st:' + s.slug);
-    if (first) tgAdmin('🏪 <b>Нова вітрина на модерації</b>\n' + h(cfg.name) + ' · samostroy.shop/v/?' + h(s.slug) + '\nПартнер: ' + h(me.name) + ' (' + h(me.id) + ')\nТоварів: ' + cfg.items.length + ', націнка ' + cfg.markup + '%',
+    if (first) tgAdmin('🏪 <b>Нова вітрина на модерації</b>' + (s.extra === '1' ? ' · <b>додаткова (№' + (mine.length + 1) + ' у партнера) — покупці не бачать до схвалення</b>' : '') + '\n' + h(cfg.name) + ' · samostroy.shop/v/?' + h(s.slug) + '\nПартнер: ' + h(me.name) + ' (' + h(me.id) + ')\nТоварів: ' + cfg.items.length + ', націнка ' + cfg.markup + '%',
       SITE + 'v/admin.html#' + encodeURIComponent(s.slug));
-    return { ok: true, store: pubStore(s, true), first: first };
+    return { ok: true, store: pubStore(s, true), first: first, stores: mineOf(readAll(SH_S, SC), me.id).map(storeBrief) };
   });
 };
 

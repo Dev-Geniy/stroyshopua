@@ -576,11 +576,13 @@ ACTIONS.a_partner = function (b) {
       if (b.status !== undefined) { if (['Активний', 'Заблокований'].indexOf(b.status) < 0) fail('status'); p.status = b.status; if (b.status === 'Заблокований') p.tokens = '[]'; }
       if (b.note !== undefined) p.note = str(b.note, 1000);
       if (b.feat && typeof b.feat === 'object') {                                     // можливості, які вмикає адміністратор
-        var F = json(p.feat, {}), was = !!F.own;
+        var F = json(p.feat, {}), was = !!F.own, wasM = !!F.multi;
         ['own', 'multi'].forEach(function (k) { if (b.feat[k] !== undefined) { if (b.feat[k]) F[k] = 1; else delete F[k]; } });
         p.feat = Object.keys(F).length ? JSON.stringify(F) : '';
         if (F.own && !was) toPartner(p, '🧩 <b>Вам відкрито «Власні товари»</b>\nТепер у кабінеті → «Мої товари» можна додавати товари, яких немає в каталозі: фото з телефона, назва, ціна й опис. Після схвалення менеджером їх можна додати на вітрину.',
           { inline_keyboard: [[{ text: '🧩 Додати товар', url: SITE + 'kabinet.html#mine' }]] });
+        if (F.multi && !wasM) toPartner(p, '🏪 <b>Вам відкрито кілька вітрин</b>\nМожна створити окремі магазини під різні аудиторії чи товари — у редакторі вітрини з’явилась кнопка «+ Нова вітрина». Кожну нову вітрину перевіряє менеджер; покупці побачать її після схвалення.',
+          { inline_keyboard: [[{ text: '🏪 Нова вітрина', url: SITE + 'v/edit.html?new=1' }]] });
       }
       if (b.ref !== undefined && str(b.ref, 20).toUpperCase() !== (p.ref || '')) {       // змінити запрошувача може лише адміністратор
         var nr = str(b.ref, 20).toUpperCase();

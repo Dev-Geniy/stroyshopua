@@ -17,6 +17,10 @@ const from = new URLSearchParams(location.search).get('from') || sessionStorage.
 if (from) sessionStorage.setItem('v_from', from);
 if (from === 'app') { $('#back').href = '../app/#profile'; $('#back').textContent = '‹ Telegram-кабінет'; }
 
+// кілька вітрин (можливість feat.multi): ?s=S1002 — яку редагуємо, ?new=1 — нова вітрина
+const QS = new URLSearchParams(location.search);
+let SID = QS.get('s') || '', NEW = QS.get('new') === '1', STORES = [], MAXS = 10;
+const DK = () => 'vdraft:' + me.id + (NEW ? ':new' : store && STORES.length > 1 && STORES[0].sid !== store.sid ? ':' + store.sid : '');
 let OWN = [], OWNP = [], token = '', me = null, store = null, cfg = null, CAT = [], byId = new Map(), cats = {}, dirty = false, slugOk = true, frame = null, frameReady = false;
 const blank = () => ({ name: '', slogan: '', logo: '', cover: '', theme: 'classic', accent: '#f08a1c', font: 'golos', radius: 'round', hero: 'cover', grid: 'normal', bar: '', perks: [], featTitle: '', preset: '', hideOut: true, markup: 0, round: '9', items: [], over: {}, feat: [],
   about: '', delivery: '', payment: '', fop: '', contacts: { phone: '', tg: '', viber: '', ig: '', tt: '', fb: '', hours: '' } });
@@ -27,7 +31,7 @@ function center(h, p, btn) { $('#main').innerHTML = `<div class="center"><div><h
 async function api(b) {
   try { const r = await fetch(API, { method: 'POST', body: JSON.stringify(b) }); return await r.json(); } catch (e) { return { ok: false, error: 'net' }; }
 }
-const ERR = { auth: 'Сесія кабінету завершилась — увійдіть ще раз.', net: 'Немає зв’язку. Спробуйте ще раз.', noitems: 'Додайте хоча б один товар.', taken: 'Ця адреса вже зайнята — оберіть іншу.',
+const ERR = { multi: 'Кілька вітрин вмикає менеджер — напишіть йому.', limit: 'Досягнуто ліміту вітрин.', notfound: 'Вітрину не знайдено — оновіть сторінку.', auth: 'Сесія кабінету завершилась — увійдіть ще раз.', net: 'Немає зв’язку. Спробуйте ще раз.', noitems: 'Додайте хоча б один товар.', taken: 'Ця адреса вже зайнята — оберіть іншу.',
   slug: 'Адреса: від 3 до 30 символів — латинські літери, цифри й дефіс.', slocked: 'Після схвалення адресу змінити не можна.', blocked: 'Кабінет призупинено.', server: 'Помилка сервера. Спробуйте ще раз.' };
 
 /* ---------- старт ---------- */
@@ -35,22 +39,27 @@ async function boot() {
   if (!API) return center('Вітрини ще налаштовуються', 'Скоро тут можна буде створити власну вітрину товарів. Слідкуйте за новинами в кабінеті.', '<a class="btn" href="../kabinet.html">До кабінету</a>');
   token = LS.get('pk_token', '');
   if (!token) return center('Увійдіть у кабінет партнера', 'Вітрину створює й налаштовує партнер зі свого кабінету.', '<a class="btn" href="../kabinet.html">Увійти в кабінет</a>');
-  const [r] = await Promise.all([api({ action: 'v_mine', token }), loadCat()]);
+  const [r] = await Promise.all([api({ action: 'v_mine', token, sid: SID }), loadCat()]);
   if (!r.ok) {
     if (r.error === 'auth') return center('Увійдіть у кабінет ще раз', 'Сесія завершилась.', '<a class="btn" href="../kabinet.html">Увійти</a>');
     return center('Не вдалося завантажити', ERR[r.error] || 'Спробуйте оновити сторінку.', '<button class="btn" onclick="location.reload()">Оновити</button>');
   }
-  me = r.me; store = r.store;
+  me = r.me; STORES = r.stores || []; MAXS = r.multiMax || 10;
+  const multi = !!(me.feat && me.feat.multi);
+  if (NEW && STORES.length && !multi) NEW = false;                  // без дозволу — лише одна вітрина
+  if (NEW && STORES.length >= MAXS) { NEW = false; toast('Досягнуто ліміту вітрин'); }
+  store = NEW ? null : r.store;
+  if (SID && !NEW && store && store.sid !== SID) SID = store.sid;
   // власні товари партнера: схвалені — у загальний список як товари; на модерації/відхилені — лише показуємо статус
   OWN = (me.feat && me.feat.own && r.own) || [];
   OWNP = OWN.filter(x => x.status === 'Схвалено').map(x => ({ id: String(x.id), name: x.name, sku: x.sku || '', price: +x.price, av: x.av ? 1 : 0, img: (x.photos || [])[0] || '', cat: '__own', own: 1, ship: x.ship, cost: +x.cost || 0, key: (x.name + ' ' + (x.sku || '')).toLowerCase() }));
   OWNP.forEach(p => byId.set(p.id, p));
-  const draft = LS.get('vdraft:' + me.id, null);
+  const draft = LS.get(DK(), null);
   cfg = Object.assign(blank(), store ? store.cfg : {}, draft && draft.cfg && (!store || draft.at > Date.parse(store.updated || 0)) ? draft.cfg : {});
   cfg.contacts = Object.assign(blank().contacts, cfg.contacts || {});
-  slug = store ? store.slug : (draft && draft.slug) || suggest(me.name);
+  slug = store ? store.slug : (draft && draft.slug) || (NEW ? '' : suggest(me.name));
   if (!cfg.name) cfg.name = me.name;
-  if (!store && !cfg.items.length && me.favs && me.favs.length) cfg.items = me.favs.filter(id => byId.get(String(id))).slice(0, 400);
+  if (!store && !NEW && !cfg.items.length && me.favs && me.favs.length) cfg.items = me.favs.filter(id => byId.get(String(id))).slice(0, 400);
   dirty = !!(draft && store && draft.at > Date.parse(store.updated || 0));
   draw();
 }
@@ -122,10 +131,13 @@ function presetApply(id, mode) {
 function draw() {
   const pub = store && store.approved, st = store ? store.status : '';
   const sEl = $('#st'); sEl.hidden = !store; sEl.className = 'st ' + (st === 'Опублікована' ? 'pub' : st === 'Вимкнена' ? 'off' : 'mod');
-  sEl.textContent = st === 'Опублікована' ? '● Опублікована' : st === 'Вимкнена' ? '● Вимкнена' : store ? '● Працює · на модерації' : '';
+  sEl.textContent = st === 'Опублікована' ? '● Опублікована' : st === 'Вимкнена' ? '● Вимкнена' : store ? (store.extra && !store.approved ? '● Чекає схвалення' : '● Працює · на модерації') : '';
   const op = $('#open'); op.hidden = !store; if (store) op.href = link(pub);
   $('#main').innerHTML = `<div class="wrap" id="wrap"><div class="ed">
-  ${!store ? `<div class="card" style="border-color:var(--acc)"><h2>🏪 Ваш власний магазин за 5 хвилин</h2><p class="sub" style="margin:0">Назва, логотип і кольори — ваші. Покупці замовляють прямо на вітрині, замовлення приходять у кабінет, ми пакуємо й відправляємо, заробіток нараховується автоматично. Заповніть кроки нижче й натисніть «Опублікувати».</p><p class="sub" style="margin:10px 0 0"><a class="tip" href="${SITE}course-vitryna.html#l=v1" target="_blank" rel="noopener">💡 Безкоштовний курс «Своя вітрина»: назва, логотип з ChatGPT чи Gemini, продаючі тексти й перші замовлення</a></p></div>` : ''}
+  ${switcher()}
+  ${NEW ? `<div class="card" style="border-color:var(--acc)"><h2>🏪 Нова вітрина</h2><p class="sub" style="margin:0">Окремий магазин зі своєю назвою, адресою, оформленням і товарами. Після збереження її перевірить менеджер — до схвалення покупці її не бачать.</p></div>` : ''}
+  ${store && store.extra && !store.approved ? '<div class="warn">Ця вітрина чекає схвалення менеджером — покупці побачать її після перевірки. Редагувати можна вже зараз.</div>' : ''}
+  ${!store && !NEW ? `<div class="card" style="border-color:var(--acc)"><h2>🏪 Ваш власний магазин за 5 хвилин</h2><p class="sub" style="margin:0">Назва, логотип і кольори — ваші. Покупці замовляють прямо на вітрині, замовлення приходять у кабінет, ми пакуємо й відправляємо, заробіток нараховується автоматично. Заповніть кроки нижче й натисніть «Опублікувати».</p><p class="sub" style="margin:10px 0 0"><a class="tip" href="${SITE}course-vitryna.html#l=v1" target="_blank" rel="noopener">💡 Безкоштовний курс «Своя вітрина»: назва, логотип з ChatGPT чи Gemini, продаючі тексти й перші замовлення</a></p></div>` : ''}
   ${store && window.VSTATS ? `<details class="card vsd" id="vsd"${location.hash === '#stats' ? ' open' : ''}><summary><h2 style="margin:0">📊 Статистика вітрини</h2><span class="sub" style="margin:0">Відвідувачі, джерела, воронка й найпопулярніші товари</span></summary><div id="vsBox" style="margin-top:14px"></div></details>` : ''}
   ${st === 'Вимкнена' ? '<div class="warn">Вітрину вимкнув адміністратор — покупці її не бачать. Напишіть менеджеру, щоб дізнатися причину.</div>' : ''}
   ${presetsCard()}
@@ -179,6 +191,13 @@ function draw() {
   const s = $('#slug'); if (s && !pub) s.addEventListener('input', () => { s.value = s.value.toLowerCase().replace(/[^a-z0-9-]/g, ''); slug = s.value; dirtyOn(); checkSlug(); });
   if (!store) checkSlug();
 }
+function switcher() {
+  const multi = !!(me.feat && me.feat.multi);
+  if (!multi && STORES.length < 2) return '';
+  const q = sid => '?' + (sid ? 's=' + encodeURIComponent(sid) : 'new=1') + (from ? '&from=' + from : '');
+  return `<nav class="card vsw" aria-label="Мої вітрини"><span class="lbl" style="margin:0">Мої вітрини</span>${STORES.map(x => `<a href="${q(x.sid)}" class="vsw-i${store && store.sid === x.sid && !NEW ? ' on' : ''}" aria-current="${store && store.sid === x.sid && !NEW}"><b>${E(x.name)}</b><small>${x.status === 'Опублікована' ? '● опублікована' : x.status === 'Вимкнена' ? '● вимкнена' : x.extra && !x.approved ? '● чекає схвалення' : '● на модерації'}</small></a>`).join('')}
+   ${multi && STORES.length < MAXS ? `<a href="${q('')}" class="vsw-i add${NEW ? ' on' : ''}">${ico('plus')}<b>Нова вітрина</b></a>` : ''}</nav>`;
+}
 function link(pretty) { return pretty ? SITE + 'v/' + store.slug + '/' : SITE + 'v/?' + store.slug; }
 function share() {
   const pub = store.approved, url = link(pub), nm = cfg.name;
@@ -225,12 +244,12 @@ function msg() {
   m.textContent = !cfg.items.length ? 'Додайте товари, щоб опублікувати' : !slugOk ? 'Оберіть іншу адресу' : dirty ? 'Є незбережені зміни' : store ? 'Усе збережено' : 'Готово до публікації';
   $('#save').disabled = !cfg.items.length || !slugOk || (!dirty && !!store);
 }
-function dirtyOn() { dirty = true; LS.set('vdraft:' + me.id, { at: Date.now(), cfg, slug }); msg(); push(); }
+function dirtyOn() { dirty = true; LS.set(DK(), { at: Date.now(), cfg, slug }); msg(); push(); }
 let ct = null;
 function checkSlug() {
   const m = $('#slugm'); clearTimeout(ct);
   if (!/^[a-z0-9][a-z0-9-]{1,28}[a-z0-9]$/.test(slug)) { slugOk = false; m.className = 'bad'; m.textContent = 'Від 3 до 30 символів: латинські літери, цифри й дефіс.'; return msg(); }
-  ct = setTimeout(async () => { const r = await api({ action: 'v_slug', token, slug }); if (!r.ok) return; slugOk = r.free; m.className = r.free ? 'ok' : 'bad'; m.textContent = r.free ? '✓ Адреса вільна: samostroy.shop/v/' + slug : r.why; msg(); }, 450);
+  ct = setTimeout(async () => { const r = await api({ action: 'v_slug', token, slug, sid: store ? store.sid : '', new: NEW ? 1 : 0 }); if (!r.ok) return; slugOk = r.free; m.className = r.free ? 'ok' : 'bad'; m.textContent = r.free ? '✓ Адреса вільна: samostroy.shop/v/' + slug : r.why; msg(); }, 450);
 }
 
 /* ---------- перегляд ---------- */
@@ -281,11 +300,15 @@ function pickClose() { const o = $('#pk'); if (o) o.remove(); document.body.styl
 /* ---------- збереження ---------- */
 async function save() {
   const b = $('#save'); b.classList.add('busy');
-  const r = await api({ action: 'v_save', token, slug, cfg });
+  const r = await api({ action: 'v_save', token, slug, cfg, sid: store ? store.sid : '', new: NEW ? 1 : 0 });
   b.classList.remove('busy');
   if (!r.ok) return toast(r.msg || ERR[r.error] || 'Не збережено: ' + r.error);
-  store = r.store; cfg = Object.assign(blank(), store.cfg); cfg.contacts = Object.assign(blank().contacts, cfg.contacts); slug = store.slug; dirty = false; LS.del('vdraft:' + me.id);
-  toast(r.first ? 'Вітрину опубліковано! Посилання — внизу сторінки' : 'Збережено. Покупці побачать зміни за кілька хвилин');
+  LS.del(DK());
+  const wasNew = NEW; NEW = false;
+  store = r.store; cfg = Object.assign(blank(), store.cfg); cfg.contacts = Object.assign(blank().contacts, cfg.contacts); slug = store.slug; dirty = false;
+  if (r.stores) STORES = r.stores;
+  if (store.sid && (wasNew || SID)) { SID = store.sid; history.replaceState(null, '', location.pathname + '?s=' + encodeURIComponent(SID) + (from ? '&from=' + from : '')); }
+  toast(store.extra && !store.approved ? 'Вітрину надіслано на перевірку. Покупці побачать її після схвалення менеджером' : r.first ? 'Вітрину опубліковано! Посилання — внизу сторінки' : 'Збережено. Покупці побачать зміни за кілька хвилин');
   const y = scrollY; draw(); scrollTo(0, r.first ? document.body.scrollHeight : y);
 }
 function copy(t) { const ok = () => toast('Скопійовано'); try { navigator.clipboard.writeText(t).then(ok, fb); } catch (e) { fb(); } function fb() { const a = document.createElement('textarea'); a.value = t; a.style.cssText = 'position:fixed;opacity:0'; document.body.append(a); a.select(); try { document.execCommand('copy'); ok(); } catch (x) { } a.remove(); } }
@@ -324,7 +347,7 @@ document.addEventListener('click', e => {
   if (d.rm) { cfg.items = cfg.items.filter(x => x !== d.rm); cfg.feat = cfg.feat.filter(x => x !== d.rm); delete cfg.over[d.rm]; dirtyOn(); return items(); }
   if (d.feat) { if (cfg.feat.includes(d.feat)) cfg.feat = cfg.feat.filter(x => x !== d.feat); else if (cfg.feat.length >= 12) return toast('До 12 популярних товарів'); else cfg.feat.push(d.feat); dirtyOn(); return items(); }
   if (d.imore !== undefined) { items.n = 1000; return items(); }
-  if (d.tog) { const on = !cfg.items.includes(d.tog); if (on) cfg.items.push(d.tog); else { cfg.items = cfg.items.filter(x => x !== d.tog); cfg.feat = cfg.feat.filter(x => x !== d.tog); } dirty = true; LS.set('vdraft:' + me.id, { at: Date.now(), cfg, slug });
+  if (d.tog) { const on = !cfg.items.includes(d.tog); if (on) cfg.items.push(d.tog); else { cfg.items = cfg.items.filter(x => x !== d.tog); cfg.feat = cfg.feat.filter(x => x !== d.tog); } dirty = true; LS.set(DK(), { at: Date.now(), cfg, slug });
     const c = b.closest('.pc'); c.classList.toggle('on', on); b.querySelector('.pl').innerHTML = ico(on ? 'check' : 'plus'); $('#pkn').textContent = cfg.items.length ? ' · ' + cfg.items.length : ''; return; }
   if (d.pkc !== undefined) { PK.c = d.pkc; PK.n = 60; $$('[data-pkc]').forEach(x => x.setAttribute('aria-pressed', x === b)); return pgrid(); }
   if (d.pkmore !== undefined) { PK.n += 60; return pgrid(); }
@@ -340,7 +363,7 @@ document.addEventListener('toggle', e => {
   if (e.target.id !== 'vsd' || !e.target.open || !window.VSTATS) return;
   const b = document.getElementById('vsBox'); if (!b || b.dataset.m) return;
   b.dataset.m = '1';
-  VSTATS.mount(b, { api: (window.VCFG || {}).api, token, edit: '#wrap', acc: getComputedStyle(document.documentElement).getPropertyValue('--acc').trim() || '#e8590c' });
+  VSTATS.mount(b, { api: (window.VCFG || {}).api, token, sid: store ? store.sid : '', sidFixed: true, edit: '#wrap', acc: getComputedStyle(document.documentElement).getPropertyValue('--acc').trim() || '#e8590c' });
 }, true);
 // якщо блок статистики вже відкритий (посилання …#stats) — підвантажити одразу
 new MutationObserver(() => { const d = document.getElementById('vsd'); if (d && d.open) d.dispatchEvent(new Event('toggle')); }).observe(document.getElementById('main'), { childList: true });
